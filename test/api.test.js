@@ -436,3 +436,19 @@ test('closing dates in the past are refused, and invisible names too', async () 
   const view = await api('GET', `/api/polls/${poll.id}`);
   assert.equal(typeof view.json.poll.updatedAt, 'number');
 });
+
+test('by default nothing is deleted automatically', async () => {
+  const keep = openStore(':memory:'); // no retentionDays: polls stay until deleted
+  const { poll } = await keep.createPoll({ kind: 'dates', title: 'Kept', description: '', location: '', closesOn: null, timezone: 'UTC', dates: ['2026-10-10'], startMinute: 540, endMinute: 600, slotMinutes: 30, durationMinutes: null, resultsVisibility: 'everyone' });
+  assert.equal(await keep.deleteExpired(Date.parse('2099-01-01')), 0);
+  assert.ok(await keep.getPoll(poll.id));
+  const app = createServer(createApp({ store: keep }));
+  await new Promise((r) => app.listen(0, '127.0.0.1', r));
+  const url = `http://127.0.0.1:${app.address().port}`;
+  const cfg = await (await fetch(`${url}/api/config`)).json();
+  assert.equal(cfg.retentionDays, 0);
+  const created = await (await fetch(`${url}/api/polls`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(POLL) })).json();
+  assert.equal(created.poll.expiresAt, null);
+  app.close();
+  keep.close();
+});

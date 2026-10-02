@@ -305,7 +305,7 @@ export async function renderManage(main, pollId) {
   }
 
   function settingsSection() {
-    const expires = new Date(poll.expiresAt);
+    const expires = poll.expiresAt ? new Date(poll.expiresAt) : null;
     const isOpen = poll.status === 'open';
     return h('section', { class: 'settings panel', 'aria-labelledby': 'settings-title' },
       h('h2', { id: 'settings-title', class: 'section-title' }, 'Manage poll'),
@@ -338,7 +338,9 @@ export async function renderManage(main, pollId) {
       h('div', { class: 'settings-row' },
         h('div', null,
           h('p', { class: 'setting-name' }, 'Data'),
-          h('p', { class: 'muted small' }, `This poll and every response will be deleted automatically on ${expires.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}. `,
+          h('p', { class: 'muted small' }, expires
+            ? `This poll and every response will be deleted automatically on ${expires.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}. `
+            : 'This poll and its responses stay until you delete them. ',
             h('a', { href: '/privacy' }, 'How Overlap handles data'))),
         h('button', { type: 'button', class: 'btn danger', onclick: deletePoll }, icon('trash'), 'Delete poll now')),
     );

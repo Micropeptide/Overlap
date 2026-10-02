@@ -88,7 +88,8 @@ export function createApi({ store, limiter, publicUrl = '', info = {} }) {
       slots: poll.slots,
       createdAt: poll.createdAt,
       updatedAt: poll.updatedAt,
-      expiresAt: admin ? poll.expiresAt : undefined,
+      // null when polls are kept until deleted; only the organizer sees it.
+      expiresAt: admin ? (store.retentionDays ? poll.expiresAt : null) : undefined,
       responseCount: responses.length,
       responses: visible ? responses.map((r) => publicResponse(r, poll)) : null,
       isOrganizer: admin,

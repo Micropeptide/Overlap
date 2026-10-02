@@ -20,7 +20,8 @@ function intSetting(name, fallback, min, max) {
 const PORT = intSetting('PORT', 3000, 1, 65535);
 const HOST = process.env.HOST || '127.0.0.1';
 const DATA_DIR = resolve(process.env.DATA_DIR || 'data');
-const RETENTION_DAYS = intSetting('RETENTION_DAYS', 30, 1, 3650);
+// 0 (the default) keeps polls until the organizer deletes them.
+const RETENTION_DAYS = intSetting('RETENTION_DAYS', 0, 0, 3650);
 const TRUST_PROXY = intSetting('TRUST_PROXY', 0, 0, 10);
 const PUBLIC_URL = process.env.PUBLIC_URL || '';
 if (PUBLIC_URL && !/^https?:\/\/[^/\s]+\/?$/.test(PUBLIC_URL)) {
@@ -44,13 +45,15 @@ async function cleanup() {
   const n = await store.deleteExpired();
   if (n) console.log(`Deleted ${n} expired poll${n === 1 ? '' : 's'}.`);
 }
-cleanup();
-setInterval(cleanup, 60 * 60e3).unref();
+if (RETENTION_DAYS) {
+  cleanup();
+  setInterval(cleanup, 60 * 60e3).unref();
+}
 
 const server = createServer(app);
 server.listen(PORT, HOST, () => {
   console.log(`Overlap is running at http://${HOST === '0.0.0.0' ? 'localhost' : HOST}:${PORT}`);
-  console.log(`Data: ${DATA_DIR}  ·  polls are deleted ${RETENTION_DAYS} days after their last date`);
+  console.log(`Data: ${DATA_DIR}  ·  ${RETENTION_DAYS ? `polls are deleted ${RETENTION_DAYS} days after their last date` : 'polls are kept until the organizer deletes them'}`);
 });
 
 for (const sig of ['SIGINT', 'SIGTERM']) {

@@ -124,13 +124,20 @@ export const MIGRATIONS = [
   ['responses', 'answered_config', 'TEXT'],
 ];
 
-export function createStore(driver, { retentionDays = 30 } = {}) {
+/** Stored as the expiry of polls that are kept until someone deletes them. */
+export const NEVER = Number.MAX_SAFE_INTEGER;
+
+/**
+ * retentionDays = 0 (the default) keeps polls until the organizer deletes
+ * them. A positive value turns on automatic deletion: date polls go that many
+ * days after their last date, weekly polls that many days after their last change.
+ */
+export function createStore(driver, { retentionDays = 0 } = {}) {
   const { run, get, all } = driver;
   const flush = async () => { await driver.afterDelete?.(); };
 
-  // Date polls are kept until RETENTION_DAYS after their last date. Weekly polls
-  // have no last date, so they are kept until RETENTION_DAYS after the last change.
   function expiryFor({ kind, dates, timezone }) {
+    if (!retentionDays) return NEVER;
     if (kind === 'weekly') return Date.now() + retentionDays * 86400e3;
     const last = [...dates].sort().at(-1);
     return dayStartUtc(addDays(last, 1), timezone) + retentionDays * 86400e3;
@@ -182,7 +189,7 @@ export function createStore(driver, { retentionDays = 30 } = {}) {
     };
   }
 
-  const touchWeekly = (pollId, now) => run("UPDATE polls SET expires_at = ? WHERE id = ? AND kind = 'weekly'", [now + retentionDays * 86400e3, pollId]);
+  const touchWeekly = async (pollId, now) => retentionDays && run("UPDATE polls SET expires_at = ? WHERE id = ? AND kind = 'weekly'", [now + retentionDays * 86400e3, pollId]);
 
   return {
     retentionDays,
@@ -302,6 +309,7 @@ export function createStore(driver, { retentionDays = 30 } = {}) {
     },
 
     async deleteExpired(now = Date.now()) {
+      if (!retentionDays) return 0; // automatic deletion is off
       await run('DELETE FROM responses WHERE poll_id IN (SELECT id FROM polls WHERE expires_at < ?)', [now]);
       const { changes } = await run('DELETE FROM polls WHERE expires_at < ?', [now]);
       if (changes) await flush();

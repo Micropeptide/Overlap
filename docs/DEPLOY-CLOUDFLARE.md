@@ -14,7 +14,9 @@ Browser ──> https://overlap.runtian.uk        GitHub Pages (static pages, HT
 - **API** is `worker/index.js`: the same `server/api.js` used by the Node server,
   backed by Cloudflare D1 (SQLite). Only the page origin may call it from a
   browser (CORS, `ALLOWED_ORIGINS`).
-- An hourly Cron Trigger deletes expired polls.
+- Polls stay until the organizer deletes them (`RETENTION_DAYS = "0"`). To turn on
+  automatic deletion, set `RETENTION_DAYS` and add the hourly cron trigger shown
+  in `worker/wrangler.toml`.
 
 ## Free-tier limits (checked 2026-10)
 

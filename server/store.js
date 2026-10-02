@@ -8,7 +8,7 @@ import { createStore, SCHEMA, MIGRATIONS } from './store-core.js';
 
 export { randomId, newSecret, hashSecret, secretMatches, nameKey, slotsFor } from './store-core.js';
 
-export function openStore(file, { retentionDays = 30 } = {}) {
+export function openStore(file, { retentionDays = 0 } = {}) {
   if (file !== ':memory:') mkdirSync(dirname(file), { recursive: true });
   const db = new DatabaseSync(file);
   db.exec('PRAGMA journal_mode = WAL;');

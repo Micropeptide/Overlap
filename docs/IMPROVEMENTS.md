@@ -136,3 +136,4 @@ worth the complexity yet), **No** (conflicts with the product's rules).
 | Multi-instance deployment (shared rate limits) | Later | One process handles small-group scheduling comfortably |
 | Translations | Later | Intl already localises dates and times |
 | Offline support (service worker) | No | Responses need the server anyway |
+| Automatic deletion after a poll's last date | Changed | Off by default (the maintainer's choice): polls stay until the organizer deletes them. `RETENTION_DAYS` turns it back on for self-hosters |

@@ -13,11 +13,11 @@ everyone sees where the times overlap.
 - Mark times as available, preferred or if needed, by drag, keyboard or tap.
 - Private edit links: nobody can overwrite your answer by typing your name.
 - Close, finalize, export to CSV, and download a calendar invite.
-- Polls delete themselves; organizers and guests can delete any time.
+- Polls stay until the organizer deletes them; guests can delete their own answers any time.
 
 The full list of ideas considered, built and rejected is in
-[docs/IMPROVEMENTS.md](docs/IMPROVEMENTS.md). Polls are deleted 30 days after
-their last date (weekly polls: 30 days after their last edit or response).
+[docs/IMPROVEMENTS.md](docs/IMPROVEMENTS.md). Nothing is deleted automatically
+unless you set `RETENTION_DAYS` (see Configuration).
 
 Overlap is inspired by [Timeful](https://github.com/schej-it/timeful.app)
 (AGPL-3.0) but shares **no code** with it. See [Why not fork Timeful?](#why-not-fork-timeful).
@@ -67,7 +67,7 @@ All settings are environment variables. Every one is optional.
 | `PORT` | `3000` | Port to listen on |
 | `HOST` | `127.0.0.1` | Interface to bind. Use `0.0.0.0` in a container |
 | `DATA_DIR` | `./data` | Where `overlap.db` lives |
-| `RETENTION_DAYS` | `30` | Days after a poll's last date (weekly polls: last change) before it is deleted. The privacy page and footer show this value |
+| `RETENTION_DAYS` | `0` | `0` keeps polls until the organizer deletes them. A positive number turns on automatic deletion that many days after a poll's last date (weekly polls: after its last change). The privacy page, footer and organizer page follow this setting |
 | `TRUST_PROXY` | `0` | Number of reverse proxies in front of Overlap (usually `1`). Rate limits then use the address that proxy appended to `X-Forwarded-For`, which clients can't fake |
 | `PUBLIC_URL` | from request | Base URL used in calendar invites, e.g. `https://overlap.example.com` |
 | `RATE_LIMIT_CREATE` | `30` | New polls per connection per hour |
@@ -152,10 +152,10 @@ server/            runs anywhere (Node or Cloudflare Workers)…
   ics.js           calendar invites (with VTIMEZONE for weekly repeats)
   ratelimit.js     in-memory request limits
 server/            …plus the Node-only parts
-  index.js         config, startup, hourly expiry sweep
+  index.js         config, startup, optional hourly expiry sweep
   app.js           static files, security headers, Node HTTP adapter
   store.js         node:sqlite driver (secure delete, WAL checkpoints)
-worker/            Cloudflare Workers adapter (D1 driver, CORS, cron) + D1 migrations
+worker/            Cloudflare Workers adapter (D1 driver, CORS, optional cron) + D1 migrations
 scripts/           build-pages (GitHub Pages), serve-pages (local stand-in), backup
 ```
 

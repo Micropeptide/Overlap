@@ -30,7 +30,7 @@ function setup(env) {
     },
     get: async (sql, params = []) => (await db.prepare(sql).bind(...params).first()) ?? null,
     all: async (sql, params = []) => (await db.prepare(sql).bind(...params).all()).results,
-  }, { retentionDays: Number(env.RETENTION_DAYS) || 30 });
+  }, { retentionDays: Number(env.RETENTION_DAYS || 0) || 0 });
   const int = (v, d) => (Number.isInteger(Number(v)) && Number(v) > 0 ? Number(v) : d);
   const limiter = createRateLimiter({
     create: { max: int(env.RATE_LIMIT_CREATE, 30), windowMs: 60 * 60e3 },
@@ -94,7 +94,8 @@ export default {
     });
   },
 
-  // Hourly: delete polls (and their responses) past their retention date.
+  // Only used if RETENTION_DAYS > 0 and a cron trigger is added in wrangler.toml:
+  // deletes polls (and their responses) past their retention date.
   async scheduled(event, env, ctx) {
     ctx.waitUntil(setup(env).store.deleteExpired());
   },

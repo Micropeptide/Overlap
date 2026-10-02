@@ -19,10 +19,10 @@ const routes = [
 
 const main = document.getElementById('main');
 
-// The footer states the retention period the server is actually configured with.
+// The footer states what the server is actually configured to do with old polls.
 api('GET', '/api/config').then(({ retentionDays }) => {
   const note = document.getElementById('retention-note');
-  if (note) note.textContent = `Polls are deleted automatically ${retentionDays} days after their last date (weekly polls, after their last change).`;
+  if (note && retentionDays) note.textContent = `Polls are deleted automatically ${retentionDays} days after their last date (weekly polls, after their last change).`;
 }).catch(() => {});
 
 const path = location.pathname;
