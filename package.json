@@ -1,0 +1,30 @@
+{
+  "name": "overlap",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Free group scheduling without accounts. Share a link, mark your times, see where everyone overlaps.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "test": "node --test \"test/**/*.test.js\"",
+    "test:e2e": "playwright test",
+    "test:all": "npm test && npm run test:e2e",
+    "backup": "node scripts/backup.mjs",
+    "test:e2e:cloudflare": "playwright test -c playwright.cloudflare.config.js",
+    "worker:dev": "cd worker && wrangler d1 migrations apply overlap --local && wrangler dev",
+    "worker:deploy": "cd worker && wrangler d1 migrations apply overlap --remote && wrangler deploy"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.63.0",
+    "wrangler": "^4.147.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.1": true,
+    "workerd@1.20261001.1": true
+  }
+}

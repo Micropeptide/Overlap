@@ -1,0 +1,16 @@
+# docker compose up -d   →   Overlap on http://localhost:3000
+# Put Caddy (see deploy/Caddyfile) or another HTTPS proxy in front for a public site.
+services:
+  overlap:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      RETENTION_DAYS: "30"
+      TRUST_PROXY: "1"            # number of proxies in front (0 if none)
+      # PUBLIC_URL: "https://overlap.example.com"
+    volumes:
+      - overlap-data:/data
+volumes:
+  overlap-data:

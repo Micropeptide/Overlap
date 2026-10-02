@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Overlap</title>
+  <meta name="description" content="Free group scheduling with no accounts. Pick dates, share one link, and see when everyone is free.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#F1F4F3" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0F1B1F" media="(prefers-color-scheme: dark)">
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta property="og:title" content="Overlap: find a time that works for everyone">
+  <meta property="og:description" content="Mark when you're free. No account needed.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <link rel="preload" href="/fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/atkinson-hyperlegible-next.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/app.css">
+  <script type="module" src="/js/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Overlap, create a new poll">
+      <svg class="brand-mark" viewBox="0 0 40 28" aria-hidden="true">
+        <circle class="mark-a" cx="14" cy="14" r="11"/>
+        <circle class="mark-b" cx="26" cy="14" r="11"/>
+        <path class="mark-ab" d="M20 4.8a11 11 0 0 1 0 18.4a11 11 0 0 1 0-18.4z"/>
+      </svg>
+      <span class="brand-name">Overlap</span>
+    </a>
+    <nav class="site-nav" aria-label="Site">
+      <a href="/">New poll</a>
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+    </nav>
+  </header>
+  <main id="main" tabindex="-1" aria-busy="true">
+    <div class="page loading"><p class="muted">Loading…</p></div>
+  </main>
+  <footer class="site-footer">
+    <p>No accounts, no tracking, no ads. <span id="retention-note">Polls are deleted automatically after their last date.</span> <a href="/privacy">How your data is handled</a>. <a href="/about">About Overlap</a>, made by Micropeptide.</p>
+  </footer>
+  <div id="live" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+  <div id="toast" class="toast" aria-hidden="true" hidden></div>
+  <noscript><p class="noscript">Overlap needs JavaScript to show the scheduling grid.</p></noscript>
+</body>
+</html>

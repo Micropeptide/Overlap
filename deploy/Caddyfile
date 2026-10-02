@@ -1,0 +1,8 @@
+# Caddy gets and renews the HTTPS certificate automatically.
+# Replace the domain, point its DNS at this server, then: caddy run --config deploy/Caddyfile
+overlap.example.com {
+	encode zstd gzip
+	header Strict-Transport-Security "max-age=31536000"
+	# No access log: Overlap itself never logs requests, so keep the proxy quiet too.
+	reverse_proxy 127.0.0.1:3000
+}
