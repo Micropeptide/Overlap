@@ -6,37 +6,18 @@ Free group scheduling with no accounts. The organizer picks some dates and
 shares one link. Guests type a display name and mark when they're free, and
 everyone sees where the times overlap.
 
-- No sign-up, sign-in, email address, calendar connection or payment, for anyone.
-- A **guest link** to share, and a separate **private link** to manage the poll.
-  The organizer can replace the private link at any time, which revokes the old one.
-- Each guest gets a **private edit link** for their own response. Typing someone
-  else's name can't overwrite their answer: names are unique per poll, and only
-  the edit key opens a response.
-- Results list the times **everyone** can make first, then the **closest matches**.
-  Each entry shows how many people are available and how many only "if needed".
-- The organizer can close or reopen the poll, choose a final time, copy the details
-  and download a calendar invite (`.ics`). Guests then see the final time.
-- Times are stored as UTC instants and always shown in the viewer's time zone,
-  with a visible label and a way to switch zones. Daylight saving changes are handled.
-- **Specific dates or days of the week.** A weekly poll ("Mondays and Wednesdays,
-  9 to 5") asks people for their usual week. Its final time reads "Every Monday,
-  10:00–11:00 AM", and the calendar invite repeats weekly.
-- Desktop gets a drag-to-paint grid with full keyboard support. Phones get a
-  one-day-at-a-time list of large tap targets.
-- Guests mark times as **Available**, **Preferred** (best for them) or **If
-  needed**, or erase them. They can undo and redo, fill a whole day or time
-  with one click, see when others are free while marking, and add a short note.
-  Unsaved marks survive reloads.
-- Organizers can add a place or call link and a closing date. They can export
-  responses as CSV, duplicate a poll, share it with the phone's share sheet, and
-  add the final time to Google Calendar or Outlook.com. Results refresh on
-  their own.
+- No sign-up, sign-in, email, calendar connection or payment, for anyone.
+- One guest link to share, plus a private link to manage the poll.
+- Specific dates or days of the week, in each person's own time zone.
+- Best times first: everyone, then the closest matches.
+- Mark times as available, preferred or if needed, by drag, keyboard or tap.
+- Private edit links: nobody can overwrite your answer by typing your name.
+- Close, finalize, export to CSV, and download a calendar invite.
+- Polls delete themselves; organizers and guests can delete any time.
 
 The full list of ideas considered, built and rejected is in
-[docs/IMPROVEMENTS.md](docs/IMPROVEMENTS.md).
-- Polls delete themselves 30 days after their last date (weekly polls: 30 days
-  after their last edit or response). Organizers can delete a poll, and guests
-  their own response, at any time.
+[docs/IMPROVEMENTS.md](docs/IMPROVEMENTS.md). Polls are deleted 30 days after
+their last date (weekly polls: 30 days after their last edit or response).
 
 Overlap is inspired by [Timeful](https://github.com/schej-it/timeful.app)
 (AGPL-3.0) but shares **no code** with it. See [Why not fork Timeful?](#why-not-fork-timeful).
