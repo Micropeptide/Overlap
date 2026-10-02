@@ -8,7 +8,7 @@ After=network.target
 User=overlap
 WorkingDirectory=/opt/overlap
 ExecStart=/usr/bin/node server/index.js
-Environment=PORT=3000 HOST=127.0.0.1 DATA_DIR=/var/lib/overlap TRUST_PROXY=1 RETENTION_DAYS=30
+Environment=PORT=3000 HOST=127.0.0.1 DATA_DIR=/var/lib/overlap TRUST_PROXY=1 RETENTION_DAYS=0
 Restart=on-failure
 NoNewPrivileges=true
 ProtectSystem=strict

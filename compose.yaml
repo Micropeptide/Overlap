@@ -7,7 +7,7 @@ services:
     ports:
       - "127.0.0.1:3000:3000"
     environment:
-      RETENTION_DAYS: "30"
+      RETENTION_DAYS: "0"            # 0 = keep polls until the organizer deletes them
       TRUST_PROXY: "1"            # number of proxies in front (0 if none)
       # PUBLIC_URL: "https://overlap.example.com"
     volumes:

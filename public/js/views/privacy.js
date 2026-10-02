@@ -5,7 +5,7 @@ import { api } from '../lib/api.js';
 // the server's behavior, update this page in the same commit.
 export async function renderPrivacy(main) {
   document.title = 'Privacy · Overlap';
-  let days = 30;
+  let days = 0;
   let hosting = null;
   let restoreDays = 7;
   try { ({ retentionDays: days, hosting = null, restoreDays = 7 } = await api('GET', '/api/config')); } catch { /* keep defaults */ }
@@ -16,7 +16,9 @@ export async function renderPrivacy(main) {
 
   clear(main).append(h('article', { class: 'page narrow prose' },
     h('h1', { class: 'page-title' }, 'Privacy'),
-    h('p', { class: 'lede' }, 'Overlap collects only what it needs to find a time, keeps it for a limited time, and lets you delete it whenever you want.'),
+    h('p', { class: 'lede' }, days
+      ? 'Overlap collects only what it needs to find a time, keeps it for a limited time, and lets you delete it whenever you want.'
+      : 'Overlap collects only what it needs to find a time, and lets you delete it whenever you want.'),
 
     section('What Overlap stores',
       list(
@@ -48,7 +50,9 @@ export async function renderPrivacy(main) {
       )),
 
     section('How long data is kept',
-      h('p', null, `A poll and all its responses are deleted automatically ${days} days after the last date in the poll. A weekly poll has no last date, so it is deleted ${days} days after its last change: an edit, or a response being added or updated. Organizers can delete a poll at any time, and guests can delete their own response at any time, even after the poll closes. ${cloudflare
+      h('p', null, `${days
+        ? `A poll and all its responses are deleted automatically ${days} days after the last date in the poll. A weekly poll has no last date, so it is deleted ${days} days after its last change: an edit, or a response being added or updated.`
+        : 'Overlap does not delete polls on its own: a poll and its responses stay until the organizer deletes the poll.'} Organizers can delete a poll at any time, and guests can delete their own response at any time, even after the poll closes. ${cloudflare
         ? `Deleted data is removed from the live database right away. Cloudflare’s database keeps an automatic restore history for ${restoreDays} days, so for that long a deleted poll could still be recovered by whoever runs this copy of Overlap; after that it is gone.`
         : 'Deleted data is overwritten in the database file right away (SQLite’s secure delete, plus flushing its write-ahead log). If whoever runs this copy of Overlap keeps backups, a copy can remain in them until those backups expire.'}`)),
 

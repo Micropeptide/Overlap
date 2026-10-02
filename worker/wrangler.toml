@@ -15,12 +15,13 @@ database_name = "overlap"
 database_id = "09cd7135-b235-4d42-9dcd-65409f359592"
 migrations_dir = "migrations"
 
-# Delete expired polls every hour.
-[triggers]
-crons = ["17 * * * *"]
+# Polls are kept until the organizer deletes them (RETENTION_DAYS = "0").
+# To turn on automatic deletion, set RETENTION_DAYS and add an hourly trigger:
+#   [triggers]
+#   crons = ["17 * * * *"]
 
 [vars]
 ALLOWED_ORIGINS = "https://overlap.runtian.uk"
 PUBLIC_URL = "https://overlap.runtian.uk"
-RETENTION_DAYS = "30"
+RETENTION_DAYS = "0"
 D1_RESTORE_DAYS = "7"
