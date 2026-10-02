@@ -1,0 +1,20 @@
+# systemd unit for running Overlap without Docker.
+# sudo cp deploy/overlap.service /etc/systemd/system/ && sudo systemctl enable --now overlap
+[Unit]
+Description=Overlap group scheduling
+After=network.target
+
+[Service]
+User=overlap
+WorkingDirectory=/opt/overlap
+ExecStart=/usr/bin/node server/index.js
+Environment=PORT=3000 HOST=127.0.0.1 DATA_DIR=/var/lib/overlap TRUST_PROXY=1 RETENTION_DAYS=30
+Restart=on-failure
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/overlap
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

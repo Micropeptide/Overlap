@@ -1,0 +1,26 @@
+# Cloudflare Worker for Overlap's API. Deploy with: npm run worker:deploy
+# See docs/DEPLOY-CLOUDFLARE.md for the one-time setup.
+name = "overlap-api"
+main = "index.js"
+compatibility_date = "2026-09-01"
+workers_dev = true
+
+# Overlap doesn't log requests; keep Cloudflare's optional Worker logs off too.
+[observability]
+enabled = false
+
+[[d1_databases]]
+binding = "DB"
+database_name = "overlap"
+database_id = "09cd7135-b235-4d42-9dcd-65409f359592"
+migrations_dir = "migrations"
+
+# Delete expired polls every hour.
+[triggers]
+crons = ["17 * * * *"]
+
+[vars]
+ALLOWED_ORIGINS = "https://overlap.runtian.uk"
+PUBLIC_URL = "https://overlap.runtian.uk"
+RETENTION_DAYS = "30"
+D1_RESTORE_DAYS = "7"
