@@ -6,19 +6,18 @@ Free group scheduling with no accounts. The organizer picks some dates and
 shares one link. Guests type a display name and mark when they're free, and
 everyone sees where the times overlap.
 
-- No sign-up, sign-in, calendar connection or payment, for anyone. Email is optional.
-- One guest link to share, plus a private link to manage the poll.
-- Optional passwords: organizers and guests can get back in from any device
-  without keeping links (the password never leaves the browser).
-- Optional email: your private link sent to you, and update digests (new
-  responses, the final time), with confirmation first and one-click unsubscribe.
+- Nobody needs an account, not even the organizer. Email is optional.
+- One guest link to share, plus a private link or optional password to manage the poll.
 - Specific dates or days of the week, in each person's own time zone.
+- Optional email: your private link sent to you, or a note when people respond.
 - Best times first: everyone, then the closest matches.
 - Mark times as available, preferred or if needed, by drag, keyboard or tap.
 - Private edit links, copyable any time: nobody can overwrite your answer by typing your name.
+  Guests can add an optional password to get back in from another device.
 - The organizer can lock answers once sent (guests can still delete theirs).
 - Close, finalize, export to CSV, and download a calendar invite.
 - Polls stay until the organizer deletes them; guests can delete their own answers any time.
+- Passwords never leave the browser; email updates need confirming and have one-click unsubscribe.
 
 The full list of ideas considered, built and rejected is in
 [docs/IMPROVEMENTS.md](docs/IMPROVEMENTS.md). Nothing is deleted automatically
