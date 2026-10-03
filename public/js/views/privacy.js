@@ -26,11 +26,14 @@ export async function renderPrivacy(main) {
         'For each response: the display name the guest typed, the times they marked (preferred, available or if needed), and their optional note.',
         'When each poll and response was created and last changed.',
         'A scrambled fingerprint (a SHA-256 hash) of each private link, so the server can check a link without keeping a copy of it.',
+        'If an organizer or guest adds an optional password: a SHA-256 hash of a key made from it in their browser. Never the password itself.',
+        'How many wrong passwords were tried for each poll in the last hour (a number per poll, with no connection or device details), to stop guessing.',
       )),
 
     section('What Overlap does not collect',
       list(
-        'No accounts, passwords, email addresses or phone numbers.',
+        'No accounts, email addresses or phone numbers.',
+        'Optional passwords never leave your browser. It turns the password into a key (PBKDF2-SHA-256, 210,000 rounds, salted with the poll), sends only that key, and the server keeps only a hash of the key.',
         'No calendar access.',
         'No cookies, analytics, ads, tracking pixels or third-party scripts. Fonts are served from this site.',
         'Overlap doesn’t write IP addresses to its database or logs. To slow down abuse it counts requests per connection in memory for about an hour and then forgets them.',
@@ -45,8 +48,9 @@ export async function renderPrivacy(main) {
         'The guest link shows the poll to anyone who has it. By default, guests can also see each other’s names and times. The organizer can switch this to “Only me”, and the server then stops sending other people’s responses to guests.',
         'The private link lets whoever has it edit, close or delete the poll and remove responses. The organizer can replace it at any time, which makes the old one stop working.',
         'Each guest gets a private edit link that lets them change or delete only their own response. Typing someone else’s name doesn’t give access to their response.',
+        'A guest who adds a password can also open their response on another device with their name and that password. An organizer who sets a password can open the organizer view from the guest link with it. Either password can be changed or removed later.',
         'When results are set to “Only me”, guests still see how many people have responded, but not who. Names don’t have to be unique in that case, so trying a name reveals nothing either.',
-        'Your browser keeps some things in its own storage, on your device only: the private links you use, the last name you typed, your preferred time zone and form settings, and a response you haven’t submitted yet (its marks, name and note, so a reload doesn’t lose them). “Duplicate poll” briefly holds the poll’s settings, title, note and place in the tab’s session storage. Clearing your browser data removes all of this; Overlap’s server never sees it.',
+        'Your browser keeps some things in its own storage, on your device only: the private links you use (or the password-derived keys you signed in with), the last name you typed, your preferred time zone and form settings, and a response you haven’t submitted yet (its marks, name and note, so a reload doesn’t lose them). “Duplicate poll” briefly holds the poll’s settings, title, note and place in the tab’s session storage. Clearing your browser data removes all of this; Overlap’s server never sees it.',
       )),
 
     section('How long data is kept',
@@ -58,6 +62,7 @@ export async function renderPrivacy(main) {
 
     section('Security, honestly',
       h('p', null, 'Links contain long random keys that are impractical to guess. Private keys travel after the “#” in the link, which browsers don’t send to the server or to other sites, and the server only ever receives them in a request header. Pages use a strict content security policy and send no referrer.'),
+      h('p', null, 'A password is only as strong as you make it. After 30 wrong passwords in an hour, a poll stops accepting passwords (right or wrong) until the hour is up, while links keep working. Someone who obtained a copy of the database could still try to guess a weak password offline, so use one you don’t use anywhere else.'),
       h('p', null, `Overlap does not encrypt poll contents in its database, and responses are not anonymous: anyone you give the guest link to may see names and times. ${cloudflare ? 'This copy is only reachable over HTTPS, so connections are encrypted in transit.' : 'Connections are encrypted only when this copy of Overlap is served over HTTPS.'} Don’t use Overlap for anything sensitive.`)),
 
     section('Source',

@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { createPoll, respond, isPhone, markFirstTimes } from './helpers.js';
+import { createPoll, respond, isPhone, markFirstTimes, scrollGridToTop } from './helpers.js';
 
 // Pretend the person just came back to the tab, which triggers a refresh.
 const comeBack = (page) => page.evaluate(() => document.dispatchEvent(new Event('visibilitychange')));
@@ -8,6 +8,7 @@ test('a refresh during a drag waits, and nothing scrolls by itself afterwards', 
   test.skip(isPhone(info), 'Drag painting is the desktop grid.');
   const { poll, guestPath } = await createPoll(request);
   await page.goto(guestPath);
+  await scrollGridToTop(page);
   const cells = page.locator('.grid-edit .cell[data-slot]');
   const a = await cells.nth(0).boundingBox();
   const b = await cells.nth(4).boundingBox();

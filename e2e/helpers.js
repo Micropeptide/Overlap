@@ -48,6 +48,7 @@ export async function markFirstTimes(page, phone, count) {
     for (let i = 0; i < count; i++) await buttons.nth(i).tap();
     return;
   }
+  await scrollGridToTop(page);
   const cols = await page.locator('.grid-edit .col-head').count();
   const cells = page.locator('.grid-edit .cell[data-slot]');
   const a = await cells.nth(0).boundingBox();
@@ -57,6 +58,11 @@ export async function markFirstTimes(page, phone, count) {
   await page.mouse.move(b.x + b.width / 2, (a.y + b.y) / 2 + a.height / 2, { steps: 4 });
   await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2, { steps: 4 });
   await page.mouse.up();
+}
+
+/** Put the grid at the top of the window, clear of the sticky bar, so a drag doesn't auto-scroll. */
+export async function scrollGridToTop(page) {
+  await page.locator('.grid-edit').evaluate((el) => el.scrollIntoView({ block: 'start' }));
 }
 
 export async function expectNoHorizontalScroll(page) {

@@ -163,6 +163,68 @@ export function openDialog({ title, body, actions, describedBy }) {
   });
 }
 
+/**
+ * A dialog holding a small form. `onSubmit(form)` runs on submit; if it throws,
+ * the dialog stays open and shows the message. Resolves with what onSubmit
+ * returned, or null if cancelled.
+ */
+export function formDialog({ title, intro, fields, submitLabel }, onSubmit) {
+  return new Promise((resolve) => {
+    const titleId = `dlg-${Math.random().toString(36).slice(2)}`;
+    const error = h('p', { class: 'form-error', role: 'alert', hidden: true });
+    const submit = h('button', { type: 'submit', class: 'btn primary' }, submitLabel);
+    const form = h('form', { class: 'dialog-inner', novalidate: true },
+      h('h2', { id: titleId, class: 'dialog-title' }, title),
+      intro || null,
+      fields,
+      error,
+      h('div', { class: 'dialog-actions' },
+        h('button', { type: 'button', class: 'btn secondary', onclick: () => dlg.close() }, 'Cancel'),
+        submit));
+    const dlg = h('dialog', { class: 'dialog', 'aria-labelledby': titleId }, form);
+    let result = null;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      error.hidden = true;
+      submit.disabled = true;
+      submit.dataset.busy = 'true';
+      try {
+        result = await onSubmit(form);
+        dlg.close();
+      } catch (err) {
+        error.textContent = err.message;
+        error.hidden = false;
+        form.querySelector('input:not([type=hidden])')?.focus();
+      } finally {
+        submit.disabled = false;
+        delete submit.dataset.busy;
+      }
+    });
+    dlg.addEventListener('close', () => { resolve(result); dlg.remove(); });
+    document.body.append(dlg);
+    dlg.showModal();
+  });
+}
+
+/** A labelled password box for dialogs and forms. */
+export function passwordField({ id, label, hint, autocomplete = 'current-password' }) {
+  const input = h('input', { id, name: id, class: 'input', type: 'password', autocomplete, minlength: '8', maxlength: '200', 'aria-describedby': hint ? `${id}-hint` : null });
+  const show = h('button', {
+    type: 'button', class: 'link-btn small pw-toggle', 'aria-controls': id, 'aria-pressed': 'false',
+    onclick: () => {
+      const visible = input.type === 'password';
+      input.type = visible ? 'text' : 'password';
+      show.textContent = visible ? 'Hide' : 'Show';
+      show.setAttribute('aria-pressed', String(visible));
+    },
+  }, 'Show');
+  const el = h('div', { class: 'field' },
+    h('div', { class: 'label-row' }, h('label', { for: id, class: 'field-label' }, label), show),
+    input,
+    hint ? h('p', { class: 'field-hint', id: `${id}-hint` }, hint) : null);
+  return { el, input };
+}
+
 export function confirmDialog({ title, message, confirm, danger = false }) {
   return openDialog({
     title,
