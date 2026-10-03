@@ -56,6 +56,8 @@ export function createGrid(options) {
   let tally;
   let total = 0;
   let matrix = []; // desktop: rows × columns of cell elements (or null)
+  let gapBefore = []; // desktop: true where a "later" gap separates a row from the one above
+  let gridEl = null;
   let cellBySlot = new Map();
   let colHeads = [];
   let focus = { r: 0, c: 0 };
@@ -167,6 +169,8 @@ export function createGrid(options) {
     });
     grid.style.setProperty('--cols', cols.length);
     grid.style.setProperty('--row-h', rowH);
+    grid.dataset.brush = s.brush;
+    gridEl = grid;
 
     const dayText = (dk) => [
       s.weekly ? null : h('span', { class: 'col-weekday' }, f.weekdayShort(dk)),
@@ -187,10 +191,12 @@ export function createGrid(options) {
     ));
 
     matrix = [];
+    gapBefore = [];
     cellBySlot = new Map();
     let prev = null;
     layout.rows.forEach((row, r) => {
       const gap = prev && (row.minuteOfDay - prev.minuteOfDay > s.slotMinutes);
+      gapBefore[r] = !!gap;
       if (gap) grid.append(h('div', { class: 'grid-gap', 'aria-hidden': 'true' }, h('span', null, 'later')));
       const showLabel = !prev || gap || row.minuteOfDay % 60 === 0 || row.occ > 0 || s.slotMinutes === 60;
       const labelText = f.minuteOfDay(row.minuteOfDay) + (row.occ > 0 ? ' (repeat)' : '');
@@ -244,11 +250,28 @@ export function createGrid(options) {
 
   function refreshCells() {
     for (const [slot, el] of cellBySlot) decorate(el, slot);
+    joinRuns();
+  }
+
+  /** Mark cells whose neighbor above/below has the same mark, so runs draw as one block. */
+  function joinRuns() {
+    for (let r = 0; r < matrix.length; r++) {
+      for (let c = 0; c < matrix[r].length; c++) {
+        const el = matrix[r][c];
+        if (!el) continue;
+        const k = el.dataset.k;
+        const up = r > 0 && !gapBefore[r] ? matrix[r - 1][c] : null;
+        const down = r + 1 < matrix.length && !gapBefore[r + 1] ? matrix[r + 1][c] : null;
+        el.classList.toggle('join-top', !!k && up?.dataset.k === k);
+        el.classList.toggle('join-bottom', !!k && down?.dataset.k === k);
+      }
+    }
   }
 
   function decorate(el, slot) {
     if (s.mode === 'edit') {
       const v = s.value.get(slot) || '';
+      el.dataset.k = v;
       el.classList.toggle('is-pref', v === 'pref');
       el.classList.toggle('is-yes', v === 'yes');
       el.classList.toggle('is-maybe', v === 'maybe');
@@ -274,11 +297,13 @@ export function createGrid(options) {
     el.classList.toggle('hl', highlighted.has(slot));
     for (const st of Object.keys(PERSON_STATES)) el.classList.remove(`st-${st}`);
     el.classList.toggle('focused-person', !!s.focusId);
-    el.textContent = s.showCounts && avail && !s.focusId ? String(avail) : '';
+    el.replaceChildren(...(s.showCounts && avail && !s.focusId ? [h('span', null, String(avail))] : []));
+    el.dataset.k = s.focusId ? '' : (avail ? 'on' : '');
     let label;
     if (s.focusId) {
       const st = personState(t, s.focusId);
       el.classList.add(`st-${st}`);
+      el.dataset.k = st === 'no' ? '' : st;
       const who = s.responses.find((r) => r.id === s.focusId)?.name || 'This person';
       label = `${cellLabel(slot)}, ${who}: ${PERSON_STATES[st][0]}`;
     } else {
@@ -330,6 +355,7 @@ export function createGrid(options) {
     });
 
     grid.addEventListener('pointerdown', (e) => {
+      grid.dataset.input = 'pointer';
       const el = e.target.closest('.cell[data-slot]');
       if (!el || e.button !== 0) return;
       setFocus(coords(el), { scroll: false });
@@ -427,6 +453,7 @@ export function createGrid(options) {
 
     grid.addEventListener('keydown', (e) => {
       if (!e.target.classList.contains('cell')) return;
+      grid.dataset.input = 'keyboard';
       const moves = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] };
       if (moves[e.key]) {
         e.preventDefault();
@@ -672,6 +699,7 @@ export function createGrid(options) {
     setBrush(brush) {
       s.brush = brush;
       s.lastPaint = undefined;
+      if (gridEl) gridEl.dataset.brush = brush;
       if (PHONE.matches && s.mode === 'edit') {
         const tool = root.querySelector('.day-tools .btn');
         if (tool) tool.textContent = brush === 'erase' ? 'Clear day' : 'Whole day';

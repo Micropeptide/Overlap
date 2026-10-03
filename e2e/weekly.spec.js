@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
-import { createPoll, isPhone, markFirstTimes } from './helpers.js';
+import { createPoll, isPhone, markFirstTimes, openBestTimes } from './helpers.js';
 
 const weekly = (request, overrides = {}) => createPoll(request, { kind: 'weekly', weekdays: [1, 3], dates: undefined, ...overrides });
 
@@ -45,6 +45,7 @@ test('guests answer a weekly poll by weekday, and the final time repeats weekly'
   await expect(page.locator('.saved-notice')).toContainText('Thanks, Omar.');
 
   await page.goto(managePath);
+  await openBestTimes(page);
   const best = page.locator('.best-item').first();
   await expect(best).toContainText('Every Monday');
   await best.getByRole('button', { name: /^Choose/ }).click();

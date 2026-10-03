@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
-import { createPoll, respond, daysFromNow, isPhone, expectNoHorizontalScroll } from './helpers.js';
+import { createPoll, respond, daysFromNow, isPhone, expectNoHorizontalScroll, openBestTimes } from './helpers.js';
 
 test('organizer creates a poll and gets two clearly labeled links', async ({ page }) => {
   await page.goto('/');
@@ -53,6 +53,9 @@ test('organizer sees the overlap, picks a final time, and guests see it', async 
   await respond(request, poll.id, { name: 'Cy', available: [s[2]], ifNeeded: [s[3]] });
 
   await page.goto(managePath);
+  // Collapsed, the section still names the top answer.
+  await expect(page.locator('details.best summary')).toContainText(/Works for everyone: Wed, Mar 3, 10:00\s*–\s*11:00\s*AM/);
+  await openBestTimes(page);
   await expect(page.getByText('Everyone can make these (3 people)')).toBeVisible();
   const best = page.locator('.best-item.everyone').first();
   await expect(best).toContainText(/10:00\s*–\s*11:00\s*AM/);
@@ -113,7 +116,7 @@ test('results keep available, if needed, unavailable and unanswered distinct', a
     await expect(page.locator('.grid-results .cell.st-no')).toHaveCount(4);
     await expect(page.locator('.grid-results .cell.st-unanswered')).toHaveCount(6);
     // Each state looks different.
-    const bg = (cls) => page.locator(`.grid-results .cell.${cls}`).first().evaluate((el) => getComputedStyle(el).backgroundImage + getComputedStyle(el).backgroundColor);
+    const bg = (cls) => page.locator(`.grid-results .cell.${cls}`).first().evaluate((el) => { const st = getComputedStyle(el, '::before'); return st.backgroundImage + st.backgroundColor; });
     const looks = await Promise.all(['st-yes', 'st-maybe', 'st-no', 'st-unanswered'].map(bg));
     expect(new Set(looks).size).toBe(4);
   }

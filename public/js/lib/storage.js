@@ -39,6 +39,9 @@ export const storage = {
     write(KEYS.managed, all);
   },
 
+  answered() {
+    return read(KEYS.answered, {});
+  },
   getAnswer(pollId) {
     return read(KEYS.answered, {})[pollId] || null;
   },
@@ -96,6 +99,17 @@ export const storage = {
     } catch {
       return null;
     }
+  },
+
+  /** Small display preferences, e.g. whether "Best times" is expanded. */
+  pref(name, fallback) {
+    const all = read(KEYS.prefs + '.ui', {});
+    return name in all ? all[name] : fallback;
+  },
+  setPref(name, value) {
+    const all = read(KEYS.prefs + '.ui', {});
+    all[name] = value;
+    write(KEYS.prefs + '.ui', all);
   },
 
   viewTimeZone() {

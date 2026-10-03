@@ -33,7 +33,7 @@ export async function renderGuest(main, pollId) {
     if (err instanceof ApiError && err.status === 404) {
       storage.forgetAnswer(pollId);
       storage.forgetDraft(pollId);
-      return renderNotFound(main, { title: 'This poll isn’t here', message: 'It may have been deleted by the organizer or expired. Ask them for a new link.' });
+      return renderNotFound(main, { title: 'This poll isn’t here', message: 'It may have been deleted by the organizer. Ask them for a new link.' });
     }
     throw err;
   }
@@ -42,7 +42,7 @@ export async function renderGuest(main, pollId) {
   if (token) {
     try {
       ({ response: mine } = await api('GET', `/api/polls/${pollId}/my-response`, { token }));
-      storage.saveAnswer(pollId, { token, responseId: mine.id, name: mine.name });
+      storage.saveAnswer(pollId, { token, responseId: mine.id, name: mine.name, title: poll.title });
     } catch (err) {
       if (err instanceof ApiError && err.status === 404) {
         storage.forgetAnswer(pollId);
@@ -432,7 +432,7 @@ export async function renderGuest(main, pollId) {
           justSaved = true;
           announce(`Thanks, ${mine.name}. Your times are in.`);
         }
-        storage.saveAnswer(pollId, { token, responseId: mine.id, name: mine.name });
+        storage.saveAnswer(pollId, { token, responseId: mine.id, name: mine.name, title: poll.title, savedAt: Date.now() });
         storage.setLastName(mine.name);
         // Keep anything the guest changed while the save was on its way.
         const editedMeanwhile = draft.name !== sent.name || draft.note !== sent.note || draft.value.size !== sent.value.size
@@ -517,7 +517,7 @@ export async function renderGuest(main, pollId) {
       return panel;
     }
     results = resultsSection({ poll, timeZone: viewZone, selfId: mine?.id, state: resultsState });
-    panel.append(zone, bestTimes({ poll, timeZone: viewZone, onHighlight: (slots) => results.highlight(slots) }), results);
+    panel.append(zone, results, bestTimes({ poll, timeZone: viewZone, onHighlight: (slots) => results.highlight(slots) }));
     return panel;
   }
 
