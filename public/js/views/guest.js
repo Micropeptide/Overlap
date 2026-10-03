@@ -57,6 +57,9 @@ export async function renderGuest(main, pollId) {
   let viewZone = storage.viewTimeZone() || f.deviceTimeZone();
   if (!isValidTimeZone(viewZone)) viewZone = f.deviceTimeZone();
   const isOpen = () => poll.status === 'open';
+  // A sent answer is locked when the organizer turned off changes after sending.
+  const locked = () => !!mine && poll.allowEdits === false;
+  const canEdit = () => isOpen() && !locked();
   const canSeeResults = () => poll.responses !== null;
   let tab = isOpen() ? 'mine' : 'group';
   let justSaved = false;
@@ -102,7 +105,7 @@ export async function renderGuest(main, pollId) {
     && draft.value.size === baseline.value.size && [...draft.value].every(([k, v]) => baseline.value.get(k) === v);
   loadDraftFromResponse();
   const saved = storage.getDraft(pollId);
-  if (saved && isOpen() && (saved.baseUpdatedAt ?? null) === (mine?.updatedAt ?? null)) {
+  if (saved && canEdit() && (saved.baseUpdatedAt ?? null) === (mine?.updatedAt ?? null)) {
     const valid = new Set(poll.slots);
     draft.value = new Map((saved.marks || []).filter(([s, v]) => valid.has(s) && MARKS[v]));
     draft.name = saved.name ?? draft.name;
@@ -148,7 +151,7 @@ export async function renderGuest(main, pollId) {
   }
 
   window.addEventListener('beforeunload', (e) => {
-    if (draft.dirty && draft.changedHere && isOpen()) {
+    if (draft.dirty && draft.changedHere && canEdit()) {
       e.preventDefault();
       e.returnValue = '';
     }
@@ -156,7 +159,7 @@ export async function renderGuest(main, pollId) {
 
   // Keyboard shortcuts while marking: 1–4 pick a brush, Ctrl/Cmd+Z undoes.
   document.addEventListener('keydown', (e) => {
-    if (tab !== 'mine' || !grid || !isOpen()) return;
+    if (tab !== 'mine' || !grid || !canEdit()) return;
     const t = e.target;
     if (t instanceof HTMLElement && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) && t.type !== 'radio') return;
     if (document.querySelector('dialog[open]')) return;
@@ -246,7 +249,7 @@ export async function renderGuest(main, pollId) {
           type: 'button', role: 'tab', id: `tab-${id}`, class: 'tab',
           'aria-selected': tab === id ? 'true' : 'false', 'aria-controls': `panel-${id}`, tabindex: tab === id ? '0' : '-1',
           onclick: () => { tab = id; justSaved = false; render(); document.getElementById(`tab-${id}`)?.focus(); },
-        }, label[id], id === 'mine' && draft.dirty && isOpen() ? h('span', { class: 'unsaved-dot', title: 'Unsaved changes' }, h('span', { class: 'visually-hidden' }, ' (unsaved changes)')) : null));
+        }, label[id], id === 'mine' && draft.dirty && canEdit() ? h('span', { class: 'unsaved-dot', title: 'Unsaved changes' }, h('span', { class: 'visually-hidden' }, ' (unsaved changes)')) : null));
       }
       tabs.addEventListener('keydown', (e) => {
         if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
@@ -264,7 +267,7 @@ export async function renderGuest(main, pollId) {
   }
 
   function minePanel(zone) {
-    const open = isOpen();
+    const open = canEdit();
     const panel = h('section', { class: `panel${open ? '' : ' is-locked'}`, id: 'panel-mine', role: 'tabpanel', 'aria-labelledby': 'tab-mine' });
 
     if (justSaved && mine) panel.append(savedNotice());
@@ -276,8 +279,10 @@ export async function renderGuest(main, pollId) {
           onclick: () => { clearDraft(); loadDraftFromResponse(); render(); announce('Discarded unsaved changes'); },
         }, 'Discard them')));
     }
-    if (!open) {
+    if (!isOpen()) {
       panel.append(h('p', { class: 'notice' }, 'This poll is closed, so responses can’t be changed. You can still delete yours.'));
+    } else if (locked()) {
+      panel.append(h('p', { class: 'notice' }, 'The organizer doesn’t allow changing answers after they’re sent. You can still delete yours.'));
     }
     if (!mine && open) {
       panel.append(h('p', { class: 'sign-in-line small' },
@@ -379,7 +384,7 @@ export async function renderGuest(main, pollId) {
       othersTotal: otherResponses.length,
       showOthers,
       label: 'Your availability',
-      describedBy: 'grid-help',
+      describedBy: open ? 'grid-help' : null,
       readOnly: !open,
       onChange: (v) => {
         draft.value = new Map(v);
@@ -400,34 +405,36 @@ export async function renderGuest(main, pollId) {
         h('p', { class: 'field-hint', id: 'g-name-hint' }, `${visibleTo} No email or account needed.`),
         nameErr),
       h('div', { class: 'field' },
-        h('p', { class: 'field-label', id: 'when-label' }, 'When are you free?'),
-        h('p', { class: 'field-hint', id: 'grid-help' },
+        h('p', { class: 'field-label', id: 'when-label' }, open ? 'When are you free?' : 'Your times'),
+        open ? h('p', { class: 'field-hint', id: 'grid-help' },
           h('span', { class: 'hint-pointer' }, 'Drag across the times you’re free. Click a day or time heading to fill it. '),
           h('span', { class: 'hint-touch' }, 'Tap each time you’re free. '),
-          h('span', { class: 'hint-keys' }, 'With a keyboard: arrows move, Space marks, Shift with an arrow marks as you go, 1–4 switch what you’re marking, Ctrl+Z undoes.')),
+          h('span', { class: 'hint-keys' }, 'With a keyboard: arrows move, Space marks, Shift with an arrow marks as you go, 1–4 switch what you’re marking, Ctrl+Z undoes.')) : null,
         poll.kind === 'weekly' ? h('p', { class: 'field-hint weekly-hint' }, 'This is a weekly poll. Mark the times that usually work for you in a typical week.') : null,
         unseen ? h('p', { class: 'notice small' }, `The organizer added ${f.plural(unseen, 'time')} since you last answered. Take a look and save again.`) : null,
         zone,
-        h('div', { class: 'brush-row' },
+        // Read-only (closed, or locked after sending): no marking tools.
+        open ? h('div', { class: 'brush-row' },
           h('div', { class: 'brushes', role: 'radiogroup', 'aria-label': 'Mark times as' },
             h('span', { class: 'brushes-label', 'aria-hidden': 'true' }, 'Mark as'),
             BRUSHES.map(brushChip)),
-          h('div', { class: 'edit-tools' }, undoBtn, clearBtn)),
-        h('p', { class: 'brush-help muted small' }, '“Preferred” tells the organizer which times suit you best. “If needed” means you could make it, but would rather not.'),
-        othersToggle,
+          h('div', { class: 'edit-tools' }, undoBtn, clearBtn)) : null,
+        open ? h('p', { class: 'brush-help muted small' }, '“Preferred” tells the organizer which times suit you best. “If needed” means you could make it, but would rather not.') : null,
+        open ? othersToggle : null,
         grid.el),
       emptyHint,
       h('div', { class: 'field note-field' },
         h('label', { for: 'g-note', class: 'field-label' }, 'Note ', h('span', { class: 'optional' }, '(optional)')),
         noteInput,
         h('p', { class: 'field-hint', id: 'g-note-hint' }, 'Anything the organizer should know. Shown next to your name.')),
-      pwSection,
+      locked() ? null : pwSection,
+      !mine && poll.allowEdits === false ? h('p', { class: 'notice small' }, 'Check your times before sending: the organizer doesn’t allow changes afterwards.') : null,
       formError,
       h('div', { class: 'action-bar' },
         h('div', { class: 'action-status' }, counter),
         h('div', { class: 'action-buttons' },
           mine ? h('button', { type: 'button', class: 'btn ghost danger-text', onclick: deleteMine }, 'Delete my response') : null,
-          submit)),
+          locked() ? null : submit)),
     );
 
     form.addEventListener('submit', async (e) => {
@@ -515,8 +522,21 @@ export async function renderGuest(main, pollId) {
     });
 
     panel.append(form);
+    if (mine && !viaPassword()) panel.append(editLinkBox());
     if (mine) panel.append(emailControl({ poll, role: 'guest', responseId: mine.id, token, linkKey: viaPassword() ? null : token, compact: true }));
     return panel;
+  }
+
+  /** The guest's private link, to copy any time after sending. */
+  function editLinkBox() {
+    const link = `${location.origin}/p/${pollId}#r=${token}`;
+    return h('div', { class: 'edit-link-box' },
+      h('p', { class: 'muted small' }, icon('link'),
+        h('span', null, locked()
+          ? 'Your private link opens your answer on any device, so you can see or delete it. Don’t share it.'
+          : 'Your private edit link opens your answer on any device, so you can change or delete it. Don’t share it.')),
+      h('button', { type: 'button', class: 'link-btn', dataset: { action: 'copy-edit-link' }, onclick: () => copyText(link, 'Copied your private edit link') },
+        'Copy my edit link'));
   }
 
   function savedNotice() {
@@ -524,7 +544,9 @@ export async function renderGuest(main, pollId) {
     const input = h('input', { class: 'input mono-link', readonly: true, value: link, 'aria-label': 'Your private edit link', onfocus: (e) => e.target.select() });
     return h('div', { class: 'saved-notice callout success', tabindex: '-1' },
       h('p', { class: 'callout-title' }, icon('check'), `Thanks, ${mine.name}. Your times are in.`),
-      h('p', null, mine.hasPassword
+      h('p', null, poll.allowEdits === false
+        ? 'The organizer doesn’t allow changes after sending, but you can delete your response any time: from this browser, or on another device with your private link. Don’t share the link.'
+        : mine.hasPassword
         ? 'You can change or delete your response from this browser any time. On another device, open this poll and sign in with your name and password, or use your private edit link. Don’t share the link: anyone with it can change your answer.'
         : 'You can change or delete your response from this browser any time. To do it from another device, use your private edit link, or add a password below. Don’t share the link: anyone with it can change your answer.'),
       h('div', { class: 'link-row' }, input,
