@@ -2,6 +2,12 @@ import { expect } from '@playwright/test';
 
 export const isPhone = (testInfo) => testInfo.project.name === 'mobile';
 
+/** "Best times" is a collapsible section below the grid; open it if closed. */
+export async function openBestTimes(page) {
+  const details = page.locator('details.best');
+  if (!(await details.evaluate((d) => d.open))) await details.locator('summary').click();
+}
+
 /** A date N days from today in New York, as YYYY-MM-DD. */
 export function daysFromNow(n) {
   const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(new Date());

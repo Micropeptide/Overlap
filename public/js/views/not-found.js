@@ -2,7 +2,7 @@ import { h, clear } from '../lib/dom.js';
 
 export function renderNotFound(main, {
   title = 'We couldn’t find that page',
-  message = 'The link may be mistyped, or the poll may have been deleted or expired.',
+  message = 'The link may be mistyped, or the poll may have been deleted.',
 } = {}) {
   document.title = `${title} · Overlap`;
   clear(main).append(h('div', { class: 'page narrow message-page' },

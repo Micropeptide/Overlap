@@ -1,5 +1,7 @@
-// Month calendar for choosing several dates. Click or drag across days; on a
-// keyboard, arrows move, Space or Enter toggles, Page Up/Down change month.
+// Calendar for choosing several dates: one month on narrow screens, two side
+// by side on wide ones, with month and year menus for jumping far ahead.
+// Click or drag across days, Shift+click for a range; on a keyboard, arrows
+// move, Space or Enter toggles, Page Up/Down change month.
 
 import { h, clear } from '../lib/dom.js';
 import { addDays, parseDateKey, toDateKey, weekdayOf } from '/shared/time.js';
@@ -46,38 +48,43 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
     view = { year: d.getUTCFullYear(), month: d.getUTCMonth() + 1 };
   }
 
-  function render({ keepFocus = false } = {}) {
-    clear(root);
-    const first = toDateKey(view.year, view.month, 1);
+  const WIDE = window.matchMedia('(min-width: 860px)');
+  const monthName = new Intl.DateTimeFormat(undefined, { month: 'long', timeZone: 'UTC' });
+  const todayParts = parseDateKey(today);
+  const monthsShown = () => (WIDE.matches ? 2 : 1);
+  const monthOf = (offset) => {
+    const d = new Date(Date.UTC(view.year, view.month - 1 + offset, 1));
+    return { year: d.getUTCFullYear(), month: d.getUTCMonth() + 1 };
+  };
+  const visible = (dk) => {
+    const { year, month } = parseDateKey(dk);
+    for (let i = 0; i < monthsShown(); i++) {
+      const m = monthOf(i);
+      if (m.year === year && m.month === month) return true;
+    }
+    return false;
+  };
+
+  function monthTable({ year, month }, i) {
+    const first = toDateKey(year, month, 1);
     const lead = (weekdayOf(first) - weekStart + 7) % 7;
     const gridStart = addDays(first, -lead);
-    const monthLabel = monthFmt.format(Date.UTC(view.year, view.month - 1, 1));
-    const canGoBack = toDateKey(view.year, view.month, 1) > today.slice(0, 8) + '01' || [...chosen].some((d) => d < first);
-
-    const head = h('div', { class: 'dp-head' },
-      h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Previous month', disabled: !canGoBack, onclick: () => { shiftMonth(-1); render(); } }, '‹'),
-      h('p', { class: 'dp-month', 'aria-live': 'polite' }, monthLabel),
-      h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Next month', onclick: () => { shiftMonth(1); render(); } }, '›'),
-    );
-
-    const table = h('table', { class: 'dp-table', role: 'grid', 'aria-labelledby': labelledBy, 'aria-multiselectable': 'true' });
-    const thead = h('thead', null, h('tr', null, Array.from({ length: 7 }, (_, i) => {
-      const dk = addDays(gridStart, i);
-      const { year, month, day } = parseDateKey(dk);
-      const ms = Date.UTC(year, month - 1, day);
+    const table = h('table', { class: 'dp-table', role: 'grid', 'aria-label': monthFmt.format(Date.UTC(year, month - 1, 1)), 'aria-multiselectable': 'true' });
+    table.append(h('thead', null, h('tr', null, Array.from({ length: 7 }, (_, d) => {
+      const { year: y, month: m, day } = parseDateKey(addDays(gridStart, d));
+      const ms = Date.UTC(y, m - 1, day);
       return h('th', { scope: 'col', abbr: wdLong.format(ms) }, h('span', { 'aria-hidden': 'true' }, wdFmt.format(ms)), h('span', { class: 'visually-hidden' }, wdLong.format(ms)));
-    })));
+    }))));
     const tbody = h('tbody');
-    const inMonth = (dk) => parseDateKey(dk).month === view.month;
-    if (!inMonth(focusKey)) focusKey = [...chosen].sort().find(inMonth) || (inMonth(today) ? today : first);
-
     for (let w = 0; w < 6; w++) {
       const tr = h('tr');
+      let any = false;
       for (let d = 0; d < 7; d++) {
         const dk = addDays(gridStart, w * 7 + d);
-        if (!inMonth(dk)) { tr.append(h('td', { class: 'dp-out', role: 'gridcell' })); continue; }
-        const { year, month, day } = parseDateKey(dk);
-        const btn = h('button', {
+        if (parseDateKey(dk).month !== month) { tr.append(h('td', { class: 'dp-out', role: 'gridcell' })); continue; }
+        any = true;
+        const { day } = parseDateKey(dk);
+        tr.append(h('td', { role: 'gridcell' }, h('button', {
           type: 'button',
           class: `dp-day${chosen.has(dk) ? ' on' : ''}${dk === today ? ' today' : ''}`,
           'aria-pressed': chosen.has(dk) ? 'true' : 'false',
@@ -85,16 +92,53 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
           disabled: disabled(dk),
           tabindex: dk === focusKey ? '0' : '-1',
           dataset: { date: dk },
-        }, String(day));
-        tr.append(h('td', { role: 'gridcell' }, btn));
+        }, String(day))));
       }
-      if (w >= 4 && ![...tr.children].some((td) => td.firstChild)) continue;
-      tbody.append(tr);
+      if (any) tbody.append(tr);
     }
-    table.append(thead, tbody);
-    root.append(head, table);
+    table.append(tbody);
+    return h('div', { class: 'dp-month-block' },
+      i > 0 ? h('p', { class: 'dp-month-label', 'aria-hidden': 'true' }, monthFmt.format(Date.UTC(year, month - 1, 1))) : null,
+      table);
+  }
+
+  function render({ keepFocus = false } = {}) {
+    clear(root);
+    const canGoBack = `${String(view.year).padStart(4, '0')}-${String(view.month).padStart(2, '0')}` > today.slice(0, 7)
+      || [...chosen].some((d) => d < toDateKey(view.year, view.month, 1));
+    if (!visible(focusKey)) {
+      const m = monthOf(0);
+      focusKey = [...chosen].sort().find(visible) || (visible(today) ? today : toDateKey(m.year, m.month, 1));
+    }
+
+    // Month and year can be picked directly, so far-off dates are two clicks away.
+    const monthSel = h('select', { class: 'dp-select', 'aria-label': 'Month' },
+      Array.from({ length: 12 }, (_, i) => h('option', { value: String(i + 1), selected: i + 1 === view.month }, monthName.format(Date.UTC(2024, i, 1)))));
+    const years = [];
+    for (let y = todayParts.year - 1; y <= todayParts.year + 3; y++) years.push(y);
+    if (!years.includes(view.year)) years.push(view.year);
+    const yearSel = h('select', { class: 'dp-select', 'aria-label': 'Year' },
+      years.sort().map((y) => h('option', { value: String(y), selected: y === view.year }, String(y))));
+    const jump = () => { view = { year: Number(yearSel.value), month: Number(monthSel.value) }; render(); };
+    monthSel.addEventListener('change', jump);
+    yearSel.addEventListener('change', jump);
+
+    root.append(h('div', { class: 'dp-head' },
+      h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Previous month', disabled: !canGoBack, onclick: () => { shiftMonth(-1); render(); } }, '‹'),
+      h('div', { class: 'dp-jump', 'aria-live': 'polite' }, monthSel, yearSel),
+      h('button', { type: 'button', class: 'dp-today', onclick: () => {
+        view = { year: todayParts.year, month: todayParts.month };
+        focusKey = today;
+        render({ keepFocus: true });
+      } }, 'Today'),
+      h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Next month', onclick: () => { shiftMonth(1); render(); } }, '›'),
+    ));
+    const months = h('div', { class: `dp-months${monthsShown() > 1 ? ' two' : ''}` });
+    for (let i = 0; i < monthsShown(); i++) months.append(monthTable(monthOf(i), i));
+    root.append(months);
     if (keepFocus) root.querySelector(`[data-date="${focusKey}"]`)?.focus();
   }
+  WIDE.addEventListener('change', () => render());
 
   root.addEventListener('pointerdown', (e) => {
     const btn = e.target.closest('.dp-day');
@@ -162,8 +206,11 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
       next = toDateKey(view.year, view.month, Math.min(day, last));
     } else return;
     e.preventDefault();
-    const { year, month } = parseDateKey(next);
-    if (year !== view.year || month !== view.month) view = { year, month };
+    if (!visible(next)) {
+      const { year, month } = parseDateKey(next);
+      // Moving past the last visible month scrolls by one; before the first, jumps to it.
+      view = next > focusKey ? (() => { const d = new Date(Date.UTC(year, month - monthsShown(), 1)); return { year: d.getUTCFullYear(), month: d.getUTCMonth() + 1 }; })() : { year, month };
+    }
     focusKey = next;
     render({ keepFocus: true });
   });

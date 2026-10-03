@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { createPoll, respond, isPhone, markFirstTimes, expectNoHorizontalScroll } from './helpers.js';
+import { createPoll, respond, isPhone, markFirstTimes, expectNoHorizontalScroll, openBestTimes } from './helpers.js';
 
 test('guest marks times, submits, then edits their own response', async ({ page, request }, info) => {
   const phone = isPhone(info);
@@ -50,6 +50,7 @@ test('guest marks times, submits, then edits their own response', async ({ page,
 
   // Group results are visible by default.
   await page.getByRole('tab', { name: /Group results/ }).click();
+  await openBestTimes(page);
   await expect(page.getByText('Works for the one response so far')).toBeVisible();
 });
 

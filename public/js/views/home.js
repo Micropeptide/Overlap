@@ -57,21 +57,38 @@ export async function renderHome(main) {
     },
   });
 
-  const saved = Object.entries(storage.managed()).sort((a, b) => (b[1].savedAt || 0) - (a[1].savedAt || 0));
-  const savedList = saved.length ? h('section', { class: 'saved', 'aria-labelledby': 'saved-title' },
-    h('h2', { id: 'saved-title', class: 'section-title small' }, 'Polls you manage on this device'),
-    h('ul', { class: 'saved-list', role: 'list' }, saved.slice(0, 12).map(([id, entry]) => {
-      const li = h('li', null,
-        h('a', { href: `/m/${id}#k=${encodeURIComponent(entry.token)}` }, entry.title || 'Untitled poll'),
-        h('button', {
-          type: 'button',
-          class: 'link-btn muted',
-          'aria-label': `Forget ${entry.title || 'this poll'} on this device`,
-          onclick: () => { storage.forgetManaged(id); li.remove(); },
-        }, 'Forget'));
-      return li;
-    })),
-    h('p', { class: 'muted small' }, 'Forgetting only removes the link from this browser. The poll itself stays until you delete it or it expires.'),
+  // Polls this browser knows about: ones you organize and ones you answered.
+  const byRecent = (a, b) => (b[1].savedAt || 0) - (a[1].savedAt || 0);
+  const managed = Object.entries(storage.managed()).sort(byRecent).slice(0, 12);
+  const answered = Object.entries(storage.answered()).filter(([id]) => !storage.getManaged(id)).sort(byRecent).slice(0, 12);
+  const STATUS = { open: 'Open', closed: 'Closed', finalized: 'Final time chosen' };
+  const pollItem = (id, entry, kind) => {
+    const status = h('span', { class: 'saved-status' }, '…');
+    const href = kind === 'managed' ? `/m/${id}#k=${encodeURIComponent(entry.token)}` : `/p/${id}`;
+    const li = h('li', { class: 'saved-item' },
+      h('a', { class: 'saved-title', href }, entry.title || 'Untitled poll'),
+      kind === 'answered' && entry.name ? h('span', { class: 'saved-meta' }, `You answered as ${entry.name}`) : null,
+      status,
+      h('button', {
+        type: 'button', class: 'link-btn muted saved-forget',
+        'aria-label': `Forget ${entry.title || 'this poll'} on this device`,
+        onclick: () => { (kind === 'managed' ? storage.forgetManaged : storage.forgetAnswer).call(storage, id); li.remove(); },
+      }, 'Forget'));
+    api('GET', `/api/polls/${id}`).then(({ poll }) => {
+      status.textContent = STATUS[poll.status] || '';
+      status.dataset.status = poll.status;
+      li.querySelector('.saved-title').textContent = poll.title;
+    }).catch(() => { status.textContent = 'Deleted'; status.dataset.status = 'gone'; });
+    return li;
+  };
+  const list = (title, items, kind) => items.length ? h('div', { class: 'saved-group' },
+    h('h3', { class: 'saved-heading' }, title),
+    h('ul', { class: 'saved-list', role: 'list' }, items.map(([id, entry]) => pollItem(id, entry, kind)))) : null;
+  const savedList = managed.length || answered.length ? h('section', { class: 'saved', 'aria-labelledby': 'saved-title' },
+    h('h2', { id: 'saved-title', class: 'section-title small' }, 'Your polls on this device'),
+    list('Organizing', managed, 'managed'),
+    list('Answered', answered, 'answered'),
+    h('p', { class: 'muted small' }, 'These are remembered by this browser only. Forgetting one just removes it from this list.'),
   ) : null;
 
   main.append(h('div', { class: 'page home' },

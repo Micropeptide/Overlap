@@ -1,23 +1,30 @@
 // Ranked list of the best times: first every window everyone can make, then
-// the closest partial matches.
+// the closest partial matches. Shown as a collapsible section below the grid;
+// its header always says the top answer, and the open/closed choice is remembered.
 
 import { h } from '../lib/dom.js';
 import * as f from '../lib/format.js';
 import { rankWindows } from '/shared/overlap.js';
+import { storage } from '../lib/storage.js';
 
 export function bestTimes({ poll, timeZone, onChoose, emptyAction, onHighlight = () => {} }) {
   const weekly = poll.kind === 'weekly';
   const responses = poll.responses || [];
-  const root = h('section', { class: 'best', 'aria-labelledby': 'best-title' });
-  root.append(h('h2', { id: 'best-title', class: 'section-title' }, 'Best times'));
+  const summaryLine = h('span', { class: 'best-summary' });
+  const root = h('div', { class: 'best-body' });
+  const details = h('details', { class: 'best', open: storage.pref('showBest', false) ? true : null },
+    h('summary', null, h('span', { class: 'best-heading' }, 'Best times'), summaryLine),
+    root);
+  details.addEventListener('toggle', () => storage.setPref('showBest', details.open));
 
   if (!responses.length) {
+    summaryLine.textContent = 'Appear here as people answer';
     root.append(h('div', { class: 'empty-state' },
       h('p', { class: 'empty-title' }, 'No responses yet'),
       h('p', null, 'Share the guest link. The best times will appear here as people answer.'),
       emptyAction || null,
     ));
-    return root;
+    return details;
   }
 
   const ranked = rankWindows({
@@ -73,7 +80,7 @@ export function bestTimes({ poll, timeZone, onChoose, emptyAction, onHighlight =
       h('h3', { class: 'best-sub' }, ranked.total === 1 ? 'Works for the one response so far' : `Everyone can make these (${ranked.total} people)`),
       h('ol', { class: 'best-list' }, ranked.everyone.slice(0, 6).map((w) => item(w, true))),
     );
-    if (ranked.everyone.length > 6) root.append(h('p', { class: 'muted small' }, `${ranked.everyone.length - 6} more times work for everyone. See the grid below.`));
+    if (ranked.everyone.length > 6) root.append(h('p', { class: 'muted small' }, `${ranked.everyone.length - 6} more times work for everyone. See the grid above.`));
   } else {
     root.append(h('p', { class: 'no-everyone' }, 'No time works for everyone yet. These come closest.'));
   }
@@ -86,5 +93,8 @@ export function bestTimes({ poll, timeZone, onChoose, emptyAction, onHighlight =
   } else if (!ranked.everyone.length) {
     root.append(h('p', { class: 'muted' }, 'Nobody has marked any times yet.'));
   }
-  return root;
+  const top = ranked.everyone[0] || ranked.partial[0];
+  summaryLine.textContent = !top ? 'No times yet'
+    : `${ranked.everyone.length ? 'Works for everyone' : `Closest: ${top.count} of ${ranked.total}`}: ${weekly ? f.finalDay(top.start, timeZone, true) : f.dayOf(top.start, timeZone)}, ${f.timeRange(top.start, top.end, timeZone)}`;
+  return details;
 }

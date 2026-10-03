@@ -34,7 +34,7 @@ export async function renderManage(main, pollId) {
       if (err.status === 404 || storage.getManaged(pollId)?.token === token) storage.forgetManaged(pollId);
       return renderNotFound(main, err.status === 403
         ? { title: 'This private link no longer works', message: 'It may have been replaced with a new one. Use the newest private link for this poll.' }
-        : { title: 'This poll isn’t here', message: 'It may have been deleted or expired.' });
+        : { title: 'This poll isn’t here', message: 'It may have been deleted.' });
     }
     throw err;
   }
@@ -143,8 +143,9 @@ export async function renderManage(main, pollId) {
         }
       },
     });
-    page.append(h('div', { class: 'panel' },
-      zone,
+    page.append(h('div', { class: 'panel' }, zone, results,
+      h('p', { class: 'add-own' }, h('a', { href: `/p/${pollId}`, target: '_blank', rel: 'noopener' }, 'Add your own availability'), ' (opens the guest page)')));
+    page.append(h('div', { class: 'panel best-panel' },
       bestTimes({
         poll,
         timeZone: viewZone,
@@ -153,8 +154,7 @@ export async function renderManage(main, pollId) {
         emptyAction: h('button', { type: 'button', class: 'btn primary', onclick: () => copyText(guestUrl(), 'Copied the guest link') }, icon('copy'), 'Copy guest link'),
       }),
     ));
-    page.append(h('div', { class: 'panel' }, results,
-      h('p', { class: 'add-own' }, h('a', { href: `/p/${pollId}`, target: '_blank', rel: 'noopener' }, 'Add your own availability'), ' (opens the guest page)')));
+
 
     page.append(settingsSection());
     main.append(page);
