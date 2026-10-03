@@ -1,7 +1,7 @@
 // The poll form, used both to create a poll and to edit one. Only the name,
 // dates and times are up front; everything else sits under "More options".
 
-import { h, icon, announce, passwordField } from '../lib/dom.js';
+import { h, icon, announce, passwordField, confirmDialog } from '../lib/dom.js';
 import * as f from '../lib/format.js';
 import { todayIn, addDays, weekdayOf, WEEK_ORDER } from '/shared/time.js';
 import { passwordProblem } from '/shared/password.js';
@@ -111,7 +111,7 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
       onchange: () => { v.kind = value; showKind(); clearError('dates'); clearError('weekdays'); },
     }),
     h('span', null, label));
-  const kindToggle = editing ? null : h('div', { class: 'segmented', role: 'radiogroup', 'aria-label': 'Kind of poll' },
+  const kindToggle = h('div', { class: 'segmented', role: 'radiogroup', 'aria-label': 'Kind of poll' },
     kindRadio('dates', 'Specific dates'),
     kindRadio('weekly', 'Days of the week'));
 
@@ -204,7 +204,8 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
 
   const allowEdits = h('input', { type: 'checkbox', checked: v.allowEdits, 'aria-describedby': 'edits-hint', onchange: (e) => { v.allowEdits = e.target.checked; } });
 
-  const more = h('details', { class: 'more', open: editing && (v.durationMinutes || v.resultsVisibility !== 'everyone' || !v.allowEdits || v.description || v.location || v.closesOn) ? true : null },
+  // When editing, everything is in view: nothing to hunt for.
+  const more = h('details', { class: 'more', open: editing ? true : null },
     h('summary', null, 'More options'),
     h('div', { class: 'more-body' },
       h('div', { class: 'field' },
@@ -314,7 +315,15 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
       more.open = true;
       return showError(`Organizer password: ${passwordProblem(password)}`, 'password');
     }
-    if (editing) delete value.kind; // a poll can't switch kinds
+    if (editing && value.kind === initial.kind) delete value.kind; // unchanged
+    if (editing && value.kind && initial.responseCount) {
+      const ok = await confirmDialog({
+        title: value.kind === 'weekly' ? 'Switch to days of the week?' : 'Switch to specific dates?',
+        message: `${initial.responseCount === 1 ? 'One person has' : `${initial.responseCount} people have`} already answered. Their marked times won’t match the new times, so they’ll need to answer again. Any final time is cleared.`,
+        confirm: 'Switch',
+      });
+      if (!ok) return;
+    }
     submit.disabled = true;
     submit.dataset.busy = 'true';
     try {

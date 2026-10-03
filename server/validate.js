@@ -81,29 +81,32 @@ export function validatePollFields(body, current = null) {
     out.timezone = tz;
   }
 
-  const kind = current ? current.kind : (body.kind ?? 'dates');
+  // An existing poll may switch between dates and days of the week; it then
+  // needs the new dates or weekdays, as a new poll would.
+  const switching = partial && has('kind') && body.kind !== current.kind;
+  const kind = switching ? body.kind : current ? current.kind : (body.kind ?? 'dates');
   if (!['dates', 'weekly'].includes(kind)) throw bad('Choose specific dates or days of the week.', 'kind');
-  if (!partial) out.kind = kind;
-  else if (has('kind') && body.kind !== current.kind) throw bad('A poll can’t switch between dates and days of the week. Create a new poll instead.', 'kind');
+  if (!partial || switching) out.kind = kind;
+  const fresh = !partial || switching; // dates/weekdays must be sent
 
   if (kind === 'weekly') {
     if (has('dates')) throw bad('This is a weekly poll. Send "weekdays" instead of "dates".', 'weekdays');
     const zoneChanged = partial && out.timezone && out.timezone !== current.timezone;
-    if (!partial || has('weekdays') || zoneChanged) {
-      const days = has('weekdays') || !partial ? body.weekdays : current.weekdays;
+    if (fresh || has('weekdays') || zoneChanged) {
+      const days = has('weekdays') || fresh ? body.weekdays : current.weekdays;
       if (!Array.isArray(days) || !days.length) throw bad('Pick at least one day of the week.', 'weekdays');
       if (!days.every((d) => Number.isInteger(d) && d >= 0 && d <= 6)) throw bad('Days of the week must be numbers from 0 (Sunday) to 6 (Saturday).', 'weekdays');
       const tz = out.timezone || current?.timezone;
       // Keep an existing poll on its reference week so existing answers keep their
       // meaning, unless the zone changed: then pick a week with no clock change there.
-      const monday = !current ? referenceMonday(tz, todayIn(tz))
+      const monday = !current || switching ? referenceMonday(tz, todayIn(tz))
         : zoneChanged ? referenceMonday(tz, mondayOf(current.dates[0])) : mondayOf(current.dates[0]);
       out.dates = weeklyDates(monday, [...new Set(days)]);
     }
   } else if (has('weekdays')) {
     throw bad('This poll uses specific dates. Send "dates" instead of "weekdays".', 'dates');
   }
-  if (kind === 'dates' && (!partial || has('dates'))) {
+  if (kind === 'dates' && (fresh || has('dates'))) {
     if (!Array.isArray(body.dates) || body.dates.length === 0) throw bad('Pick at least one date.', 'dates');
     const unique = [...new Set(body.dates)];
     if (unique.length > LIMITS.dates) throw bad(`Pick ${LIMITS.dates} dates or fewer.`, 'dates');

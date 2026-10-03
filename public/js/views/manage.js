@@ -92,9 +92,14 @@ export async function renderManage(main, pollId) {
       h('p', { class: 'role-tag' }, icon('lock'), 'Organizer view: only people with your private link see this page'),
       h('div', { class: 'title-row' },
         h('h1', { class: 'page-title poll-title', tabindex: '-1' }, poll.title),
-        h('span', { class: `status-chip status-${poll.status}`, tabindex: '-1' }, { open: 'Open for responses', closed: 'Closed', finalized: 'Final time chosen' }[poll.status])),
+        h('span', { class: `status-chip status-${poll.status}`, tabindex: '-1' }, { open: 'Open for responses', closed: 'Closed', finalized: 'Final time chosen' }[poll.status]),
+        editing ? null : h('button', { type: 'button', class: 'btn small secondary edit-top', dataset: { action: 'edit-top' }, onclick: () => startEditing() }, icon('edit'), 'Edit poll')),
       poll.description ? h('p', { class: 'poll-desc' }, linkify(poll.description)) : null,
       locationLine(poll),
+      // Quick ways to add what's missing; everything else is under "Edit poll".
+      !editing && (!poll.description || !poll.location) ? h('p', { class: 'quick-add small' },
+        poll.description ? null : h('button', { type: 'button', class: 'link-btn', onclick: () => startEditing('f-desc') }, '+ Add a note for guests'),
+        poll.location ? null : h('button', { type: 'button', class: 'link-btn', onclick: () => startEditing('f-location') }, '+ Add a place or call link')) : null,
       pollFacts(poll, { audience: 'organizer' }),
     ));
 
@@ -325,6 +330,15 @@ export async function renderManage(main, pollId) {
     if (ok) main.querySelector('.final-card')?.scrollIntoView({ block: 'start' });
   }
 
+  /** Open the edit form, optionally focusing one field (e.g. the note for guests). */
+  let focusField = null;
+  function startEditing(fieldId = null) {
+    focusField = fieldId;
+    editing = true;
+    render();
+  }
+  const afterEditFocus = () => main.querySelector('[data-action="edit-top"]')?.focus({ preventScroll: true });
+
   function editPanel() {
     const form = createPollForm({
       initial: poll,
@@ -336,19 +350,24 @@ export async function renderManage(main, pollId) {
         storage.saveManaged(pollId, { token, title: poll.title });
         editing = false;
         render();
-        main.querySelector('[data-action="edit"]')?.focus();
+        afterEditFocus();
+        window.scrollTo({ top: 0 });
         announce('Saved your changes');
       },
     });
     const panel = h('section', { class: 'panel edit-panel', 'aria-labelledby': 'edit-title' },
       h('div', { class: 'edit-head' },
         h('h2', { id: 'edit-title', class: 'section-title' }, 'Edit poll'),
-        h('button', { type: 'button', class: 'btn ghost', onclick: () => { editing = false; render(); main.querySelector('[data-action="edit"]')?.focus(); } }, 'Cancel')),
+        h('button', { type: 'button', class: 'btn ghost', onclick: () => { editing = false; render(); afterEditFocus(); } }, 'Cancel')),
       poll.responseCount
         ? h('p', { class: 'notice small' }, 'People have already responded. If you add times, they’ll show as “hasn’t seen this time” for those people until they answer again. Times you remove are dropped from the results.')
         : null,
       form.el);
-    queueMicrotask(() => form.focus());
+    queueMicrotask(() => {
+      const field = focusField && document.getElementById(focusField);
+      focusField = null;
+      if (field) { field.focus({ preventScroll: true }); field.scrollIntoView({ block: 'center' }); } else form.focus();
+    });
     return panel;
   }
 
@@ -370,8 +389,8 @@ export async function renderManage(main, pollId) {
       h('div', { class: 'settings-row' },
         h('div', null,
           h('p', { class: 'setting-name' }, 'Details and times'),
-          h('p', { class: 'muted small' }, 'Change the name, dates, times, meeting length or who can see responses.')),
-        h('button', { type: 'button', class: 'btn secondary', dataset: { action: 'edit' }, onclick: () => { editing = true; render(); } }, icon('edit'), 'Edit poll')),
+          h('p', { class: 'muted small' }, 'Change anything: the name, note for guests, place, dates or days of the week, times, meeting length, closing date, and who can see or change responses.')),
+        h('button', { type: 'button', class: 'btn secondary', dataset: { action: 'edit' }, onclick: () => startEditing() }, icon('edit'), 'Edit poll')),
       h('div', { class: 'settings-row' },
         h('div', null,
           h('p', { class: 'setting-name' }, isOpen ? 'Stop taking responses' : 'Take responses again'),

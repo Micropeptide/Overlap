@@ -24,8 +24,7 @@ test('when the organizer turns off changes, a sent answer is read-only but can b
 test('the organizer can turn changes off from the edit form', async ({ page, request }) => {
   const { poll, managePath } = await createPoll(request);
   await page.goto(managePath);
-  await page.getByRole('button', { name: 'Edit poll' }).click();
-  await page.getByText('More options').click();
+  await page.getByRole('button', { name: 'Edit poll' }).first().click();
   await page.getByLabel('Guests can change their answer after sending it').uncheck();
   await page.getByRole('button', { name: 'Save changes' }).click();
   await expect(page.locator('.facts')).toContainText('Guests can’t change answers after sending');

@@ -472,3 +472,30 @@ test('organizers can stop guests changing answers; guests can still delete their
   // Default stays on.
   assert.equal((await newPoll()).poll.allowEdits, true);
 });
+
+test('an organizer can switch a poll between dates and days of the week', async () => {
+  const { poll, adminToken } = await newPoll();
+  const sent = await api('POST', `/api/polls/${poll.id}/responses`, { body: { name: 'Ana', available: [poll.slots[0]], ifNeeded: [] } });
+  await api('PATCH', `/api/polls/${poll.id}`, { token: adminToken, body: { final: { start: poll.slots[0], end: poll.slots[0] + 3600e3 } } });
+
+  // Weekdays are needed to switch to weekly.
+  assert.equal((await api('PATCH', `/api/polls/${poll.id}`, { token: adminToken, body: { kind: 'weekly' } })).json.field, 'weekdays');
+  const weekly = await api('PATCH', `/api/polls/${poll.id}`, { token: adminToken, body: { kind: 'weekly', weekdays: [2, 4], status: 'open' } });
+  assert.equal(weekly.status, 200, weekly.text);
+  assert.equal(weekly.json.poll.kind, 'weekly');
+  assert.deepEqual(weekly.json.poll.weekdays, [2, 4]);
+  assert.equal(weekly.json.poll.final, null);
+  // Ana answered the old times, so none of the new ones count as answered by her.
+  const ana = weekly.json.poll.responses.find((r) => r.name === 'Ana');
+  assert.deepEqual(ana.answered, []);
+  assert.equal(weekly.json.poll.responses.length, 1);
+
+  // And back again.
+  const back = await api('PATCH', `/api/polls/${poll.id}`, { token: adminToken, body: { kind: 'dates', dates: ['2026-11-02'] } });
+  assert.equal(back.status, 200, back.text);
+  assert.equal(back.json.poll.kind, 'dates');
+  assert.deepEqual(back.json.poll.dates, ['2026-11-02']);
+  assert.equal(back.json.poll.weekdays, undefined);
+  // Ana can answer again.
+  assert.equal((await api('PUT', `/api/polls/${poll.id}/responses/${sent.json.response.id}`, { token: sent.json.editToken, body: { name: 'Ana', available: [back.json.poll.slots[0]], ifNeeded: [] } })).status, 200);
+});
