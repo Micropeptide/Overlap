@@ -258,6 +258,9 @@ textarea.input { resize: vertical; min-height: 5rem; }
 .field > label, .field > legend, .field-label {
   display: block; font-weight: 700; margin-bottom: 0.45rem; padding: 0;
 }
+/* Radio and checkbox rows inside a field keep their own layout (box beside its text). */
+.field > label.radio { display: flex; font-weight: inherit; margin-bottom: 0; padding: 0.55rem 0; }
+.field > label.check { display: inline-flex; font-weight: inherit; margin-bottom: 0; }
 .field-hint { color: var(--ink-2); font-size: var(--step--1); margin: 0.45rem 0 0; }
 .field-error, .form-error {
   color: var(--danger); font-weight: 600; font-size: var(--step--1); margin: 0.5rem 0 0;
