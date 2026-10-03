@@ -311,8 +311,9 @@ Hyperlegible Next) are under the SIL Open Font License; see `public/fonts/OFL-*.
 - **Overnight ranges** (e.g. 10 pm to 2 am) need to be set up as two dates.
 - **Fall-back repeated hour:** on the night clocks go back in the organizer's zone,
   the repeated hour is offered once.
-- **Phones:** marking is tap-by-tap, with "Whole day", "Clear" and "Copy to every
-  day" shortcuts. There's no drag-to-select on touch, so that scrolling stays reliable.
+- **Phones:** there's no drag-to-select on touch, so that scrolling stays reliable.
+  Instead, "Select a range" fills everything between two taps, alongside "Whole
+  day", "Clear" and "Copy to every day".
 - **Calendar links** for Google and Outlook.com are ordinary links. Clicking one
   sends the event's details to that company. The `.ics` download doesn't.
 - **Rate limits are per process** and reset on restart. Run a single instance.

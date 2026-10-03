@@ -12,6 +12,8 @@ import { layoutSlots } from '/shared/time.js';
 import { tallySlots } from '/shared/overlap.js';
 
 const PHONE = window.matchMedia('(max-width: 640px)');
+// Phone "Select a range" mode, kept for the page's lifetime so re-renders don't drop it.
+let phoneRange = false;
 
 /** Marks a guest can give a time. "erase" is a brush, not a state. */
 export const MARKS = {
@@ -62,6 +64,7 @@ export function createGrid(options) {
   let colHeads = [];
   let focus = { r: 0, c: 0 };
   let mobileDay = s.day;
+  let rangeStart = null; // phone range mode: the first time tapped
   let expandedSlot = null;
   let highlighted = new Set();
   let lastInspected;
@@ -540,11 +543,17 @@ export function createGrid(options) {
       }),
     );
 
+    if (rangeStart != null && !daySlots.some((c) => c.slot === rangeStart)) rangeStart = null; // another day
     const title = h('h3', { class: 'day-title', tabindex: '-1' }, f.dayName(mobileDay, s.weekly, 'long'));
-    const list = h('ul', { class: `slot-list slot-list-${s.mode}`, role: 'list' });
+    const list = h('ul', { class: `slot-list slot-list-${s.mode}${s.mode === 'edit' && phoneRange ? ' range-mode' : ''}`, role: 'list' });
     for (const cell of daySlots) list.append(s.mode === 'edit' ? phoneEditItem(cell.slot) : phoneResultItem(cell.slot));
 
-    const parts = [strip, h('div', { class: 'day-head' }, title, s.mode === 'edit' ? dayTools(daySlots) : null), list];
+    const rangeHint = s.mode === 'edit' && phoneRange && canEdit()
+      ? h('p', { class: 'range-hint', role: 'status' }, rangeStart == null
+        ? 'Range: tap the first time, then the last. Everything between fills in.'
+        : `From ${f.time(rangeStart, s.timeZone)}: now tap the last time.`)
+      : null;
+    const parts = [strip, h('div', { class: 'day-head' }, title, s.mode === 'edit' ? dayTools(daySlots) : null), rangeHint, list];
     const idx = cols.indexOf(mobileDay);
     const go = (dk) => { mobileDay = dk; s.onDayChange(dk); expandedSlot = null; render(); scrollToTop(); root.querySelector('.day-title')?.focus({ preventScroll: true }); };
     parts.push(h('div', { class: 'day-nav' },
@@ -595,7 +604,19 @@ export function createGrid(options) {
       type: 'button', class: 'btn small ghost', dataset: { tool: id }, disabled: !canEdit(),
       onclick: () => { run(); root.querySelector(`[data-tool="${id}"]`)?.focus(); },
     }, label);
+    const range = h('button', {
+      type: 'button', class: `btn small ${phoneRange ? 'secondary on' : 'ghost'}`, dataset: { tool: 'range' }, disabled: !canEdit(),
+      'aria-pressed': phoneRange ? 'true' : 'false',
+      onclick: () => {
+        phoneRange = !phoneRange;
+        rangeStart = null;
+        render();
+        root.querySelector('[data-tool="range"]')?.focus();
+        announce(phoneRange ? 'Range on: tap the first time, then the last' : 'Range off: each tap marks one time', { silent: phoneRange });
+      },
+    }, 'Select a range');
     return h('div', { class: 'day-tools' },
+      range,
       tool('whole', s.brush === 'erase' ? 'Clear day' : 'Whole day', () => toggleGroup(slots, 'the whole day')),
       tool('clear', 'Clear', () => { setMany(slots, ''); render(); announce('Cleared this day'); }),
       layout.columns.length > 1 ? tool('copy', 'Copy to every day', copyToAll) : null,
@@ -607,13 +628,14 @@ export function createGrid(options) {
     const others = s.showOthers && s.others ? s.others.get(slot) || 0 : 0;
     const btn = h('button', {
       type: 'button',
-      class: `slot-btn${v ? ` is-${v}` : ''}`,
+      class: `slot-btn${v ? ` is-${v}` : ''}${slot === rangeStart ? ' range-start' : ''}`,
       'aria-pressed': v ? 'true' : 'false',
       'aria-disabled': canEdit() ? null : 'true',
       'aria-label': `${f.time(slot, s.timeZone)}, ${stateWord(v)}${others ? `, ${others} of ${s.othersTotal} others free` : ''}`,
       dataset: { slot: String(slot) },
       onclick: () => {
         if (!canEdit()) return;
+        if (phoneRange) return rangeTap(slot);
         setMany([slot], paintValue(slot));
         const fresh = phoneEditItem(slot);
         btn.parentElement.replaceWith(fresh);
@@ -625,6 +647,27 @@ export function createGrid(options) {
     others ? h('span', { class: 'slot-others', 'aria-hidden': 'true' }, `${others} other${others === 1 ? '' : 's'} free`) : null,
     h('span', { class: 'slot-state' }, v ? MARKS[v].label : ''));
     return h('li', null, btn);
+  }
+
+  /** Range mode: the first tap picks a start; the second fills every time between with the brush. */
+  function rangeTap(slot) {
+    if (rangeStart == null) {
+      rangeStart = slot;
+      render();
+      root.querySelector(`.slot-btn[data-slot="${slot}"]`)?.focus();
+      announce(`From ${f.time(slot, s.timeZone)}. Now tap the last time.`, { silent: true });
+      return;
+    }
+    const day = layout.cells.filter((c) => c.dateKey === mobileDay).map((c) => c.slot).sort((a, b) => a - b);
+    const [lo, hi] = [Math.min(rangeStart, slot), Math.max(rangeStart, slot)];
+    const slots = day.filter((x) => x >= lo && x <= hi);
+    const value = s.brush === 'erase' ? '' : s.brush;
+    setMany(slots, value);
+    rangeStart = null;
+    render();
+    root.querySelector(`.slot-btn[data-slot="${slot}"]`)?.focus();
+    const what = `${f.time(lo, s.timeZone)} to ${f.time(hi + s.slotMinutes * 60e3, s.timeZone)}`;
+    announce(value ? `Marked ${what} as ${MARKS[value].word}` : `Cleared ${what}`);
   }
 
   function refreshStripBadges() {
@@ -701,7 +744,7 @@ export function createGrid(options) {
       s.lastPaint = undefined;
       if (gridEl) gridEl.dataset.brush = brush;
       if (PHONE.matches && s.mode === 'edit') {
-        const tool = root.querySelector('.day-tools .btn');
+        const tool = root.querySelector('[data-tool="whole"]');
         if (tool) tool.textContent = brush === 'erase' ? 'Clear day' : 'Whole day';
       }
     },

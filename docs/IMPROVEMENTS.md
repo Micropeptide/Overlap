@@ -148,3 +148,4 @@ worth the complexity yet), **No** (conflicts with the product's rules).
 | Organizer can lock answers after sending (`allowEdits`) | Built | Guests can still delete their own answer, as the privacy page promises |
 | "Copy my edit link" any time, not only right after sending | Built | |
 | First email update waited 30 minutes after confirming | Fixed | Confirming counted as "last emailed" |
+| Phone "Select a range": tap first and last time | Built | Long blocks took a tap per half hour |
