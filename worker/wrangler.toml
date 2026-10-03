@@ -29,4 +29,4 @@ D1_RESTORE_DAYS = "7"
 API_URL = "https://overlap-api.micropeptide.workers.dev"
 # Email stays off until both EMAIL_FROM is set here and the RESEND_API_KEY
 # secret exists (npx wrangler secret put RESEND_API_KEY).
-EMAIL_FROM = ""
+EMAIL_FROM = "Overlap <overlap@mail.runtian.uk>"
