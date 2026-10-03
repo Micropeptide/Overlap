@@ -8,6 +8,7 @@ import { renderManage } from './views/manage.js';
 import { renderPrivacy } from './views/privacy.js';
 import { renderAbout } from './views/about.js';
 import { renderNotFound } from './views/not-found.js';
+import { renderEmail } from './views/email.js';
 
 const routes = [
   [/^\/$/, renderHome],
@@ -15,6 +16,7 @@ const routes = [
   [/^\/m\/([a-z0-9]+)\/?$/, renderManage],
   [/^\/privacy\/?$/, renderPrivacy],
   [/^\/about\/?$/, renderAbout],
+  [/^\/e\/(confirm|unsubscribe)\/?$/, renderEmail],
 ];
 
 const main = document.getElementById('main');

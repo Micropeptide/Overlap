@@ -9,6 +9,7 @@
 import { createApi } from '../server/api.js';
 import { createStore } from '../server/store-core.js';
 import { createRateLimiter } from '../server/ratelimit.js';
+import { createResendMailer, sendDueDigests } from '../server/email.js';
 
 const SECURITY_HEADERS = {
   'Content-Security-Policy': "default-src 'none'; frame-ancestors 'none'",
@@ -39,7 +40,9 @@ function setup(env) {
   });
   // Tells the privacy page which hosting facts apply to this copy.
   const info = { hosting: 'cloudflare', restoreDays: Number(env.D1_RESTORE_DAYS) || 7 };
-  instance = { store, api: createApi({ store, limiter, publicUrl: env.PUBLIC_URL || '', info }) };
+  // Email is on only when the Resend key (a secret) and the sender address are set.
+  const mailer = createResendMailer({ apiKey: env.RESEND_API_KEY, from: env.EMAIL_FROM });
+  instance = { store, mailer, api: createApi({ store, limiter, publicUrl: env.PUBLIC_URL || '', info, mailer }) };
   return instance;
 }
 
@@ -72,6 +75,7 @@ export default {
     const result = await api.handle({
       method: request.method,
       pathname: url.pathname,
+      query: url.searchParams,
       header: (name) => request.headers.get(name),
       readText: async (limit) => {
         if (Number(request.headers.get('Content-Length') || 0) > limit) return null;
@@ -94,9 +98,13 @@ export default {
     });
   },
 
-  // Only used if RETENTION_DAYS > 0 and a cron trigger is added in wrangler.toml:
-  // deletes polls (and their responses) past their retention date.
+  // Cron trigger (wrangler.toml): sends due update emails, and deletes polls
+  // past their retention date if RETENTION_DAYS > 0 (by default it is 0: never).
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(setup(env).store.deleteExpired());
+    const { store, mailer } = setup(env);
+    ctx.waitUntil(Promise.all([
+      store.deleteExpired(),
+      sendDueDigests({ store, mailer, publicUrl: (env.PUBLIC_URL || '').replace(/\/$/, ''), apiUrl: (env.API_URL || '').replace(/\/$/, '') }),
+    ]));
   },
 };

@@ -137,3 +137,11 @@ worth the complexity yet), **No** (conflicts with the product's rules).
 | Translations | Later | Intl already localises dates and times |
 | Offline support (service worker) | No | Responses need the server anyway |
 | Automatic deletion after a poll's last date | Changed | Off by default (the maintainer's choice): polls stay until the organizer deletes them. `RETENTION_DAYS` turns it back on for self-hosters |
+| Joined, rounded marking blocks; no focus box on mouse/touch | Built | "Not smooth, weird blue box" |
+| Brighter palette (teal, violet, amber, blue heat, emerald "everyone") | Built | |
+| Results above "Best times"; Best times collapsible | Built | |
+| Date picker: month/year menus, Today, two months on wide screens | Built | Far-off dates took many clicks |
+| "Your polls on this device": organizing and answered, with live status | Built | |
+| Optional organizer and guest passwords | Built | Keys derived in the browser; per-poll guess limit in the database |
+| Optional email: link by email, confirmed update digests, one-click unsubscribe | Built | Resend; off until configured |
+| Accounts / sign-in (passkeys, Google, Microsoft, GitHub) | No | The maintainer's choice: keep "no login, nothing stored about you" |

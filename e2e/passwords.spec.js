@@ -14,6 +14,7 @@ test('a guest adds a password, then signs in on another device with their name',
   await page.getByLabel('Password', { exact: true }).fill('marigold-42');
   await page.getByRole('button', { name: 'Submit availability' }).click();
   await expect(page.locator('.saved-notice')).toContainText('sign in with your name and password');
+  await expect(page.locator('main')).not.toContainText(/\bnull\b|undefined/);
 
   // The password never reaches the server; only a hash of a derived key is stored.
   const stored = await (await request.get(`/api/polls/${poll.id}`)).text();
@@ -72,6 +73,7 @@ test('the organizer sets a password and manages the poll from the guest link els
   await m.getByRole('button', { name: 'Open organizer view' }).click();
   await expect(p2).toHaveURL(new RegExp(`/m/${poll.id}#k=`));
   await expect(p2.getByText('Signed in with your password')).toBeVisible();
+  await expect(p2.locator('main')).not.toContainText(/\bnull\b|undefined/);
   // Signed in by password, the organizer can't remove it (they'd lock themselves out) but can get a link.
   await expect(p2.locator('.settings-row').filter({ hasText: 'Organizer password' }).getByRole('button', { name: 'Remove' })).toHaveCount(0);
   await p2.getByRole('button', { name: 'Create a new private link' }).click();

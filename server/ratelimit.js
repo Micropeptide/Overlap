@@ -7,6 +7,7 @@ const DEFAULTS = {
   create: { max: 30, windowMs: 60 * 60e3 }, // new polls per hour
   write: { max: 300, windowMs: 10 * 60e3 }, // other changes per 10 minutes
   read: { max: 1200, windowMs: 10 * 60e3 }, // page data per 10 minutes
+  email: { max: 10, windowMs: 60 * 60e3 }, // emails asked for per hour
 };
 const MAX_ENTRIES = 100_000;
 

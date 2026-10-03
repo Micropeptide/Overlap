@@ -1,9 +1,11 @@
 // Entry point. Configuration comes from environment variables; see README.
 
 import { createServer } from 'node:http';
-import { resolve } from 'node:path';
+import { resolve, join } from 'node:path';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { openStore } from './store.js';
 import { createApp } from './app.js';
+import { createResendMailer, sendDueDigests } from './email.js';
 
 /** Read a whole-number setting, refusing to start on nonsense rather than guessing. */
 function intSetting(name, fallback, min, max) {
@@ -30,14 +32,27 @@ if (PUBLIC_URL && !/^https?:\/\/[^/\s]+\/?$/.test(PUBLIC_URL)) {
 }
 
 const store = openStore(resolve(DATA_DIR, 'overlap.db'), { retentionDays: RETENTION_DAYS });
+// Optional email through Resend: both settings are needed, or email stays off.
+// For development, EMAIL_OUTBOX=<folder> writes each email there as JSON instead.
+const outbox = process.env.EMAIL_OUTBOX ? resolve(process.env.EMAIL_OUTBOX) : null;
+const mailer = outbox
+  ? {
+      async send(msg) {
+        mkdirSync(outbox, { recursive: true });
+        writeFileSync(join(outbox, `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.json`), JSON.stringify(msg, null, 2));
+      },
+    }
+  : createResendMailer({ apiKey: process.env.RESEND_API_KEY, from: process.env.EMAIL_FROM });
 const app = createApp({
   store,
+  mailer,
   trustProxy: TRUST_PROXY,
   publicUrl: PUBLIC_URL,
   rateLimits: {
     create: { max: intSetting('RATE_LIMIT_CREATE', 30, 1, 1e7), windowMs: 60 * 60e3 },
     write: { max: intSetting('RATE_LIMIT_WRITE', 300, 1, 1e7), windowMs: 10 * 60e3 },
     read: { max: intSetting('RATE_LIMIT_READ', 1200, 1, 1e7), windowMs: 10 * 60e3 },
+    email: { max: intSetting('RATE_LIMIT_EMAIL', 10, 1, 1e7), windowMs: 60 * 60e3 },
   },
 });
 
@@ -48,6 +63,12 @@ async function cleanup() {
 if (RETENTION_DAYS) {
   cleanup();
   setInterval(cleanup, 60 * 60e3).unref();
+}
+
+if (mailer) {
+  const base = (PUBLIC_URL || `http://localhost:${PORT}`).replace(/\/$/, '');
+  const digests = () => sendDueDigests({ store, mailer, publicUrl: base, apiUrl: base }).catch((err) => console.error(err));
+  setInterval(digests, 2 * 60e3).unref();
 }
 
 const server = createServer(app);

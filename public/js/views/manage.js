@@ -9,6 +9,8 @@ import { zoneLine } from '../components/zone-picker.js';
 import { createPollForm } from '../components/poll-form.js';
 import { LENGTHS } from '../components/lengths.js';
 import { renderNotFound } from './not-found.js';
+import { emailControl } from '../components/email-control.js';
+import { serverConfig } from '../lib/config.js';
 import { pollFacts, finalCard, locationLine, watchForUpdates, captureFocus } from './shared.js';
 import { isValidTimeZone } from '/shared/time.js';
 import { passwordKey, passwordProblem, KEY_PATTERN } from '/shared/password.js';
@@ -350,6 +352,16 @@ export async function renderManage(main, pollId) {
     return panel;
   }
 
+  // Shown only when this copy of Overlap can send email.
+  function emailRow() {
+    const row = h('div', { class: 'settings-row email-row', hidden: true },
+      h('div', null,
+        h('p', { class: 'setting-name' }, 'Email'),
+        emailControl({ poll, role: 'organizer', token, linkKey: viaPassword() ? null : token })));
+    serverConfig().then((cfg) => { row.hidden = !cfg.emails; });
+    return row;
+  }
+
   function settingsSection() {
     const expires = poll.expiresAt ? new Date(poll.expiresAt) : null;
     const isOpen = poll.status === 'open';
@@ -379,6 +391,7 @@ export async function renderManage(main, pollId) {
           poll.hasOrganizerPassword && !viaPassword()
             ? h('button', { type: 'button', class: 'btn ghost', onclick: removePassword }, 'Remove') : null,
           h('button', { type: 'button', class: 'btn secondary', dataset: { action: 'password' }, onclick: setPassword }, icon('lock'), poll.hasOrganizerPassword ? 'Change password' : 'Set password'))),
+      emailRow(),
       h('div', { class: 'settings-row' },
         h('div', null,
           h('p', { class: 'setting-name' }, 'Duplicate'),

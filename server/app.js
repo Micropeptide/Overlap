@@ -10,7 +10,7 @@ import { createRateLimiter } from './ratelimit.js';
 
 const ROOT = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const STATIC_DIRS = { '/shared/': join(ROOT, 'shared'), '/': join(ROOT, 'public') };
-const APP_ROUTES = [/^\/$/, /^\/p\/[a-z0-9]{6,32}\/?$/, /^\/m\/[a-z0-9]{6,32}\/?$/, /^\/privacy\/?$/, /^\/about\/?$/];
+const APP_ROUTES = [/^\/$/, /^\/p\/[a-z0-9]{6,32}\/?$/, /^\/m\/[a-z0-9]{6,32}\/?$/, /^\/privacy\/?$/, /^\/about\/?$/, /^\/e\/(confirm|unsubscribe)\/?$/];
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -53,9 +53,9 @@ const SECURITY_HEADERS = {
  * proxy appends the address it saw to X-Forwarded-For, so the trustworthy entry
  * is that many places from the right; anything further left is client-supplied.
  */
-export function createApp({ store, trustProxy = 0, publicUrl = '', rateLimits } = {}) {
+export function createApp({ store, trustProxy = 0, publicUrl = '', rateLimits, mailer = null } = {}) {
   const hops = Number(trustProxy) || 0;
-  const api = createApi({ store, limiter: createRateLimiter(rateLimits), publicUrl });
+  const api = createApi({ store, limiter: createRateLimiter(rateLimits), publicUrl, mailer });
 
   function send(res, status, body, headers = {}) {
     const isJson = typeof body !== 'string' && !Buffer.isBuffer(body);
@@ -137,11 +137,12 @@ export function createApp({ store, trustProxy = 0, publicUrl = '', rateLimits } 
 
   return async function handler(req, res) {
     try {
-      const { pathname } = new URL(req.url, 'http://localhost');
+      const { pathname, searchParams } = new URL(req.url, 'http://localhost');
       if (pathname.startsWith('/api/')) {
         const result = await api.handle({
           method: req.method,
           pathname,
+          query: searchParams,
           header: (name) => req.headers[name.toLowerCase()] ?? null,
           readText: (limit) => readText(req, limit),
           ip: clientIp(req),
