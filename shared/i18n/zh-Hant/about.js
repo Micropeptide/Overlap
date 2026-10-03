@@ -1,0 +1,18 @@
+export default {
+  'about.tabTitle': '關於',
+  'about.title': '關於 Overlap',
+  'about.lede': '一個免費、安靜的方式，幫一群人找出大家都方便的時間。發起人挑幾個日期、分享一個連結，每個人標出自己有空的時間。',
+  'about.howHeading': '運作方式',
+  'about.howNoAccounts': '沒有人需要註冊、登入或連結行事曆，發起人也不用。電子郵件同樣是選用的：只有在你想收到自己的連結或更新通知時才需要。',
+  'about.howLinks': '每個投票都有一個用來分享的邀請連結，以及一個給發起人的私人連結。參與者也會拿到自己的私人連結，用來修改回覆。任何人都可以另外設定選用的密碼，就不必保管連結。',
+  'about.howTimeZones': '時間會儲存為精確的時間點，並以每個人自己的時區顯示，遇到日光節約時間切換也一樣準確。',
+  'about.howPrivacy': '沒有廣告，也不追蹤。投票會保留到發起人刪除為止，參與者也可以刪除自己的回覆。{privacyLink}。',
+  'about.privacyLink': '你的資料如何處理',
+  'about.whoHeading': '製作者',
+  'about.bio': 'Overlap 由 Micropeptide 開發與維護。Micropeptide 專做小而專注的工具，用於研究、提升效率，偶爾也解決一些特別冷門的問題。',
+  'about.githubLink': 'Micropeptide 的 GitHub',
+  'about.moreLink': 'Micropeptide 的其他軟體',
+  'about.sourceHeading': '開放原始碼',
+  'about.sourceCode': 'Overlap 的程式碼以 MIT 授權條款公開在 {link}。歡迎到那裡回報錯誤或提出想法。',
+  'about.inspired': '本專案的靈感來自開放原始碼排程工具 {timeful}，但沒有共用任何程式碼。字型：Bricolage Grotesque 與 Atkinson Hyperlegible Next，皆採用 SIL Open Font License。',
+};

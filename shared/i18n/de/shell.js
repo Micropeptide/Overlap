@@ -1,0 +1,20 @@
+export default {
+  'shell.skip': 'Zum Inhalt springen',
+  'shell.brandLabel': 'Overlap, neue Umfrage erstellen',
+  'shell.navLabel': 'Website',
+  'shell.newPoll': 'Neue Umfrage',
+  'shell.about': 'Über',
+  'shell.privacy': 'Datenschutz',
+  'shell.loading': 'Wird geladen …',
+  'shell.footer': 'Keine Konten, kein Tracking, keine Werbung. {retention} {privacyLink}. {aboutLink}, gemacht von Micropeptide.',
+  'shell.retentionKept': 'Umfragen bleiben, bis der Organisator sie löscht.',
+  'shell.retentionAuto': {
+    one: 'Umfragen werden {count} Tag nach ihrem letzten Datum automatisch gelöscht (wöchentliche Umfragen nach ihrer letzten Änderung).',
+    other: 'Umfragen werden {count} Tage nach ihrem letzten Datum automatisch gelöscht (wöchentliche Umfragen nach ihrer letzten Änderung).',
+  },
+  'shell.privacyLink': 'So gehen wir mit deinen Daten um',
+  'shell.aboutLink': 'Über Overlap',
+  'shell.language': 'Sprache',
+  'shell.errorTitle': 'Etwas ist schiefgelaufen',
+  'shell.errorReload': 'Lade die Seite neu, um es noch einmal zu versuchen.',
+};

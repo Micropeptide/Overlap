@@ -1,0 +1,22 @@
+export default {
+  'shell.skip': 'Przejdź do treści',
+  'shell.brandLabel': 'Overlap, utwórz nową ankietę',
+  'shell.navLabel': 'Witryna',
+  'shell.newPoll': 'Nowa ankieta',
+  'shell.about': 'O aplikacji',
+  'shell.privacy': 'Prywatność',
+  'shell.loading': 'Ładowanie…',
+  'shell.footer': 'Bez kont, bez śledzenia, bez reklam. {retention} {privacyLink}. {aboutLink}, autor: Micropeptide.',
+  'shell.retentionKept': 'Ankiety zostają, dopóki organizator ich nie usunie.',
+  'shell.retentionAuto': {
+    one: 'Ankiety są usuwane automatycznie {count} dzień po ostatniej dacie (cotygodniowe: po ostatniej zmianie).',
+    few: 'Ankiety są usuwane automatycznie {count} dni po ostatniej dacie (cotygodniowe: po ostatniej zmianie).',
+    many: 'Ankiety są usuwane automatycznie {count} dni po ostatniej dacie (cotygodniowe: po ostatniej zmianie).',
+    other: 'Ankiety są usuwane automatycznie {count} dnia po ostatniej dacie (cotygodniowe: po ostatniej zmianie).',
+  },
+  'shell.privacyLink': 'Jak traktujemy twoje dane',
+  'shell.aboutLink': 'O Overlap',
+  'shell.language': 'Język',
+  'shell.errorTitle': 'Coś poszło nie tak',
+  'shell.errorReload': 'Odśwież stronę, aby spróbować ponownie.',
+};

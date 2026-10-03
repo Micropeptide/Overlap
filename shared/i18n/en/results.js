@@ -1,0 +1,56 @@
+export default {
+  'results.title': 'Everyone’s availability',
+  'results.emptyTitle': 'Nothing to compare yet',
+  'results.emptyBody': 'Once people respond, darker squares show times more of them can make.',
+  'results.help': 'Select a name to see just that person’s answers.',
+  'results.idle': 'Point at or tab to a time to see who can make it.',
+  'results.idlePick': 'Point at or tab to a time to see who can make it. Click a time to make it the final time.',
+  'results.gridLabel': 'Group availability',
+  'results.showNumbers': 'Show numbers',
+  'results.exportCsv': 'Export CSV',
+  'results.downloaded': 'Downloaded the responses as a CSV file',
+
+  // Legend
+  'results.legend': 'Legend',
+  'results.showing': 'Showing {name}',
+  'results.legendPref': 'Preferred',
+  'results.legendYes': 'Available',
+  'results.legendMaybe': 'If needed',
+  'results.legendNo': 'Not available',
+  'results.legendUnanswered': 'Hasn’t seen this time',
+  'results.legendRamp': 'Darker means more people',
+  'results.legendAll': 'Everyone',
+  'results.legendHasMaybe': 'Includes “if needed”',
+
+  // The people who answered
+  'results.whoResponded': 'Who responded',
+  'results.responses': { one: 'Responses ({count})', other: 'Responses ({count})' },
+  'results.you': 'You',
+  'results.summary': { one: '{count} available', other: '{count} available' },
+  'results.summaryPref': { one: '{count} available ({pref} preferred)', other: '{count} available ({pref} preferred)' },
+  'results.summaryMaybe': { one: '{count} available, {maybe} if needed', other: '{count} available, {maybe} if needed' },
+  'results.summaryPrefMaybe': {
+    one: '{count} available ({pref} preferred), {maybe} if needed',
+    other: '{count} available ({pref} preferred), {maybe} if needed',
+  },
+  'results.noneWork': 'None of these times work',
+  // {summary} is one of the summaries above; {count} is how many times were added after they answered.
+  'results.unseen': { one: '{summary}, hasn’t seen {count} newer time', other: '{summary}, hasn’t seen {count} newer times' },
+  'results.note': '“{note}”',
+  'results.answered': 'Answered {when}',
+  'results.removeLabel': 'Remove {name}’s response',
+  'results.removeTitle': 'Remove {name}’s response?',
+  'results.removeMessage': 'Their times will be deleted for good. They can respond again while the poll is open.',
+  'results.removeConfirm': 'Remove response',
+
+  // CSV export
+  'results.csvName': 'Name',
+  'results.csvNote': 'Note',
+  'results.csvTime': '{day} {time}',
+  'results.csvPref': 'Preferred',
+  'results.csvYes': 'Available',
+  'results.csvMaybe': 'If needed',
+  'results.csvNo': 'Not available',
+  'results.csvUnanswered': 'Not answered',
+  'results.csvCount': 'Available (count)',
+};

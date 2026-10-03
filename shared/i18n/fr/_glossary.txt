@@ -1,0 +1,53 @@
+Overlap French (fr) glossary. Standard French (France), "vous".
+Typography: narrow no-break space (U+202F) before ; : ! ? and inside « ». Apostrophe ’.
+
+poll                         sondage
+organizer                    l’organisateur
+guest / guests               invité / les invités
+response, answer             réponse
+respond, answer (verb)       répondre
+time (a slot)                créneau (pl. créneaux)
+times of day                 horaires
+guest link                   lien invité
+private link                 lien privé
+private edit link            lien de modification privé
+edit link                    lien de modification
+organizer password           mot de passe organisateur
+organizer view               vue organisateur
+final time                   horaire définitif ("Final time chosen" = Horaire fixé)
+time zone                    fuseau horaire
+email                        e-mail
+meeting length               durée de la réunion
+weekly poll                  sondage hebdomadaire
+
+UI labels (quoted labels elsewhere must match these exactly)
+Available                    Disponible        (word form: disponible)
+Preferred                    Préféré           (word form: préféré)
+If needed                    Si besoin         (word form: si besoin)
+Not available                Indisponible      (word form: indisponible)
+Not answered                 Sans réponse
+Hasn’t seen this time        N’a pas vu ce créneau
+Erase                        Effacer
+Clear / Clear all            Effacer / Tout effacer
+Undo                         Annuler
+Only me                      Moi uniquement
+Everyone with the guest link Toute personne ayant le lien invité
+Select a range               Sélectionner une plage
+Whole day                    Toute la journée
+Copy to every day            Copier sur tous les jours
+Manage with your password    Gérer avec votre mot de passe
+Sign in with your name and password   Connectez-vous avec votre nom et votre mot de passe
+Sign in                      Se connecter
+Copy my edit link            Copier mon lien de modification
+Email me                     M’envoyer un e-mail
+Edit poll                    Modifier le sondage
+Duplicate poll               Dupliquer le sondage
+Never: I’ll close it myself  Jamais : je le fermerai moi-même   (short ref: « Jamais »)
+More options                 Plus d’options
+Manage poll                  Gérer le sondage
+Create poll                  Créer le sondage
+Submit availability          Envoyer mes disponibilités
+Save changes                 Enregistrer les modifications
+Copy guest link              Copier le lien invité
+
+Grid announcements use "{day} marqué : {state}" so the fixed word forms never need agreement.

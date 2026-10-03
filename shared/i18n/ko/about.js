@@ -1,0 +1,18 @@
+export default {
+  'about.tabTitle': '소개',
+  'about.title': 'Overlap 소개',
+  'about.lede': '그룹에 맞는 시간을 찾는 무료이면서 조용한 방법이에요. 주최자가 날짜를 고르고 링크 하나를 공유하면, 모두가 가능한 시간을 표시해요.',
+  'about.howHeading': '사용 방법',
+  'about.howNoAccounts': '가입도, 로그인도, 캘린더 연결도 필요 없어요. 주최자도 마찬가지예요. 이메일도 선택 사항이에요. 링크나 업데이트를 이메일로 받고 싶을 때만 사용해요.',
+  'about.howLinks': '투표마다 공유용 참여 링크와 주최자용 비공개 링크가 있어요. 참여자도 자기 응답을 수정할 수 있는 비공개 링크를 받아요. 링크를 챙기는 대신 누구나 선택 사항인 비밀번호를 추가할 수 있어요.',
+  'about.howTimeZones': '시간은 정확한 시점으로 저장되고, 서머타임 변경과 관계없이 각자의 시간대로 표시돼요.',
+  'about.howPrivacy': '광고도 추적도 없어요. 투표는 주최자가 삭제할 때까지 보관되고, 참여자는 자기 응답을 삭제할 수 있어요. {privacyLink}.',
+  'about.privacyLink': '데이터 처리 방식',
+  'about.whoHeading': '만든 사람',
+  'about.bio': 'Overlap은 Micropeptide가 만들고 관리해요. Micropeptide는 연구, 생산성, 그리고 가끔은 묘하게 구체적인 문제를 위한 작고 집중된 도구를 만들어요.',
+  'about.githubLink': 'GitHub의 Micropeptide',
+  'about.moreLink': 'Micropeptide의 다른 소프트웨어',
+  'about.sourceHeading': '오픈 소스',
+  'about.sourceCode': 'Overlap의 코드는 MIT License로 {link}에 공개되어 있어요. 버그 제보와 아이디어를 환영해요.',
+  'about.inspired': '오픈 소스 일정 조율 도구 {timeful}에서 영감을 받았지만, 코드를 공유하지는 않아요. 서체: Bricolage Grotesque, Atkinson Hyperlegible Next(둘 다 SIL Open Font License).',
+};

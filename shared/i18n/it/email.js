@@ -1,0 +1,48 @@
+export default {
+  'email.subjectConfirm': 'Conferma le email su «{title}»',
+  'email.subjectLink': 'Il tuo link per «{title}»',
+  'email.linkOrganizer': 'Ecco il tuo link privato per «{title}». Ti permette di modificare, chiudere o eliminare il sondaggio, quindi tienilo per te:',
+  'email.linkGuest': 'Ecco il tuo link privato di modifica per «{title}». Ti permette di cambiare o eliminare la tua risposta, quindi tienilo per te:',
+  'email.confirmOrganizer': 'Per ricevere un’email quando le persone rispondono o cambiano le loro risposte, conferma qui sotto. Riceverai al massimo un’email ogni 30 minuti.',
+  'email.confirmGuest': 'Per ricevere un’email quando l’organizzatore sceglie un orario o modifica il sondaggio, conferma qui sotto. Riceverai al massimo un’email ogni 30 minuti.',
+  'email.confirmGuestPublic': 'Per ricevere un’email quando l’organizzatore sceglie un orario o modifica il sondaggio, o quando le persone rispondono, conferma qui sotto. Riceverai al massimo un’email ogni 30 minuti.',
+  'email.confirmButton': 'Conferma gli aggiornamenti via email',
+  'email.welcomeFooter': 'Ricevi questa email perché qualcuno ha inserito questo indirizzo in Overlap. Se non sei stato tu, ignorala: non ti verrà inviato nient’altro.',
+
+  'email.subjectUpdates': 'Aggiornamenti su «{title}»',
+  'email.news': 'Novità su «{title}»:',
+  'email.finalPicked': 'L’organizzatore ha scelto un orario: {time}.',
+  'email.closed': 'L’organizzatore ha chiuso il sondaggio.',
+  'email.reopened': 'Il sondaggio è di nuovo aperto.',
+  'email.edited': 'L’organizzatore ha modificato il sondaggio. Controlla che la tua risposta vada ancora bene.',
+  'email.newResponses': {
+    one: 'Nuova risposta: {names}.',
+    many: 'Nuove risposte: {names}.',
+    other: 'Nuove risposte: {names}.',
+  },
+  'email.changedAnswers': {
+    one: 'Ha cambiato la sua risposta: {names}.',
+    many: 'Hanno cambiato la loro risposta: {names}.',
+    other: 'Hanno cambiato la loro risposta: {names}.',
+  },
+  'email.removed': {
+    one: 'Una risposta è stata rimossa.',
+    many: '{count} risposte sono state rimosse.',
+    other: '{count} risposte sono state rimosse.',
+  },
+  'email.respondedSoFar': {
+    one: 'Finora ha risposto {count} persona.',
+    many: 'Finora hanno risposto {count} persone.',
+    other: 'Finora hanno risposto {count} persone.',
+  },
+  'email.nameSeparator': ', ',
+  'email.openPoll': 'Apri il sondaggio',
+  'email.openOrganizerView': 'Apri la vista organizzatore',
+  'email.guestFooter': 'Il link apre il sondaggio. Sul dispositivo da cui hai risposto, la tua risposta è già lì.',
+  'email.organizerFooter': 'Il link apre la vista organizzatore nel browser in cui hai creato il sondaggio. Altrove, usa il tuo link privato o la password dell’organizzatore.',
+  'email.stop': 'Interrompi queste email: {url}',
+
+  'email.timeRange': '{day}, {start} – {end} (ora di {zone})',
+  'email.timeRangeWeekly': 'Ogni {day}, {start} – {end} (ora di {zone})',
+  'email.buttonText': '{label}: {url}',
+};

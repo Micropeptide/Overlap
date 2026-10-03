@@ -1,0 +1,56 @@
+German (de) glossary for Overlap. Informal "du" (lowercase), quotes „…“.
+
+poll                              Umfrage
+weekly poll                       wöchentliche Umfrage
+organizer                         Organisator
+organizer view                    Organisatoransicht
+guest / guests                    Gast / Gäste
+response / answer                 Antwort (both)
+respond / answer (verb)           antworten
+guest link                        Gästelink
+private link                      privater Link
+private edit link                 privater Bearbeitungslink
+edit link                         Bearbeitungslink
+organizer password                Organisator-Passwort
+time (a slot)                     Zeit / Zeiten
+dates (picked days)               Tage (single date: Datum)
+specific dates                    Bestimmte Tage
+days of the week                  Wochentage
+closing date                      Schlussdatum
+final time                        festgelegter Termin; set/choose it: Termin festlegen
+final time chosen                 Termin festgelegt
+time zone                         Zeitzone
+"{city} time"                     Ortszeit {city}
+meeting length                    Dauer (des Treffens)
+time steps                        Zeitraster
+event name                        Anlass
+place or call link                Ort oder Meeting-Link
+note                              Notiz
+updates (email)                   Updates
+stop emails                       E-Mails abbestellen
+copy of Overlap                   Instanz von Overlap
+mark / clear (grid)               markieren / leeren
+
+UI labels (quoted elsewhere exactly like this):
+Available                         Verfügbar  (in sentences: verfügbar)
+Preferred                         Bevorzugt  (bevorzugt)
+If needed                         Wenn nötig (wenn nötig)
+Not available                     Nicht verfügbar
+Hasn’t seen this time             Zeit noch nicht gesehen
+Erase                             Radieren
+Only me                           Nur ich
+Everyone with the guest link      Alle mit dem Gästelink
+Select a range                    Bereich wählen
+Whole day                         Ganzer Tag
+Copy to every day                 Auf alle Tage kopieren
+Manage with your password         Mit Passwort verwalten
+Sign in with your name and password  Mit Name und Passwort anmelden
+Copy my edit link                 Bearbeitungslink kopieren
+Email me                          E-Mail an mich
+Edit poll                         Umfrage bearbeiten
+Duplicate poll                    Umfrage duplizieren
+Manage poll                       Umfrage verwalten
+Never: I’ll close it myself       Nie: Ich schließe sie selbst  (short: „Nie“)
+More options                      Weitere Optionen
+Undo                              Rückgängig
+Forget                            Vergessen

@@ -1,0 +1,18 @@
+export default {
+  'about.tabTitle': 'Hakkında',
+  'about.title': 'Overlap hakkında',
+  'about.lede': 'Bir gruba uyan zamanı bulmanın ücretsiz ve sakin bir yolu. Organizatör birkaç tarih seçer, tek bir bağlantı paylaşır ve herkes ne zaman müsait olduğunu işaretler.',
+  'about.howHeading': 'Nasıl çalışır',
+  'about.howNoAccounts': 'Kimse kaydolmaz, giriş yapmaz ya da takvim bağlamaz; organizatör bile. E-posta da isteğe bağlıdır: yalnızca bağlantınızın ya da güncellemelerin size gönderilmesini istiyorsanız.',
+  'about.howLinks': 'Her anketin paylaşmak için bir katılımcı bağlantısı ve organizatör için bir özel bağlantısı vardır. Katılımcılar da yanıtlarını değiştirmek için kendi özel bağlantılarını alır. Bağlantıları takip etmek yerine herkes isteğe bağlı bir şifre ekleyebilir.',
+  'about.howTimeZones': 'Saatler kesin anlar olarak saklanır ve yaz saati değişikliklerinde de doğru şekilde, herkese kendi saat diliminde gösterilir.',
+  'about.howPrivacy': 'Reklam yok, takip yok. Anketler organizatör silene kadar saklanır ve katılımcılar kendi yanıtlarını silebilir. {privacyLink}.',
+  'about.privacyLink': 'Verileriniz nasıl işleniyor',
+  'about.whoHeading': 'Kim yaptı',
+  'about.bio': 'Overlap; araştırma, verimlilik ve ara sıra karşılaşılan tuhaf derecede özel sorunlar için küçük, odaklı araçlar yapan Micropeptide tarafından geliştirilir ve sürdürülür.',
+  'about.githubLink': 'GitHub’da Micropeptide',
+  'about.moreLink': 'Micropeptide tarafından diğer yazılımlar',
+  'about.sourceHeading': 'Açık kaynak',
+  'about.sourceCode': 'Overlap kodu, MIT Lisansı ile {link} adresinde herkese açıktır. Hata bildirimlerinizi ve fikirlerinizi orada bekliyoruz.',
+  'about.inspired': '{timeful} adlı açık kaynaklı planlama aracından esinlenmiştir ama onunla hiçbir kodu paylaşmaz. Yazı tipleri: Bricolage Grotesque ve Atkinson Hyperlegible Next; ikisi de SIL Open Font License kapsamındadır.',
+};

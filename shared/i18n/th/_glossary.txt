@@ -1,0 +1,45 @@
+Thai (th) glossary for Overlap
+================================
+poll                          โพล
+organizer                     ผู้จัด
+guest                         ผู้เข้าร่วม
+response / answer (noun)      คำตอบ
+respond / answer (verb)       ตอบ
+time (a slot)                 ช่วงเวลา
+guest link                    ลิงก์ผู้เข้าร่วม
+private link (organizer)      ลิงก์ส่วนตัว
+private edit link (guest)     ลิงก์แก้ไขส่วนตัว
+organizer password            รหัสผ่านผู้จัด
+organizer view                มุมมองผู้จัด
+“Available”                   ว่าง
+“Preferred”                   สะดวกที่สุด
+“If needed”                   ได้ถ้าจำเป็น
+“Not available”               ไม่ว่าง
+“Erase” (brush)               ลบ
+Clear                         ล้าง
+Delete                        ลบ
+“Only me”                     เฉพาะฉัน
+“Everyone with the guest link” ทุกคนที่มีลิงก์ผู้เข้าร่วม
+“Select a range”              เลือกเป็นช่วง
+“Whole day”                   ทั้งวัน
+“Copy to every day”           คัดลอกไปทุกวัน
+“Manage with your password”   จัดการด้วยรหัสผ่าน
+“Sign in with your name and password”  เข้าสู่ระบบด้วยชื่อและรหัสผ่าน
+sign in                       เข้าสู่ระบบ
+“Copy my edit link”           คัดลอกลิงก์แก้ไขของฉัน
+“Email me”                    ส่งอีเมลถึงฉัน
+“Edit poll”                   แก้ไขโพล
+“Duplicate poll”              ทำสำเนาโพล
+“Never: I’ll close it myself” ไม่มีกำหนด: ฉันจะปิดเอง   (“Never” = ไม่มีกำหนด)
+“More options”                ตัวเลือกเพิ่มเติม
+“Manage poll” (section)       จัดการโพล
+final time                    เวลาสรุป
+time zone                     เขตเวลา
+meeting length                ระยะเวลาประชุม
+time steps                    ช่วงห่างของเวลา
+weekly poll                   โพลรายสัปดาห์
+closing date                  วันปิดรับ
+calendar invite               คำเชิญในปฏิทิน
+Undo / Redo                   เลิกทำ / ทำซ้ำ
+Notes: no ครับ/ค่ะ in UI text; no spaces between words, a space between
+sentences/clauses and around placeholders/numbers/Latin words; quotes “ ”.

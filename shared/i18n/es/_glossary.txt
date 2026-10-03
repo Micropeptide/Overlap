@@ -1,0 +1,44 @@
+Overlap: Spanish (es) glossary. Neutral international Spanish, informal tú.
+time step                         bloque de tiempo   (range = intervalo; time range = franja horaria)
+
+poll                              encuesta
+organizer                         organizador (el organizador)
+guest                             invitado (los invitados)
+response / answer                 respuesta
+time (a slot)                     horario (m.), pl. horarios; column heading "Hora"
+final time                        horario definitivo
+time zone                         zona horaria
+guest link                        enlace para invitados
+private link                      enlace privado
+private edit link                 enlace privado de edición
+edit link                         enlace de edición
+organizer password                contraseña de organizador
+organizer view                    vista de organizador
+email (noun)                      correo / correo electrónico
+email address                     dirección de correo electrónico
+to sign in                        iniciar sesión
+
+UI labels (quoted labels elsewhere must match exactly)
+Available                         Disponible        (in-sentence: disponible)
+Preferred                         Preferido         (in-sentence: preferido)
+If needed                         Si es necesario   (in-sentence: si es necesario)
+Not available                     No disponible
+Erase                             Borrar
+Only me                           Solo yo
+Everyone with the guest link      Cualquiera con el enlace para invitados
+Select a range                    Seleccionar un intervalo
+Whole day                         Todo el día
+Copy to every day                 Copiar a todos los días
+Manage with your password         Administrar con tu contraseña
+Sign in with your name and password  Iniciar sesión con tu nombre y contraseña
+Copy my edit link                 Copiar mi enlace de edición
+Email me                          Avísame por correo
+Edit poll                         Editar encuesta
+Duplicate poll                    Duplicar encuesta
+Manage poll                       Administrar encuesta
+Never: I’ll close it myself       Nunca: la cerraré yo   (short form “Nunca”)
+More options                      Más opciones
+hasn’t seen this time             no ha visto este horario
+Every {day} (weekday)             Cada {day}
+
+Typography: ¿ ¡, quotes “ ”, no space before ? ! : ;

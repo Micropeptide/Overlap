@@ -1,0 +1,77 @@
+export default {
+  'results.title': 'Disponibilidad de todos',
+  'results.emptyTitle': 'Aún no hay nada que comparar',
+  'results.emptyBody': 'Cuando la gente responda, los cuadros más oscuros mostrarán los horarios que les vienen bien a más personas.',
+  'results.help': 'Selecciona un nombre para ver solo las respuestas de esa persona.',
+  'results.idle': 'Señala un horario o llega a él con Tab para ver quién puede asistir.',
+  'results.idlePick': 'Señala un horario o llega a él con Tab para ver quién puede asistir. Haz clic en un horario para convertirlo en el horario definitivo.',
+  'results.gridLabel': 'Disponibilidad del grupo',
+  'results.showNumbers': 'Mostrar números',
+  'results.exportCsv': 'Exportar CSV',
+  'results.downloaded': 'Se descargaron las respuestas como archivo CSV',
+
+  // Legend
+  'results.legend': 'Leyenda',
+  'results.showing': 'Mostrando a {name}',
+  'results.legendPref': 'Preferido',
+  'results.legendYes': 'Disponible',
+  'results.legendMaybe': 'Si es necesario',
+  'results.legendNo': 'No disponible',
+  'results.legendUnanswered': 'No ha visto este horario',
+  'results.legendRamp': 'Más oscuro, más personas',
+  'results.legendAll': 'Todos',
+  'results.legendHasMaybe': 'Incluye “si es necesario”',
+
+  // The people who answered
+  'results.whoResponded': 'Quién respondió',
+  'results.responses': {
+    one: 'Respuestas ({count})',
+    many: 'Respuestas ({count})',
+    other: 'Respuestas ({count})',
+  },
+  'results.you': 'Tú',
+  'results.summary': {
+    one: '{count} disponible',
+    many: '{count} disponibles',
+    other: '{count} disponibles',
+  },
+  'results.summaryPref': {
+    one: '{count} disponible ({pref} preferido)',
+    many: '{count} disponibles (preferidos: {pref})',
+    other: '{count} disponibles (preferidos: {pref})',
+  },
+  'results.summaryMaybe': {
+    one: '{count} disponible, {maybe} si es necesario',
+    many: '{count} disponibles, {maybe} si es necesario',
+    other: '{count} disponibles, {maybe} si es necesario',
+  },
+  'results.summaryPrefMaybe': {
+    one: '{count} disponible ({pref} preferido), {maybe} si es necesario',
+    many: '{count} disponibles (preferidos: {pref}), {maybe} si es necesario',
+    other: '{count} disponibles (preferidos: {pref}), {maybe} si es necesario',
+  },
+  'results.noneWork': 'Ninguno de estos horarios le viene bien',
+  // {summary} is one of the summaries above; {count} is how many times were added after they answered.
+  'results.unseen': {
+    one: '{summary}, no ha visto {count} horario nuevo',
+    many: '{summary}, no ha visto {count} horarios nuevos',
+    other: '{summary}, no ha visto {count} horarios nuevos',
+  },
+  'results.note': '“{note}”',
+  'results.answered': 'Respondió {when}',
+  'results.removeLabel': 'Quitar la respuesta de {name}',
+  'results.removeTitle': '¿Quitar la respuesta de {name}?',
+  'results.removeMessage': 'Sus horarios se eliminarán para siempre. Puede volver a responder mientras la encuesta esté abierta.',
+  'results.removeConfirm': 'Quitar respuesta',
+
+  // CSV export
+  'results.csvName': 'Nombre',
+  'results.csvNote': 'Nota',
+  'results.csvTime': '{day} {time}',
+  'results.csvPref': 'Preferido',
+  'results.csvYes': 'Disponible',
+  'results.csvMaybe': 'Si es necesario',
+  'results.csvNo': 'No disponible',
+  'results.csvUnanswered': 'Sin responder',
+  'results.csvCount': 'Disponibles (número)',
+};

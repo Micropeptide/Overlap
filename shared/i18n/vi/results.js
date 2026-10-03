@@ -1,0 +1,55 @@
+export default {
+  'results.title': 'Lịch rảnh của mọi người',
+  'results.emptyTitle': 'Chưa có gì để so sánh',
+  'results.emptyBody': 'Khi mọi người phản hồi, ô càng đậm là khung giờ càng nhiều người tham gia được.',
+  'results.help': 'Chọn một tên để chỉ xem câu trả lời của người đó.',
+  'results.idle': 'Trỏ chuột hoặc dùng Tab đến một khung giờ để xem ai tham gia được.',
+  'results.idlePick': 'Trỏ chuột hoặc dùng Tab đến một khung giờ để xem ai tham gia được. Nhấp vào một khung giờ để chốt thời gian.',
+  'results.gridLabel': 'Lịch rảnh của nhóm',
+  'results.showNumbers': 'Hiện số',
+  'results.exportCsv': 'Xuất CSV',
+  'results.downloaded': 'Đã tải các phản hồi dưới dạng tệp CSV',
+
+  // Legend
+  'results.legend': 'Chú thích',
+  'results.showing': 'Đang xem {name}',
+  'results.legendPref': 'Ưu tiên',
+  'results.legendYes': 'Rảnh',
+  'results.legendMaybe': 'Nếu cần',
+  'results.legendNo': 'Không rảnh',
+  'results.legendUnanswered': 'Chưa xem khung giờ này',
+  'results.legendRamp': 'Càng đậm càng nhiều người',
+  'results.legendAll': 'Mọi người',
+  'results.legendHasMaybe': 'Có cả “nếu cần”',
+
+  // The people who answered
+  'results.whoResponded': 'Ai đã phản hồi',
+  'results.responses': { other: 'Phản hồi ({count})' },
+  'results.you': 'Bạn',
+  'results.summary': { other: '{count} rảnh' },
+  'results.summaryPref': { other: '{count} rảnh ({pref} ưu tiên)' },
+  'results.summaryMaybe': { other: '{count} rảnh, {maybe} nếu cần' },
+  'results.summaryPrefMaybe': {
+    other: '{count} rảnh ({pref} ưu tiên), {maybe} nếu cần',
+  },
+  'results.noneWork': 'Không khung giờ nào hợp',
+  // {summary} is one of the summaries above; {count} is how many times were added after they answered.
+  'results.unseen': { other: '{summary}, chưa xem {count} khung giờ mới hơn' },
+  'results.note': '“{note}”',
+  'results.answered': 'Đã trả lời {when}',
+  'results.removeLabel': 'Gỡ phản hồi của {name}',
+  'results.removeTitle': 'Gỡ phản hồi của {name}?',
+  'results.removeMessage': 'Khung giờ của họ sẽ bị xóa vĩnh viễn. Họ có thể phản hồi lại khi cuộc thăm dò còn mở.',
+  'results.removeConfirm': 'Gỡ phản hồi',
+
+  // CSV export
+  'results.csvName': 'Tên',
+  'results.csvNote': 'Ghi chú',
+  'results.csvTime': '{day} {time}',
+  'results.csvPref': 'Ưu tiên',
+  'results.csvYes': 'Rảnh',
+  'results.csvMaybe': 'Nếu cần',
+  'results.csvNo': 'Không rảnh',
+  'results.csvUnanswered': 'Chưa trả lời',
+  'results.csvCount': 'Rảnh (số người)',
+};

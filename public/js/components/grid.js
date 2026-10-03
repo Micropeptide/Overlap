@@ -10,24 +10,31 @@ import { h, clear, announce } from '../lib/dom.js';
 import * as f from '../lib/format.js';
 import { layoutSlots } from '/shared/time.js';
 import { tallySlots } from '/shared/overlap.js';
+import { t } from '../lib/i18n.js';
 
 const PHONE = window.matchMedia('(max-width: 640px)');
 // Phone "Select a range" mode, kept for the page's lifetime so re-renders don't drop it.
 let phoneRange = false;
 
+// A state's text: `word` is lower case, for inside a sentence ("Marked 9:00 AM
+// as available"); `label` is capitalized, for on its own. Getters, so the text
+// is looked up when used, after the language has loaded.
+const stateText = (wordKey, labelKey) => ({
+  get word() { return t(wordKey); },
+  get label() { return t(labelKey); },
+});
+
 /** Marks a guest can give a time. "erase" is a brush, not a state. */
 export const MARKS = {
-  pref: { word: 'preferred', label: 'Preferred' },
-  yes: { word: 'available', label: 'Available' },
-  maybe: { word: 'if needed', label: 'If needed' },
+  pref: stateText('grid.wordPref', 'grid.labelPref'),
+  yes: stateText('grid.wordYes', 'grid.labelYes'),
+  maybe: stateText('grid.wordMaybe', 'grid.labelMaybe'),
 };
-const stateWord = (v) => (v ? MARKS[v].word : 'not available');
+const stateWord = (v) => (v ? MARKS[v].word : t('grid.wordNo'));
 const PERSON_STATES = {
-  pref: ['preferred', 'Preferred'],
-  yes: ['available', 'Available'],
-  maybe: ['if needed', 'If needed'],
-  no: ['not available', 'Not available'],
-  unanswered: ['has not seen this time', 'Not answered'],
+  ...MARKS,
+  no: stateText('grid.wordNo', 'grid.labelNo'),
+  unanswered: stateText('grid.wordUnanswered', 'grid.labelUnanswered'),
 };
 
 export function createGrid(options) {
@@ -47,7 +54,7 @@ export function createGrid(options) {
     onChange: () => {},
     onInspect: () => {},
     onPick: null, // results: organizer chooses a final time from a cell
-    label: 'Availability',
+    label: t('grid.label'),
     readOnly: false, // edit mode shown but not changeable (closed poll)
     weekly: false, // weekly polls label columns by weekday, not date
     ...options,
@@ -82,7 +89,8 @@ export function createGrid(options) {
   let drag = null; // desktop painting in progress
   let scrollTimer = null;
 
-  const cellLabel = (slot) => `${f.slotDay(slot, s.timeZone, s.weekly)}, ${f.time(slot, s.timeZone)}`;
+  /** A cell's day and time, as placeholders for its spoken label. */
+  const cellVars = (slot) => ({ day: f.slotDay(slot, s.timeZone, s.weekly), time: f.time(slot, s.timeZone) });
 
   function computeResults() {
     if (s.mode !== 'results') return;
@@ -90,9 +98,9 @@ export function createGrid(options) {
     total = s.responses.length;
   }
 
-  function personState(t, id) {
-    if (t.pref.includes(id)) return 'pref';
-    return ['yes', 'maybe', 'no', 'unanswered'].find((k) => t[k].includes(id)) || 'no';
+  function personState(tl, id) {
+    if (tl.pref.includes(id)) return 'pref';
+    return ['yes', 'maybe', 'no', 'unanswered'].find((k) => tl[k].includes(id)) || 'no';
   }
 
   // ---------- editing, with undo ----------
@@ -121,14 +129,17 @@ export function createGrid(options) {
     return commit(before);
   }
 
-  /** Fill a group of times, or clear it if it is already filled with the brush. */
-  function toggleGroup(slots, what) {
+  /**
+   * Fill a group of times, or clear it if it is already filled with the brush.
+   * `message(value)` says what happened: value is the mark given, or '' when cleared.
+   */
+  function toggleGroup(slots, message) {
     if (!slots.length) return;
     const allSet = s.brush !== 'erase' && slots.every((slot) => s.value.get(slot) === s.brush);
     const value = s.brush === 'erase' || allSet ? '' : s.brush;
     setMany(slots, value);
     afterExternalChange();
-    announce(value ? `Marked ${what} as ${MARKS[value].word}` : `Cleared ${what}`);
+    announce(message(value));
   }
 
   function afterExternalChange() {
@@ -141,7 +152,7 @@ export function createGrid(options) {
     s.value = undoStack.pop();
     s.onChange(s.value);
     afterExternalChange();
-    announce('Undone');
+    announce(t('grid.undone'));
     return true;
   }
 
@@ -151,7 +162,7 @@ export function createGrid(options) {
     s.value = redoStack.pop();
     s.onChange(s.value);
     afterExternalChange();
-    announce('Redone');
+    announce(t('grid.redone'));
     return true;
   }
 
@@ -186,11 +197,11 @@ export function createGrid(options) {
         ? h('button', {
           // Day headings are keyboard-reachable unless there are so many they'd bury the grid.
           type: 'button', class: 'head-btn col-btn', tabindex: cols.length <= 14 ? null : '-1', dataset: { c: String(i) },
-          'aria-label': `${f.dayName(dk, s.weekly, 'long')}: mark or clear the whole day`,
+          'aria-label': t('grid.dayHeadLabel', { day: f.dayName(dk, s.weekly, 'long') }),
         }, dayText(dk))
         : dayText(dk)));
     grid.append(h('div', { class: 'grid-row grid-head', role: 'row', 'aria-rowindex': 1 },
-      h('div', { class: 'grid-corner', role: 'columnheader' }, h('span', { class: 'visually-hidden' }, 'Time')),
+      h('div', { class: 'grid-corner', role: 'columnheader' }, h('span', { class: 'visually-hidden' }, t('grid.timeHeading'))),
       colHeads,
     ));
 
@@ -201,9 +212,10 @@ export function createGrid(options) {
     layout.rows.forEach((row, r) => {
       const gap = prev && (row.minuteOfDay - prev.minuteOfDay > s.slotMinutes);
       gapBefore[r] = !!gap;
-      if (gap) grid.append(h('div', { class: 'grid-gap', 'aria-hidden': 'true' }, h('span', null, 'later')));
+      if (gap) grid.append(h('div', { class: 'grid-gap', 'aria-hidden': 'true' }, h('span', null, t('grid.later'))));
       const showLabel = !prev || gap || row.minuteOfDay % 60 === 0 || row.occ > 0 || s.slotMinutes === 60;
-      const labelText = f.minuteOfDay(row.minuteOfDay) + (row.occ > 0 ? ' (repeat)' : '');
+      // A repeated time is the second one of that name on a day the clocks go back.
+      const labelText = row.occ > 0 ? t('grid.repeatTime', { time: f.minuteOfDay(row.minuteOfDay) }) : f.minuteOfDay(row.minuteOfDay);
       const label = h('span', { class: showLabel ? 'row-label' : 'visually-hidden' }, labelText);
       const rowEl = h('div', {
         class: `grid-row${row.minuteOfDay % 60 === 0 ? ' hour-start' : ''}`,
@@ -211,7 +223,7 @@ export function createGrid(options) {
         'aria-rowindex': r + 2,
       }, h('div', { class: `row-head${showLabel ? '' : ' quiet'}`, role: 'rowheader' },
         headButtons
-          ? h('button', { type: 'button', class: 'head-btn row-btn', tabindex: '-1', dataset: { r: String(r) }, 'aria-label': `${labelText}: mark or clear on every day` }, label)
+          ? h('button', { type: 'button', class: 'head-btn row-btn', tabindex: '-1', dataset: { r: String(r) }, 'aria-label': t('grid.rowHeadLabel', { time: labelText }) }, label)
           : label));
       const line = [];
       cols.forEach((dk, c) => {
@@ -280,22 +292,24 @@ export function createGrid(options) {
       el.classList.toggle('is-yes', v === 'yes');
       el.classList.toggle('is-maybe', v === 'maybe');
       el.setAttribute('aria-selected', v ? 'true' : 'false');
-      let others = '';
+      let others = 0;
       if (s.showOthers && s.others) {
-        const n = s.others.get(slot) || 0;
-        el.style.setProperty('--others', s.othersTotal ? n / s.othersTotal : 0);
-        el.classList.toggle('has-others', n > 0);
-        others = n ? `, ${n} of ${s.othersTotal} others free` : '';
+        others = s.others.get(slot) || 0;
+        el.style.setProperty('--others', s.othersTotal ? others / s.othersTotal : 0);
+        el.classList.toggle('has-others', others > 0);
       }
-      el.setAttribute('aria-label', `${cellLabel(slot)}, ${stateWord(v)}${others}`);
+      const vars = { ...cellVars(slot), state: stateWord(v) };
+      el.setAttribute('aria-label', others
+        ? t('grid.cellEditOthers', { ...vars, count: others, total: s.othersTotal })
+        : t('grid.cellEdit', vars));
       return;
     }
-    const t = tally.get(slot);
-    const avail = t.yes.length + t.maybe.length;
-    const heat = total ? (t.yes.length + t.maybe.length * 0.6) / total : 0;
+    const tl = tally.get(slot);
+    const avail = tl.yes.length + tl.maybe.length;
+    const heat = total ? (tl.yes.length + tl.maybe.length * 0.6) / total : 0;
     el.style.setProperty('--heat', heat);
     el.classList.toggle('all', total > 0 && avail === total);
-    el.classList.toggle('has-maybe', t.maybe.length > 0);
+    el.classList.toggle('has-maybe', tl.maybe.length > 0);
     el.classList.toggle('empty', avail === 0);
     el.classList.toggle('dark', heat > 0.55 || (total > 0 && avail === total));
     el.classList.toggle('hl', highlighted.has(slot));
@@ -305,14 +319,17 @@ export function createGrid(options) {
     el.dataset.k = s.focusId ? '' : (avail ? 'on' : '');
     let label;
     if (s.focusId) {
-      const st = personState(t, s.focusId);
+      const st = personState(tl, s.focusId);
       el.classList.add(`st-${st}`);
       el.dataset.k = st === 'no' ? '' : st;
-      const who = s.responses.find((r) => r.id === s.focusId)?.name || 'This person';
-      label = `${cellLabel(slot)}, ${who}: ${PERSON_STATES[st][0]}`;
+      const who = s.responses.find((r) => r.id === s.focusId)?.name || t('grid.thisPerson');
+      label = t('grid.cellPerson', { ...cellVars(slot), name: who, state: PERSON_STATES[st].word });
     } else {
-      label = `${cellLabel(slot)}, ${avail} of ${total} available`
-        + `${t.maybe.length ? `, ${t.maybe.length} if needed` : ''}${t.pref.length ? `, ${t.pref.length} prefer this` : ''}`;
+      const vars = { ...cellVars(slot), count: avail, total, maybe: tl.maybe.length, pref: tl.pref.length };
+      if (tl.maybe.length && tl.pref.length) label = t('grid.cellGroupMaybePref', vars);
+      else if (tl.maybe.length) label = t('grid.cellGroupMaybe', vars);
+      else if (tl.pref.length) label = t('grid.cellGroupPref', vars);
+      else label = t('grid.cellGroup', vars);
     }
     el.setAttribute('aria-label', label);
     el.removeAttribute('aria-selected');
@@ -350,8 +367,13 @@ export function createGrid(options) {
     grid.addEventListener('click', (e) => {
       const head = e.target.closest('.head-btn');
       if (head && canEdit()) {
-        if (head.dataset.c != null) toggleGroup(colSlots(Number(head.dataset.c)), f.dayName(layout.columns[Number(head.dataset.c)], s.weekly, 'long'));
-        else toggleGroup(rowSlots(Number(head.dataset.r)), `${f.minuteOfDay(layout.rows[Number(head.dataset.r)].minuteOfDay)} on every day`);
+        if (head.dataset.c != null) {
+          const day = f.dayName(layout.columns[Number(head.dataset.c)], s.weekly, 'long');
+          toggleGroup(colSlots(Number(head.dataset.c)), (v) => (v ? t('grid.markedDay', { day, state: MARKS[v].word }) : t('grid.clearedDay', { day })));
+        } else {
+          const time = f.minuteOfDay(layout.rows[Number(head.dataset.r)].minuteOfDay);
+          toggleGroup(rowSlots(Number(head.dataset.r)), (v) => (v ? t('grid.markedEveryDay', { time, state: MARKS[v].word }) : t('grid.clearedEveryDay', { time })));
+        }
         return;
       }
       const el = e.target.closest('.cell[data-slot]');
@@ -429,7 +451,7 @@ export function createGrid(options) {
       drag = null;
       s.lastPaint = value;
       const n = commit(base);
-      if (n > 1) announce(value ? `Marked ${n} times as ${MARKS[value].word}` : `Cleared ${n} times`);
+      if (n > 1) announce(value ? t('grid.markedTimes', { count: n, state: MARKS[value].word }) : t('grid.clearedTimes', { count: n }));
     };
     grid.addEventListener('pointerup', finish);
     grid.addEventListener('pointercancel', finish);
@@ -490,7 +512,8 @@ export function createGrid(options) {
         s.lastPaint = value;
         setMany([slot], value);
         refreshCells();
-        announce(`${f.time(slot, s.timeZone)} ${value ? `marked ${MARKS[value].word}` : 'cleared'}`);
+        const time = f.time(slot, s.timeZone);
+        announce(value ? t('grid.timeMarked', { time, state: MARKS[value].word }) : t('grid.timeCleared', { time }));
       }
     });
   }
@@ -527,7 +550,7 @@ export function createGrid(options) {
     if (!cols.includes(mobileDay)) mobileDay = cols[0];
     const daySlots = layout.cells.filter((c) => c.dateKey === mobileDay).sort((a, b) => a.slot - b.slot);
 
-    const strip = h('div', { class: 'day-strip', role: 'group', 'aria-label': 'Choose a day' },
+    const strip = h('div', { class: 'day-strip', role: 'group', 'aria-label': t('grid.chooseDay') },
       cols.map((dk) => {
         const badge = chipBadge(dk);
         return h('button', {
@@ -556,8 +579,8 @@ export function createGrid(options) {
     const idx = cols.indexOf(mobileDay);
     const go = (dk) => { mobileDay = dk; s.onDayChange(dk); expandedSlot = null; render(); scrollToTop(); root.querySelector('.day-title')?.focus({ preventScroll: true }); };
     parts.push(h('div', { class: 'day-nav' },
-      idx > 0 ? h('button', { type: 'button', class: 'btn ghost', onclick: () => go(cols[idx - 1]) }, `Previous: ${f.dayName(cols[idx - 1], s.weekly, s.weekly ? 'long' : 'medium')}`) : h('span'),
-      idx < cols.length - 1 ? h('button', { type: 'button', class: 'btn ghost', onclick: () => go(cols[idx + 1]) }, `Next: ${f.dayName(cols[idx + 1], s.weekly, s.weekly ? 'long' : 'medium')}`) : h('span'),
+      idx > 0 ? h('button', { type: 'button', class: 'btn ghost', onclick: () => go(cols[idx - 1]) }, t('grid.previousDay', { day: f.dayName(cols[idx - 1], s.weekly, s.weekly ? 'long' : 'medium') })) : h('span'),
+      idx < cols.length - 1 ? h('button', { type: 'button', class: 'btn ghost', onclick: () => go(cols[idx + 1]) }, t('grid.nextDay', { day: f.dayName(cols[idx + 1], s.weekly, s.weekly ? 'long' : 'medium') })) : h('span'),
     ));
     root.append(h('div', { class: `phone-grid phone-${s.mode}` }, parts));
     if (rangeHint) updateRangeHint();
@@ -571,21 +594,25 @@ export function createGrid(options) {
     }
   }
 
-  function chipBadge(dk) {
+  /** Edit: how many times are marked that day. Results: the most people free at one time. */
+  function dayCount(dk) {
     const cells = layout.cells.filter((c) => c.dateKey === dk);
-    if (s.mode === 'edit') {
-      const n = cells.filter((c) => s.value.has(c.slot)).length;
-      return n ? String(n) : '';
-    }
-    if (!total) return '';
-    const best = Math.max(0, ...cells.map((c) => tally.get(c.slot).yes.length + tally.get(c.slot).maybe.length));
-    return best ? `${best}/${total}` : '';
+    if (s.mode === 'edit') return cells.filter((c) => s.value.has(c.slot)).length;
+    if (!total) return 0;
+    return Math.max(0, ...cells.map((c) => tally.get(c.slot).yes.length + tally.get(c.slot).maybe.length));
+  }
+
+  function chipBadge(dk) {
+    const n = dayCount(dk);
+    if (!n) return '';
+    return s.mode === 'edit' ? String(n) : `${n}/${total}`;
   }
 
   function chipLabel(dk, badge) {
-    const name = f.dayName(dk, s.weekly, 'long');
-    if (!badge) return name;
-    return s.mode === 'edit' ? `${name}, ${badge} times marked` : `${name}, up to ${badge} available`;
+    const day = f.dayName(dk, s.weekly, 'long');
+    if (!badge) return day;
+    const count = dayCount(dk);
+    return s.mode === 'edit' ? t('grid.chipMarked', { day, count }) : t('grid.chipAvailable', { day, count, total });
   }
 
   function scrollToTop() {
@@ -604,7 +631,7 @@ export function createGrid(options) {
       }
       commit(before);
       render();
-      announce('Copied this day to every day');
+      announce(t('grid.copiedToEveryDay'));
     };
     // These re-render the list, so put focus back on the button that was pressed.
     const tool = (id, label, run) => h('button', {
@@ -615,12 +642,13 @@ export function createGrid(options) {
       type: 'button', class: `btn small ghost${phoneRange ? ' on' : ''}`, dataset: { tool: 'range' }, disabled: !canEdit(),
       'aria-pressed': phoneRange ? 'true' : 'false',
       onclick: () => setRangeMode(!phoneRange),
-    }, 'Select a range');
+    }, t('grid.selectRange'));
     return h('div', { class: 'day-tools' },
       range,
-      tool('whole', s.brush === 'erase' ? 'Clear day' : 'Whole day', () => toggleGroup(slots, 'the whole day')),
-      tool('clear', 'Clear', () => { setMany(slots, ''); render(); announce('Cleared this day'); }),
-      layout.columns.length > 1 ? tool('copy', 'Copy to every day', copyToAll) : null,
+      tool('whole', s.brush === 'erase' ? t('grid.clearDay') : t('grid.wholeDay'),
+        () => toggleGroup(slots, (v) => (v ? t('grid.markedWholeDay', { state: MARKS[v].word }) : t('grid.clearedWholeDay')))),
+      tool('clear', t('grid.clear'), () => { setMany(slots, ''); render(); announce(t('grid.clearedThisDay')); }),
+      layout.columns.length > 1 ? tool('copy', t('grid.copyToEveryDay'), copyToAll) : null,
     );
   }
 
@@ -632,7 +660,9 @@ export function createGrid(options) {
       class: `slot-btn${v ? ` is-${v}` : ''}${slot === rangeStart ? ' range-start' : ''}`,
       'aria-pressed': v ? 'true' : 'false',
       'aria-disabled': canEdit() ? null : 'true',
-      'aria-label': `${f.time(slot, s.timeZone)}, ${stateWord(v)}${others ? `, ${others} of ${s.othersTotal} others free` : ''}`,
+      'aria-label': others
+        ? t('grid.slotEditOthers', { time: f.time(slot, s.timeZone), state: stateWord(v), count: others, total: s.othersTotal })
+        : t('grid.slotEdit', { time: f.time(slot, s.timeZone), state: stateWord(v) }),
       dataset: { slot: String(slot) },
       onclick: () => {
         if (!canEdit()) return;
@@ -645,7 +675,7 @@ export function createGrid(options) {
       },
     },
     h('span', { class: 'slot-time' }, f.time(slot, s.timeZone)),
-    others ? h('span', { class: 'slot-others', 'aria-hidden': 'true' }, `${others} other${others === 1 ? '' : 's'} free`) : null,
+    others ? h('span', { class: 'slot-others', 'aria-hidden': 'true' }, t('grid.othersFree', { count: others })) : null,
     h('span', { class: 'slot-state' }, v ? MARKS[v].label : ''));
     return h('li', null, btn);
   }
@@ -665,7 +695,7 @@ export function createGrid(options) {
     }
     root.querySelector('.slot-list-edit')?.classList.toggle('range-mode', on);
     updateRangeHint();
-    announce(on ? 'Range on: tap where the range starts, then where it ends' : 'Range off: each tap marks one time', { silent: on });
+    announce(on ? t('grid.rangeOn') : t('grid.rangeOff'), { silent: on });
   }
 
   /** The hint's text changes, but its height doesn't (see .range-hint in the CSS). */
@@ -674,13 +704,15 @@ export function createGrid(options) {
     if (!hint) return;
     hint.classList.toggle('on', phoneRange);
     const text = !phoneRange
-      ? 'Tip: “Select a range” marks a long stretch with just two taps.'
+      ? t('grid.rangeTip')
       : rangeStart == null
-      ? 'Tap where the range starts, then where it ends.'
-      : `From ${f.time(rangeStart, s.timeZone)}: tap the end to ${rangeClears() ? 'clear' : `mark “${MARKS[s.brush].label}”`}.`;
+      ? t('grid.rangeStartHint')
+      : rangeClears()
+      ? t('grid.rangeEndClear', { time: f.time(rangeStart, s.timeZone) })
+      : t('grid.rangeEndMark', { time: f.time(rangeStart, s.timeZone), mark: MARKS[s.brush].label });
     hint.replaceChildren(...[
       h('span', { class: 'range-hint-text' }, text),
-      rangeStart == null ? null : h('button', { type: 'button', class: 'link-btn range-cancel', onclick: () => cancelRange() }, 'Cancel'),
+      rangeStart == null ? null : h('button', { type: 'button', class: 'link-btn range-cancel', onclick: () => cancelRange() }, t('grid.cancelRange')),
     ].filter(Boolean)); // replaceChildren(null) would show the word "null"
   }
 
@@ -696,7 +728,7 @@ export function createGrid(options) {
     updateRangeHint();
     if (!quiet) {
       root.querySelector(`.slot-btn[data-slot="${slot}"]`)?.focus({ preventScroll: true });
-      announce('Range cancelled', { silent: true });
+      announce(t('grid.rangeCancelled'), { silent: true });
     }
   }
 
@@ -707,7 +739,7 @@ export function createGrid(options) {
       rangeStartHad = s.value.get(slot) || '';
       setStartMark(slot, true);
       updateRangeHint();
-      announce(`From ${f.time(slot, s.timeZone)}. Now tap where it ends.`, { silent: true });
+      announce(t('grid.rangeStarted', { time: f.time(slot, s.timeZone) }), { silent: true });
       return;
     }
     const day = layout.cells.filter((c) => c.dateKey === mobileDay).map((c) => c.slot).sort((a, b) => a - b);
@@ -723,8 +755,8 @@ export function createGrid(options) {
     refreshStripBadges();
     updateRangeHint();
     root.querySelector(`.slot-btn[data-slot="${slot}"]`)?.focus({ preventScroll: true });
-    const what = `${f.time(lo, s.timeZone)} to ${f.time(hi + s.slotMinutes * 60e3, s.timeZone)}`;
-    announce(value ? `Marked ${what} as ${MARKS[value].word}` : `Cleared ${what}`);
+    const span = { start: f.time(lo, s.timeZone), end: f.time(hi + s.slotMinutes * 60e3, s.timeZone) };
+    announce(value ? t('grid.markedRange', { ...span, state: MARKS[value].word }) : t('grid.clearedRange', span));
   }
 
   function refreshStripBadges() {
@@ -739,31 +771,31 @@ export function createGrid(options) {
   }
 
   function phoneResultItem(slot) {
-    const t = tally.get(slot);
-    const avail = t.yes.length + t.maybe.length;
+    const tl = tally.get(slot);
+    const avail = tl.yes.length + tl.maybe.length;
     const open = expandedSlot === slot;
-    let stateText;
+    let stateLabel;
     let stateClass = '';
     if (s.focusId) {
-      const st = personState(t, s.focusId);
+      const st = personState(tl, s.focusId);
       stateClass = ` st-${st}`;
-      stateText = PERSON_STATES[st][1];
+      stateLabel = PERSON_STATES[st].label;
     }
     const bar = h('span', { class: 'slot-bar', 'aria-hidden': 'true' }, h('span', { class: 'slot-bar-fill' }));
     bar.style.setProperty('--fill', total ? avail / total : 0);
-    bar.style.setProperty('--maybe', total ? t.maybe.length / total : 0);
+    bar.style.setProperty('--maybe', total ? tl.maybe.length / total : 0);
     const btn = h('button', {
       type: 'button',
-      class: `slot-btn result${total && avail === total ? ' all' : ''}${t.maybe.length ? ' has-maybe' : ''}${stateClass}`,
+      class: `slot-btn result${total && avail === total ? ' all' : ''}${tl.maybe.length ? ' has-maybe' : ''}${stateClass}`,
       'aria-expanded': open ? 'true' : 'false',
       dataset: { slot: String(slot) },
       onclick: () => { expandedSlot = open ? null : slot; render(); root.querySelector(`.slot-btn[data-slot="${slot}"]`)?.focus(); },
     },
     h('span', { class: 'slot-time' }, f.time(slot, s.timeZone)),
-    s.focusId ? h('span', { class: 'slot-state' }, stateText) : bar,
+    s.focusId ? h('span', { class: 'slot-state' }, stateLabel) : bar,
     h('span', { class: 'slot-count' }, total ? `${avail}/${total}` : '–'));
     const li = h('li', { class: open ? 'open' : '' }, btn);
-    if (open) li.append(slotDetail({ slot, slotMinutes: s.slotMinutes, timeZone: s.timeZone, weekly: s.weekly, tally: t, responses: s.responses, onPick: s.onPick, compact: true }));
+    if (open) li.append(slotDetail({ slot, slotMinutes: s.slotMinutes, timeZone: s.timeZone, weekly: s.weekly, tally: tl, responses: s.responses, onPick: s.onPick, compact: true }));
     return li;
   }
 
@@ -778,7 +810,7 @@ export function createGrid(options) {
     layout = layoutSlots(s.slots, s.timeZone);
     computeResults();
     if (!layout.cells.length) {
-      root.append(h('p', { class: 'empty-note' }, 'This poll has no times to choose from.'));
+      root.append(h('p', { class: 'empty-note' }, t('grid.noTimes')));
       return;
     }
     if (PHONE.matches) renderPhone(); else renderDesktop();
@@ -802,7 +834,7 @@ export function createGrid(options) {
       if (gridEl) gridEl.dataset.brush = brush;
       if (PHONE.matches && s.mode === 'edit') {
         const tool = root.querySelector('[data-tool="whole"]');
-        if (tool) tool.textContent = brush === 'erase' ? 'Clear day' : 'Whole day';
+        if (tool) tool.textContent = brush === 'erase' ? t('grid.clearDay') : t('grid.wholeDay');
         updateRangeHint();
       }
     },
@@ -842,22 +874,24 @@ export function slotDetail({ slot, slotMinutes, timeZone, weekly = false, tally,
   const prefers = new Set(tally.pref || []);
   const nameOf = (id) => [
     byId.get(id)?.name,
-    prefers.has(id) ? h('span', { class: 'pref-mark', title: 'Preferred' }, h('span', { 'aria-hidden': 'true' }, ' ★'), h('span', { class: 'visually-hidden' }, ' (preferred)')) : null,
+    prefers.has(id) ? h('span', { class: 'pref-mark', title: t('grid.labelPref') }, h('span', { 'aria-hidden': 'true' }, ' ★'), h('span', { class: 'visually-hidden' }, ' ', t('grid.preferredNote'))) : null,
   ];
-  const group = (label, ids, cls) => ids.length
+  const group = (heading, ids, cls) => ids.length
     ? h('div', { class: `who who-${cls}` },
-      h('p', { class: 'who-label' }, `${label} (${ids.length})`),
+      h('p', { class: 'who-label' }, heading),
       h('ul', { class: 'who-list' }, ids.map((id) => h('li', null, nameOf(id)))))
     : null;
+  let count;
+  if (!total) count = t('grid.noResponses');
+  else if (prefers.size) count = t('grid.canMakeItPrefer', { avail, total, count: prefers.size });
+  else count = t('grid.canMakeIt', { count: avail, total });
   return h('div', { class: `slot-detail${compact ? ' compact' : ''}` },
     compact ? null : h('p', { class: 'slot-detail-time' }, f.slotRange(slot, slot + slotMinutes * 60000, timeZone, weekly)),
-    h('p', { class: 'slot-detail-count' }, total
-      ? `${avail} of ${total} can make it${prefers.size ? `, ${prefers.size} prefer${prefers.size === 1 ? 's' : ''} this time` : ''}`
-      : 'No responses yet'),
-    group('Available', tally.yes, 'yes'),
-    group('If needed', tally.maybe, 'maybe'),
-    group('Not available', tally.no, 'no'),
-    group('Haven’t seen this time', tally.unanswered, 'unanswered'),
-    onPick ? h('button', { type: 'button', class: 'btn small secondary', onclick: () => onPick(slot) }, 'Choose a final time starting here') : null,
+    h('p', { class: 'slot-detail-count' }, count),
+    group(t('grid.whoYes', { count: tally.yes.length }), tally.yes, 'yes'),
+    group(t('grid.whoMaybe', { count: tally.maybe.length }), tally.maybe, 'maybe'),
+    group(t('grid.whoNo', { count: tally.no.length }), tally.no, 'no'),
+    group(t('grid.whoUnanswered', { count: tally.unanswered.length }), tally.unanswered, 'unanswered'),
+    onPick ? h('button', { type: 'button', class: 'btn small secondary', onclick: () => onPick(slot) }, t('grid.chooseFinal')) : null,
   );
 }

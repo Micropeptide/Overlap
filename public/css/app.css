@@ -156,7 +156,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 /* ---------- site chrome ---------- */
 
 .site-header {
-  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem 1rem;
   padding: 1rem var(--gutter);
   max-width: 76rem; width: 100%; margin: 0 auto;
 }
@@ -166,8 +166,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .mark-b { fill: var(--ochre); opacity: 0.45; }
 .mark-ab { fill: var(--lagoon); }
 .brand-name { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; letter-spacing: -0.02em; }
-.site-nav { display: flex; gap: 1.25rem; }
-.site-nav a { color: var(--ink-2); text-decoration: none; padding: 0.3rem 0; }
+.site-nav { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; }
+.site-nav a { color: var(--ink-2); text-decoration: none; padding: 0.3rem 0; white-space: nowrap; }
 .site-nav a:hover { color: var(--ink); text-decoration: underline; }
 
 .site-footer {
@@ -369,7 +369,7 @@ textarea.input { resize: vertical; min-height: 5rem; }
 }
 .tab[aria-selected='true'] { background: var(--surface); color: var(--ink); box-shadow: inset 0 3px 0 var(--lagoon); }
 .tab:hover { color: var(--ink); }
-.tabs + .panel { border-top-left-radius: 0; }
+.tabs + .panel { border-start-start-radius: 0; }
 
 .callout { border-radius: var(--radius-l); padding: 1.1rem 1.3rem; margin-bottom: 1.5rem; outline: none; }
 .callout:focus-visible { outline: 3px solid var(--focus); }
@@ -689,7 +689,7 @@ textarea.input { resize: vertical; min-height: 5rem; }
   .time-range select { min-width: 0; flex: 1; }
   .datepicker { max-width: none; }
   .final-time { font-size: var(--step-3); }
-  .tab { padding: 0.7rem 0.85rem; }
+  .tab { padding: 0.7rem 0.85rem; flex: 1 1 0; min-width: 0; text-wrap: balance; line-height: 1.25; hyphens: auto; overflow-wrap: break-word; }
   .detail-card { display: none; }
   .action-bar { gap: 0.6rem; }
   .action-status { width: 100%; }
@@ -959,3 +959,29 @@ textarea.input { resize: vertical; min-height: 5rem; }
 .saved-status[data-status='finalized'] { background: color-mix(in srgb, var(--pref) 15%, var(--surface)); color: var(--pref); }
 .saved-status[data-status='gone'] { text-decoration: line-through; }
 .saved-list li.saved-item { display: grid; }
+
+/* ---------- languages ---------- */
+
+.language-picker { display: inline-flex; align-items: center; gap: 0.45rem; margin-top: 0.75rem; color: var(--ink-2); }
+.language-picker .icon { width: 1rem; height: 1rem; }
+.language-select { width: auto; min-height: 2.25rem; padding: 0.3rem 2rem 0.3rem 0.6rem; font-size: var(--step--1); }
+
+/* Scripts the bundled Latin typefaces don't cover: use good system fonts, and
+   drop the tight display tracking, which is made for Latin letters. */
+:root:lang(zh-Hans) { --font-display: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif; --font-body: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Noto Sans SC', system-ui, sans-serif; }
+:root:lang(zh-Hant) { --font-display: 'PingFang TC', 'Microsoft JhengHei', 'Noto Sans TC', system-ui, sans-serif; --font-body: 'PingFang TC', 'Microsoft JhengHei', 'Noto Sans TC', system-ui, sans-serif; }
+:root:lang(ja) { --font-display: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Noto Sans JP', system-ui, sans-serif; --font-body: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Noto Sans JP', system-ui, sans-serif; }
+:root:lang(ko) { --font-display: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', system-ui, sans-serif; --font-body: 'Apple SD Gothic Neo', 'Malgun Gothic', 'Noto Sans KR', system-ui, sans-serif; }
+:root:lang(ar) { --font-display: 'SF Arabic', 'Geeza Pro', 'Segoe UI', 'Noto Sans Arabic', system-ui, sans-serif; --font-body: 'SF Arabic', 'Geeza Pro', 'Segoe UI', 'Noto Sans Arabic', system-ui, sans-serif; }
+:root:lang(hi) { --font-display: 'Kohinoor Devanagari', 'Nirmala UI', 'Noto Sans Devanagari', system-ui, sans-serif; --font-body: 'Kohinoor Devanagari', 'Nirmala UI', 'Noto Sans Devanagari', system-ui, sans-serif; }
+:root:lang(th) { --font-display: 'Thonburi', 'Leelawadee UI', 'Noto Sans Thai', system-ui, sans-serif; --font-body: 'Thonburi', 'Leelawadee UI', 'Noto Sans Thai', system-ui, sans-serif; }
+:root:is(:lang(zh-Hans), :lang(zh-Hant), :lang(ja), :lang(ko), :lang(ar), :lang(hi), :lang(th)) :is(h1, h2, h3, .page-title, .poll-title, .hero-title, .final-time, .brand-name) { letter-spacing: 0; }
+:root:is(:lang(ar), :lang(hi), :lang(th)) body { line-height: 1.7; }
+
+/* Right-to-left (Arabic): text and layout flip with dir="rtl". Calendars and the
+   time grid keep left-to-right order, as their keyboard navigation assumes. */
+[dir='rtl'] .grid-scroll, [dir='rtl'] .dp-months, [dir='rtl'] .dp-table, [dir='rtl'] .dp-head, [dir='rtl'] .weekday-picker, [dir='rtl'] .day-strip { direction: ltr; }
+[dir='rtl'] .title-row .edit-top { margin-left: 0; margin-right: auto; }
+[dir='rtl'] .pw-section > summary::after { margin-left: 0; margin-right: auto; }
+/* Long single words (German, Russian, …) hyphenate by the page language instead of overflowing. */
+.btn, .tab, .seg, .brush, .chip, .setting-name, .field-label { hyphens: auto; overflow-wrap: break-word; }

@@ -16,6 +16,11 @@ everyone sees where the times overlap.
   Guests can add an optional password to get back in from another device.
 - The organizer can lock answers once sent (guests can still delete theirs).
 - Close, finalize, export to CSV, and download a calendar invite.
+- In 20 languages, chosen from the browser's settings or the footer (and remembered):
+  English, Español, Français, Deutsch, Italiano, Português, Nederlands, Polski,
+  Русский, Українська, Türkçe, العربية, हिन्दी, 简体中文, 繁體中文, 日本語, 한국어,
+  Tiếng Việt, Bahasa Indonesia, ไทย. Emails come in the language they were asked in.
+  See [docs/I18N.md](docs/I18N.md).
 - Polls stay until the organizer deletes them; guests can delete their own answers any time.
 - Passwords never leave the browser; email updates need confirming and have one-click unsubscribe.
 

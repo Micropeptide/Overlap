@@ -23,9 +23,9 @@
   <script type="module" src="/js/main.js"></script>
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to content</a>
+  <a class="skip-link" href="#main" data-i18n="shell.skip">Skip to content</a>
   <header class="site-header">
-    <a class="brand" href="/" aria-label="Overlap, create a new poll">
+    <a class="brand" href="/" aria-label="Overlap, create a new poll" data-i18n-label="shell.brandLabel">
       <svg class="brand-mark" viewBox="0 0 40 28" aria-hidden="true">
         <circle class="mark-a" cx="14" cy="14" r="11"/>
         <circle class="mark-b" cx="26" cy="14" r="11"/>
@@ -33,17 +33,18 @@
       </svg>
       <span class="brand-name">Overlap</span>
     </a>
-    <nav class="site-nav" aria-label="Site">
-      <a href="/">New poll</a>
-      <a href="/about">About</a>
-      <a href="/privacy">Privacy</a>
+    <nav class="site-nav" aria-label="Site" data-i18n-label="shell.navLabel">
+      <a href="/" data-i18n="shell.newPoll">New poll</a>
+      <a href="/about" data-i18n="shell.about">About</a>
+      <a href="/privacy" data-i18n="shell.privacy">Privacy</a>
     </nav>
   </header>
   <main id="main" tabindex="-1" aria-busy="true">
-    <div class="page loading"><p class="muted">Loading…</p></div>
+    <div class="page loading"><p class="muted" data-i18n="shell.loading">Loading…</p></div>
   </main>
   <footer class="site-footer">
-    <p>No accounts, no tracking, no ads. <span id="retention-note">Polls stay until the organizer deletes them.</span> <a href="/privacy">How your data is handled</a>. <a href="/about">About Overlap</a>, made by Micropeptide.</p>
+    <p id="footer-text">No accounts, no tracking, no ads. <span id="retention-note">Polls stay until the organizer deletes them.</span> <a href="/privacy">How your data is handled</a>. <a href="/about">About Overlap</a>, made by Micropeptide.</p>
+    <div id="language-picker" class="language-picker"></div>
   </footer>
   <div id="live" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
   <div id="toast" class="toast" aria-hidden="true" hidden></div>

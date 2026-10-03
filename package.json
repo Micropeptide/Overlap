@@ -16,7 +16,9 @@
     "backup": "node scripts/backup.mjs",
     "test:e2e:cloudflare": "playwright test -c playwright.cloudflare.config.js",
     "worker:dev": "cd worker && wrangler d1 migrations apply overlap --local && wrangler dev",
-    "worker:deploy": "cd worker && (wrangler d1 migrations apply overlap --remote || (echo 'Retrying migrations in 5s...' && sleep 5 && wrangler d1 migrations apply overlap --remote)) && wrangler deploy"
+    "worker:deploy": "cd worker && (wrangler d1 migrations apply overlap --remote || (echo 'Retrying migrations in 5s...' && sleep 5 && wrangler d1 migrations apply overlap --remote)) && wrangler deploy",
+    "i18n:merge": "node scripts/i18n.mjs merge",
+    "i18n:check": "node scripts/i18n.mjs check"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",

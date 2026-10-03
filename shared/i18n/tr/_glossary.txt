@@ -1,0 +1,45 @@
+Turkish (tr) glossary for Overlap. Polite "siz" in sentences; buttons use the short bare imperative (Kaydet, Kopyala) as is usual in Turkish UIs.
+No suffix is ever attached to a {placeholder}: use "“{title}” anketi", "{name} adlı kişi", "{date} günü/tarihinde", "{zone} saati", "{count} kişi".
+
+poll                         anket
+organizer                    organizatör
+guest                        katılımcı
+response / answer            yanıt (verb: yanıt vermek)
+guest link                   katılımcı bağlantısı
+private link                 özel bağlantı
+private edit link            özel düzenleme bağlantısı
+organizer password           organizatör şifresi
+organizer view               organizatör görünümü
+password                     şifre
+Available (label)            Uygun           (in-sentence word: uygun)
+Preferred (label)            Tercih edilen   (in-sentence word: tercihli)
+If needed (label)            Gerekirse       (in-sentence word: gerekirse uygun)
+Not available                Uygun değil
+Not answered                 Yanıtlanmadı
+hasn’t seen this time        bu saati görmedi
+Erase (brush)                Sil
+Only me                      Yalnızca ben
+Everyone with the guest link Katılımcı bağlantısına sahip herkes
+Select a range               Aralık seç
+Whole day                    Tüm gün   (preset "All day" = Bütün gün)
+Copy to every day            Her güne kopyala
+Manage with your password    Şifrenizle yönetin   (button: "Organizatör müsünüz? Şifrenizle yönetin")
+Sign in with your name and password   Adınız ve şifrenizle giriş yapın
+Copy my edit link            Düzenleme bağlantımı kopyala
+Email me                     Bana e-posta gönder
+Edit poll                    Anketi düzenle
+Duplicate poll               Anketi çoğalt
+Manage poll                  Anketi yönet
+Never: I’ll close it myself  Hiçbir zaman: kendim kapatacağım   (short ref: “Hiçbir zaman”)
+More options                 Diğer seçenekler
+final time                   kesin saat
+time zone                    saat dilimi
+time step                    zaman adımı
+a time (countable slot)      zaman aralığı   ("{count} zaman aralığı"; avoids "{count} saat" = hours)
+free                         müsait
+meeting length               toplantı süresi
+closing date                 kapanış tarihi
+calendar invite              takvim daveti
+Google Calendar              Google Takvim
+Stop taking responses        Yanıt toplamayı durdur
+Quotes: “…” ; apostrophe for suffixes on names: ’ (Cloudflare’in, GitHub’da, Timeful’dan)

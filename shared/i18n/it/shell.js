@@ -1,0 +1,21 @@
+export default {
+  'shell.skip': 'Vai al contenuto',
+  'shell.brandLabel': 'Overlap, crea un nuovo sondaggio',
+  'shell.navLabel': 'Sito',
+  'shell.newPoll': 'Nuovo sondaggio',
+  'shell.about': 'Info',
+  'shell.privacy': 'Privacy',
+  'shell.loading': 'Caricamento…',
+  'shell.footer': 'Niente account, niente tracciamento, niente pubblicità. {retention} {privacyLink}. {aboutLink}, creato da Micropeptide.',
+  'shell.retentionKept': 'I sondaggi restano finché l’organizzatore non li elimina.',
+  'shell.retentionAuto': {
+    one: 'I sondaggi vengono eliminati automaticamente {count} giorno dopo l’ultima data (quelli settimanali, dopo l’ultima modifica).',
+    many: 'I sondaggi vengono eliminati automaticamente {count} giorni dopo l’ultima data (quelli settimanali, dopo l’ultima modifica).',
+    other: 'I sondaggi vengono eliminati automaticamente {count} giorni dopo l’ultima data (quelli settimanali, dopo l’ultima modifica).',
+  },
+  'shell.privacyLink': 'Come vengono trattati i tuoi dati',
+  'shell.aboutLink': 'Info su Overlap',
+  'shell.language': 'Lingua',
+  'shell.errorTitle': 'Qualcosa è andato storto',
+  'shell.errorReload': 'Ricarica la pagina e riprova.',
+};

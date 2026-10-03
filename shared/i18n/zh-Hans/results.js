@@ -1,0 +1,55 @@
+export default {
+  'results.title': '大家的空闲时间',
+  'results.emptyTitle': '暂时还没有可比较的内容',
+  'results.emptyBody': '有人回复后，格子颜色越深，表示能参加的人越多。',
+  'results.help': '选择一个名字，只看这个人的回复。',
+  'results.idle': '指向某个时间，或用 Tab 键移到它，就能看到谁能参加。',
+  'results.idlePick': '指向某个时间，或用 Tab 键移到它，就能看到谁能参加。点击某个时间可将其设为最终时间。',
+  'results.gridLabel': '群组空闲时间',
+  'results.showNumbers': '显示人数',
+  'results.exportCsv': '导出 CSV',
+  'results.downloaded': '已将回复下载为 CSV 文件',
+
+  // Legend
+  'results.legend': '图例',
+  'results.showing': '正在显示：{name}',
+  'results.legendPref': '首选',
+  'results.legendYes': '有空',
+  'results.legendMaybe': '勉强可以',
+  'results.legendNo': '没空',
+  'results.legendUnanswered': '还没看到这个时间',
+  'results.legendRamp': '颜色越深，人数越多',
+  'results.legendAll': '所有人',
+  'results.legendHasMaybe': '包括“勉强可以”',
+
+  // The people who answered
+  'results.whoResponded': '谁回复了',
+  'results.responses': { other: '回复（{count}）' },
+  'results.you': '你',
+  'results.summary': { other: '{count} 个时间有空' },
+  'results.summaryPref': { other: '{count} 个时间有空（{pref} 个首选）' },
+  'results.summaryMaybe': { other: '{count} 个时间有空，{maybe} 个勉强可以' },
+  'results.summaryPrefMaybe': {
+    other: '{count} 个时间有空（{pref} 个首选），{maybe} 个勉强可以',
+  },
+  'results.noneWork': '这些时间都不行',
+  // {summary} is one of the summaries above; {count} is how many times were added after they answered.
+  'results.unseen': { other: '{summary}，还有 {count} 个新时间没看到' },
+  'results.note': '“{note}”',
+  'results.answered': '{when}回复',
+  'results.removeLabel': '移除{name}的回复',
+  'results.removeTitle': '移除{name}的回复？',
+  'results.removeMessage': '对方的时间将被永久删除。投票开放期间，对方可以重新回复。',
+  'results.removeConfirm': '移除回复',
+
+  // CSV export
+  'results.csvName': '姓名',
+  'results.csvNote': '备注',
+  'results.csvTime': '{day} {time}',
+  'results.csvPref': '首选',
+  'results.csvYes': '有空',
+  'results.csvMaybe': '勉强可以',
+  'results.csvNo': '没空',
+  'results.csvUnanswered': '未回复',
+  'results.csvCount': '有空（人数）',
+};

@@ -1,0 +1,49 @@
+Ukrainian (uk) glossary for Overlap. Polite "ви" (lowercase), quotes «…», apostrophe ’.
+Plural categories: one / few / many / other (other = fractions, genitive singular).
+Gender-neutral wording: past tense with "ви" (plural), impersonal "-но/-то" forms, "людина/людини/людей".
+
+poll                           опитування
+organizer                      організатор
+organizer view                 режим організатора
+guest                          гість / гості
+response / answer              відповідь
+guest link                     посилання для гостей
+private link                   приватне посилання
+private edit link              приватне посилання для редагування
+organizer password             пароль організатора
+time (countable slot)          проміжок (1 проміжок, 2 проміжки, 5 проміжків)
+range (time span)              діапазон
+final time                     остаточний час
+time zone                      часовий пояс
+time steps                     крок часу
+meeting length                 тривалість зустрічі
+calendar invite                запрошення в календар
+
+States (labels / in-sentence words, impersonal adverbs):
+Preferred                      Бажано / бажано
+Available                      Вільно / вільно
+If needed                      Якщо треба / якщо треба
+Not available                  Зайнято / зайнято
+Hasn’t seen this time          Ще не переглянуто / ще не переглянуто
+Not answered                   Без відповіді
+Erase (brush)                  Стерти
+
+UI labels (quoted elsewhere exactly as here):
+Only me                                  Лише я
+Everyone with the guest link             Усі, хто має посилання для гостей
+Select a range                           Виділити діапазон
+Whole day                                Увесь день
+Copy to every day                        Копіювати на всі дні
+Manage with your password                Керувати за паролем
+Sign in with your name and password      Увійти з ім’ям і паролем
+Copy my edit link                        Копіювати посилання для редагування
+Email me                                 Надіслати мені листа
+Edit poll                                Редагувати опитування
+Duplicate poll                           Дублювати опитування
+Never: I’ll close it myself              Ніколи: я закрию його вручну   (quoted as «Ніколи»)
+More options                             Більше параметрів
+Manage poll                              Керування опитуванням
+Undo                                     Скасувати
+Cancel                                   Скасувати
+Set (password / final time)              Встановити
+Google Calendar                          Google Календар

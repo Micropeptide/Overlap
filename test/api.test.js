@@ -107,6 +107,9 @@ test('the same name cannot overwrite someone else\'s response', async () => {
   const clash = await api('POST', `/api/polls/${poll.id}/responses`, { body: { name: '  alex ', available: [poll.slots[5]] } });
   assert.equal(clash.status, 409);
   assert.equal(clash.json.field, 'name');
+  // A stable code and its values, so the browser can say it in the page's language.
+  assert.equal(clash.json.code, 'name_taken');
+  assert.deepEqual(clash.json.vars, { name: 'alex' });
   const view = await api('GET', `/api/polls/${poll.id}`);
   assert.deepEqual(view.json.poll.responses[0].available, [poll.slots[0]]);
 
@@ -498,4 +501,19 @@ test('an organizer can switch a poll between dates and days of the week', async 
   assert.equal(back.json.poll.weekdays, undefined);
   // Ana can answer again.
   assert.equal((await api('PUT', `/api/polls/${poll.id}/responses/${sent.json.response.id}`, { token: sent.json.editToken, body: { name: 'Ana', available: [back.json.poll.slots[0]], ifNeeded: [] } })).status, 200);
+});
+
+test('errors carry a code (and vars when the message needs them) for translation', async () => {
+  const missing = await api('POST', '/api/polls', { body: { ...POLL, title: '' } });
+  assert.equal(missing.status, 400);
+  assert.equal(missing.json.error, 'Add a title.');
+  assert.equal(missing.json.code, 'title_required');
+  assert.equal('vars' in missing.json, false);
+  const many = await api('POST', '/api/polls', { body: { ...POLL, dates: Array.from({ length: 61 }, (_, i) => new Date(Date.UTC(2027, 0, 1 + i)).toISOString().slice(0, 10)) } });
+  assert.equal(many.json.code, 'too_many_dates');
+  assert.deepEqual(many.json.vars, { count: 60 });
+  const gone = await api('GET', '/api/polls/doesnotexist1');
+  assert.equal(gone.status, 404);
+  assert.equal(gone.json.code, 'poll_not_found');
+  assert.equal((await api('GET', '/api/nowhere')).json.code, 'not_found');
 });

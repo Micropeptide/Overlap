@@ -1,0 +1,58 @@
+Overlap – Dutch (nl) glossary. Informal je/jij. Quotes “…”. Buttons: infinitive ("Peiling bewerken").
+
+poll                               peiling (de); "peiling" in compounds avoided
+organizer                          organisator
+organizer view                     organisatorweergave
+guest                              gast / gasten
+response                           reactie / reacties; to respond = reageren
+answer                             antwoord; to answer = antwoorden / invullen
+guest link                         gastlink
+guest page                         gastpagina
+private link                       privélink
+private edit link                  privé-bewerklink
+edit link                          bewerklink
+organizer password                 organisatorwachtwoord
+time (slot)                        tijdstip / tijdstippen
+times of day                       tijden
+time steps                         tijdstappen
+final time                         definitief tijdstip (het definitieve tijdstip)
+time zone                          tijdzone
+"{zone} time" (city)               tijd in {zone}
+date / dates                       datum / datums
+days of the week                   dagen van de week
+weekdays (Mon–Fri)                 werkdagen
+meeting length                     duur van de afspraak / Duur
+event                              afspraak (calendar), evenement avoided
+mark / marked                      markeren / gemarkeerd; also "aangeven"
+clear                              wissen
+free (to meet)                     kunnen / vrij
+Submit availability                Beschikbaarheid versturen
+sign in                            inloggen
+delete                             verwijderen; erase (data) = wissen
+close / reopen poll                peiling sluiten / heropenen
+Email me                           Mail me
+tick                               aanvinken
+scrambled                          onherkenbaar gemaakt
+
+UI labels (quoted elsewhere must match exactly)
+Available                          Beschikbaar   (word: beschikbaar)
+Preferred                          Voorkeur      (word: voorkeur)
+If needed                          Indien nodig  (word: indien nodig)
+Not available                      Niet beschikbaar
+Hasn’t seen this time              Tijdstip nog niet gezien
+Erase                              Wissen
+Only me                            Alleen ik
+Everyone with the guest link       Iedereen met de gastlink
+Select a range                     Bereik selecteren
+Whole day                          Hele dag
+Copy to every day                  Naar elke dag kopiëren
+Manage with your password          Beheren met je wachtwoord  (guest.manageLink: “Organisator? Beheren met je wachtwoord”)
+Sign in with your name and password  Inloggen met je naam en wachtwoord
+Copy my edit link                  Mijn bewerklink kopiëren
+Email me                           Mail me
+Edit poll                          Peiling bewerken
+Duplicate poll                     Peiling dupliceren
+Never: I’ll close it myself        Nooit: ik sluit de peiling zelf   (quoted as “Nooit”)
+More options                       Meer opties
+Manage poll                        Peiling beheren
+Undo                               Ongedaan maken

@@ -1,0 +1,20 @@
+export default {
+  'shell.skip': 'सीधे कंटेंट पर जाएँ',
+  'shell.brandLabel': 'Overlap, नया पोल बनाएँ',
+  'shell.navLabel': 'साइट',
+  'shell.newPoll': 'नया पोल',
+  'shell.about': 'परिचय',
+  'shell.privacy': 'प्राइवेसी',
+  'shell.loading': 'लोड हो रहा है…',
+  'shell.footer': 'न अकाउंट, न ट्रैकिंग, न विज्ञापन। {retention} {privacyLink}। {aboutLink}, Micropeptide द्वारा बनाया गया।',
+  'shell.retentionKept': 'पोल तब तक रहते हैं जब तक आयोजक उन्हें डिलीट न करें।',
+  'shell.retentionAuto': {
+    one: 'पोल अपनी आखिरी तारीख के {count} दिन बाद अपने-आप डिलीट हो जाते हैं (साप्ताहिक पोल, अपने आखिरी बदलाव के बाद)।',
+    other: 'पोल अपनी आखिरी तारीख के {count} दिन बाद अपने-आप डिलीट हो जाते हैं (साप्ताहिक पोल, अपने आखिरी बदलाव के बाद)।',
+  },
+  'shell.privacyLink': 'आपके डेटा का क्या होता है',
+  'shell.aboutLink': 'Overlap के बारे में',
+  'shell.language': 'भाषा',
+  'shell.errorTitle': 'कुछ गड़बड़ हो गई',
+  'shell.errorReload': 'फिर से कोशिश करने के लिए पेज रीलोड करें।',
+};

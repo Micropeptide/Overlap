@@ -1,0 +1,20 @@
+export default {
+  'shell.skip': 'Skip to content',
+  'shell.brandLabel': 'Overlap, create a new poll',
+  'shell.navLabel': 'Site',
+  'shell.newPoll': 'New poll',
+  'shell.about': 'About',
+  'shell.privacy': 'Privacy',
+  'shell.loading': 'Loading…',
+  'shell.footer': 'No accounts, no tracking, no ads. {retention} {privacyLink}. {aboutLink}, made by Micropeptide.',
+  'shell.retentionKept': 'Polls stay until the organizer deletes them.',
+  'shell.retentionAuto': {
+    one: 'Polls are deleted automatically {count} day after their last date (weekly polls, after their last change).',
+    other: 'Polls are deleted automatically {count} days after their last date (weekly polls, after their last change).',
+  },
+  'shell.privacyLink': 'How your data is handled',
+  'shell.aboutLink': 'About Overlap',
+  'shell.language': 'Language',
+  'shell.errorTitle': 'Something went wrong',
+  'shell.errorReload': 'Reload the page to try again.',
+};

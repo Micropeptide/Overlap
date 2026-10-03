@@ -1,0 +1,18 @@
+export default {
+  'about.tabTitle': 'À propos',
+  'about.title': 'À propos d’Overlap',
+  'about.lede': 'Un moyen gratuit et discret de trouver un moment qui convient à un groupe. L’organisateur choisit des dates, partage un seul lien, et chacun indique quand il est libre.',
+  'about.howHeading': 'Comment ça marche',
+  'about.howNoAccounts': 'Personne ne s’inscrit, ne se connecte à un compte ni ne relie un agenda, pas même l’organisateur. L’e-mail est facultatif lui aussi : uniquement si vous voulez recevoir votre lien ou des mises à jour.',
+  'about.howLinks': 'Chaque sondage a un lien invité à partager et un lien privé pour l’organisateur. Les invités reçoivent leur propre lien privé pour modifier leur réponse. Chacun peut ajouter un mot de passe facultatif plutôt que de garder ses liens.',
+  'about.howTimeZones': 'Les horaires sont enregistrés comme des instants précis et affichés dans le fuseau horaire de chacun, y compris lors des changements d’heure.',
+  'about.howPrivacy': 'Pas de publicité ni de pistage. Les sondages restent en ligne jusqu’à ce que l’organisateur les supprime, et les invités peuvent supprimer leurs propres réponses. {privacyLink}.',
+  'about.privacyLink': 'Comment vos données sont traitées',
+  'about.whoHeading': 'Qui l’a créé',
+  'about.bio': 'Overlap est conçu et maintenu par Micropeptide, qui crée de petits outils ciblés pour la recherche, la productivité et, à l’occasion, des problèmes étrangement précis.',
+  'about.githubLink': 'Micropeptide sur GitHub',
+  'about.moreLink': 'Autres logiciels de Micropeptide',
+  'about.sourceHeading': 'Open source',
+  'about.sourceCode': 'Le code d’Overlap est public sur {link}, sous licence MIT. Signalements de bugs et idées y sont les bienvenus.',
+  'about.inspired': 'Il s’inspire de l’outil de planification open source {timeful}, sans partager de code avec lui. Polices : Bricolage Grotesque et Atkinson Hyperlegible Next, toutes deux sous SIL Open Font License.',
+};

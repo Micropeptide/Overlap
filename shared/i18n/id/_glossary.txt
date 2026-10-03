@@ -1,0 +1,56 @@
+Overlap glossary: English -> Indonesian (id)
+Register: friendly standard Indonesian, "Anda" (capitalized), app speaks as "kami".
+Plural category: only "other".
+
+poll                          polling (never "jajak pendapat")
+weekly poll                   polling mingguan
+organizer                     penyelenggara
+organizer view                tampilan penyelenggara
+guest                         tamu
+response                      tanggapan
+answer (noun / verb)          jawaban / menjawab
+respond                       menanggapi / mengisi
+availability                  ketersediaan
+link                          tautan
+guest link                    tautan tamu
+private link (organizer)      tautan pribadi
+private edit link (guest)     tautan edit pribadi
+edit link                     tautan edit
+password                      kata sandi
+organizer password            kata sandi penyelenggara
+sign in                       masuk
+Available (label / word)      Tersedia / tersedia
+Preferred (label / word)      Lebih disukai / lebih disukai
+If needed (label / word)      Jika perlu / jika perlu
+Not available                 Tidak tersedia
+Not answered                  Belum dijawab
+Hasn't seen this time         Belum melihat waktu ini
+Erase (brush)                 Hapus
+Only me                       Hanya saya
+Everyone with the guest link  Semua yang punya tautan tamu
+Select a range                Pilih rentang
+Whole day                     Sepanjang hari
+All day (preset)              Seharian
+Copy to every day             Salin ke semua hari
+Manage with your password     Kelola dengan kata sandi Anda
+Sign in with your name and password   Masuk dengan nama dan kata sandi Anda
+Copy my edit link             Salin tautan edit saya
+Email me                      Kirimi saya email
+Edit poll                     Edit polling
+Duplicate poll                Duplikat polling
+Manage poll                   Kelola polling
+Never: I'll close it myself   Tidak pernah: saya tutup sendiri   (short form "Tidak pernah")
+More options                  Opsi lainnya
+Undo                          Urungkan
+final time                    waktu final
+time zone                     zona waktu
+meeting length                durasi rapat
+time steps                    interval waktu
+closing date                  tanggal penutupan
+note for guests               catatan untuk tamu
+calendar invite               undangan kalender
+group results                 hasil grup
+best times                    waktu terbaik
+tick (checkbox)               centang
+X to Y (times)                {start} sampai {end}
+Quotes                        “…”

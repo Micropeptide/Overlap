@@ -2,13 +2,14 @@
 // nothing silently falls back to the device's zone.
 
 import { describeTimeZone, parseDateKey } from '/shared/time.js';
+import { locale, t } from './i18n.js';
 
 export const deviceTimeZone = () => Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
 
 const cache = new Map();
 function fmt(opts) {
   const key = JSON.stringify(opts);
-  if (!cache.has(key)) cache.set(key, new Intl.DateTimeFormat(undefined, opts));
+  if (!cache.has(key)) cache.set(key, new Intl.DateTimeFormat(locale(), opts));
   return cache.get(key);
 }
 
@@ -17,7 +18,7 @@ export function time(ms, timeZone) {
 }
 
 export function minuteOfDay(min) {
-  if (min === 1440) return fmt({ hour: 'numeric', minute: '2-digit', timeZone: 'UTC' }).format(Date.UTC(2000, 0, 2, 0, 0)) + ' (midnight)';
+  if (min === 1440) return t('format.midnight', { time: fmt({ hour: 'numeric', minute: '2-digit', timeZone: 'UTC' }).format(Date.UTC(2000, 0, 2, 0, 0)) });
   return fmt({ hour: 'numeric', minute: '2-digit', timeZone: 'UTC' }).format(Date.UTC(2000, 0, 1, 0, min));
 }
 
@@ -70,17 +71,19 @@ export function longDayOf(ms, timeZone) {
   return fmt({ weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', timeZone }).format(ms);
 }
 
+/** "45 minutes", "1 hour", "1 hour 30 min", in the page's language. */
 export function duration(minutes) {
   if (!minutes) return '';
   const hrs = Math.floor(minutes / 60);
   const mins = minutes % 60;
-  if (!hrs) return `${mins} minutes`;
-  const h = `${hrs} hour${hrs === 1 ? '' : 's'}`;
-  return mins ? `${h} ${mins} min` : h;
+  const unit = (n, u, unitDisplay) => new Intl.NumberFormat(locale(), { style: 'unit', unit: u, unitDisplay }).format(n);
+  if (!hrs) return unit(mins, 'minute', 'long');
+  return mins ? `${unit(hrs, 'hour', 'long')} ${unit(mins, 'minute', 'short')}` : unit(hrs, 'hour', 'long');
 }
 
 export const zoneLabel = (timeZone, atMs) => describeTimeZone(timeZone, atMs);
 
+/** Deprecated: English-only. Use t('…', { count }) with plural forms instead. */
 export function plural(n, one, many = `${one}s`) {
   return `${n} ${n === 1 ? one : many}`;
 }
@@ -118,20 +121,20 @@ export function slotDay(ms, timeZone, weekly) {
 export function slotRange(start, end, timeZone, weekly) {
   if (!weekly) return range(start, end, timeZone);
   // A range across midnight already names both weekdays.
-  return crossesDays(start, end, timeZone) ? timeRange(start, end, timeZone) : `${weekdayShortOf(start, timeZone)}, ${timeRange(start, end, timeZone)}`;
+  return crossesDays(start, end, timeZone) ? timeRange(start, end, timeZone) : t('format.dayAndTime', { day: weekdayShortOf(start, timeZone), time: timeRange(start, end, timeZone) });
 }
 
 /** Headline day for a final time: "Every Monday" or "Monday, October 5, 2026". */
 export function finalDay(ms, timeZone, weekly) {
-  return weekly ? `Every ${weekdayLongOf(ms, timeZone)}` : longDayOf(ms, timeZone);
+  return weekly ? t('format.everyWeekday', { day: weekdayLongOf(ms, timeZone) }) : longDayOf(ms, timeZone);
 }
 
 /** "5 minutes ago", "yesterday", "3 days ago". */
 export function ago(ms, now = Date.now()) {
-  const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: 'auto' });
+  const rtf = new Intl.RelativeTimeFormat(locale(), { numeric: 'auto' });
   const sec = Math.round((ms - now) / 1000);
   const abs = Math.abs(sec);
-  if (abs < 45) return 'just now';
+  if (abs < 45) return t('format.justNow');
   if (abs < 3600) return rtf.format(Math.round(sec / 60), 'minute');
   if (abs < 86400) return rtf.format(Math.round(sec / 3600), 'hour');
   if (abs < 30 * 86400) return rtf.format(Math.round(sec / 86400), 'day');
