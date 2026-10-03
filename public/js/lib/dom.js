@@ -91,15 +91,15 @@ export function icon(name, cls = '') {
 }
 
 let liveTimer;
-/** Announce a short message to screen readers and show it as a toast. */
-export function announce(message, { tone = 'info' } = {}) {
+/** Announce a short message to screen readers and show it as a toast (unless `silent`, when it's already on screen). */
+export function announce(message, { tone = 'info', silent = false } = {}) {
   const live = document.getElementById('live');
   const toast = document.getElementById('toast');
   if (live) {
     live.textContent = '';
     setTimeout(() => { live.textContent = message; }, 30);
   }
-  if (toast) {
+  if (toast && !silent) {
     toast.textContent = message;
     toast.dataset.tone = tone;
     toast.hidden = false;
