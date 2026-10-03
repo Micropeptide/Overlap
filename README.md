@@ -207,7 +207,7 @@ private link (only a key the browser already holds, checked against its hash)
 and/or a button to confirm updates. Nothing else is sent until confirmed. While
 a poll has a confirmed subscriber, changes are noted in `poll_events` (kind,
 time, response id; no names), and every few minutes (Node timer, Worker cron)
-`sendDueDigests` sends each subscriber one digest after changes settle for 5
+`sendDueDigests` sends each subscriber one digest after changes settle for 2
 minutes, at most every 30 minutes, never about their own doing. Update emails
 never contain private links. Addresses are deleted on unsubscribe, response
 deletion or poll deletion; a link-only request stores none.

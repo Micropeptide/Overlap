@@ -15,11 +15,11 @@ database_name = "overlap"
 database_id = "09cd7135-b235-4d42-9dcd-65409f359592"
 migrations_dir = "migrations"
 
-# Every 10 minutes: send due update emails (only if email is set up), and
+# Every 5 minutes: send due update emails (only if email is set up), and
 # delete expired polls (only if RETENTION_DAYS > 0; "0" keeps polls until the
 # organizer deletes them).
 [triggers]
-crons = ["*/10 * * * *"]
+crons = ["*/5 * * * *"]
 
 [vars]
 ALLOWED_ORIGINS = "https://overlap.runtian.uk"

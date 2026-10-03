@@ -350,9 +350,13 @@ export function createStore(driver, { retentionDays = 0 } = {}) {
       if (typeof token !== 'string' || !token) return null;
       const row = await get('SELECT * FROM email_subs WHERE confirm_hash = ?', [await hashSecret(token)]);
       if (!row) return null;
-      // Start counting changes from now, so the first update covers only what's new.
-      await run('UPDATE email_subs SET confirmed = 1, last_sent_at = COALESCE(last_sent_at, ?) WHERE id = ?', [Date.now(), row.id]);
-      return hydrateSub({ ...row, confirmed: 1 });
+      if (row.confirmed) return hydrateSub(row);
+      // Updates cover changes from now on. (created_at doubles as "following
+      // since"; last_sent_at stays empty so the first update isn't held back
+      // by the 30-minute gap between emails.)
+      const now = Date.now();
+      await run('UPDATE email_subs SET confirmed = 1, created_at = ? WHERE id = ?', [now, row.id]);
+      return hydrateSub({ ...row, confirmed: 1, created_at: now });
     },
 
     async unsubscribe(token) {
@@ -395,7 +399,7 @@ export function createStore(driver, { retentionDays = 0 } = {}) {
     },
 
     /** Subscriptions with news, settled for `settleMs` and not emailed within `gapMs`. */
-    async dueEmailSubs({ now = Date.now(), settleMs = 5 * 60e3, gapMs = 30 * 60e3, limit = 20 } = {}) {
+    async dueEmailSubs({ now = Date.now(), settleMs = 2 * 60e3, gapMs = 30 * 60e3, limit = 20 } = {}) {
       const rows = await all(`SELECT * FROM email_subs WHERE confirmed = 1 AND pending_at IS NOT NULL AND pending_at <= ?
         AND (last_sent_at IS NULL OR last_sent_at <= ?) ORDER BY pending_at LIMIT ?`, [now - settleMs, now - gapMs, limit]);
       return rows.map(hydrateSub);
