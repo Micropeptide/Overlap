@@ -5,10 +5,26 @@
 
 import { h, clear } from '../lib/dom.js';
 import { addDays, parseDateKey, toDateKey, weekdayOf } from '/shared/time.js';
+import { t, locale } from '../lib/i18n.js';
+
+/**
+ * The page's language, with the browser's region when both are the same
+ * language (English page, en-GB browser: weeks start on Monday).
+ */
+function weekLocale() {
+  const page = new Intl.Locale(locale());
+  try {
+    const browser = new Intl.Locale(navigator.language);
+    if (browser.language === page.language && browser.region) {
+      return new Intl.Locale(page.language, { ...(page.script ? { script: page.script } : {}), region: browser.region });
+    }
+  } catch { /* ignore */ }
+  return page;
+}
 
 function firstDayOfWeek() {
   try {
-    const loc = new Intl.Locale(navigator.language);
+    const loc = weekLocale();
     const info = loc.getWeekInfo?.() || loc.weekInfo;
     if (info?.firstDay) return info.firstDay % 7; // Intl uses 7 for Sunday
   } catch { /* ignore */ }
@@ -27,10 +43,10 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
   let anchor = null; // last day clicked, for Shift+click ranges
 
   const root = h('div', { class: 'datepicker' });
-  const monthFmt = new Intl.DateTimeFormat(undefined, { month: 'long', year: 'numeric', timeZone: 'UTC' });
-  const dayFmt = new Intl.DateTimeFormat(undefined, { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'UTC' });
-  const wdFmt = new Intl.DateTimeFormat(undefined, { weekday: 'narrow', timeZone: 'UTC' });
-  const wdLong = new Intl.DateTimeFormat(undefined, { weekday: 'long', timeZone: 'UTC' });
+  const monthFmt = new Intl.DateTimeFormat(locale(), { month: 'long', year: 'numeric', timeZone: 'UTC' });
+  const dayFmt = new Intl.DateTimeFormat(locale(), { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'UTC' });
+  const wdFmt = new Intl.DateTimeFormat(locale(), { weekday: 'narrow', timeZone: 'UTC' });
+  const wdLong = new Intl.DateTimeFormat(locale(), { weekday: 'long', timeZone: 'UTC' });
 
   const disabled = (dk) => dk < today && !keepPast.has(dk);
 
@@ -49,7 +65,7 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
   }
 
   const WIDE = window.matchMedia('(min-width: 860px)');
-  const monthName = new Intl.DateTimeFormat(undefined, { month: 'long', timeZone: 'UTC' });
+  const monthName = new Intl.DateTimeFormat(locale(), { month: 'long', timeZone: 'UTC' });
   const todayParts = parseDateKey(today);
   const monthsShown = () => (WIDE.matches ? 2 : 1);
   const monthOf = (offset) => {
@@ -88,7 +104,7 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
           type: 'button',
           class: `dp-day${chosen.has(dk) ? ' on' : ''}${dk === today ? ' today' : ''}`,
           'aria-pressed': chosen.has(dk) ? 'true' : 'false',
-          'aria-label': `${dayFmt.format(Date.UTC(year, month - 1, day))}${dk === today ? ', today' : ''}`,
+          'aria-label': dk === today ? t('datePicker.today', { day: dayFmt.format(Date.UTC(year, month - 1, day)) }) : dayFmt.format(Date.UTC(year, month - 1, day)),
           disabled: disabled(dk),
           tabindex: dk === focusKey ? '0' : '-1',
           dataset: { date: dk },
@@ -112,26 +128,28 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
     }
 
     // Month and year can be picked directly, so far-off dates are two clicks away.
-    const monthSel = h('select', { class: 'dp-select', 'aria-label': 'Month' },
+    const monthSel = h('select', { class: 'dp-select', 'aria-label': t('datePicker.month') },
       Array.from({ length: 12 }, (_, i) => h('option', { value: String(i + 1), selected: i + 1 === view.month }, monthName.format(Date.UTC(2024, i, 1)))));
     const years = [];
     for (let y = todayParts.year - 1; y <= todayParts.year + 3; y++) years.push(y);
     if (!years.includes(view.year)) years.push(view.year);
-    const yearSel = h('select', { class: 'dp-select', 'aria-label': 'Year' },
-      years.sort().map((y) => h('option', { value: String(y), selected: y === view.year }, String(y))));
+    const yearName = new Intl.DateTimeFormat(locale(), { year: 'numeric', timeZone: 'UTC' });
+    const yearSel = h('select', { class: 'dp-select', 'aria-label': t('datePicker.year') },
+      // Years as the language writes them (2569 in Thai's Buddhist calendar, 2026年 in Japanese), matching the month headings.
+      years.sort().map((y) => h('option', { value: String(y), selected: y === view.year }, yearName.format(Date.UTC(y, 6, 1)))));
     const jump = () => { view = { year: Number(yearSel.value), month: Number(monthSel.value) }; render(); };
     monthSel.addEventListener('change', jump);
     yearSel.addEventListener('change', jump);
 
     root.append(h('div', { class: 'dp-head' },
-      h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Previous month', disabled: !canGoBack, onclick: () => { shiftMonth(-1); render(); } }, '‹'),
+      h('button', { type: 'button', class: 'icon-btn', 'aria-label': t('datePicker.previousMonth'), disabled: !canGoBack, onclick: () => { shiftMonth(-1); render(); } }, '‹'),
       h('div', { class: 'dp-jump', 'aria-live': 'polite' }, monthSel, yearSel),
       h('button', { type: 'button', class: 'dp-today', onclick: () => {
         view = { year: todayParts.year, month: todayParts.month };
         focusKey = today;
         render({ keepFocus: true });
-      } }, 'Today'),
-      h('button', { type: 'button', class: 'icon-btn', 'aria-label': 'Next month', onclick: () => { shiftMonth(1); render(); } }, '›'),
+      } }, t('datePicker.goToToday')),
+      h('button', { type: 'button', class: 'icon-btn', 'aria-label': t('datePicker.nextMonth'), onclick: () => { shiftMonth(1); render(); } }, '›'),
     ));
     const months = h('div', { class: `dp-months${monthsShown() > 1 ? ' two' : ''}` });
     for (let i = 0; i < monthsShown(); i++) months.append(monthTable(monthOf(i), i));

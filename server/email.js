@@ -2,7 +2,28 @@
 // sent through Resend (https://resend.com). Off unless RESEND_API_KEY and
 // EMAIL_FROM are set. Addresses are kept only while a subscription exists.
 
+import catalogs from '../shared/i18n/catalogs.js';
+import { translate } from '../shared/i18n/core.js';
+import { isLanguage, languageDir } from '../shared/i18n/languages.js';
+import emailEnglish from '../shared/i18n/en/email.js';
+
 const MAX_EMAIL = 254;
+
+// English email text, straight from its source as well as the merged catalog,
+// so emails never show bare keys even before `npm run i18n:merge` has run.
+const ENGLISH = { ...catalogs.en, ...emailEnglish };
+
+/** A supported language with a catalog, else English (also for old subscriptions with none). */
+const emailLang = (lang) => (isLanguage(lang) && catalogs[lang] ? lang : 'en');
+
+/** The `t()` for one email's language. */
+function translator(lang) {
+  const catalog = lang === 'en' ? ENGLISH : catalogs[lang];
+  return (key, vars) => translate(catalog, ENGLISH, lang, key, vars);
+}
+
+/** Intl locale for dates: US English as before, otherwise the language itself. */
+const dateLocale = (lang) => (lang === 'en' ? 'en-US' : lang);
 
 /** A plain check that catches typos; the confirmation email does the real test. */
 export function cleanEmail(value) {
@@ -32,10 +53,13 @@ const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&
 const oneLine = (s, max = 80) => { const t = String(s).replace(/\s+/g, ' ').trim(); return t.length > max ? `${t.slice(0, max - 1)}…` : t; };
 
 /** A small, plain email: a few paragraphs, an optional button, and a footer. */
-function compose({ paragraphs, button, footer }) {
-  const text = [...paragraphs, button ? `${button.label}: ${button.url}` : null, '', ...footer].filter((x) => x !== null).join('\n\n');
+function compose({ paragraphs, button, footer, lang = 'en' }) {
+  const t = translator(lang);
+  const text = [...paragraphs, button ? t('email.buttonText', { label: button.label, url: button.url }) : null, '', ...footer].filter((x) => x !== null).join('\n\n');
   const p = (t) => `<p style="margin:0 0 14px;line-height:1.5">${esc(t)}</p>`;
-  const html = `<!doctype html><html><body style="margin:0;padding:24px;background:#f2f5f7;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#14202b">
+  // English keeps its plain <html>; other languages say what they are (and Arabic its direction).
+  const htmlAttrs = lang === 'en' ? '' : ` lang="${esc(lang)}"${languageDir(lang) === 'rtl' ? ' dir="rtl"' : ''}`;
+  const html = `<!doctype html><html${htmlAttrs}><body style="margin:0;padding:24px;background:#f2f5f7;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;color:#14202b">
 <div style="max-width:520px;margin:0 auto;background:#fff;border-radius:14px;padding:24px">
 <p style="margin:0 0 18px;font-weight:700;font-size:18px">Overlap</p>
 ${paragraphs.map(p).join('\n')}
@@ -51,42 +75,46 @@ const unsubHeaders = (oneClickUrl) => ({ 'List-Unsubscribe': `<${oneClickUrl}>`,
  * The one email sent when someone types their address. It can carry their
  * private link (if they asked) and a button to confirm updates (if they asked).
  */
-export function welcomeEmail({ poll, role, link, confirmUrl, publicUrl }) {
+export function welcomeEmail({ poll, role, link, confirmUrl, publicUrl, lang }) {
+  lang = emailLang(lang);
+  const t = translator(lang);
   const title = oneLine(poll.title);
   const paragraphs = [];
   if (link) {
-    paragraphs.push(role === 'organizer'
-      ? `Here is your private link for “${title}”. It lets you edit, close or delete the poll, so keep it to yourself:`
-      : `Here is your private edit link for “${title}”. It lets you change or delete your response, so keep it to yourself:`);
+    paragraphs.push(t(role === 'organizer' ? 'email.linkOrganizer' : 'email.linkGuest', { title }));
     paragraphs.push(link);
   }
   if (confirmUrl) {
-    paragraphs.push(role === 'organizer'
-      ? `To get an email when people respond or change their answers, confirm below. You’ll get at most one email every 30 minutes.`
-      : `To get an email when the organizer picks a time or changes the poll${poll.resultsVisibility === 'everyone' ? ', or when people respond' : ''}, confirm below. You’ll get at most one email every 30 minutes.`);
+    const key = role === 'organizer' ? 'email.confirmOrganizer'
+      : poll.resultsVisibility === 'everyone' ? 'email.confirmGuestPublic' : 'email.confirmGuest';
+    paragraphs.push(t(key));
   }
-  const subject = confirmUrl ? `Confirm emails about “${title}”` : `Your link for “${title}”`;
+  const subject = t(confirmUrl ? 'email.subjectConfirm' : 'email.subjectLink', { title });
   return {
     subject,
     ...compose({
+      lang,
       paragraphs,
-      button: confirmUrl ? { label: 'Confirm email updates', url: confirmUrl } : null,
+      button: confirmUrl ? { label: t('email.confirmButton'), url: confirmUrl } : null,
       footer: [
-        'You’re getting this because someone typed this address into Overlap. If it wasn’t you, ignore it: nothing more will be sent.',
+        t('email.welcomeFooter'),
         `Overlap · ${publicUrl}`,
       ],
     }),
   };
 }
 
-function timeRange(start, end, timeZone, weekly) {
-  const day = new Intl.DateTimeFormat('en-US', { timeZone, weekday: 'long', ...(weekly ? {} : { month: 'short', day: 'numeric' }) }).format(start);
-  const t = (ms) => new Intl.DateTimeFormat('en-US', { timeZone, hour: 'numeric', minute: '2-digit' }).format(ms);
-  return `${weekly ? 'Every ' : ''}${day}, ${t(start)} – ${t(end)} (${timeZone.replace(/_/g, ' ')} time)`;
+function timeRange(start, end, timeZone, weekly, lang = 'en') {
+  const locale = dateLocale(lang);
+  const day = new Intl.DateTimeFormat(locale, { timeZone, weekday: 'long', ...(weekly ? {} : { month: 'short', day: 'numeric' }) }).format(start);
+  const time = (ms) => new Intl.DateTimeFormat(locale, { timeZone, hour: 'numeric', minute: '2-digit' }).format(ms);
+  return translator(lang)(weekly ? 'email.timeRangeWeekly' : 'email.timeRange', { day, start: time(start), end: time(end), zone: timeZone.replace(/_/g, ' ') });
 }
 
 /** Turn a subscriber's events into lines; empty when nothing is worth an email. */
 export function digestLines({ poll, sub, events, responses }) {
+  const lang = emailLang(sub.lang);
+  const t = translator(lang);
   const forOrganizer = !sub.responseId;
   const publicResults = poll.resultsVisibility === 'everyone';
   const names = new Map(responses.map((r) => [r.id, r.name]));
@@ -112,35 +140,38 @@ export function digestLines({ poll, sub, events, responses }) {
   }
   const lines = [];
   const last = pollNews.at(-1);
-  if (pollNews.includes('final') && poll.final) lines.push(`The organizer picked a time: ${timeRange(poll.final.start, poll.final.end, poll.timezone, poll.kind === 'weekly')}.`);
-  else if (last === 'closed' && poll.closed) lines.push('The organizer closed the poll.');
-  else if (last === 'reopened' && !poll.closed) lines.push('The poll is open again.');
-  if (pollNews.includes('edited')) lines.push('The organizer changed the poll. Check that your answer still fits.');
+  if (pollNews.includes('final') && poll.final) {
+    lines.push(t('email.finalPicked', { time: timeRange(poll.final.start, poll.final.end, poll.timezone, poll.kind === 'weekly', lang) }));
+  } else if (last === 'closed' && poll.closed) lines.push(t('email.closed'));
+  else if (last === 'reopened' && !poll.closed) lines.push(t('email.reopened'));
+  if (pollNews.includes('edited')) lines.push(t('email.edited'));
   const list = (ids) => [...ids].map((id) => names.get(id)).filter(Boolean);
+  const joined = (people) => people.join(t('email.nameSeparator'));
   const newNames = list(added);
   const changedNames = list(changed);
-  if (newNames.length) lines.push(`New ${newNames.length === 1 ? 'response' : 'responses'}: ${newNames.join(', ')}.`);
-  if (changedNames.length) lines.push(`Changed their answer: ${changedNames.join(', ')}.`);
-  if (removed) lines.push(`${removed === 1 ? 'One response was' : `${removed} responses were`} removed.`);
+  if (newNames.length) lines.push(t('email.newResponses', { count: newNames.length, names: joined(newNames) }));
+  if (changedNames.length) lines.push(t('email.changedAnswers', { count: changedNames.length, names: joined(changedNames) }));
+  if (removed) lines.push(t('email.removed', { count: removed }));
   if ((newNames.length || changedNames.length || removed) && (forOrganizer || publicResults)) {
-    lines.push(`${responses.length} ${responses.length === 1 ? 'person has' : 'people have'} responded so far.`);
+    lines.push(t('email.respondedSoFar', { count: responses.length }));
   }
   return lines;
 }
 
 export function digestEmail({ poll, sub, lines, publicUrl, unsubUrl }) {
+  const lang = emailLang(sub.lang);
+  const t = translator(lang);
   const title = oneLine(poll.title);
   const url = sub.responseId ? `${publicUrl}/p/${poll.id}` : `${publicUrl}/m/${poll.id}`;
   return {
-    subject: `Updates to “${title}”`,
+    subject: t('email.subjectUpdates', { title }),
     ...compose({
-      paragraphs: [`News about “${title}”:`, ...lines],
-      button: { label: sub.responseId ? 'Open the poll' : 'Open the organizer view', url },
+      lang,
+      paragraphs: [t('email.news', { title }), ...lines],
+      button: { label: t(sub.responseId ? 'email.openPoll' : 'email.openOrganizerView'), url },
       footer: [
-        sub.responseId
-          ? 'The link opens the poll. On the device you answered from, your response is already there.'
-          : 'The link opens the organizer view in the browser where you created the poll. Elsewhere, use your private link or organizer password.',
-        `Stop these emails: ${unsubUrl}`,
+        t(sub.responseId ? 'email.guestFooter' : 'email.organizerFooter'),
+        t('email.stop', { url: unsubUrl }),
       ],
     }),
   };

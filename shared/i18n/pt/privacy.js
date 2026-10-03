@@ -1,0 +1,66 @@
+// The privacy page. Every statement describes what the code actually does:
+// translations must keep the exact meaning, adding or dropping nothing.
+export default {
+  'privacy.tabTitle': 'Privacidade',
+  'privacy.title': 'Privacidade',
+  'privacy.ledeRetention': 'O Overlap coleta só o necessário para encontrar um horário, guarda os dados por tempo limitado e permite que você os exclua quando quiser.',
+  'privacy.ledeKept': 'O Overlap coleta só o necessário para encontrar um horário e permite que você exclua os dados quando quiser.',
+
+  'privacy.storesHeading': 'O que o Overlap armazena',
+  'privacy.storesPoll': 'Para cada enquete: o nome e, se o organizador os adicionar, uma observação, um local ou link de chamada e uma data de encerramento. Também as datas (ou dias da semana) e os horários oferecidos, o fuso horário, a duração da reunião, quem pode ver as respostas e se a enquete está aberta, encerrada ou tem um horário definitivo.',
+  'privacy.storesResponse': 'Para cada resposta: o nome de exibição que o convidado digitou, os horários que marcou (preferido, disponível ou se necessário) e a observação opcional.',
+  'privacy.storesTimestamps': 'Quando cada enquete e resposta foi criada e alterada pela última vez.',
+  'privacy.storesLinkHash': 'Uma impressão digital embaralhada (um hash SHA-256) de cada link privado, para que o servidor possa verificar um link sem guardar uma cópia dele.',
+  'privacy.storesPasswordHash': 'Se um organizador ou convidado adicionar uma senha opcional: um hash SHA-256 de uma chave gerada a partir dela no navegador da pessoa. Nunca a própria senha.',
+  'privacy.storesAttempts': 'Quantas senhas erradas foram tentadas em cada enquete na última hora (um número por enquete, sem detalhes de conexão ou dispositivo), para impedir tentativas de adivinhação.',
+  'privacy.storesEmail': 'Só se você pedir atualizações por e-mail: seu endereço de e-mail, se você o confirmou e quando recebeu o último e-mail. Enquanto alguém acompanha uma enquete por e-mail, o Overlap também guarda uma lista curta do que mudou e quando (por exemplo, “uma resposta foi adicionada”, com o id da resposta), para que o próximo e-mail possa dizer o que há de novo. Essa lista é apagada após 30 dias.',
+
+  'privacy.notCollectedHeading': 'O que o Overlap não coleta',
+  'privacy.noAccountsWithEmails': 'Nenhuma conta ou número de telefone, e nenhum endereço de e-mail, a menos que você peça e-mails.',
+  'privacy.noAccounts': 'Nenhuma conta, endereço de e-mail ou número de telefone.',
+  'privacy.passwordsLocal': 'As senhas opcionais nunca saem do seu navegador. Ele transforma a senha em uma chave (PBKDF2-SHA-256, 210.000 iterações, com a enquete como salt), envia só essa chave, e o servidor guarda só um hash da chave.',
+  'privacy.noCalendar': 'Nenhum acesso à sua agenda.',
+  'privacy.noTracking': 'Nenhum cookie, análise de uso, anúncio, pixel de rastreamento ou script de terceiros. As fontes são servidas por este site.',
+  'privacy.noIpLogs': 'O Overlap não grava endereços IP no banco de dados nem nos registros (logs). Para conter abusos, ele conta as solicitações por conexão na memória por cerca de uma hora e depois as esquece.',
+  'privacy.hostingCloudflare': 'Esta cópia do Overlap é hospedada por duas empresas: o GitHub Pages serve as páginas, e a Cloudflare executa a parte que armazena as enquetes (no banco de dados D1). As duas veem seu endereço IP quando você se conecta e podem manter os próprios registros de rede. O Overlap desativa o registro opcional de solicitações da Cloudflare.',
+  'privacy.hostingOther': 'A empresa que hospeda uma cópia do Overlap pode manter os próprios registros de rede.',
+  'privacy.resend': 'Os e-mails são enviados pelo Resend (resend.com), que recebe o endereço e o conteúdo do e-mail para entregá-lo e mantém os próprios registros de entrega, conforme sua política de privacidade. O Overlap não envia nada ao Resend, a menos que você peça um e-mail.',
+  'privacy.calendarLinks': 'Se uma enquete tiver um horário definitivo, você pode abri-lo no Google Agenda ou no Outlook.com. Clicar em um desses links envia a essa empresa o nome, o horário, o local e a observação do evento e o link de convite da enquete, e qualquer pessoa com o link de convite pode ver a enquete (e, a menos que os resultados estejam ocultos, os nomes e horários de todos). Nada é enviado se você não clicar.',
+
+  'privacy.whoHeading': 'Quem pode ver o quê',
+  'privacy.guestLink': 'O link de convite mostra a enquete a qualquer pessoa que o tenha. Por padrão, os convidados também podem ver os nomes e horários uns dos outros. O organizador pode mudar isso para “Só eu”, e o servidor então deixa de enviar as respostas das outras pessoas aos convidados.',
+  'privacy.privateLink': 'O link privado permite que quem o tiver edite, encerre ou exclua a enquete e remova respostas. O organizador pode substituí-lo a qualquer momento, e o antigo deixa de funcionar.',
+  'privacy.guestEditLink': 'Cada convidado recebe um link privado de edição que permite alterar ou excluir só a própria resposta. Digitar o nome de outra pessoa não dá acesso à resposta dela.',
+  'privacy.passwordAccess': 'Um convidado que adiciona uma senha também pode abrir sua resposta em outro dispositivo com o nome e essa senha. Um organizador que define uma senha pode abrir a visão do organizador a partir do link de convite com ela. As duas senhas podem ser alteradas ou removidas depois.',
+  'privacy.hiddenResults': 'Quando os resultados estão definidos como “Só eu”, os convidados ainda veem quantas pessoas responderam, mas não quem. Nesse caso, os nomes não precisam ser únicos, então tentar um nome também não revela nada.',
+  'privacy.emailPrivate': 'Seu endereço de e-mail nunca é mostrado ao organizador, aos convidados nem em nenhuma página. Só quem o adicionou pode vê-lo ou alterá-lo, na página em que o adicionou. Os e-mails de atualização não contêm links privados; só o e-mail em que você pede seu link contém.',
+  'privacy.browserStorage': 'Seu navegador guarda algumas coisas no próprio armazenamento, só no seu dispositivo: os links privados que você usa (ou as chaves derivadas de senha com que você entrou), o último nome que você digitou, seu fuso horário preferido e as configurações do formulário, e uma resposta que você ainda não enviou (as marcações, o nome e a observação, para que não se percam ao recarregar). “Duplicar enquete” guarda brevemente as configurações, o título, a observação e o local da enquete no armazenamento de sessão da aba. Limpar os dados do navegador apaga tudo isso; o servidor do Overlap nunca vê esses dados.',
+
+  'privacy.retentionHeading': 'Por quanto tempo os dados são guardados',
+  'privacy.retentionParagraph': '{policy} {anytime} {afterDelete}',
+  'privacy.retentionParagraphEmails': '{policy} {anytime} {emails} {afterDelete}',
+  'privacy.retentionAuto': {
+    one: 'Uma enquete e todas as suas respostas são excluídas automaticamente {count} dia após a última data da enquete. Uma enquete semanal não tem última data, então é excluída {count} dia após a última alteração: uma edição, ou uma resposta adicionada ou atualizada.',
+    many: 'Uma enquete e todas as suas respostas são excluídas automaticamente {count} dias após a última data da enquete. Uma enquete semanal não tem última data, então é excluída {count} dias após a última alteração: uma edição, ou uma resposta adicionada ou atualizada.',
+    other: 'Uma enquete e todas as suas respostas são excluídas automaticamente {count} dias após a última data da enquete. Uma enquete semanal não tem última data, então é excluída {count} dias após a última alteração: uma edição, ou uma resposta adicionada ou atualizada.',
+  },
+  'privacy.retentionKept': 'O Overlap não exclui enquetes por conta própria: uma enquete e suas respostas ficam guardadas até o organizador excluir a enquete.',
+  'privacy.deleteAnytime': 'Os organizadores podem excluir uma enquete a qualquer momento, e os convidados podem excluir a própria resposta a qualquer momento, mesmo depois que a enquete for encerrada.',
+  'privacy.emailDeletion': 'Um endereço de e-mail é excluído quando você para os e-mails (na página da enquete ou pelo link em qualquer e-mail), quando você exclui sua resposta ou quando a enquete é excluída. Um endereço usado só para enviar seu link nem chega a ser armazenado.',
+  'privacy.deletedCloudflare': {
+    one: 'Os dados excluídos são removidos do banco de dados ativo na hora. O banco de dados da Cloudflare mantém um histórico automático de restauração por {count} dia, então, durante esse período, uma enquete excluída ainda poderia ser recuperada por quem administra esta cópia do Overlap; depois disso, ela some de vez.',
+    many: 'Os dados excluídos são removidos do banco de dados ativo na hora. O banco de dados da Cloudflare mantém um histórico automático de restauração por {count} dias, então, durante esse período, uma enquete excluída ainda poderia ser recuperada por quem administra esta cópia do Overlap; depois disso, ela some de vez.',
+    other: 'Os dados excluídos são removidos do banco de dados ativo na hora. O banco de dados da Cloudflare mantém um histórico automático de restauração por {count} dias, então, durante esse período, uma enquete excluída ainda poderia ser recuperada por quem administra esta cópia do Overlap; depois disso, ela some de vez.',
+  },
+  'privacy.deletedOther': 'Os dados excluídos são sobrescritos no arquivo do banco de dados na hora (exclusão segura do SQLite, além da descarga do seu log de gravação antecipada). Se quem administra esta cópia do Overlap mantiver backups, uma cópia pode permanecer neles até que esses backups expirem.',
+
+  'privacy.securityHeading': 'Segurança, com franqueza',
+  'privacy.securityLinks': 'Os links contêm chaves aleatórias longas, impraticáveis de adivinhar. As chaves privadas ficam depois do “#” no link, parte que os navegadores não enviam ao servidor nem a outros sites, e o servidor só as recebe em um cabeçalho da solicitação. As páginas usam uma política de segurança de conteúdo rigorosa e não enviam referenciador.',
+  'privacy.securityPasswords': 'Uma senha é tão forte quanto você a fizer. Depois de 30 senhas erradas em uma hora, a enquete deixa de aceitar senhas (certas ou erradas) até o fim dessa hora, enquanto os links continuam funcionando. Alguém que obtivesse uma cópia do banco de dados ainda poderia tentar adivinhar uma senha fraca offline, então use uma senha que você não usa em nenhum outro lugar.',
+  'privacy.securityEncryption': 'O Overlap não criptografa o conteúdo das enquetes no banco de dados, e as respostas não são anônimas: qualquer pessoa a quem você der o link de convite pode ver nomes e horários. {transit} Não use o Overlap para nada sensível.',
+  'privacy.httpsCloudflare': 'Esta cópia só pode ser acessada por HTTPS, então as conexões são criptografadas em trânsito.',
+  'privacy.httpsOther': 'As conexões só são criptografadas quando esta cópia do Overlap é servida por HTTPS.',
+
+  'privacy.sourceHeading': 'Código-fonte',
+  'privacy.source': 'O Overlap é um aplicativo pequeno, independente e de código aberto (Licença MIT) feito por Micropeptide: {link}. Ele foi inspirado no agendador de código aberto Timeful, mas não compartilha nenhum código com ele.',
+};

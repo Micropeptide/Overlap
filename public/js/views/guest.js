@@ -8,15 +8,17 @@ import { bestTimes } from '../components/best-times.js';
 import { resultsSection } from '../components/results.js';
 import { renderNotFound } from './not-found.js';
 import { isValidTimeZone } from '/shared/time.js';
-import { passwordKey, passwordProblem } from '/shared/password.js';
+import { passwordKey, passwordProblem, PASSWORD_MIN, PASSWORD_MAX } from '/shared/password.js';
+import { t, tx } from '../lib/i18n.js';
 import { emailControl } from '../components/email-control.js';
 import { pollFacts, finalCard, statusBanner, locationLine, watchForUpdates, captureFocus } from './shared.js';
 
-const BRUSHES = [
-  ['yes', 'Available', '1'],
-  ['pref', 'Preferred', '2'],
-  ['maybe', 'If needed', '3'],
-  ['erase', 'Erase', '4'],
+// What a guest can mark with: [id, label, shortcut key, what's announced on picking it].
+const BRUSHES = () => [
+  ['yes', t('guest.brushYes'), '1', t('guest.markingYes')],
+  ['pref', t('guest.brushPref'), '2', t('guest.markingPref')],
+  ['maybe', t('guest.brushMaybe'), '3', t('guest.markingMaybe')],
+  ['erase', t('guest.brushErase'), '4', t('guest.markingErase')],
 ];
 
 export async function renderGuest(main, pollId) {
@@ -35,7 +37,7 @@ export async function renderGuest(main, pollId) {
     if (err instanceof ApiError && err.status === 404) {
       storage.forgetAnswer(pollId);
       storage.forgetDraft(pollId);
-      return renderNotFound(main, { title: 'This poll isn’t here', message: 'It may have been deleted by the organizer. Ask them for a new link.' });
+      return renderNotFound(main, { title: t('guest.goneTitle'), message: t('guest.goneMessage') });
     }
     throw err;
   }
@@ -160,8 +162,8 @@ export async function renderGuest(main, pollId) {
   // Keyboard shortcuts while marking: 1–4 pick a brush, Ctrl/Cmd+Z undoes.
   document.addEventListener('keydown', (e) => {
     if (tab !== 'mine' || !grid || !canEdit()) return;
-    const t = e.target;
-    if (t instanceof HTMLElement && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) && t.type !== 'radio') return;
+    const target = e.target;
+    if (target instanceof HTMLElement && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)) && target.type !== 'radio') return;
     if (document.querySelector('dialog[open]')) return;
     const mod = e.ctrlKey || e.metaKey;
     if (mod && e.key.toLowerCase() === 'z') {
@@ -175,11 +177,11 @@ export async function renderGuest(main, pollId) {
       return;
     }
     if (mod || e.altKey) return;
-    const pick = BRUSHES.find(([, , key]) => key === e.key);
+    const pick = BRUSHES().find(([, , key]) => key === e.key);
     if (pick) {
       setBrush(pick[0]);
       main.querySelector(`input[name="brush"][value="${pick[0]}"]`)?.click();
-      announce(`Marking as ${pick[1].toLowerCase()}`);
+      announce(pick[3]);
     }
   });
 
@@ -242,19 +244,19 @@ export async function renderGuest(main, pollId) {
     if (canSeeResults()) tabIds.push('group');
     if (!tabIds.includes(tab)) tab = tabIds[0] || 'group';
     if (tabIds.length > 1) {
-      const tabs = h('div', { class: 'tabs', role: 'tablist', 'aria-label': 'View' });
-      const label = { mine: mine ? 'Your response' : 'Your availability', group: `Group results (${poll.responseCount})` };
+      const tabs = h('div', { class: 'tabs', role: 'tablist', 'aria-label': t('guest.tabsLabel') });
+      const label = { mine: mine ? t('guest.tabResponse') : t('guest.yourAvailability'), group: t('guest.tabGroup', { count: poll.responseCount }) };
       for (const id of tabIds) {
         tabs.append(h('button', {
           type: 'button', role: 'tab', id: `tab-${id}`, class: 'tab',
           'aria-selected': tab === id ? 'true' : 'false', 'aria-controls': `panel-${id}`, tabindex: tab === id ? '0' : '-1',
           onclick: () => { tab = id; justSaved = false; render(); document.getElementById(`tab-${id}`)?.focus(); },
-        }, label[id], id === 'mine' && draft.dirty && canEdit() ? h('span', { class: 'unsaved-dot', title: 'Unsaved changes' }, h('span', { class: 'visually-hidden' }, ' (unsaved changes)')) : null));
+        }, label[id], id === 'mine' && draft.dirty && canEdit() ? h('span', { class: 'unsaved-dot', title: t('guest.unsaved') }, h('span', { class: 'visually-hidden' }, t('guest.unsavedHidden'))) : null));
       }
       tabs.addEventListener('keydown', (e) => {
         if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
         const all = [...tabs.querySelectorAll('[role=tab]')];
-        const i = all.findIndex((t) => t.getAttribute('aria-selected') === 'true');
+        const i = all.findIndex((el) => el.getAttribute('aria-selected') === 'true');
         all[(i + (e.key === 'ArrowRight' ? 1 : all.length - 1)) % all.length].click();
       });
       page.append(tabs);
@@ -273,24 +275,25 @@ export async function renderGuest(main, pollId) {
     if (justSaved && mine) panel.append(savedNotice());
     if (draft.restored && open) {
       panel.append(h('div', { class: 'notice small restored' },
-        h('span', null, 'We restored the changes you hadn’t submitted yet. '),
+        h('span', null, t('guest.restored'), ' '),
         h('button', {
           type: 'button', class: 'link-btn',
-          onclick: () => { clearDraft(); loadDraftFromResponse(); render(); announce('Discarded unsaved changes'); },
-        }, 'Discard them')));
+          onclick: () => { clearDraft(); loadDraftFromResponse(); render(); announce(t('guest.discarded')); },
+        }, t('guest.discard'))));
     }
     if (!isOpen()) {
-      panel.append(h('p', { class: 'notice' }, 'This poll is closed, so responses can’t be changed. You can still delete yours.'));
+      panel.append(h('p', { class: 'notice' }, t('guest.closedNotice')));
     } else if (locked()) {
-      panel.append(h('p', { class: 'notice' }, 'The organizer doesn’t allow changing answers after they’re sent. You can still delete yours.'));
+      panel.append(h('p', { class: 'notice' }, t('guest.lockedNotice')));
     }
     if (!mine && open) {
       panel.append(h('p', { class: 'sign-in-line small' },
-        'Already answered on another device? ',
-        h('button', { type: 'button', class: 'link-btn', onclick: signInAsGuest }, 'Sign in with your name and password')));
+        ...tx('guest.signInLine', {
+          link: h('button', { type: 'button', class: 'link-btn', onclick: signInAsGuest }, t('guest.signInLink')),
+        })));
     }
 
-    const visibleTo = poll.resultsVisibility === 'everyone' ? 'Shown to the organizer and everyone with the guest link.' : 'Shown only to the organizer.';
+    const nameHint = poll.resultsVisibility === 'everyone' ? t('guest.nameHintEveryone') : t('guest.nameHintOrganizer');
     const nameInput = h('input', {
       id: 'g-name', class: 'input', type: 'text', maxlength: '40', autocomplete: 'nickname', required: true,
       value: draft.name, disabled: !open,
@@ -306,52 +309,56 @@ export async function renderGuest(main, pollId) {
 
     const noteInput = h('input', {
       id: 'g-note', class: 'input', type: 'text', maxlength: '200', value: draft.note, disabled: !open,
-      placeholder: 'e.g. “Remote only” or “Can’t stay past 4”', 'aria-describedby': 'g-note-hint',
+      placeholder: t('guest.notePlaceholder'), 'aria-describedby': 'g-note-hint',
     });
     noteInput.addEventListener('input', () => { draft.note = noteInput.value; markDirty(); });
 
     // Optional password: lets the guest open their response anywhere with their name.
     const pw = passwordField({
-      id: 'g-password', label: mine?.hasPassword ? 'New password' : 'Password',
+      id: 'g-password', label: mine?.hasPassword ? t('guest.newPassword') : t('guest.password'),
       autocomplete: 'new-password',
       hint: mine?.hasPassword
-        ? 'Leave empty to keep your current password.'
-        : 'Optional. With it, you can change your answer from any device by signing in with your name. At least 8 characters.',
+        ? t('guest.passwordKeepHint')
+        : t('guest.passwordHint'),
     });
     pw.input.disabled = !open;
     let removePassword = false;
     const pwSection = h('details', { class: 'pw-section', open: draft.passwordOpen || null },
-      h('summary', null, icon('lock'), mine?.hasPassword ? 'Password is on' : 'Add a password (optional)'),
+      h('summary', null, icon('lock'), mine?.hasPassword ? t('guest.passwordOn') : t('guest.passwordAdd')),
       h('div', { class: 'pw-body' },
         pw.el,
         mine?.hasPassword && !viaPassword() ? h('label', { class: 'check small' },
           h('input', { type: 'checkbox', disabled: !open, onchange: (e) => { removePassword = e.target.checked; pw.input.disabled = removePassword; } }),
-          h('span', null, 'Remove my password')) : null,
-        mine?.hasPassword && viaPassword() ? h('p', { class: 'field-hint' }, 'You signed in with your password on this device, so you can change it here but not remove it.') : null));
+          h('span', null, t('guest.passwordRemove'))) : null,
+        mine?.hasPassword && viaPassword() ? h('p', { class: 'field-hint' }, t('guest.passwordSignedIn')) : null));
     pwSection.addEventListener('toggle', () => { draft.passwordOpen = pwSection.open; });
 
     const unseen = mine?.answered ? poll.slots.filter((s) => !mine.answered.includes(s)).length : 0; // null means all seen
 
     const counter = h('p', { class: 'count', 'aria-live': 'polite' });
-    const emptyHint = h('p', { class: 'muted small empty-hint', hidden: true }, 'Nothing marked yet. If none of these times work, you can still submit so the organizer knows.');
-    const undoBtn = h('button', { type: 'button', class: 'btn small ghost', disabled: true, onclick: () => grid.undo() }, 'Undo');
+    const emptyHint = h('p', { class: 'muted small empty-hint', hidden: true }, t('guest.emptyHint'));
+    const undoBtn = h('button', { type: 'button', class: 'btn small ghost', disabled: true, onclick: () => grid.undo() }, t('guest.undo'));
     const clearBtn = h('button', {
       type: 'button', class: 'btn small ghost',
-      onclick: () => { grid.replace(new Map()); announce('Cleared all your marks. Press Undo to bring them back.'); },
-    }, 'Clear all');
+      onclick: () => { grid.replace(new Map()); announce(t('guest.cleared')); },
+    }, t('guest.clearAll'));
     const updateCount = () => {
       const counts = { pref: 0, yes: 0, maybe: 0 };
       for (const v of draft.value.values()) counts[v]++;
       const available = counts.yes + counts.pref;
+      const countKey = counts.pref && counts.maybe ? 'guest.countPrefMaybe'
+        : counts.pref ? 'guest.countPref'
+        : counts.maybe ? 'guest.countMaybe'
+        : 'guest.count';
       counter.textContent = draft.value.size
-        ? `${f.plural(available, 'time')} available${counts.pref ? ` (${counts.pref} preferred)` : ''}${counts.maybe ? `, ${counts.maybe} if needed` : ''}`
-        : 'No times marked yet';
+        ? t(countKey, { count: available, pref: counts.pref, maybe: counts.maybe })
+        : t('guest.countNone');
       emptyHint.hidden = draft.value.size > 0;
       undoBtn.disabled = !grid?.canUndo;
       clearBtn.disabled = draft.value.size === 0;
     };
 
-    const brushChip = ([id, label, key]) => h('label', { class: `brush brush-${id}`, title: `Shortcut: ${key}` },
+    const brushChip = ([id, label, key]) => h('label', { class: `brush brush-${id}`, title: t('guest.shortcut', { key }) },
       h('input', { type: 'radio', name: 'brush', value: id, checked: brush === id, disabled: !open, onchange: () => setBrush(id) }),
       h('span', { class: 'brush-swatch', 'aria-hidden': 'true' }),
       h('span', null, label));
@@ -367,7 +374,7 @@ export async function renderGuest(main, pollId) {
         type: 'checkbox', checked: showOthers, disabled: !open,
         onchange: (e) => { showOthers = e.target.checked; grid.update({ showOthers }); },
       }),
-      h('span', null, `Show when the ${f.plural(otherResponses.length, 'other person', 'other people')} ${otherResponses.length === 1 ? 'is' : 'are'} free`)) : null;
+      h('span', null, t('guest.showOthers', { count: otherResponses.length }))) : null;
 
     grid = createGrid({
       mode: 'edit',
@@ -383,7 +390,7 @@ export async function renderGuest(main, pollId) {
       others,
       othersTotal: otherResponses.length,
       showOthers,
-      label: 'Your availability',
+      label: t('guest.yourAvailability'),
       describedBy: open ? 'grid-help' : null,
       readOnly: !open,
       onChange: (v) => {
@@ -395,45 +402,45 @@ export async function renderGuest(main, pollId) {
     });
     updateCount();
 
-    const submit = h('button', { type: 'submit', class: 'btn primary large', disabled: !open }, mine ? 'Save changes' : 'Submit availability');
+    const submit = h('button', { type: 'submit', class: 'btn primary large', disabled: !open }, mine ? t('guest.saveChanges') : t('guest.submit'));
     const formError = h('p', { class: 'form-error', role: 'alert', hidden: true });
 
     const form = h('form', { class: 'respond', novalidate: true },
       h('div', { class: 'field name-field' },
-        h('label', { for: 'g-name', class: 'field-label' }, 'Your name'),
+        h('label', { for: 'g-name', class: 'field-label' }, t('guest.yourName')),
         nameInput,
-        h('p', { class: 'field-hint', id: 'g-name-hint' }, `${visibleTo} No email or account needed.`),
+        h('p', { class: 'field-hint', id: 'g-name-hint' }, nameHint),
         nameErr),
       h('div', { class: 'field' },
-        h('p', { class: 'field-label', id: 'when-label' }, open ? 'When are you free?' : 'Your times'),
+        h('p', { class: 'field-label', id: 'when-label' }, open ? t('guest.whenFree') : t('guest.yourTimes')),
         open ? h('p', { class: 'field-hint', id: 'grid-help' },
-          h('span', { class: 'hint-pointer' }, 'Drag across the times you’re free. Click a day or time heading to fill it. '),
-          h('span', { class: 'hint-touch' }, 'Tap each time you’re free. '),
-          h('span', { class: 'hint-keys' }, 'With a keyboard: arrows move, Space marks, Shift with an arrow marks as you go, 1–4 switch what you’re marking, Ctrl+Z undoes.')) : null,
-        poll.kind === 'weekly' ? h('p', { class: 'field-hint weekly-hint' }, 'This is a weekly poll. Mark the times that usually work for you in a typical week.') : null,
-        unseen ? h('p', { class: 'notice small' }, `The organizer added ${f.plural(unseen, 'time')} since you last answered. Take a look and save again.`) : null,
+          h('span', { class: 'hint-pointer' }, t('guest.hintPointer'), ' '),
+          h('span', { class: 'hint-touch' }, t('guest.hintTouch'), ' '),
+          h('span', { class: 'hint-keys' }, t('guest.hintKeys'))) : null,
+        poll.kind === 'weekly' ? h('p', { class: 'field-hint weekly-hint' }, t('guest.weeklyHint')) : null,
+        unseen ? h('p', { class: 'notice small' }, t('guest.unseen', { count: unseen })) : null,
         zone,
         // Read-only (closed, or locked after sending): no marking tools.
         open ? h('div', { class: 'brush-row' },
-          h('div', { class: 'brushes', role: 'radiogroup', 'aria-label': 'Mark times as' },
-            h('span', { class: 'brushes-label', 'aria-hidden': 'true' }, 'Mark as'),
-            BRUSHES.map(brushChip)),
+          h('div', { class: 'brushes', role: 'radiogroup', 'aria-label': t('guest.brushesLabel') },
+            h('span', { class: 'brushes-label', 'aria-hidden': 'true' }, t('guest.markAs')),
+            BRUSHES().map(brushChip)),
           h('div', { class: 'edit-tools' }, undoBtn, clearBtn)) : null,
-        open ? h('p', { class: 'brush-help muted small' }, '“Preferred” tells the organizer which times suit you best. “If needed” means you could make it, but would rather not.') : null,
+        open ? h('p', { class: 'brush-help muted small' }, t('guest.brushHelp')) : null,
         open ? othersToggle : null,
         grid.el),
       emptyHint,
       h('div', { class: 'field note-field' },
-        h('label', { for: 'g-note', class: 'field-label' }, 'Note ', h('span', { class: 'optional' }, '(optional)')),
+        h('label', { for: 'g-note', class: 'field-label' }, ...tx('guest.noteLabel', { optional: h('span', { class: 'optional' }, t('guest.optional')) })),
         noteInput,
-        h('p', { class: 'field-hint', id: 'g-note-hint' }, 'Anything the organizer should know. Shown next to your name.')),
+        h('p', { class: 'field-hint', id: 'g-note-hint' }, t('guest.noteHint'))),
       locked() ? null : pwSection,
-      !mine && poll.allowEdits === false ? h('p', { class: 'notice small' }, 'Check your times before sending: the organizer doesn’t allow changes afterwards.') : null,
+      !mine && poll.allowEdits === false ? h('p', { class: 'notice small' }, t('guest.noEditsWarning')) : null,
       formError,
       h('div', { class: 'action-bar' },
         h('div', { class: 'action-status' }, counter),
         h('div', { class: 'action-buttons' },
-          mine ? h('button', { type: 'button', class: 'btn ghost danger-text', onclick: deleteMine }, 'Delete my response') : null,
+          mine ? h('button', { type: 'button', class: 'btn ghost danger-text', onclick: deleteMine }, t('guest.deleteMine')) : null,
           locked() ? null : submit)),
     );
 
@@ -442,7 +449,7 @@ export async function renderGuest(main, pollId) {
       formError.hidden = true;
       const name = nameInput.value.trim();
       if (!name) {
-        nameErr.textContent = 'Add your name so the organizer knows who answered.';
+        nameErr.textContent = t('guest.nameMissing');
         nameErr.hidden = false;
         nameInput.setAttribute('aria-invalid', 'true');
         nameInput.focus();
@@ -450,10 +457,11 @@ export async function renderGuest(main, pollId) {
       }
       const password = pw.input.value;
       if (password && !removePassword) {
-        const problem = passwordProblem(password);
-        if (problem) {
+        if (passwordProblem(password)) {
           pwSection.open = true;
-          formError.textContent = `Password: ${problem}`;
+          formError.textContent = password.length < PASSWORD_MIN
+            ? t('guest.passwordTooShort', { min: PASSWORD_MIN })
+            : t('guest.passwordTooLong', { max: PASSWORD_MAX });
           formError.hidden = false;
           pw.input.focus();
           return;
@@ -479,13 +487,13 @@ export async function renderGuest(main, pollId) {
           ({ response: mine } = await api('PUT', `/api/polls/${pollId}/responses/${mine.id}`, { token, body }));
           // Signed in with the old password: carry on with the new one.
           if (viaPassword() && body.password) token = `${mine.id}:${body.password}`;
-          announce(body.password ? 'Saved your changes and your new password' : 'Saved your changes');
+          announce(body.password ? t('guest.savedWithPassword') : t('guest.saved'));
         } else {
           const res = await api('POST', `/api/polls/${pollId}/responses`, { body });
           mine = res.response;
           token = res.editToken;
           justSaved = true;
-          announce(`Thanks, ${mine.name}. Your times are in.`);
+          announce(t('guest.thanks', { name: mine.name }));
         }
         storage.saveAnswer(pollId, { token, responseId: mine.id, name: mine.name, title: poll.title, savedAt: Date.now() });
         storage.setLastName(mine.name);
@@ -533,33 +541,33 @@ export async function renderGuest(main, pollId) {
     return h('div', { class: 'edit-link-box' },
       h('p', { class: 'muted small' }, icon('link'),
         h('span', null, locked()
-          ? 'Your private link opens your answer on any device, so you can see or delete it. Don’t share it.'
-          : 'Your private edit link opens your answer on any device, so you can change or delete it. Don’t share it.')),
-      h('button', { type: 'button', class: 'link-btn', dataset: { action: 'copy-edit-link' }, onclick: () => copyText(link, 'Copied your private edit link') },
-        'Copy my edit link'));
+          ? t('guest.linkBoxLocked')
+          : t('guest.linkBox'))),
+      h('button', { type: 'button', class: 'link-btn', dataset: { action: 'copy-edit-link' }, onclick: () => copyText(link, t('guest.copiedLink')) },
+        t('guest.copyLink')));
   }
 
   function savedNotice() {
     const link = `${location.origin}/p/${pollId}#r=${token}`;
-    const input = h('input', { class: 'input mono-link', readonly: true, value: link, 'aria-label': 'Your private edit link', onfocus: (e) => e.target.select() });
+    const input = h('input', { class: 'input mono-link', readonly: true, value: link, 'aria-label': t('guest.editLinkLabel'), onfocus: (e) => e.target.select() });
     return h('div', { class: 'saved-notice callout success', tabindex: '-1' },
-      h('p', { class: 'callout-title' }, icon('check'), `Thanks, ${mine.name}. Your times are in.`),
+      h('p', { class: 'callout-title' }, icon('check'), t('guest.thanks', { name: mine.name })),
       h('p', null, poll.allowEdits === false
-        ? 'The organizer doesn’t allow changes after sending, but you can delete your response any time: from this browser, or on another device with your private link. Don’t share the link.'
+        ? t('guest.savedLocked')
         : mine.hasPassword
-        ? 'You can change or delete your response from this browser any time. On another device, open this poll and sign in with your name and password, or use your private edit link. Don’t share the link: anyone with it can change your answer.'
-        : 'You can change or delete your response from this browser any time. To do it from another device, use your private edit link, or add a password below. Don’t share the link: anyone with it can change your answer.'),
+        ? t('guest.savedWithPasswordOn')
+        : t('guest.savedNoPassword')),
       h('div', { class: 'link-row' }, input,
-        h('button', { type: 'button', class: 'btn secondary', onclick: () => copyText(link, 'Copied your private edit link') }, icon('copy'), 'Copy')),
-      canSeeResults() ? h('p', null, h('button', { type: 'button', class: 'link-btn', onclick: () => { tab = 'group'; justSaved = false; render(); document.getElementById('tab-group')?.focus(); } }, 'See group results')) : null,
+        h('button', { type: 'button', class: 'btn secondary', onclick: () => copyText(link, t('guest.copiedLink')) }, icon('copy'), t('guest.copy'))),
+      canSeeResults() ? h('p', null, h('button', { type: 'button', class: 'link-btn', onclick: () => { tab = 'group'; justSaved = false; render(); document.getElementById('tab-group')?.focus(); } }, t('guest.seeResults'))) : null,
     );
   }
 
   async function deleteMine() {
     const ok = await confirmDialog({
-      title: 'Delete your response?',
-      message: 'Your name and times will be removed from this poll for good.',
-      confirm: 'Delete response',
+      title: t('guest.deleteTitle'),
+      message: t('guest.deleteMessage'),
+      confirm: t('guest.deleteConfirm'),
       danger: true,
     });
     if (!ok) return;
@@ -575,7 +583,7 @@ export async function renderGuest(main, pollId) {
       loadDraftFromResponse();
       tab = isOpen() ? 'mine' : 'group';
       render();
-      announce('Your response was deleted');
+      announce(t('guest.deleted'));
       main.querySelector('h1')?.focus();
     } catch (err) {
       announce(err.message, { tone: 'error' });
@@ -585,22 +593,22 @@ export async function renderGuest(main, pollId) {
   /** Ways back in without a private link, shown at the foot of the poll. */
   function accessLinks() {
     const items = [];
-    if (!mine && !isOpen() && poll.responseCount) items.push(h('button', { type: 'button', class: 'link-btn', onclick: signInAsGuest }, 'Sign in to your response'));
-    if (poll.hasOrganizerPassword) items.push(h('button', { type: 'button', class: 'link-btn', onclick: manageWithPassword }, 'Organizer? Manage with your password'));
+    if (!mine && !isOpen() && poll.responseCount) items.push(h('button', { type: 'button', class: 'link-btn', onclick: signInAsGuest }, t('guest.signInTitle')));
+    if (poll.hasOrganizerPassword) items.push(h('button', { type: 'button', class: 'link-btn', onclick: manageWithPassword }, t('guest.manageLink')));
     return items.length ? h('p', { class: 'access-links small' }, ...items) : null;
   }
 
   async function signInAsGuest() {
     const name = h('input', { id: 'si-name', class: 'input', type: 'text', maxlength: '40', autocomplete: 'nickname', required: true, value: storage.lastName() || '' });
-    const pwd = passwordField({ id: 'si-password', label: 'Password' });
+    const pwd = passwordField({ id: 'si-password', label: t('guest.password') });
     const signed = await formDialog({
-      title: 'Sign in to your response',
-      intro: h('p', { class: 'dialog-text' }, 'Use the name you answered with and the password you added. This only works if you added a password when you answered.'),
-      fields: [h('div', { class: 'field' }, h('label', { for: 'si-name', class: 'field-label' }, 'Your name'), name), pwd.el],
-      submitLabel: 'Sign in',
+      title: t('guest.signInTitle'),
+      intro: h('p', { class: 'dialog-text' }, t('guest.signInIntro')),
+      fields: [h('div', { class: 'field' }, h('label', { for: 'si-name', class: 'field-label' }, t('guest.yourName')), name), pwd.el],
+      submitLabel: t('guest.signIn'),
     }, async () => {
-      if (!name.value.trim()) throw new Error('Enter the name you answered with.');
-      if (!pwd.input.value) throw new Error('Enter your password.');
+      if (!name.value.trim()) throw new Error(t('guest.signInNameMissing'));
+      if (!pwd.input.value) throw new Error(t('guest.signInPasswordMissing'));
       const key = await passwordKey(pwd.input.value, pollId, 'guest');
       const { response } = await api('POST', `/api/polls/${pollId}/sign-in`, { body: { name: name.value, password: key } });
       return { response, key };
@@ -613,24 +621,24 @@ export async function renderGuest(main, pollId) {
     loadDraftFromResponse();
     tab = isOpen() ? 'mine' : 'group';
     render();
-    announce(`Signed in as ${mine.name}`);
+    announce(t('guest.signedIn', { name: mine.name }));
     main.querySelector('#g-name, h1')?.focus();
   }
 
   async function manageWithPassword() {
-    const pwd = passwordField({ id: 'mp-password', label: 'Organizer password' });
+    const pwd = passwordField({ id: 'mp-password', label: t('guest.organizerPassword') });
     const key = await formDialog({
-      title: 'Manage this poll',
-      intro: h('p', { class: 'dialog-text' }, 'Enter the password the organizer set for this poll. Your private link works too, if you have it.'),
+      title: t('guest.manageTitle'),
+      intro: h('p', { class: 'dialog-text' }, t('guest.manageIntro')),
       fields: pwd.el,
-      submitLabel: 'Open organizer view',
+      submitLabel: t('guest.manageSubmit'),
     }, async () => {
-      if (!pwd.input.value) throw new Error('Enter the password.');
+      if (!pwd.input.value) throw new Error(t('guest.managePasswordMissing'));
       const k = await passwordKey(pwd.input.value, pollId, 'organizer');
       try {
         await api('GET', `/api/polls/${pollId}/manage`, { token: k });
       } catch (err) {
-        if (err.status === 403) throw new Error('That password isn’t right for this poll.');
+        if (err.status === 403) throw new Error(t('guest.manageWrongPassword'));
         throw err;
       }
       return k;
@@ -644,8 +652,8 @@ export async function renderGuest(main, pollId) {
     const panel = h('section', { class: 'panel', id: 'panel-group', role: 'tabpanel', 'aria-labelledby': 'tab-group' });
     if (!canSeeResults()) {
       panel.append(h('div', { class: 'empty-state' },
-        h('p', { class: 'empty-title' }, 'Only the organizer can see responses'),
-        h('p', null, `${f.plural(poll.responseCount, 'person has', 'people have')} responded so far.`)));
+        h('p', { class: 'empty-title' }, t('guest.hiddenTitle')),
+        h('p', null, t('guest.respondedSoFar', { count: poll.responseCount }))));
       return panel;
     }
     results = resultsSection({ poll, timeZone: viewZone, selfId: mine?.id, state: resultsState });

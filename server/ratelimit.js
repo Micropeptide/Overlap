@@ -43,7 +43,7 @@ export function createRateLimiter(overrides = {}) {
       }
       entry.count += 1;
       if (entry.count > rule.max) {
-        const err = new HttpError(429, 'Too many requests from this connection. Wait a few minutes and try again.');
+        const err = new HttpError(429, 'Too many requests from this connection. Wait a few minutes and try again.', undefined, 'too_many_requests');
         err.retryAfter = Math.ceil((entry.reset - now) / 1000);
         throw err;
       }

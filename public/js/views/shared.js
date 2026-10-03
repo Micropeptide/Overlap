@@ -3,25 +3,33 @@
 import { h, icon, copyText, linkify } from '../lib/dom.js';
 import * as f from '../lib/format.js';
 import { API_BASE } from '../config.js';
+import { t, tx, locale } from '../lib/i18n.js';
+
+const cityOf = (timeZone) => timeZone.split('/').pop().replace(/_/g, ' ');
 
 export function pollFacts(poll, { audience }) {
   const dates = poll.dates;
   const dateText = poll.kind === 'weekly'
-    ? `Every week: ${dates.length === 7 ? 'every day' : dates.map((d) => f.weekdayShort(d)).join(', ')}`
+    ? (dates.length === 7
+      ? t('shared.everyDay')
+      : t('shared.everyWeek', { days: new Intl.ListFormat(locale(), { type: 'unit', style: 'short' }).format(dates.map((d) => f.weekdayShort(d))) }))
     : dates.length === 1
     ? f.dateMedium(dates[0])
-    : `${f.plural(dates.length, 'date')}, ${f.monthDay(dates[0])} to ${f.monthDay(dates.at(-1))}`;
+    : t('shared.dateRange', { count: dates.length, from: f.monthDay(dates[0]), to: f.monthDay(dates.at(-1)) });
+  const hours = { start: f.minuteOfDay(poll.startMinute), end: f.minuteOfDay(poll.endMinute), zone: cityOf(poll.timezone) };
   const fact = (name, text) => h('li', null, icon(name), h('span', null, text));
   return h('ul', { class: 'facts', role: 'list' },
     fact('calendar', dateText),
-    fact('clock', `${f.minuteOfDay(poll.startMinute)} to ${f.minuteOfDay(poll.endMinute)} ${poll.timezone.split('/').pop().replace(/_/g, ' ')} time${poll.durationMinutes ? `, for ${f.duration(poll.durationMinutes)}` : ''}`),
-    fact('people', poll.responseCount ? f.plural(poll.responseCount, 'response') : 'No responses yet'),
-    poll.closesOn && poll.status === 'open' ? fact('clock', `Responses close at the end of ${f.dateMedium(poll.closesOn)}`) : null,
+    fact('clock', poll.durationMinutes
+      ? t('shared.hoursWithLength', { ...hours, length: f.duration(poll.durationMinutes) })
+      : t('shared.hours', hours)),
+    fact('people', poll.responseCount ? t('shared.responses', { count: poll.responseCount }) : t('shared.noResponses')),
+    poll.closesOn && poll.status === 'open' ? fact('clock', t('shared.closesOn', { date: f.dateMedium(poll.closesOn) })) : null,
     fact('lock', poll.resultsVisibility === 'everyone'
-      ? (audience === 'guest' ? 'Everyone with this link can see responses' : 'Guests can see each other’s responses')
-      : (audience === 'guest' ? 'Only the organizer can see responses' : 'Only you can see responses')),
+      ? (audience === 'guest' ? t('shared.visibleEveryoneGuest') : t('shared.visibleEveryoneOrganizer'))
+      : (audience === 'guest' ? t('shared.visibleOrganizerGuest') : t('shared.visibleOrganizerOrganizer'))),
     poll.allowEdits === false
-      ? fact('edit', audience === 'guest' ? 'Answers can’t be changed after they’re sent' : 'Guests can’t change answers after sending')
+      ? fact('edit', audience === 'guest' ? t('shared.noEditsGuest') : t('shared.noEditsOrganizer'))
       : null,
   );
 }
@@ -30,10 +38,10 @@ export function statusBanner(status, poll) {
   if (status === 'closed') {
     const byDeadline = poll?.closesAt && Date.now() >= poll.closesAt;
     return h('div', { class: 'callout closed', role: 'status' },
-      h('p', { class: 'callout-title' }, 'This poll is closed'),
+      h('p', { class: 'callout-title' }, t('shared.closedTitle')),
       h('p', null, byDeadline
-        ? `Responses closed at the end of ${f.dateMedium(poll.closesOn)}. A final time hasn’t been chosen yet.`
-        : 'The organizer isn’t collecting new responses. A final time hasn’t been chosen yet.'));
+        ? t('shared.closedByDeadline', { date: f.dateMedium(poll.closesOn) })
+        : t('shared.closedByOrganizer')));
   }
   return null;
 }
@@ -104,7 +112,7 @@ const utcStamp = (ms) => {
 export function calendarLinks(poll, guestUrl) {
   const { start, end } = poll.final;
   const weekly = poll.kind === 'weekly';
-  const details = [poll.description, `Scheduled with Overlap: ${guestUrl}`].filter(Boolean).join('\n\n');
+  const details = [poll.description, t('shared.scheduledWith', { url: guestUrl })].filter(Boolean).join('\n\n');
   const google = new URL('https://calendar.google.com/calendar/render');
   google.searchParams.set('action', 'TEMPLATE');
   google.searchParams.set('text', poll.title);
@@ -130,20 +138,19 @@ export function finalDetailsText(poll, guestUrl) {
   const { start, end } = poll.final;
   return [
     poll.title,
-    `${f.finalDay(start, poll.timezone, poll.kind === 'weekly')}, ${f.timeRange(start, end, poll.timezone)} (${f.zoneLabel(poll.timezone, start)})`,
-    poll.location ? `Where: ${poll.location}` : null,
+    t('shared.detailsWhen', { day: f.finalDay(start, poll.timezone, poll.kind === 'weekly'), time: f.timeRange(start, end, poll.timezone), zone: f.zoneLabel(poll.timezone, start) }),
+    poll.location ? t('shared.detailsWhere', { place: poll.location }) : null,
     poll.description || null,
-    `Details: ${guestUrl}`,
+    t('shared.detailsLink', { url: guestUrl }),
   ].filter(Boolean).join('\n');
 }
 
 function finalLinks(poll, guestUrl) {
   const { google, outlook } = calendarLinks(poll, guestUrl);
-  return h('p', { class: 'final-links' },
-    'Or add it to ',
-    h('a', { href: google, target: '_blank', rel: 'noopener noreferrer' }, 'Google Calendar'),
-    outlook ? [' or ', h('a', { href: outlook, target: '_blank', rel: 'noopener noreferrer' }, 'Outlook.com')] : null,
-    '. Opening one sends that company the event details, including this poll’s guest link.');
+  const googleLink = h('a', { href: google, target: '_blank', rel: 'noopener noreferrer' }, t('shared.googleCalendar'));
+  return h('p', { class: 'final-links' }, outlook
+    ? tx('shared.addToCalendars', { google: googleLink, outlook: h('a', { href: outlook, target: '_blank', rel: 'noopener noreferrer' }, 'Outlook.com') })
+    : tx('shared.addToCalendar', { google: googleLink }));
 }
 
 export function finalCard(poll, viewZone, { organizer = false, extra = [] } = {}) {
@@ -151,17 +158,19 @@ export function finalCard(poll, viewZone, { organizer = false, extra = [] } = {}
   const guestUrl = `${location.origin}/p/${poll.id}`;
   const different = viewZone !== poll.timezone;
   return h('section', { class: 'final-card', 'aria-labelledby': 'final-title', tabindex: '-1' },
-    h('p', { class: 'final-kicker', id: 'final-title' }, organizer ? 'Final time' : 'It’s set. The organizer chose a time.'),
+    h('p', { class: 'final-kicker', id: 'final-title' }, organizer ? t('shared.finalTime') : t('shared.finalChosen')),
     h('p', { class: 'final-when' },
       h('span', { class: 'final-day' }, f.finalDay(start, viewZone, poll.kind === 'weekly')),
       h('span', { class: 'final-time' }, f.timeRange(start, end, viewZone))),
-    h('p', { class: 'final-zone' }, `${f.zoneLabel(viewZone, start)}${different ? `. That’s ${f.slotRange(start, end, poll.timezone, poll.kind === 'weekly')} for the organizer in ${poll.timezone.split('/').pop().replace(/_/g, ' ')}.` : ''}`),
+    h('p', { class: 'final-zone' }, different
+      ? t('shared.finalZoneOrganizer', { zone: f.zoneLabel(viewZone, start), time: f.slotRange(start, end, poll.timezone, poll.kind === 'weekly'), city: cityOf(poll.timezone) })
+      : f.zoneLabel(viewZone, start)),
     h('div', { class: 'final-actions' },
-      h('a', { class: 'btn primary', href: `${API_BASE}/api/polls/${poll.id}/invite.ics`, download: '' }, icon('download'), poll.kind === 'weekly' ? 'Download weekly calendar invite' : 'Download calendar invite'),
-      h('button', { type: 'button', class: 'btn secondary', onclick: () => copyText(finalDetailsText(poll, guestUrl), 'Copied the event details') }, icon('copy'), 'Copy details'),
+      h('a', { class: 'btn primary', href: `${API_BASE}/api/polls/${poll.id}/invite.ics`, download: '' }, icon('download'), poll.kind === 'weekly' ? t('shared.downloadWeeklyInvite') : t('shared.downloadInvite')),
+      h('button', { type: 'button', class: 'btn secondary', onclick: () => copyText(finalDetailsText(poll, guestUrl), t('shared.copiedDetails')) }, icon('copy'), t('shared.copyDetails')),
       ...extra,
     ),
     finalLinks(poll, guestUrl),
-    organizer ? null : h('p', { class: 'muted small' }, 'This poll is closed, so responses can’t be changed.'),
+    organizer ? null : h('p', { class: 'muted small' }, t('shared.closedNoChanges')),
   );
 }

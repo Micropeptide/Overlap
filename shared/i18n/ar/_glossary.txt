@@ -1,0 +1,66 @@
+Arabic (ar) glossary for Overlap — Modern Standard Arabic
+Style: buttons use the verbal noun (masdar): «إنشاء استطلاع», «نسخ», «حفظ التغييرات».
+Hints/errors address the user with the masculine generic imperative: «اختر», «أدخل», «أضف».
+Punctuation: ، ؛ ؟ and quotes «…». Keep Overlap, Micropeptide, GitHub etc. in Latin script.
+
+poll                               استطلاع (pl. استطلاعات)
+weekly poll                        استطلاع أسبوعي
+organizer                          المنظِّم
+organizer view                     واجهة المنظِّم
+guest / guests                     ضيف / الضيوف
+response                           ردّ (pl. ردود)
+answer (noun)                      إجابة (pl. إجابات)
+to answer / respond                أجاب / ردّ
+guest link                         رابط الضيوف
+private link                       الرابط الخاص
+private edit link                  رابط التعديل الخاص
+organizer password                 كلمة مرور المنظِّم
+password                           كلمة المرور
+Available                          متاح          (word form: متاح)
+Preferred                          مفضَّل        (word form: مفضَّل)
+If needed                          عند الحاجة    (word form: عند الحاجة)
+Not available                      غير متاح
+Erase                              مسح
+Not answered                       بلا إجابة
+Only me                            أنا فقط
+Everyone with the guest link       كل من لديه رابط الضيوف
+Select a range                     تحديد نطاق
+Whole day                          اليوم كله
+Copy to every day                  نسخ إلى كل الأيام
+Manage with your password          الإدارة بكلمة المرور
+Sign in with your name and password  تسجيل الدخول باسمك وكلمة مرورك
+Sign in                            تسجيل الدخول
+Copy my edit link                  نسخ رابط التعديل الخاص بي
+Email me                           راسلني بالبريد
+Edit poll                          تعديل الاستطلاع
+Duplicate poll                     تكرار الاستطلاع
+Manage poll                        إدارة الاستطلاع
+Never: I’ll close it myself        أبدًا: سأغلقه بنفسي
+Never (as quoted)                  أبدًا
+More options                       مزيد من الخيارات
+final time                         الموعد المعتمد   (avoid «الموعد النهائي» = deadline)
+Set final time                     اعتماد الموعد
+time (a slot)                      وقت (pl. أوقات)
+date                               تاريخ (pl. تواريخ)
+day of the week                    يوم من أيام الأسبوع
+time zone                          المنطقة الزمنية
+closing date                       تاريخ الإغلاق
+Stop taking responses              إيقاف استقبال الردود
+meeting length                     مدة الاجتماع
+time steps                         فواصل الوقت
+note for guests                    ملاحظة للضيوف
+calendar invite                    دعوة تقويم
+Close poll / Reopen poll           إغلاق الاستطلاع / إعادة فتح الاستطلاع
+Delete / Remove                    حذف / إزالة
+Copy / Copied                      نسخ / تم النسخ
+Share / Open                       مشاركة / فتح
+Undo / Clear all                   تراجع / مسح الكل
+Space key                          المسافة
+
+Plural agreement (digits shown):
+zero  → {count} + singular genitive, as CLDR does (e.g. {count} ردّ)
+one   → singular + واحد (number spelled out), e.g. ردّ واحد
+two   → dual, e.g. ردّان
+few   → {count} + plural genitive, e.g. {count} ردود
+many  → {count} + singular accusative, e.g. {count} ردًّا
+other → {count} + singular genitive, e.g. {count} ردّ

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
 import { openStore } from '../server/store.js';
 import { createApp } from '../server/app.js';
-import { sendDueDigests, cleanEmail } from '../server/email.js';
+import { sendDueDigests, cleanEmail, digestLines, digestEmail, welcomeEmail } from '../server/email.js';
 
 let server;
 let base;
@@ -180,4 +180,46 @@ test('polls nobody follows by email keep no change records', async () => {
   const { poll } = (await api('POST', '/api/polls', { body: POLL })).json;
   await api('POST', `/api/polls/${poll.id}/responses`, { body: { name: 'Quiet', available: [], ifNeeded: [] } });
   assert.equal(store.db.prepare('SELECT COUNT(*) AS n FROM poll_events WHERE poll_id = ?').get(poll.id).n, 0);
+});
+
+test('emails remember the language they were asked for in, and fall back to English', async () => {
+  outbox.length = 0;
+  const { poll, adminToken } = (await api('POST', '/api/polls', { body: POLL })).json;
+  const auth = `Bearer ${adminToken}`;
+  const row = () => store.db.prepare('SELECT lang FROM email_subs WHERE poll_id = ?').get(poll.id);
+
+  // English, stored with the subscription; the email reads as it always has.
+  assert.equal((await api('PUT', `/api/polls/${poll.id}/email`, { auth, body: { email: 'en@example.com', updates: true, lang: 'en' } })).status, 200);
+  assert.equal(row().lang, 'en');
+  assert.equal((await store.getEmailSub(poll.id)).lang, 'en');
+  assert.equal(outbox[0].subject, 'Confirm emails about “Lab retreat”');
+  assert.ok(outbox[0].text.includes('Confirm email updates: http'));
+  assert.ok(outbox[0].html.startsWith('<!doctype html><html><body'));
+  await api('POST', '/api/email/confirm', { body: { token: tokenIn(outbox[0], '/e/confirm') } });
+  await api('POST', `/api/polls/${poll.id}/responses`, { body: { name: 'Dee', available: [], ifNeeded: [] } });
+  outbox.length = 0;
+  assert.equal(await sendDueDigests({ store, mailer, publicUrl: 'https://o.test', apiUrl: 'https://api.o.test', now: later() }), 1);
+  assert.equal(outbox[0].subject, 'Updates to “Lab retreat”');
+  assert.match(outbox[0].text, /New response: Dee\.\n\n1 person has responded so far\./);
+
+  // A language Overlap doesn't know is stored as English.
+  outbox.length = 0;
+  await api('PUT', `/api/polls/${poll.id}/email`, { auth, body: { email: 'xx@example.com', updates: true, lang: 'xx-Nowhere' } });
+  assert.equal(row().lang, 'en');
+  assert.equal(outbox[0].subject, 'Confirm emails about “Lab retreat”');
+  // No lang at all (an older page) is English too.
+  await api('PUT', `/api/polls/${poll.id}/email`, { auth, body: { email: 'none@example.com', updates: true } });
+  assert.equal(row().lang, 'en');
+
+  // Subscriptions from before languages (null) or with a stray value write English.
+  const p = { ...poll, final: null, closed: false };
+  for (const lang of [null, undefined, 'xx', '__proto__']) {
+    const sub = { responseId: null, lang };
+    const lines = digestLines({ poll: p, sub, events: [{ kind: 'response_new', responseId: 'r1' }, { kind: 'response_new', responseId: 'r2' }], responses: [{ id: 'r1', name: 'Ana' }, { id: 'r2', name: 'Ben' }] });
+    assert.deepEqual(lines, ['New responses: Ana, Ben.', '2 people have responded so far.']);
+    const msg = digestEmail({ poll: p, sub, lines, publicUrl: 'https://o.test', unsubUrl: 'https://o.test/e/unsubscribe#t=x' });
+    assert.equal(msg.subject, 'Updates to “Lab retreat”');
+    assert.ok(msg.text.endsWith('Stop these emails: https://o.test/e/unsubscribe#t=x'));
+    assert.equal(welcomeEmail({ poll: p, role: 'guest', link: 'https://o.test/p/x#r=y', publicUrl: 'https://o.test', lang }).subject, 'Your link for “Lab retreat”');
+  }
 });

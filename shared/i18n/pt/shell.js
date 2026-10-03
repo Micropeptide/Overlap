@@ -1,0 +1,21 @@
+export default {
+  'shell.skip': 'Pular para o conteúdo',
+  'shell.brandLabel': 'Overlap, criar uma nova enquete',
+  'shell.navLabel': 'Site',
+  'shell.newPoll': 'Nova enquete',
+  'shell.about': 'Sobre',
+  'shell.privacy': 'Privacidade',
+  'shell.loading': 'Carregando…',
+  'shell.footer': 'Sem contas, sem rastreamento, sem anúncios. {retention} {privacyLink}. {aboutLink}, feito por Micropeptide.',
+  'shell.retentionKept': 'As enquetes ficam guardadas até o organizador excluí-las.',
+  'shell.retentionAuto': {
+    one: 'As enquetes são excluídas automaticamente {count} dia após a última data (as semanais, após a última alteração).',
+    many: 'As enquetes são excluídas automaticamente {count} dias após a última data (as semanais, após a última alteração).',
+    other: 'As enquetes são excluídas automaticamente {count} dias após a última data (as semanais, após a última alteração).',
+  },
+  'shell.privacyLink': 'Como seus dados são tratados',
+  'shell.aboutLink': 'Sobre o Overlap',
+  'shell.language': 'Idioma',
+  'shell.errorTitle': 'Algo deu errado',
+  'shell.errorReload': 'Recarregue a página para tentar de novo.',
+};

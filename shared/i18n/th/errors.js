@@ -1,0 +1,93 @@
+export default {
+  // Poll fields
+  'errors.not_text': '{field} ต้องเป็นข้อความ',
+  'errors.title_required': 'ใส่ชื่อกิจกรรม',
+  'errors.name_required': 'ใส่ชื่อ',
+  'errors.title_too_long': { other: 'ชื่อต้องยาวไม่เกิน {count} อักขระ' },
+  'errors.description_too_long': { other: 'คำอธิบายต้องยาวไม่เกิน {count} อักขระ' },
+  'errors.location_too_long': { other: 'สถานที่ต้องยาวไม่เกิน {count} อักขระ' },
+  'errors.note_too_long': { other: 'หมายเหตุต้องยาวไม่เกิน {count} อักขระ' },
+  'errors.name_too_long': { other: 'ชื่อต้องยาวไม่เกิน {count} อักขระ' },
+  'errors.not_whole_number': '{field} ต้องเป็นจำนวนเต็ม',
+  'errors.poll_not_object': 'ส่งโพลเป็นออบเจ็กต์ JSON',
+  'errors.closes_on_invalid': 'เลือกวันปิดรับที่ถูกต้องภายในสามปีข้างหน้า',
+  'errors.closes_on_passed': 'วันปิดรับนั้นผ่านไปแล้ว เลือกวันนี้หรือหลังจากนี้',
+  'errors.timezone_invalid': 'เลือกเขตเวลาที่ถูกต้อง เช่น Asia/Bangkok',
+  'errors.kind_invalid': 'เลือกวันที่ที่ระบุหรือวันในสัปดาห์',
+  'errors.weekly_sent_dates': 'นี่คือโพลรายสัปดาห์ ให้ส่ง "weekdays" แทน "dates"',
+  'errors.weekdays_required': 'เลือกวันในสัปดาห์อย่างน้อยหนึ่งวัน',
+  'errors.weekdays_invalid': 'วันในสัปดาห์ต้องเป็นตัวเลขตั้งแต่ 0 (วันอาทิตย์) ถึง 6 (วันเสาร์)',
+  'errors.dates_sent_weekdays': 'โพลนี้ใช้วันที่ที่ระบุ ให้ส่ง "dates" แทน "weekdays"',
+  'errors.dates_required': 'เลือกอย่างน้อยหนึ่งวัน',
+  'errors.too_many_dates': { other: 'เลือกได้ไม่เกิน {count} วัน' },
+  'errors.date_invalid': '"{date}" ไม่ใช่วันที่ที่ถูกต้อง',
+  'errors.dates_out_of_range': 'เลือกวันที่ภายในสามปีข้างหน้า',
+  'errors.dates_all_passed': 'วันที่ทั้งหมดผ่านไปแล้ว เลือกวันที่ที่ยังมาไม่ถึงอย่างน้อยหนึ่งวัน',
+  'errors.slot_minutes_invalid': 'ช่วงห่างของเวลาต้องเป็น 15, 30 หรือ 60 นาที',
+  'errors.end_before_start': 'เวลาสิ้นสุดต้องอยู่หลังเวลาเริ่ม',
+  'errors.duration_invalid': 'ระยะเวลาประชุมต้องอยู่ระหว่าง 15 นาทีถึง 12 ชั่วโมง',
+  'errors.allow_edits_invalid': 'ระบุว่าผู้เข้าร่วมแก้คำตอบได้หรือไม่ (true หรือ false)',
+  'errors.visibility_invalid': 'เลือกว่าใครเห็นคำตอบได้',
+  'errors.times_misaligned': { other: 'เวลาเริ่มและเวลาสิ้นสุดต้องตรงกับช่วงห่างทีละ {count} นาที' },
+  'errors.range_too_short': 'ช่วงเวลาสั้นกว่าช่วงห่างของเวลาหนึ่งช่วง',
+  'errors.duration_too_long': 'การประชุมยาวกว่าช่วงเวลาที่ให้เลือก ขยายช่วงเวลาหรือลดระยะเวลาประชุม',
+  'errors.too_many_slots': 'มีช่วงเวลาให้เลือกมากเกินไป เลือกวันให้น้อยลงหรือใช้ช่วงเวลาที่สั้นลง',
+  'errors.no_slots': 'ไม่มีช่วงเวลาใดเลยที่มีอยู่จริงในเขตเวลานั้น',
+
+  // Responses
+  'errors.response_not_object': 'ส่งคำตอบเป็นออบเจ็กต์ JSON',
+  'errors.name_invisible': 'ใส่ชื่อที่คนอื่นมองเห็นได้',
+  'errors.not_time_list': '{field} ต้องเป็นรายการเวลา',
+
+  // Final time
+  'errors.final_required': 'เลือกเวลาเริ่มและเวลาสิ้นสุด',
+  'errors.final_end_before_start': 'เวลาสรุปต้องสิ้นสุดหลังเวลาเริ่ม',
+  'errors.final_too_long': 'เวลาสรุปยาวได้ไม่เกิน 24 ชั่วโมง',
+  'errors.final_bad_length': 'ความยาวของเวลาสรุปต้องเป็นทวีคูณของ 5 นาที',
+  'errors.final_not_a_time': 'เวลาสรุปต้องเริ่มที่ช่วงเวลาใดช่วงเวลาหนึ่งของโพล',
+
+  // Requests
+  'errors.too_many_requests': 'มีคำขอจากการเชื่อมต่อนี้มากเกินไป รอสักสองสามนาทีแล้วลองอีกครั้ง',
+  'errors.json_required': 'ส่งเป็น JSON พร้อม Content-Type: application/json',
+  'errors.body_too_large': 'คำขอนั้นใหญ่เกินไป',
+  'errors.invalid_json': 'เนื้อหาคำขอไม่ใช่ JSON ที่ถูกต้อง',
+  'errors.method_not_allowed': 'ใช้เมธอดนั้นที่นี่ไม่ได้',
+  'errors.not_found': 'ไม่พบ',
+  'errors.server_error': 'เกิดข้อผิดพลาดจากฝั่งเรา โปรดลองอีกครั้ง',
+
+  // Polls and access
+  'errors.poll_not_found': 'ไม่มีโพลนี้ อาจถูกลบหรือหมดอายุไปแล้ว',
+  'errors.admin_link_or_password_wrong': 'ลิงก์ส่วนตัวหรือรหัสผ่านไม่ถูกต้อง ลิงก์อาจถูกแทนที่แล้ว หรือรหัสผ่านอาจถูกเปลี่ยน',
+  'errors.admin_link_invalid': 'ลิงก์ส่วนตัวนี้ใช้ไม่ได้ อาจถูกแทนที่แล้ว',
+  'errors.changes_not_object': 'ส่งการเปลี่ยนแปลงเป็นออบเจ็กต์ JSON',
+  'errors.reopen_with_final': 'การเปิดโพลอีกครั้งจะล้างเวลาสรุป จึงส่งได้อย่างใดอย่างหนึ่งเท่านั้น',
+  'errors.status_invalid': 'สถานะต้องเป็น "open" หรือ "closed"',
+  'errors.no_final_time': 'โพลนี้ยังไม่มีเวลาสรุป',
+
+  // Answering
+  'errors.poll_closed': 'โพลนี้ปิดแล้ว จึงไม่รับคำตอบใหม่',
+  'errors.poll_closed_no_changes': 'โพลนี้ปิดแล้ว จึงแก้ไขคำตอบไม่ได้อีก',
+  'errors.edits_not_allowed': 'ผู้จัดไม่อนุญาตให้แก้คำตอบหลังส่ง แต่คุณยังลบคำตอบของคุณได้',
+  'errors.too_many_responses': { other: 'โพลนี้มีคำตอบครบ {count} คำตอบแล้ว' },
+  'errors.name_taken': 'มีคนตอบในชื่อ “{name}” แล้ว ถ้าเป็นคุณ ให้เปิดลิงก์แก้ไขส่วนตัวของคุณ ถ้าไม่ใช่ ให้เติมอักษรย่อนามสกุลต่อท้าย',
+  'errors.name_taken_other': 'มีคนอื่นตอบในชื่อ “{name}” แล้ว ลองเติมอักษรย่อนามสกุลต่อท้าย',
+  'errors.response_not_found': 'ไม่มีคำตอบนั้นแล้ว',
+  'errors.my_response_not_found': 'ไม่พบคำตอบของคุณ อาจถูกลบไปแล้ว',
+  'errors.not_your_response': 'มีแค่คนที่ส่งคำตอบนี้เท่านั้นที่แก้ไขได้',
+
+  // Passwords
+  'errors.password_unreadable': 'อ่านรหัสผ่านนั้นไม่ได้ โหลดหน้านี้ใหม่แล้วลองอีกครั้ง',
+  'errors.too_many_wrong_passwords': 'ใส่รหัสผ่านผิดสำหรับโพลนี้หลายครั้งเกินไป รอหนึ่งชั่วโมงแล้วลองอีกครั้ง หรือใช้ลิงก์ส่วนตัวของคุณ',
+  'errors.password_no_longer_works': 'รหัสผ่านนั้นใช้กับคำตอบนี้ไม่ได้แล้ว อาจถูกเปลี่ยนไปแล้ว',
+  'errors.sign_in_incomplete': 'ใส่ชื่อที่คุณใช้ตอบและรหัสผ่านของคุณ',
+  'errors.sign_in_failed': 'ชื่อและรหัสผ่านไม่ตรงกับคำตอบใดที่ตั้งรหัสผ่านไว้ ตรวจสอบการสะกด หรือใช้ลิงก์แก้ไขส่วนตัวของคุณ',
+
+  // Email
+  'errors.email_not_set_up': 'Overlap ชุดนี้ยังไม่ได้ตั้งค่าอีเมล',
+  'errors.email_invalid': 'ดูเหมือนจะไม่ใช่ที่อยู่อีเมล',
+  'errors.link_not_current': 'ลิงก์ส่วนตัวนั้นไม่ใช่ลิงก์ล่าสุด โหลดหน้านี้ใหม่แล้วลองอีกครั้ง',
+  'errors.email_nothing_chosen': 'เลือกสิ่งที่จะส่งทางอีเมล: ลิงก์ของคุณ การอัปเดต หรือทั้งสองอย่าง',
+  'errors.email_daily_limit': 'วันนี้ Overlap ส่งอีเมลถึงที่อยู่นั้น (หรือสำหรับโพลนี้) ครบจำนวนแล้ว ลองอีกครั้งพรุ่งนี้',
+  'errors.email_send_failed': 'ส่งอีเมลไม่ได้ในตอนนี้ ลองอีกครั้งในอีกสักนาที',
+  'errors.confirm_link_expired': 'ลิงก์ยืนยันนี้หมดอายุหรือถูกแทนที่แล้ว ขอรับอีเมลอีกครั้งจากหน้าโพล',
+};

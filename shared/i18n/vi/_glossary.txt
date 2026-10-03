@@ -1,0 +1,46 @@
+Overlap – Vietnamese (vi) glossary
+Tone: friendly neutral "bạn"; first person in labels = "tôi". Modern accent placement (xóa, hòa, tùy). Quotes “…”.
+Plural: only "other" (keep {count} in it).
+
+poll ........................... cuộc thăm dò (always; "Tạo cuộc thăm dò", "Sửa cuộc thăm dò")
+weekly poll .................... cuộc thăm dò hằng tuần
+organizer ...................... người tổ chức
+organizer view ................. trang người tổ chức
+guest .......................... khách
+response (noun) ................ phản hồi
+answer (noun / verb) ........... câu trả lời / trả lời
+respond ........................ phản hồi
+guest link ..................... liên kết cho khách
+private link ................... liên kết riêng
+private edit link .............. liên kết chỉnh sửa riêng
+organizer password ............. mật khẩu người tổ chức
+time / slot (a markable time) .. khung giờ
+final time ..................... thời gian chốt   (Set final time = Chốt thời gian)
+time zone ...................... múi giờ
+meeting length ................. thời lượng cuộc họp
+time steps ..................... bước thời gian
+closing date ................... ngày đóng
+mark / clear ................... đánh dấu / bỏ đánh dấu (clear all = Xóa hết)
+
+UI labels (quoted elsewhere exactly as below)
+“Available” .................... Rảnh            (word form: rảnh)
+“Preferred” .................... Ưu tiên         (word form: ưu tiên)
+“If needed” .................... Nếu cần         (word form: nếu cần)
+“Erase” ........................ Tẩy
+“Not available” ................ Không rảnh
+“Hasn’t seen this time” ........ Chưa xem khung giờ này
+“Only me” ...................... Chỉ mình tôi
+“Everyone with the guest link” . Mọi người có liên kết cho khách
+“Select a range” ............... Chọn một khoảng
+“Whole day” .................... Cả ngày
+“Copy to every day” ............ Chép sang mọi ngày
+“Manage with your password” .... Quản lý bằng mật khẩu
+“Sign in with your name and password” ... Đăng nhập bằng tên và mật khẩu
+“Copy my edit link” ............ Sao chép liên kết chỉnh sửa của tôi
+“Email me” ..................... Gửi email cho tôi
+“Edit poll” .................... Sửa cuộc thăm dò
+“Duplicate poll” ............... Nhân bản cuộc thăm dò
+“Never: I’ll close it myself” .. Không bao giờ: tôi sẽ tự đóng   (short ref: “Không bao giờ”)
+“More options” ................. Tùy chọn khác
+“Manage poll” .................. Quản lý cuộc thăm dò
+“Undo” ......................... Hoàn tác

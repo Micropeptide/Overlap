@@ -1,0 +1,30 @@
+export default {
+  'best.heading': 'Waktu terbaik',
+  'best.emptySummary': 'Muncul di sini saat orang-orang menjawab',
+  'best.noResponses': 'Belum ada tanggapan',
+  'best.emptyBody': 'Bagikan tautan tamu. Waktu terbaik akan muncul di sini saat orang-orang menjawab.',
+  // {length} is a meeting length such as "45 menit".
+  'best.roomFor': 'Cukup untuk rapat {length} di mana saja dalam rentang ini',
+  // {fraction} is best.fraction, shown in bold.
+  'best.available': '{fraction} tersedia',
+  'best.fraction': { other: '{count} dari {total}' },
+  'best.maybeCount': { other: '{count} jika perlu' },
+  'best.prefCount': { other: '★ {count} lebih suka' },
+  'best.preferredNote': '(lebih disukai)',
+  'best.ifNeeded': 'Jika perlu',
+  'best.ifNeededNote': '(jika perlu)',
+  'best.choose': 'Pilih',
+  'best.chooseLabel': 'Pilih {time}',
+  'best.everyoneSingle': 'Cocok untuk satu-satunya tanggapan sejauh ini',
+  'best.everyone': { other: 'Semua orang bisa hadir di waktu ini ({count} orang)' },
+  'best.more': {
+    other: '{count} waktu lagi cocok untuk semua orang. Lihat tabel di atas.',
+  },
+  'best.noEveryone': 'Belum ada waktu yang cocok untuk semua orang. Ini yang paling mendekati.',
+  'best.nextBest': 'Terbaik berikutnya',
+  'best.closest': 'Paling mendekati',
+  'best.nobody': 'Belum ada yang menandai waktu.',
+  'best.noTimes': 'Belum ada waktu',
+  'best.summaryEveryone': 'Cocok untuk semua orang: {day}, {time}',
+  'best.summaryClosest': { other: 'Paling mendekati: {count} dari {total}: {day}, {time}' },
+};

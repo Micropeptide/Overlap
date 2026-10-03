@@ -1,0 +1,43 @@
+Overlap 简体中文（zh-Hans）术语表
+
+poll                         投票（不用“日程投票”）
+organizer                    发起人
+guest                        参与者
+response / answer            回复（动词“answer”也译“回复”）
+guest link                   邀请链接
+private link (organizer)     专属链接
+private edit link (guest)    专属编辑链接
+organizer password           发起人密码
+Available / available        有空
+Preferred / preferred        首选
+If needed / if needed        勉强可以
+Not available                没空
+Not answered                 未回复
+Hasn’t seen this time        还没看到这个时间
+Erase                        擦除
+Only me                      仅我自己
+Everyone with the guest link 所有持有邀请链接的人
+Select a range               选择范围
+Whole day                    整天
+Copy to every day            复制到每一天
+Manage with your password    用密码管理
+Sign in with your name and password  用姓名和密码登录
+Copy my edit link            复制我的编辑链接
+Email me                     发邮件给我
+Edit poll                    编辑投票
+Duplicate poll               复制投票
+Manage poll                  管理投票
+Never: I’ll close it myself  从不：我自己来关闭（单独引用时写“从不”）
+More options                 更多选项
+final time                   最终时间
+time zone                    时区
+meeting length               会议时长
+time steps                   时间间隔
+weekly poll                  每周投票
+Days of the week             星期几
+Specific dates               具体日期
+
+Typography: full-width punctuation （，。：？！）; quotes “…”; ‘…’ inside.
+Spaces only around Latin words (Overlap, Google, CSV…) and number placeholders
+({count}, {total}, {min}, {max}, {pref}, {maybe}, {avail}); none around
+{name}, {title}, {day}, {time}, {date}, {zone}. You = 你.

@@ -12,6 +12,7 @@ import { secretMatches, slotsFor, hashText } from './store-core.js';
 import { buildInvite } from './ics.js';
 import { KEY_PATTERN } from '../shared/password.js';
 import { cleanEmail, welcomeEmail } from './email.js';
+import { isLanguage } from '../shared/i18n/languages.js';
 
 const MAX_BODY = 200_000;
 // Wrong passwords allowed per poll (organizer and guests counted separately)
@@ -39,7 +40,7 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
   /** A password key from a request body: undefined (not sent), null (remove) or a key. */
   function passwordKeyField(value) {
     if (value === undefined || value === null) return value;
-    if (typeof value !== 'string' || !KEY_PATTERN.test(value)) throw new HttpError(400, 'That password could not be read. Reload the page and try again.', 'password');
+    if (typeof value !== 'string' || !KEY_PATTERN.test(value)) throw new HttpError(400, 'That password could not be read. Reload the page and try again.', 'password', 'password_unreadable');
     return value;
   }
 
@@ -51,7 +52,7 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
   async function passwordMatches(scope, pollId, key, hashes) {
     const throttleKey = `${scope}:${pollId}`;
     if (await store.throttleBlocked(throttleKey, GUESS_MAX)) {
-      const err = new HttpError(429, 'Too many wrong passwords for this poll. Wait an hour and try again, or use your private link.');
+      const err = new HttpError(429, 'Too many wrong passwords for this poll. Wait an hour and try again, or use your private link.', undefined, 'too_many_wrong_passwords');
       err.retryAfter = GUESS_WINDOW_MS / 1000;
       throw err;
     }
@@ -62,20 +63,20 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
 
   async function readJson(req) {
     if (!(req.header('content-type') || '').startsWith('application/json')) {
-      throw new HttpError(415, 'Send JSON with Content-Type: application/json.');
+      throw new HttpError(415, 'Send JSON with Content-Type: application/json.', undefined, 'json_required');
     }
     const text = await req.readText(MAX_BODY);
-    if (text === null) throw new HttpError(413, 'That request is too large.');
+    if (text === null) throw new HttpError(413, 'That request is too large.', undefined, 'body_too_large');
     try {
       return JSON.parse(text || 'null');
     } catch {
-      throw new HttpError(400, 'The request body is not valid JSON.');
+      throw new HttpError(400, 'The request body is not valid JSON.', undefined, 'invalid_json');
     }
   }
 
   async function requirePoll(id) {
     const poll = await store.getPoll(id);
-    if (!poll) throw new HttpError(404, 'This poll does not exist. It may have been deleted or expired.');
+    if (!poll) throw new HttpError(404, 'This poll does not exist. It may have been deleted or expired.', undefined, 'poll_not_found');
     return poll;
   }
 
@@ -89,9 +90,9 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
 
   async function requireAdmin(req, poll) {
     if (!(await isAdmin(req, poll))) {
-      throw new HttpError(403, poll.adminPwHash
-        ? 'That private link or password is not right. The link may have been replaced, or the password changed.'
-        : 'This private link is not valid. It may have been replaced.');
+      throw poll.adminPwHash
+        ? new HttpError(403, 'That private link or password is not right. The link may have been replaced, or the password changed.', undefined, 'admin_link_or_password_wrong')
+        : new HttpError(403, 'This private link is not valid. It may have been replaced.', undefined, 'admin_link_invalid');
     }
   }
 
@@ -159,8 +160,8 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
 
   async function guestResponseFor(req, poll, responseId) {
     const r = await store.getResponse(poll.id, responseId);
-    if (!r) throw new HttpError(404, 'That response no longer exists.');
-    if (!(await isAuthor(req, poll, r))) throw new HttpError(403, 'Only the person who sent this response can change it.');
+    if (!r) throw new HttpError(404, 'That response no longer exists.', undefined, 'response_not_found');
+    if (!(await isAuthor(req, poll, r))) throw new HttpError(403, 'Only the person who sent this response can change it.', undefined, 'not_your_response');
     return r;
   }
 
@@ -206,10 +207,10 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
       const body = await readJson(req);
       const poll = await requirePoll(id);
       await requireAdmin(req, poll);
-      if (!body || typeof body !== 'object' || Array.isArray(body)) throw new HttpError(400, 'Send the changes as a JSON object.');
+      if (!body || typeof body !== 'object' || Array.isArray(body)) throw new HttpError(400, 'Send the changes as a JSON object.', undefined, 'changes_not_object');
       const { status: nextStatus, final, organizerPassword, ...rest } = body;
       const passwordKey = passwordKeyField(organizerPassword);
-      if (nextStatus === 'open' && final) throw new HttpError(400, 'Reopening a poll clears its final time, so send one or the other.', 'final');
+      if (nextStatus === 'open' && final) throw new HttpError(400, 'Reopening a poll clears its final time, so send one or the other.', 'final', 'reopen_with_final');
       const changes = Object.keys(rest).length ? validatePollFields(rest, poll) : {};
       const merged = { ...poll, ...changes };
       const mergedSlots = slotsFor(merged);
@@ -228,7 +229,7 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
           // unless this same request sets a new one.
           if (!('closesOn' in rest) && merged.closesOn && store.deadlinePassed(merged)) changes.closesOn = null;
         } else if (nextStatus === 'closed') changes.manualClosed = true;
-        else throw new HttpError(400, 'Status must be "open" or "closed".', 'status');
+        else throw new HttpError(400, 'Status must be "open" or "closed".', 'status', 'status_invalid');
       }
       if (passwordKey !== undefined) await store.setAdminPassword(id, passwordKey);
       const updated = await store.updatePoll(id, changes);
@@ -259,15 +260,15 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
       limiter.check(req.ip, 'write');
       const body = await readJson(req);
       const poll = await requirePoll(id);
-      if (poll.closed) throw new HttpError(409, 'This poll is closed, so it is not taking new responses.');
+      if (poll.closed) throw new HttpError(409, 'This poll is closed, so it is not taking new responses.', undefined, 'poll_closed');
       const data = validateResponse(body, poll);
       const passwordKey = passwordKeyField(body?.password);
-      if (await store.countResponses(id) >= LIMITS.responses) throw new HttpError(409, `This poll already has ${LIMITS.responses} responses.`);
+      if (await store.countResponses(id) >= LIMITS.responses) throw new HttpError(409, `This poll already has ${LIMITS.responses} responses.`, undefined, 'too_many_responses', { count: LIMITS.responses });
       // Names are unique when everyone can see responses, so nobody is confused
       // about who is who. With hidden results they needn't be, so a guest can't
       // find out who responded by trying names.
       if (poll.resultsVisibility === 'everyone' && await store.nameTaken(id, data.name)) {
-        throw new HttpError(409, `Someone already responded as “${data.name}”. If that was you, open your private edit link. Otherwise, add a last initial.`, 'name');
+        throw new HttpError(409, `Someone already responded as “${data.name}”. If that was you, open your private edit link. Otherwise, add a last initial.`, 'name', 'name_taken', { name: data.name });
       }
       const { response, editToken } = await store.createResponse(poll, data, { passwordKey });
       await record(poll, 'response_new', response.id);
@@ -281,11 +282,11 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
       let mine;
       if (pw) {
         mine = await store.getResponse(poll.id, pw.responseId);
-        if (mine && !(await isAuthor(req, poll, mine))) throw new HttpError(403, 'That password no longer works for this response. It may have been changed.');
+        if (mine && !(await isAuthor(req, poll, mine))) throw new HttpError(403, 'That password no longer works for this response. It may have been changed.', undefined, 'password_no_longer_works');
       } else {
         mine = await store.findResponseByToken(poll.id, bearer(req));
       }
-      if (!mine) throw new HttpError(404, 'We could not find your response. It may have been deleted.');
+      if (!mine) throw new HttpError(404, 'We could not find your response. It may have been deleted.', undefined, 'my_response_not_found');
       return { body: { response: ownResponse(mine, poll) } };
     }],
 
@@ -296,13 +297,13 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
       const poll = await requirePoll(id);
       const name = typeof body?.name === 'string' ? body.name.slice(0, 200) : '';
       const key = passwordKeyField(body?.password);
-      if (!name.trim() || !key) throw new HttpError(400, 'Enter the name you answered with and your password.');
+      if (!name.trim() || !key) throw new HttpError(400, 'Enter the name you answered with and your password.', undefined, 'sign_in_incomplete');
       const candidates = (await store.responsesNamed(poll.id, name)).filter((r) => r.pwHash);
       // One comparison per candidate, counted once, whether or not the name exists.
       let match = null;
       const ok = await passwordMatches('guest', poll.id, key, candidates.length ? candidates.map((r) => r.pwHash) : [null]);
       if (ok) for (const r of candidates) if (await secretMatches(key, r.pwHash)) { match = r; break; }
-      if (!match) throw new HttpError(403, 'That name and password don’t match a response with a password. Check the spelling, or use your private edit link.');
+      if (!match) throw new HttpError(403, 'That name and password don’t match a response with a password. Check the spelling, or use your private edit link.', undefined, 'sign_in_failed');
       return { body: { response: ownResponse(match, poll) } };
     }],
 
@@ -311,15 +312,15 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
       const body = await readJson(req);
       const poll = await requirePoll(id);
       await guestResponseFor(req, poll, rid);
-      if (poll.closed) throw new HttpError(409, 'This poll is closed, so responses can no longer be changed.');
-      if (!poll.allowEdits) throw new HttpError(409, 'The organizer doesn’t allow changing answers after they’re sent. You can still delete yours.');
+      if (poll.closed) throw new HttpError(409, 'This poll is closed, so responses can no longer be changed.', undefined, 'poll_closed_no_changes');
+      if (!poll.allowEdits) throw new HttpError(409, 'The organizer doesn’t allow changing answers after they’re sent. You can still delete yours.', undefined, 'edits_not_allowed');
       const data = validateResponse(body, poll);
       if (poll.resultsVisibility === 'everyone' && await store.nameTaken(id, data.name, rid)) {
-        throw new HttpError(409, `Someone else already responded as “${data.name}”. Try adding a last initial.`, 'name');
+        throw new HttpError(409, `Someone else already responded as “${data.name}”. Try adding a last initial.`, 'name', 'name_taken_other', { name: data.name });
       }
       const passwordKey = passwordKeyField(body?.password);
       let updated = await store.updateResponse(poll, rid, data);
-      if (!updated) throw new HttpError(404, 'That response no longer exists.');
+      if (!updated) throw new HttpError(404, 'That response no longer exists.', undefined, 'response_not_found');
       await record(poll, 'response_updated', rid);
       if (passwordKey !== undefined) {
         await store.setResponsePassword(poll.id, rid, passwordKey);
@@ -335,7 +336,7 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
       // your own data works even after the poll is closed.
       const byOrganizer = await isAdmin(req, poll);
       if (!byOrganizer) await guestResponseFor(req, poll, rid);
-      else if (!(await store.getResponse(id, rid))) throw new HttpError(404, 'That response no longer exists.');
+      else if (!(await store.getResponse(id, rid))) throw new HttpError(404, 'That response no longer exists.', undefined, 'response_not_found');
       await store.deleteResponse(id, rid);
       await record(poll, byOrganizer ? 'response_removed' : 'response_deleted', rid, { byOrganizer });
       return { status: 204 };
@@ -353,37 +354,39 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
       limiter.check(req.ip, 'write');
       const body = await readJson(req);
       const { poll, response } = await emailOwner(req, id, rid);
-      if (!mailer) throw new HttpError(404, 'Email isn’t set up on this copy of Overlap.');
+      if (!mailer) throw new HttpError(404, 'Email isn’t set up on this copy of Overlap.', undefined, 'email_not_set_up');
       const email = cleanEmail(body?.email);
-      if (!email) throw new HttpError(400, 'That doesn’t look like an email address.', 'email');
+      if (!email) throw new HttpError(400, 'That doesn’t look like an email address.', 'email', 'email_invalid');
       const wantsUpdates = body.updates === true;
+      // Emails are written in the language of the page that asked for them.
+      const lang = isLanguage(body.lang) ? body.lang : 'en';
       // The link is only ever one the browser already holds, checked against its hash.
       let link = null;
       if (typeof body.link === 'string' && body.link) {
         const ok = rid ? await secretMatches(body.link, response.editHash) : await secretMatches(body.link, poll.adminHash);
-        if (!ok) throw new HttpError(400, 'That private link isn’t current. Reload the page and try again.', 'link');
+        if (!ok) throw new HttpError(400, 'That private link isn’t current. Reload the page and try again.', 'link', 'link_not_current');
         link = rid ? `${siteUrl(req)}/p/${poll.id}#r=${body.link}` : `${siteUrl(req)}/m/${poll.id}#k=${body.link}`;
       }
-      if (!link && !wantsUpdates) throw new HttpError(400, 'Choose what to email: your link, updates, or both.');
+      if (!link && !wantsUpdates) throw new HttpError(400, 'Choose what to email: your link, updates, or both.', undefined, 'email_nothing_chosen');
       limiter.check(req.ip, 'email');
       const addressKey = `email-addr:${await hashText(email.toLowerCase())}`;
       if (await store.throttleBlocked(addressKey, EMAILS_PER_ADDRESS_PER_DAY) || await store.throttleBlocked(`email-poll:${poll.id}`, EMAILS_PER_POLL_PER_DAY)) {
-        throw new HttpError(429, 'Overlap has sent enough emails to that address (or for this poll) today. Try again tomorrow.');
+        throw new HttpError(429, 'Overlap has sent enough emails to that address (or for this poll) today. Try again tomorrow.', undefined, 'email_daily_limit');
       }
       let confirmUrl = null;
       let confirmed = false;
       if (wantsUpdates) {
-        const sub = await store.putEmailSub(poll.id, rid || null, email);
+        const sub = await store.putEmailSub(poll.id, rid || null, email, lang);
         confirmed = sub.confirmed;
         if (!confirmed) confirmUrl = `${siteUrl(req)}/e/confirm#t=${sub.confirmToken}`;
       }
       if (link || confirmUrl) {
-        const msg = welcomeEmail({ poll, role: rid ? 'guest' : 'organizer', link, confirmUrl, publicUrl: siteUrl(req) });
+        const msg = welcomeEmail({ poll, role: rid ? 'guest' : 'organizer', link, confirmUrl, publicUrl: siteUrl(req), lang });
         try {
           await mailer.send({ to: email, ...msg });
         } catch (err) {
           console.error('Email not sent:', err.message);
-          throw new HttpError(502, 'The email couldn’t be sent just now. Try again in a minute.');
+          throw new HttpError(502, 'The email couldn’t be sent just now. Try again in a minute.', undefined, 'email_send_failed');
         }
         await store.throttleMiss(addressKey, 86400e3);
         await store.throttleMiss(`email-poll:${poll.id}`, 86400e3);
@@ -402,7 +405,7 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
       limiter.check(req.ip, 'write');
       const body = await readJson(req);
       const sub = await store.confirmEmailSub(body?.token);
-      if (!sub) throw new HttpError(404, 'This confirmation link has expired or was already replaced. Ask for emails again from the poll.');
+      if (!sub) throw new HttpError(404, 'This confirmation link has expired or was already replaced. Ask for emails again from the poll.', undefined, 'confirm_link_expired');
       const poll = await store.getPoll(sub.pollId);
       return { body: { poll: poll ? { id: poll.id, title: poll.title } : null, role: sub.responseId ? 'guest' : 'organizer' } };
     }],
@@ -421,7 +424,7 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
     ['GET', /^\/api\/polls\/([a-z0-9]+)\/invite\.ics$/, async (req, [id]) => {
       limiter.check(req.ip, 'read');
       const poll = await requirePoll(id);
-      if (!poll.final) throw new HttpError(404, 'This poll does not have a final time yet.');
+      if (!poll.final) throw new HttpError(404, 'This poll does not have a final time yet.', undefined, 'no_final_time');
       const slug = poll.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'event';
       const origin = publicUrl ? publicUrl.replace(/\/$/, '') : req.origin;
       return {
@@ -444,17 +447,21 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
         return { status: result.status || 200, body: result.status === 204 ? '' : result.body, headers: result.headers || {} };
       }
       const known = routes.some(([, pattern]) => pattern.test(req.pathname));
-      return { status: known ? 405 : 404, body: { error: known ? 'That method is not allowed here.' : 'Not found.' }, headers: {} };
+      return {
+        status: known ? 405 : 404,
+        body: known ? { error: 'That method is not allowed here.', code: 'method_not_allowed' } : { error: 'Not found.', code: 'not_found' },
+        headers: {},
+      };
     } catch (err) {
       if (err instanceof HttpError) {
         return {
           status: err.status,
-          body: { error: err.message, field: err.field },
+          body: { error: err.message, field: err.field, code: err.code, vars: err.vars }, // undefined ones are left out of the JSON
           headers: err.retryAfter ? { 'Retry-After': String(err.retryAfter) } : {},
         };
       }
       console.error(err);
-      return { status: 500, body: { error: 'Something went wrong on our side. Please try again.' }, headers: {} };
+      return { status: 500, body: { error: 'Something went wrong on our side. Please try again.', code: 'server_error' }, headers: {} };
     }
   }
 

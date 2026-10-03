@@ -1,6 +1,7 @@
 // Thin wrapper over the JSON API. Errors carry the server's message and field.
 
 import { API_BASE } from '../config.js';
+import { t } from './i18n.js';
 
 export class ApiError extends Error {
   constructor(status, message, field) {
@@ -8,6 +9,16 @@ export class ApiError extends Error {
     this.status = status;
     this.field = field;
   }
+}
+
+/** The server's error in the page's language: by its code when we know it, else its own English text. */
+function serverMessage(data, status) {
+  if (data?.code) {
+    const key = `errors.${data.code}`;
+    const msg = t(key, data.vars || {});
+    if (msg !== key) return msg;
+  }
+  return data?.error || t('api.failed', { status });
 }
 
 export async function api(method, path, { body, token } = {}) {
@@ -19,11 +30,11 @@ export async function api(method, path, { body, token } = {}) {
   try {
     res = await fetch(API_BASE + path, { method, headers, body: body === undefined ? undefined : JSON.stringify(body), cache: 'no-store' });
   } catch {
-    throw new ApiError(0, 'Could not reach Overlap. Check your connection and try again.');
+    throw new ApiError(0, t('api.offline'));
   }
   if (res.status === 204) return null;
   let data = null;
   try { data = await res.json(); } catch { /* empty body */ }
-  if (!res.ok) throw new ApiError(res.status, data?.error || `Request failed (${res.status}).`, data?.field);
+  if (!res.ok) throw new ApiError(res.status, serverMessage(data, res.status), data?.field);
   return data;
 }

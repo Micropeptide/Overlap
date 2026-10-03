@@ -4,6 +4,7 @@ import { storage } from '../lib/storage.js';
 import { createPollForm } from '../components/poll-form.js';
 import * as f from '../lib/format.js';
 import { passwordKey } from '/shared/password.js';
+import { t } from '../lib/i18n.js';
 
 // Three people's free time drawn as translucent bands; where all three stack
 // up is the overlap. Purely illustrative.
@@ -25,12 +26,13 @@ function overlapIllustration() {
       <text class="band-name" x="244" y="105">Ben</text>
       <text class="band-name" x="76" y="161">Cy</text>
     </svg>
-    <figcaption>Everyone’s free here</figcaption>`;
+    <figcaption></figcaption>`;
+  wrap.querySelector('figcaption').textContent = t('home.illustrationCaption');
   return wrap;
 }
 
 export async function renderHome(main) {
-  document.title = 'Overlap: find a time that works for everyone';
+  document.title = t('home.pageTitle');
   clear(main);
 
   // Start from a duplicated poll, or from the settings used last time.
@@ -46,7 +48,7 @@ export async function renderHome(main) {
     : prefs;
   const form = createPollForm({
     initial,
-    submitLabel: 'Create poll',
+    submitLabel: t('home.submit'),
     onSubmit: async (value, { password }) => {
       const { poll, adminToken } = await api('POST', '/api/polls', { body: value });
       // The password's key is salted with the poll id, so it is set once the poll exists.
@@ -72,47 +74,47 @@ export async function renderHome(main) {
   const byRecent = (a, b) => (b[1].savedAt || 0) - (a[1].savedAt || 0);
   const managed = Object.entries(storage.managed()).sort(byRecent).slice(0, 12);
   const answered = Object.entries(storage.answered()).filter(([id]) => !storage.getManaged(id)).sort(byRecent).slice(0, 12);
-  const STATUS = { open: 'Open', closed: 'Closed', finalized: 'Final time chosen' };
+  const STATUS = { open: t('home.statusOpen'), closed: t('home.statusClosed'), finalized: t('home.statusFinalized') };
   const pollItem = (id, entry, kind) => {
     const status = h('span', { class: 'saved-status' }, '…');
     const href = kind === 'managed' ? `/m/${id}#k=${encodeURIComponent(entry.token)}` : `/p/${id}`;
     const li = h('li', { class: 'saved-item' },
-      h('a', { class: 'saved-title', href }, entry.title || 'Untitled poll'),
-      kind === 'answered' && entry.name ? h('span', { class: 'saved-meta' }, `You answered as ${entry.name}`) : null,
+      h('a', { class: 'saved-title', href }, entry.title || t('home.untitled')),
+      kind === 'answered' && entry.name ? h('span', { class: 'saved-meta' }, t('home.answeredAs', { name: entry.name })) : null,
       status,
       h('button', {
         type: 'button', class: 'link-btn muted saved-forget',
-        'aria-label': `Forget ${entry.title || 'this poll'} on this device`,
+        'aria-label': entry.title ? t('home.forgetLabel', { title: entry.title }) : t('home.forgetUntitledLabel'),
         onclick: () => { (kind === 'managed' ? storage.forgetManaged : storage.forgetAnswer).call(storage, id); li.remove(); },
-      }, 'Forget'));
+      }, t('home.forget')));
     api('GET', `/api/polls/${id}`).then(({ poll }) => {
       status.textContent = STATUS[poll.status] || '';
       status.dataset.status = poll.status;
       li.querySelector('.saved-title').textContent = poll.title;
-    }).catch(() => { status.textContent = 'Deleted'; status.dataset.status = 'gone'; });
+    }).catch(() => { status.textContent = t('home.statusDeleted'); status.dataset.status = 'gone'; });
     return li;
   };
   const list = (title, items, kind) => items.length ? h('div', { class: 'saved-group' },
     h('h3', { class: 'saved-heading' }, title),
     h('ul', { class: 'saved-list', role: 'list' }, items.map(([id, entry]) => pollItem(id, entry, kind)))) : null;
   const savedList = managed.length || answered.length ? h('section', { class: 'saved', 'aria-labelledby': 'saved-title' },
-    h('h2', { id: 'saved-title', class: 'section-title small' }, 'Your polls on this device'),
-    list('Organizing', managed, 'managed'),
-    list('Answered', answered, 'answered'),
-    h('p', { class: 'muted small' }, 'These are remembered by this browser only. Forgetting one just removes it from this list.'),
+    h('h2', { id: 'saved-title', class: 'section-title small' }, t('home.savedTitle')),
+    list(t('home.organizing'), managed, 'managed'),
+    list(t('home.answered'), answered, 'answered'),
+    h('p', { class: 'muted small' }, t('home.savedNote')),
   ) : null;
 
   main.append(h('div', { class: 'page home' },
     h('section', { class: 'hero' },
       h('div', { class: 'hero-text' },
-        h('h1', { class: 'hero-title' }, 'Pick some dates. Share one link. See where everyone overlaps.'),
-        h('p', { class: 'lede' }, 'Free group scheduling. Nobody needs an account, an email address or a calendar connection, including you.'),
+        h('h1', { class: 'hero-title' }, t('home.headline')),
+        h('p', { class: 'lede' }, t('home.lede')),
       ),
       overlapIllustration(),
     ),
     h('section', { class: 'create', 'aria-labelledby': 'create-title' },
-      h('h2', { id: 'create-title', class: 'visually-hidden' }, 'Create a poll'),
-      source ? h('p', { class: 'notice small copied' }, `Copied the settings from “${source.title}”. ${source.kind === 'weekly' ? 'Check the days and create it.' : 'Pick the dates and create it.'}`) : null,
+      h('h2', { id: 'create-title', class: 'visually-hidden' }, t('home.createTitle')),
+      source ? h('p', { class: 'notice small copied' }, source.kind === 'weekly' ? t('home.copiedWeekly', { title: source.title }) : t('home.copiedDates', { title: source.title })) : null,
       form.el,
     ),
     savedList,

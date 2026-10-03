@@ -1,0 +1,18 @@
+export default {
+  'about.tabTitle': 'Sobre',
+  'about.title': 'Sobre o Overlap',
+  'about.lede': 'Um jeito gratuito e tranquilo de encontrar um horário bom para um grupo. O organizador escolhe algumas datas, compartilha um link, e todos marcam quando estão livres.',
+  'about.howHeading': 'Como funciona',
+  'about.howNoAccounts': 'Ninguém cria conta, faz login ou conecta uma agenda, nem mesmo o organizador. O e-mail também é opcional: só se você quiser receber seu link ou atualizações.',
+  'about.howLinks': 'Cada enquete tem um link de convite para compartilhar e um link privado para o organizador. Os convidados recebem o próprio link privado para alterar a resposta. Qualquer pessoa pode adicionar uma senha opcional em vez de guardar links.',
+  'about.howTimeZones': 'Os horários são armazenados como momentos exatos e mostrados no fuso horário de cada pessoa, inclusive nas mudanças de horário de verão.',
+  'about.howPrivacy': 'Sem anúncios e sem rastreamento. As enquetes ficam guardadas até o organizador excluí-las, e os convidados podem excluir as próprias respostas. {privacyLink}.',
+  'about.privacyLink': 'Como seus dados são tratados',
+  'about.whoHeading': 'Quem criou',
+  'about.bio': 'O Overlap é criado e mantido por Micropeptide, que faz ferramentas pequenas e focadas para pesquisa, produtividade e, de vez em quando, algum problema curiosamente específico.',
+  'about.githubLink': 'Micropeptide no GitHub',
+  'about.moreLink': 'Mais softwares de Micropeptide',
+  'about.sourceHeading': 'Código aberto',
+  'about.sourceCode': 'O código do Overlap é público em {link}, sob a Licença MIT. Relatos de bugs e ideias são bem-vindos por lá.',
+  'about.inspired': 'Ele foi inspirado no agendador de código aberto {timeful}, mas não compartilha nenhum código com ele. Fontes: Bricolage Grotesque e Atkinson Hyperlegible Next, ambas sob a SIL Open Font License.',
+};

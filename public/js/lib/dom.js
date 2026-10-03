@@ -1,5 +1,7 @@
 // Tiny DOM helpers. All user text goes in through textContent, never innerHTML.
 
+import { t } from './i18n.js';
+
 export function h(tag, props, ...children) {
   const el = document.createElement(tag);
   if (props) {
@@ -108,7 +110,7 @@ export function announce(message, { tone = 'info', silent = false } = {}) {
   }
 }
 
-export async function copyText(text, label = 'Copied') {
+export async function copyText(text, label = t('dom.copied')) {
   try {
     await navigator.clipboard.writeText(text);
     announce(label);
@@ -122,7 +124,7 @@ export async function copyText(text, label = 'Copied') {
     let ok = false;
     try { ok = document.execCommand('copy'); } catch { /* ignore */ }
     ta.remove();
-    announce(ok ? label : 'Copy did not work. Select the text and copy it manually.', { tone: ok ? 'info' : 'error' });
+    announce(ok ? label : t('dom.copyFailed'), { tone: ok ? 'info' : 'error' });
     return ok;
   }
 }
@@ -180,7 +182,7 @@ export function formDialog({ title, intro, fields, submitLabel }, onSubmit) {
       fields,
       error,
       h('div', { class: 'dialog-actions' },
-        h('button', { type: 'button', class: 'btn secondary', onclick: () => dlg.close() }, 'Cancel'),
+        h('button', { type: 'button', class: 'btn secondary', onclick: () => dlg.close() }, t('dom.cancel')),
         submit));
     const dlg = h('dialog', { class: 'dialog', 'aria-labelledby': titleId }, form);
     let result = null;
@@ -215,10 +217,10 @@ export function passwordField({ id, label, hint, autocomplete = 'current-passwor
     onclick: () => {
       const visible = input.type === 'password';
       input.type = visible ? 'text' : 'password';
-      show.textContent = visible ? 'Hide' : 'Show';
+      show.textContent = visible ? t('dom.hide') : t('dom.show');
       show.setAttribute('aria-pressed', String(visible));
     },
-  }, 'Show');
+  }, t('dom.show'));
   const el = h('div', { class: 'field' },
     h('div', { class: 'label-row' }, h('label', { for: id, class: 'field-label' }, label), show),
     input,
@@ -231,7 +233,7 @@ export function confirmDialog({ title, message, confirm, danger = false }) {
     title,
     body: h('p', { class: 'dialog-text' }, message),
     actions: [
-      { label: 'Cancel', value: 'cancel' },
+      { label: t('dom.cancel'), value: 'cancel' },
       { label: confirm, value: 'ok', kind: danger ? 'danger' : 'primary', submit: true },
     ],
   }).then((v) => v === 'ok');

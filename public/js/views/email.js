@@ -5,42 +5,45 @@
 import { h, clear } from '../lib/dom.js';
 import { api } from '../lib/api.js';
 import { hashParams } from '../lib/storage.js';
+import { t } from '../lib/i18n.js';
 
 export async function renderEmail(main, action) {
   const token = hashParams().get('t');
   history.replaceState(null, '', location.pathname);
   const page = (title, ...body) => clear(main).append(h('article', { class: 'page narrow prose email-page' },
     h('h1', { class: 'page-title', tabindex: '-1' }, title), ...body));
-  const pollLink = (poll) => poll ? h('p', null, h('a', { class: 'btn primary', href: `/p/${poll.id}` }, `Open “${poll.title}”`)) : null;
+  const pollLink = (poll) => poll ? h('p', null, h('a', { class: 'btn primary', href: `/p/${poll.id}` }, t('emailPage.openPoll', { title: poll.title }))) : null;
 
-  if (!token) return page('This link is incomplete', h('p', null, 'Open the link straight from the email, or copy all of it into the address bar.'));
+  if (!token) return page(t('emailPage.incompleteTitle'), h('p', null, t('emailPage.incompleteBody')));
 
   if (action === 'confirm') {
-    document.title = 'Confirm emails · Overlap';
+    document.title = `${t('emailPage.confirmTabTitle')} · Overlap`;
     try {
       const { poll, role } = await api('POST', '/api/email/confirm', { body: { token } });
-      page('Emails are on',
-        h('p', { class: 'lede' }, role === 'organizer'
-          ? `You’ll get an email when people respond to “${poll?.title || 'your poll'}” or change their answers, at most one every 30 minutes.`
-          : `You’ll get an email when the organizer of “${poll?.title || 'the poll'}” picks a time or changes the poll, at most one every 30 minutes.`),
-        h('p', null, 'Every email has a link to stop them, which also deletes your address.'),
+      const title = poll?.title;
+      const lede = role === 'organizer'
+        ? (title ? t('emailPage.onOrganizer', { title }) : t('emailPage.onOrganizerUntitled'))
+        : (title ? t('emailPage.onGuest', { title }) : t('emailPage.onGuestUntitled'));
+      page(t('emailPage.onTitle'),
+        h('p', { class: 'lede' }, lede),
+        h('p', null, t('emailPage.stopNote')),
         role === 'organizer' ? null : pollLink(poll));
     } catch (err) {
-      page('This link didn’t work', h('p', null, err.message));
+      page(t('emailPage.failedTitle'), h('p', null, err.message));
     }
   } else {
-    document.title = 'Stop emails · Overlap';
+    document.title = `${t('emailPage.stopTabTitle')} · Overlap`;
     try {
       const { found, poll } = await api('POST', '/api/email/unsubscribe', { body: { token } });
       if (!found) {
-        return page('Emails were already stopped',
-          h('p', { class: 'lede' }, 'This link was already used, or emails for this poll were turned off another way. Either way, no address is kept for it.'));
+        return page(t('emailPage.alreadyTitle'),
+          h('p', { class: 'lede' }, t('emailPage.alreadyBody')));
       }
-      page('No more emails',
-        h('p', { class: 'lede' }, poll ? `You won’t get more emails about “${poll.title}”, and your address has been deleted.` : 'You won’t get more emails about this poll, and your address has been deleted.'),
-        h('p', null, 'You can turn emails on again from the poll page at any time.'));
+      page(t('emailPage.stoppedTitle'),
+        h('p', { class: 'lede' }, poll ? t('emailPage.stoppedPoll', { title: poll.title }) : t('emailPage.stoppedNoPoll')),
+        h('p', null, t('emailPage.reenable')));
     } catch (err) {
-      page('This link didn’t work', h('p', null, err.message));
+      page(t('emailPage.failedTitle'), h('p', null, err.message));
     }
   }
   main.querySelector('h1')?.focus();

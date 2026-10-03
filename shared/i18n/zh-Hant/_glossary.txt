@@ -1,0 +1,56 @@
+zh-Hant (Taiwan) glossary for Overlap
+
+poll                          投票
+organizer                     發起人
+guest                         參與者
+response / answer             回覆（量詞：則）
+time (a slot in the grid)     時段 / 時間
+guest link                    邀請連結
+private link (organizer)      私人連結
+private edit link (guest)     私人編輯連結
+organizer password            發起人密碼
+organizer view                發起人頁面
+Available / available         有空
+Preferred / preferred         首選
+If needed / if needed         必要時可以
+Not available                 沒空
+has not seen this time        還沒看到這個時段
+Not answered                  未回覆
+Erase (brush)                 擦除
+Clear                         清除
+Only me                       只有我
+Everyone with the guest link  所有拿到邀請連結的人
+Select a range                選取範圍
+Whole day                     整天
+Copy to every day             複製到每一天
+Manage with your password     用密碼管理
+Sign in with your name and password  用名字和密碼登入
+Copy my edit link             複製我的編輯連結
+Email me                      寄電子郵件給我
+Stop emails                   停止接收郵件
+Edit poll                     編輯投票
+Duplicate poll                複製投票
+Manage poll                   管理投票
+Never: I’ll close it myself   永不：我會自己關閉 （“Never” → 「永不」）
+More options                  更多選項
+final time                    最終時間
+time zone                     時區
+close / closed / reopen       關閉 / 已關閉 / 重新開放
+closing date                  截止日期
+Stop taking responses         停止收集回覆
+days of the week (poll kind)  每週星期幾
+Specific dates                特定日期
+calendar                      行事曆（Google Calendar → Google 日曆）
+link                          連結
+email                         電子郵件 / 郵件
+password                      密碼
+data                          資料
+settings                      設定
+submit / save / undo          送出 / 儲存 / 復原
+sign in                       登入
+optional (field)              選填；optional (feature) 選用
+this copy of Overlap          這個 Overlap 站台
+Space / arrow keys            空白鍵 / 方向鍵
+
+Typography: full-width ，。：？！（）, quotes 「」 (names and titles in sentences in 「」), spaces only around numbers ({count}) and Latin words.
+Plurals: only “other”.

@@ -1,0 +1,52 @@
+Overlap Korean (ko) glossary. Sentences in 해요체; buttons/labels as short nouns.
+Avoid particles that depend on the final sound (이/가, 을/를, 은/는, 와/과, (으)로) directly after a placeholder: rephrase, use quotes + 님 / 의 / 에 / 까지 / colon layouts.
+
+poll                         투표 (always; never 설문/여론조사)
+organizer                    주최자
+guest                        참여자
+response / answer            응답 (both)
+respond                      응답하다
+guest link                   참여 링크
+private link (organizer)     비공개 링크
+private link (guest, locked) 비공개 링크
+private edit link            비공개 수정 링크
+organizer password           주최자 비밀번호
+organizer view               주최자 화면
+Available                    가능
+Preferred                    선호
+If needed                    필요 시 가능
+Not available                불가
+Not answered                 응답 안 함
+Erase                        지우기
+Only me                      나만
+Everyone with the guest link 참여 링크가 있는 모든 사람
+Select a range               범위 선택
+Whole day                    하루 전체
+Copy to every day            모든 날에 복사
+Manage with your password    비밀번호로 관리
+Sign in with your name and password  이름과 비밀번호로 로그인
+Sign in                      로그인
+Copy my edit link            내 수정 링크 복사
+Email me                     이메일 받기
+Edit poll                    투표 수정
+Duplicate poll               투표 복제
+Never: I'll close it myself  마감일 없음: 직접 마감할게요   (short quote: “마감일 없음”)
+More options                 추가 옵션
+Stop taking responses        응답 마감
+final time                   확정 시간
+time zone                    시간대
+time (slot)                  시간 (count: {count}개)
+people                       {count}명
+meeting length               모임 길이
+time steps                   시간 단위
+calendar invite              캘린더 초대
+close / reopen poll          투표 마감 / 투표 다시 열기
+delete / remove response     응답 삭제
+Quotes: “ ”  (inner/label quotes also “ ”)
+weekly poll                  매주 반복 투표
+Clear (day / all)            비우기 / 이날 비우기 / 모두 비우기 (kept distinct from the Erase brush 지우기)
+Undo                         실행 취소
+Manage poll (section)        투표 관리
+Who can see responses        응답을 볼 수 있는 사람
+"this copy of Overlap"       이 Overlap 사이트
+Email updates                이메일 업데이트; stop emails 이메일 중지

@@ -1,0 +1,93 @@
+export default {
+  // Poll fields
+  'errors.not_text': '{field} 값은 텍스트여야 해요.',
+  'errors.title_required': '제목을 입력해 주세요.',
+  'errors.name_required': '이름을 입력해 주세요.',
+  'errors.title_too_long': { other: '제목은 {count}자 이내로 입력해 주세요.' },
+  'errors.description_too_long': { other: '설명은 {count}자 이내로 입력해 주세요.' },
+  'errors.location_too_long': { other: '장소는 {count}자 이내로 입력해 주세요.' },
+  'errors.note_too_long': { other: '메모는 {count}자 이내로 입력해 주세요.' },
+  'errors.name_too_long': { other: '이름은 {count}자 이내로 입력해 주세요.' },
+  'errors.not_whole_number': '{field} 값은 정수여야 해요.',
+  'errors.poll_not_object': '투표를 JSON 객체로 보내 주세요.',
+  'errors.closes_on_invalid': '앞으로 3년 이내의 올바른 마감 날짜를 골라 주세요.',
+  'errors.closes_on_passed': '이미 지난 마감 날짜예요. 오늘 이후 날짜를 골라 주세요.',
+  'errors.timezone_invalid': '올바른 시간대를 골라 주세요(예: Europe/London).',
+  'errors.kind_invalid': '특정 날짜 또는 요일 중에서 골라 주세요.',
+  'errors.weekly_sent_dates': '매주 반복 투표예요. "dates" 대신 "weekdays"를 보내 주세요.',
+  'errors.weekdays_required': '요일을 하나 이상 골라 주세요.',
+  'errors.weekdays_invalid': '요일은 0(일요일)부터 6(토요일)까지의 숫자여야 해요.',
+  'errors.dates_sent_weekdays': '특정 날짜를 쓰는 투표예요. "weekdays" 대신 "dates"를 보내 주세요.',
+  'errors.dates_required': '날짜를 하나 이상 골라 주세요.',
+  'errors.too_many_dates': { other: '날짜는 {count}개 이하로 골라 주세요.' },
+  'errors.date_invalid': '올바른 날짜가 아니에요: "{date}"',
+  'errors.dates_out_of_range': '앞으로 3년 이내의 날짜를 골라 주세요.',
+  'errors.dates_all_passed': '모든 날짜가 이미 지났어요. 앞으로 다가올 날짜를 하나 이상 골라 주세요.',
+  'errors.slot_minutes_invalid': '시간 단위는 15분, 30분, 60분 중 하나여야 해요.',
+  'errors.end_before_start': '종료 시간은 시작 시간보다 늦어야 해요.',
+  'errors.duration_invalid': '모임 길이는 15분에서 12시간 사이여야 해요.',
+  'errors.allow_edits_invalid': '참여자가 응답을 수정할 수 있는지 알려 주세요(true 또는 false).',
+  'errors.visibility_invalid': '응답을 볼 수 있는 사람을 골라 주세요.',
+  'errors.times_misaligned': { other: '시작 시간과 종료 시간은 {count}분 단위에 맞아야 해요.' },
+  'errors.range_too_short': '시간 범위가 시간 단위 하나보다 짧아요.',
+  'errors.duration_too_long': '모임이 시간 범위보다 길어요. 시간 범위를 넓히거나 모임 길이를 줄여 주세요.',
+  'errors.too_many_slots': '고를 수 있는 시간이 너무 많아요. 날짜를 줄이거나 시간 범위를 좁혀 주세요.',
+  'errors.no_slots': '해당 시간대에는 이 시간들이 존재하지 않아요.',
+
+  // Responses
+  'errors.response_not_object': '응답을 JSON 객체로 보내 주세요.',
+  'errors.name_invisible': '다른 사람이 볼 수 있는 이름을 입력해 주세요.',
+  'errors.not_time_list': '{field} 값은 시간 목록이어야 해요.',
+
+  // Final time
+  'errors.final_required': '시작 시간과 종료 시간을 골라 주세요.',
+  'errors.final_end_before_start': '확정 시간은 시작보다 늦게 끝나야 해요.',
+  'errors.final_too_long': '확정 시간은 최대 24시간까지 정할 수 있어요.',
+  'errors.final_bad_length': '확정 시간의 길이는 5분 단위여야 해요.',
+  'errors.final_not_a_time': '확정 시간은 투표의 시간 중 하나에서 시작해야 해요.',
+
+  // Requests
+  'errors.too_many_requests': '이 연결에서 요청이 너무 많아요. 몇 분 뒤에 다시 시도해 주세요.',
+  'errors.json_required': 'Content-Type: application/json으로 JSON을 보내 주세요.',
+  'errors.body_too_large': '요청이 너무 커요.',
+  'errors.invalid_json': '요청 본문이 올바른 JSON이 아니에요.',
+  'errors.method_not_allowed': '여기서는 허용되지 않는 메서드예요.',
+  'errors.not_found': '찾을 수 없어요.',
+  'errors.server_error': '서버에 문제가 생겼어요. 다시 시도해 주세요.',
+
+  // Polls and access
+  'errors.poll_not_found': '존재하지 않는 투표예요. 삭제됐거나 만료됐을 수 있어요.',
+  'errors.admin_link_or_password_wrong': '비공개 링크나 비밀번호가 올바르지 않아요. 링크가 교체됐거나 비밀번호가 바뀌었을 수 있어요.',
+  'errors.admin_link_invalid': '유효하지 않은 비공개 링크예요. 교체됐을 수 있어요.',
+  'errors.changes_not_object': '변경 사항을 JSON 객체로 보내 주세요.',
+  'errors.reopen_with_final': '투표를 다시 열면 확정 시간이 지워지므로 둘 중 하나만 보내 주세요.',
+  'errors.status_invalid': '상태는 "open" 또는 "closed"여야 해요.',
+  'errors.no_final_time': '이 투표에는 아직 확정 시간이 없어요.',
+
+  // Answering
+  'errors.poll_closed': '마감된 투표라서 새 응답을 받지 않아요.',
+  'errors.poll_closed_no_changes': '마감된 투표라서 더 이상 응답을 수정할 수 없어요.',
+  'errors.edits_not_allowed': '주최자가 보낸 뒤에는 응답 수정을 허용하지 않아요. 내 응답을 삭제할 수는 있어요.',
+  'errors.too_many_responses': { other: '이 투표에는 이미 응답이 {count}개 있어요.' },
+  'errors.name_taken': '이미 “{name}” 이름으로 응답한 사람이 있어요. 본인이라면 비공개 수정 링크를 여세요. 아니라면 성이나 이니셜을 덧붙여 주세요.',
+  'errors.name_taken_other': '다른 사람이 이미 “{name}” 이름으로 응답했어요. 성이나 이니셜을 덧붙여 보세요.',
+  'errors.response_not_found': '해당 응답이 더 이상 존재하지 않아요.',
+  'errors.my_response_not_found': '내 응답을 찾을 수 없어요. 삭제됐을 수 있어요.',
+  'errors.not_your_response': '이 응답을 보낸 사람만 수정할 수 있어요.',
+
+  // Passwords
+  'errors.password_unreadable': '비밀번호를 읽을 수 없어요. 페이지를 새로고침한 뒤 다시 시도해 주세요.',
+  'errors.too_many_wrong_passwords': '이 투표에 틀린 비밀번호가 너무 많이 입력됐어요. 1시간 뒤에 다시 시도하거나 비공개 링크를 사용하세요.',
+  'errors.password_no_longer_works': '이 비밀번호로는 더 이상 이 응답을 열 수 없어요. 비밀번호가 바뀌었을 수 있어요.',
+  'errors.sign_in_incomplete': '응답할 때 쓴 이름과 비밀번호를 입력하세요.',
+  'errors.sign_in_failed': '비밀번호가 설정된 응답 중 이 이름과 비밀번호가 일치하는 응답이 없어요. 철자를 확인하거나 비공개 수정 링크를 사용하세요.',
+
+  // Email
+  'errors.email_not_set_up': '이 Overlap 사이트에는 이메일 기능이 설정되어 있지 않아요.',
+  'errors.email_invalid': '올바른 이메일 주소가 아닌 것 같아요.',
+  'errors.link_not_current': '현재 비공개 링크가 아니에요. 페이지를 새로고침한 뒤 다시 시도해 주세요.',
+  'errors.email_nothing_chosen': '이메일로 받을 항목을 골라 주세요: 링크, 업데이트 또는 둘 다.',
+  'errors.email_daily_limit': 'Overlap이 오늘 해당 주소(또는 이 투표)로 보낼 수 있는 이메일을 모두 보냈어요. 내일 다시 시도해 주세요.',
+  'errors.email_send_failed': '지금은 이메일을 보낼 수 없었어요. 1분 뒤에 다시 시도해 주세요.',
+  'errors.confirm_link_expired': '이 확인 링크는 만료됐거나 이미 새 링크로 바뀌었어요. 투표 페이지에서 이메일을 다시 요청하세요.',
+};

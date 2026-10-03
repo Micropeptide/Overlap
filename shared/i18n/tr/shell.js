@@ -1,0 +1,20 @@
+export default {
+  'shell.skip': 'İçeriğe geç',
+  'shell.brandLabel': 'Overlap, yeni anket oluştur',
+  'shell.navLabel': 'Site',
+  'shell.newPoll': 'Yeni anket',
+  'shell.about': 'Hakkında',
+  'shell.privacy': 'Gizlilik',
+  'shell.loading': 'Yükleniyor…',
+  'shell.footer': 'Hesap yok, takip yok, reklam yok. {retention} {privacyLink}. {aboutLink}. Micropeptide yapımıdır.',
+  'shell.retentionKept': 'Anketler, organizatör silene kadar saklanır.',
+  'shell.retentionAuto': {
+    one: 'Anketler, son tarihlerinden {count} gün sonra otomatik olarak silinir (haftalık anketler, son değişikliklerinden sonra).',
+    other: 'Anketler, son tarihlerinden {count} gün sonra otomatik olarak silinir (haftalık anketler, son değişikliklerinden sonra).',
+  },
+  'shell.privacyLink': 'Verileriniz nasıl işleniyor',
+  'shell.aboutLink': 'Overlap hakkında',
+  'shell.language': 'Dil',
+  'shell.errorTitle': 'Bir şeyler ters gitti',
+  'shell.errorReload': 'Tekrar denemek için sayfayı yenileyin.',
+};

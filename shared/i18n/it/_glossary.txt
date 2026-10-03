@@ -1,0 +1,41 @@
+Overlap – Italian (it) glossary. Informal "tu". Quotes « ». Typographic apostrophe ’.
+
+poll ............................ sondaggio
+organizer ....................... organizzatore (l’organizzatore)
+guest / guests .................. invitato / invitati
+response / answer ............... risposta
+respond / answer (verb) ......... rispondere
+guest link ...................... link di invito
+private link .................... link privato
+private edit link ............... link privato di modifica
+edit link ....................... link di modifica
+organizer password .............. password dell’organizzatore
+time (slot) / times ............. orario / orari
+final time ...................... orario definitivo
+time zone ....................... fuso orario
+meeting length .................. durata dell’incontro
+time steps ...................... intervalli
+organizer view .................. vista organizzatore
+
+UI labels (quoted elsewhere exactly as below)
+“Available” ..................... Disponibile   (word form: disponibile)
+“Preferred” ..................... Preferito     (word form: preferito)
+“If needed” ..................... Se serve      (word form: se serve)
+“Not available” ................. Non disponibile
+“Erase” ......................... Cancella
+“Only me” ....................... Solo io
+“Everyone with the guest link” .. Chiunque abbia il link di invito
+“Select a range” ................ Seleziona un intervallo
+“Whole day” ..................... Giornata intera
+“Copy to every day” ............. Copia su tutti i giorni
+“Manage with your password” ..... Gestisci con la tua password
+“Sign in with your name and password” ... Accedi con nome e password
+“Copy my edit link” ............. Copia il mio link di modifica
+“Email me” ...................... Ricevi via email
+“Edit poll” ..................... Modifica sondaggio
+“Duplicate poll” ................ Duplica sondaggio
+“Never: I’ll close it myself” ... Mai: lo chiudo io   (short form quoted: «Mai»)
+“More options” .................. Altre opzioni
+“Manage poll” ................... Gestisci sondaggio
+“Undo” .......................... Annulla
+Sign in ......................... Accedi

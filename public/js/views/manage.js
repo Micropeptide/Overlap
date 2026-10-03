@@ -7,13 +7,14 @@ import { bestTimes } from '../components/best-times.js';
 import { resultsSection } from '../components/results.js';
 import { zoneLine } from '../components/zone-picker.js';
 import { createPollForm } from '../components/poll-form.js';
-import { LENGTHS } from '../components/lengths.js';
+import { lengthOptions } from '../components/lengths.js';
 import { renderNotFound } from './not-found.js';
 import { emailControl } from '../components/email-control.js';
 import { serverConfig } from '../lib/config.js';
 import { pollFacts, finalCard, locationLine, watchForUpdates, captureFocus } from './shared.js';
 import { isValidTimeZone } from '/shared/time.js';
-import { passwordKey, passwordProblem, KEY_PATTERN } from '/shared/password.js';
+import { passwordKey, passwordProblem, KEY_PATTERN, PASSWORD_MIN, PASSWORD_MAX } from '/shared/password.js';
+import { t, tx, locale } from '../lib/i18n.js';
 
 export async function renderManage(main, pollId) {
   const params = hashParams();
@@ -23,8 +24,8 @@ export async function renderManage(main, pollId) {
 
   if (!token) {
     return renderNotFound(main, {
-      title: 'Open this page with your private link',
-      message: 'Managing a poll needs the private link you got when you created it. If you set an organizer password, open the guest link and choose “Manage with your password”.',
+      title: t('manage.noLinkTitle'),
+      message: t('manage.noLinkMessage'),
     });
   }
 
@@ -37,8 +38,8 @@ export async function renderManage(main, pollId) {
       // shouldn't erase a newer key saved in this browser.
       if (err.status === 404 || storage.getManaged(pollId)?.token === token) storage.forgetManaged(pollId);
       return renderNotFound(main, err.status === 403
-        ? { title: 'This private link no longer works', message: 'It may have been replaced with a new one, or the password changed. Use the newest private link, or open the guest link and choose “Manage with your password”.' }
-        : { title: 'This poll isn’t here', message: 'It may have been deleted.' });
+        ? { title: t('manage.badLinkTitle'), message: t('manage.badLinkMessage') }
+        : { title: t('manage.goneTitle'), message: t('manage.goneMessage') });
     }
     throw err;
   }
@@ -85,21 +86,21 @@ export async function renderManage(main, pollId) {
     results?.destroy?.();
     results = null;
     clear(main);
-    document.title = `${poll.title} (organizer) · Overlap`;
+    document.title = t('manage.pageTitle', { title: poll.title });
     const page = h('div', { class: 'page poll-page manage-page' });
 
     page.append(h('header', { class: 'poll-head' },
-      h('p', { class: 'role-tag' }, icon('lock'), 'Organizer view: only people with your private link see this page'),
+      h('p', { class: 'role-tag' }, icon('lock'), t('manage.roleTag')),
       h('div', { class: 'title-row' },
         h('h1', { class: 'page-title poll-title', tabindex: '-1' }, poll.title),
-        h('span', { class: `status-chip status-${poll.status}`, tabindex: '-1' }, { open: 'Open for responses', closed: 'Closed', finalized: 'Final time chosen' }[poll.status]),
-        editing ? null : h('button', { type: 'button', class: 'btn small secondary edit-top', dataset: { action: 'edit-top' }, onclick: () => startEditing() }, icon('edit'), 'Edit poll')),
+        h('span', { class: `status-chip status-${poll.status}`, tabindex: '-1' }, { open: t('manage.statusOpen'), closed: t('manage.statusClosed'), finalized: t('manage.statusFinalized') }[poll.status]),
+        editing ? null : h('button', { type: 'button', class: 'btn small secondary edit-top', dataset: { action: 'edit-top' }, onclick: () => startEditing() }, icon('edit'), t('manage.editPoll'))),
       poll.description ? h('p', { class: 'poll-desc' }, linkify(poll.description)) : null,
       locationLine(poll),
       // Quick ways to add what's missing; everything else is under "Edit poll".
       !editing && (!poll.description || !poll.location) ? h('p', { class: 'quick-add small' },
-        poll.description ? null : h('button', { type: 'button', class: 'link-btn', onclick: () => startEditing('f-desc') }, '+ Add a note for guests'),
-        poll.location ? null : h('button', { type: 'button', class: 'link-btn', onclick: () => startEditing('f-location') }, '+ Add a place or call link')) : null,
+        poll.description ? null : h('button', { type: 'button', class: 'link-btn', onclick: () => startEditing('f-desc') }, t('manage.addNote')),
+        poll.location ? null : h('button', { type: 'button', class: 'link-btn', onclick: () => startEditing('f-location') }, t('manage.addPlace'))) : null,
       pollFacts(poll, { audience: 'organizer' }),
     ));
 
@@ -111,8 +112,8 @@ export async function renderManage(main, pollId) {
 
     if (showReady) {
       page.append(h('div', { class: 'callout success ready', tabindex: '-1' },
-        h('p', { class: 'callout-title' }, icon('check'), 'Your poll is ready'),
-        h('p', null, 'Copy the guest link and send it to everyone. Bookmark this page, or copy your private link, so you can come back to manage it.')));
+        h('p', { class: 'callout-title' }, icon('check'), t('manage.readyTitle')),
+        h('p', null, t('manage.readyText'))));
     }
 
     page.append(linksSection());
@@ -121,8 +122,8 @@ export async function renderManage(main, pollId) {
       page.append(finalCard(poll, viewZone, {
         organizer: true,
         extra: [
-          h('button', { type: 'button', class: 'btn ghost', onclick: () => chooseFinal(poll.final.start, (poll.final.end - poll.final.start) / 60000) }, 'Change time'),
-          h('button', { type: 'button', class: 'btn ghost', onclick: () => patch({ status: 'open' }, 'Poll reopened. The final time was cleared.') }, 'Reopen poll'),
+          h('button', { type: 'button', class: 'btn ghost', onclick: () => chooseFinal(poll.final.start, (poll.final.end - poll.final.start) / 60000) }, t('manage.changeTime')),
+          h('button', { type: 'button', class: 'btn ghost', onclick: () => patch({ status: 'open' }, t('manage.reopenedCleared')) }, t('manage.reopen')),
         ],
       }));
     }
@@ -148,21 +149,21 @@ export async function renderManage(main, pollId) {
           await refresh();
           render();
           (main.querySelector('.person-btn') || main.querySelector('#results-title'))?.focus();
-          announce(`Removed ${r.name}’s response`);
+          announce(t('manage.responseRemoved', { name: r.name }));
         } catch (err) {
           announce(err.message, { tone: 'error' });
         }
       },
     });
     page.append(h('div', { class: 'panel' }, zone, results,
-      h('p', { class: 'add-own' }, h('a', { href: `/p/${pollId}`, target: '_blank', rel: 'noopener' }, 'Add your own availability'), ' (opens the guest page)')));
+      h('p', { class: 'add-own' }, ...tx('manage.addOwn', { link: h('a', { href: `/p/${pollId}`, target: '_blank', rel: 'noopener' }, t('manage.addOwnLink')) }))));
     page.append(h('div', { class: 'panel best-panel' },
       bestTimes({
         poll,
         timeZone: viewZone,
         onChoose: (w) => chooseFinal(w.start, Math.min(w.minutes, poll.durationMinutes || w.minutes)),
         onHighlight: (slots) => results.highlight(slots),
-        emptyAction: h('button', { type: 'button', class: 'btn primary', onclick: () => copyText(guestUrl(), 'Copied the guest link') }, icon('copy'), 'Copy guest link'),
+        emptyAction: h('button', { type: 'button', class: 'btn primary', onclick: () => copyText(guestUrl(), t('manage.copiedGuestLink')) }, icon('copy'), t('manage.copyGuestLink')),
       }),
     ));
 
@@ -175,14 +176,13 @@ export async function renderManage(main, pollId) {
     }
   }
 
-  function inviteMessage() {
-    const what = poll.kind === 'weekly' ? 'which times usually work for you each week' : 'when you’re free';
-    return `Hi! Please mark ${what} for “${poll.title}”: ${guestUrl()}\nIt takes a minute and needs no account.`;
-  }
+  /** "Hi! Please mark when you're free for …", without the link. */
+  const inviteAsk = () => t(poll.kind === 'weekly' ? 'manage.inviteAskWeekly' : 'manage.inviteAsk', { title: poll.title });
+  const inviteMessage = () => t('manage.inviteMessage', { ask: inviteAsk(), url: guestUrl() });
 
   async function shareGuestLink() {
     try {
-      await navigator.share({ title: poll.title, text: inviteMessage().split('\n')[0].replace(`: ${guestUrl()}`, ''), url: guestUrl() });
+      await navigator.share({ title: poll.title, text: inviteAsk(), url: guestUrl() });
     } catch { /* the person closed the share sheet */ }
   }
 
@@ -198,35 +198,35 @@ export async function renderManage(main, pollId) {
   function linksSection() {
     const noResponses = poll.responseCount === 0;
     return h('section', { class: 'links', 'aria-labelledby': 'links-title' },
-      h('h2', { id: 'links-title', class: 'visually-hidden' }, 'Links'),
+      h('h2', { id: 'links-title', class: 'visually-hidden' }, t('manage.linksTitle')),
       linkBlock({
         id: 'guest-link',
-        label: 'Guest link: share this one',
-        description: 'Anyone with this link can respond and, if you allow it, see the results. It can’t change or close the poll.',
+        label: t('manage.guestLinkLabel'),
+        description: t('manage.guestLinkText'),
         value: guestUrl(),
         tone: 'guest',
         actions: [
-          h('button', { type: 'button', class: `btn ${noResponses ? 'primary' : 'secondary'}`, onclick: () => copyText(guestUrl(), 'Copied the guest link') }, icon('copy'), 'Copy'),
-          navigator.share ? h('button', { type: 'button', class: 'btn ghost', onclick: shareGuestLink }, icon('share'), 'Share') : null,
-          h('a', { class: 'btn ghost', href: guestUrl(), target: '_blank', rel: 'noopener' }, 'Open'),
+          h('button', { type: 'button', class: `btn ${noResponses ? 'primary' : 'secondary'}`, onclick: () => copyText(guestUrl(), t('manage.copiedGuestLink')) }, icon('copy'), t('manage.copy')),
+          navigator.share ? h('button', { type: 'button', class: 'btn ghost', onclick: shareGuestLink }, icon('share'), t('manage.share')) : null,
+          h('a', { class: 'btn ghost', href: guestUrl(), target: '_blank', rel: 'noopener' }, t('manage.open')),
         ].filter(Boolean),
-        extra: h('p', { class: 'link-extra' },
-          h('button', { type: 'button', class: 'link-btn', onclick: () => copyText(inviteMessage(), 'Copied an invitation message you can paste anywhere') }, 'Copy an invitation message'),
-          ' with the link and a line explaining what to do.'),
+        extra: h('p', { class: 'link-extra' }, ...tx('manage.inviteHint', {
+          button: h('button', { type: 'button', class: 'link-btn', onclick: () => copyText(inviteMessage(), t('manage.copiedInvite')) }, t('manage.copyInvite')),
+        })),
       }),
       viaPassword() ? h('div', { class: 'link-block private' },
-        h('p', { class: 'link-label', id: 'private-link', tabindex: '-1' }, icon('lock'), 'Signed in with your password'),
-        h('p', { class: 'link-desc' }, 'You opened this page with the organizer password, so there’s no private link to show here. If you’d like a link too, create a new one. Any older private link stops working.'),
+        h('p', { class: 'link-label', id: 'private-link', tabindex: '-1' }, icon('lock'), t('manage.signedIn')),
+        h('p', { class: 'link-desc' }, t('manage.signedInText')),
         h('div', { class: 'link-row' },
-          h('button', { type: 'button', class: 'btn secondary', onclick: replaceLink }, icon('refresh'), 'Create a new private link'))) : linkBlock({
+          h('button', { type: 'button', class: 'btn secondary', onclick: replaceLink }, icon('refresh'), t('manage.newPrivateLink')))) : linkBlock({
         id: 'private-link',
-        label: 'Private link: keep this to yourself',
-        description: 'Anyone with this link can manage the poll: edit it, close it, remove responses or delete it. It’s saved in this browser. Copy it somewhere safe to manage from another device.',
+        label: t('manage.privateLinkLabel'),
+        description: t('manage.privateLinkText'),
         value: privateUrl(),
         tone: 'private',
         actions: [
-          h('button', { type: 'button', class: 'btn secondary', onclick: () => copyText(privateUrl(), 'Copied your private link') }, icon('copy'), 'Copy'),
-          h('button', { type: 'button', class: 'btn ghost', onclick: replaceLink }, icon('refresh'), 'Replace'),
+          h('button', { type: 'button', class: 'btn secondary', onclick: () => copyText(privateUrl(), t('manage.copiedPrivateLink')) }, icon('copy'), t('manage.copy')),
+          h('button', { type: 'button', class: 'btn ghost', onclick: replaceLink }, icon('refresh'), t('manage.replace')),
         ],
       }),
     );
@@ -234,9 +234,9 @@ export async function renderManage(main, pollId) {
 
   async function replaceLink() {
     const ok = await confirmDialog({
-      title: 'Replace your private link?',
-      message: 'The current private link will stop working right away, for everyone who has it. You’ll get a new one here. The guest link doesn’t change.',
-      confirm: 'Replace private link',
+      title: t('manage.replaceTitle'),
+      message: t('manage.replaceText'),
+      confirm: t('manage.replaceConfirm'),
     });
     if (!ok) return;
     watcher.bump();
@@ -247,24 +247,28 @@ export async function renderManage(main, pollId) {
       history.replaceState(null, '', `/m/${pollId}#k=${encodeURIComponent(token)}`);
       render();
       document.getElementById('private-link')?.focus();
-      announce('Private link replaced. The old one no longer works. Copy and save the new one.');
+      announce(t('manage.replaced'));
     } catch (err) {
       announce(err.message, { tone: 'error' });
     }
   }
 
   async function setPassword() {
-    const pw = passwordField({ id: 'op-new', label: 'New password', autocomplete: 'new-password', hint: 'At least 8 characters. It never leaves this browser: only a scrambled key derived from it is sent.' });
-    const again = passwordField({ id: 'op-again', label: 'Type it again', autocomplete: 'new-password' });
+    const pw = passwordField({ id: 'op-new', label: t('manage.newPassword'), autocomplete: 'new-password', hint: t('manage.passwordHint', { count: PASSWORD_MIN }) });
+    const again = passwordField({ id: 'op-again', label: t('manage.passwordAgain'), autocomplete: 'new-password' });
     const key = await formDialog({
-      title: poll.hasOrganizerPassword ? 'Change the organizer password' : 'Set an organizer password',
-      intro: h('p', { class: 'dialog-text' }, 'With a password, you can manage this poll from any device: open the guest link and choose “Manage with your password”. Your private link keeps working.'),
+      title: poll.hasOrganizerPassword ? t('manage.changePasswordTitle') : t('manage.setPasswordTitle'),
+      intro: h('p', { class: 'dialog-text' }, t('manage.passwordIntro')),
       fields: [pw.el, again.el],
-      submitLabel: 'Save password',
+      submitLabel: t('manage.savePassword'),
     }, async () => {
-      const problem = passwordProblem(pw.input.value);
-      if (problem) throw new Error(problem);
-      if (pw.input.value !== again.input.value) throw new Error('The two passwords don’t match.');
+      // passwordProblem() speaks English only; show the same rule in the page's language.
+      if (passwordProblem(pw.input.value)) {
+        throw new Error(pw.input.value.length < PASSWORD_MIN
+          ? t('manage.passwordTooShort', { count: PASSWORD_MIN })
+          : t('manage.passwordTooLong', { count: PASSWORD_MAX }));
+      }
+      if (pw.input.value !== again.input.value) throw new Error(t('manage.passwordMismatch'));
       const k = await passwordKey(pw.input.value, pollId, 'organizer');
       ({ poll } = await api('PATCH', `/api/polls/${pollId}`, { token, body: { organizerPassword: k } }));
       return k;
@@ -278,17 +282,17 @@ export async function renderManage(main, pollId) {
     }
     render();
     main.querySelector('[data-action="password"]')?.focus();
-    announce('Organizer password saved');
+    announce(t('manage.passwordSaved'));
   }
 
   async function removePassword() {
     const ok = await confirmDialog({
-      title: 'Remove the organizer password?',
-      message: 'You’ll need the private link to manage this poll from other devices.',
-      confirm: 'Remove password',
+      title: t('manage.removePasswordTitle'),
+      message: t('manage.removePasswordText'),
+      confirm: t('manage.removePasswordConfirm'),
     });
     if (!ok) return;
-    await patch({ organizerPassword: null }, 'Organizer password removed', '[data-action="password"]');
+    await patch({ organizerPassword: null }, t('manage.passwordRemoved'), '[data-action="password"]');
   }
 
   async function chooseFinal(startSlot, minutes) {
@@ -297,8 +301,8 @@ export async function renderManage(main, pollId) {
     const startSel = h('select', { id: 'fin-start', class: 'input' },
       layout.columns.map((dk) => h('optgroup', { label: f.dayName(dk, weekly, 'long') },
         layout.cells.filter((c) => c.dateKey === dk).sort((a, b) => a.slot - b.slot)
-          .map((c) => h('option', { value: String(c.slot), selected: c.slot === startSlot }, `${f.time(c.slot, viewZone)}, ${f.dayName(dk, weekly)}`)))));
-    const lengths = LENGTHS.filter(([m]) => m > 0);
+          .map((c) => h('option', { value: String(c.slot), selected: c.slot === startSlot }, t('manage.startOption', { time: f.time(c.slot, viewZone), day: f.dayName(dk, weekly) }))))));
+    const lengths = lengthOptions().filter(([m]) => m > 0);
     if (minutes && !lengths.some(([m]) => m === minutes)) lengths.push([minutes, f.duration(minutes)]);
     lengths.sort((a, b) => a[0] - b[0]);
     const lenSel = h('select', { id: 'fin-len', class: 'input' },
@@ -307,26 +311,26 @@ export async function renderManage(main, pollId) {
     const update = () => {
       const s = Number(startSel.value);
       const e = s + Number(lenSel.value) * 60000;
-      preview.textContent = `${weekly ? 'Every ' : ''}${f.slotRange(s, e, viewZone, weekly)} (${f.zoneLabel(viewZone, s)})`;
+      preview.textContent = t(weekly ? 'manage.previewWeekly' : 'manage.preview', { time: f.slotRange(s, e, viewZone, weekly), zone: f.zoneLabel(viewZone, s) });
     };
     startSel.addEventListener('change', update);
     lenSel.addEventListener('change', update);
     update();
     const result = await openDialog({
-      title: 'Choose the final time',
+      title: t('manage.finalTitle'),
       body: h('div', { class: 'dialog-body' },
-        h('div', { class: 'field' }, h('label', { for: 'fin-start' }, 'Starts'), startSel),
-        h('div', { class: 'field' }, h('label', { for: 'fin-len' }, 'Lasts'), lenSel),
+        h('div', { class: 'field' }, h('label', { for: 'fin-start' }, t('manage.starts')), startSel),
+        h('div', { class: 'field' }, h('label', { for: 'fin-len' }, t('manage.lasts')), lenSel),
         preview,
-        h('p', { class: 'muted small' }, 'Setting a final time closes the poll. Guests will see the time and can download a calendar invite.')),
+        h('p', { class: 'muted small' }, t('manage.finalNote'))),
       actions: [
-        { label: 'Cancel', value: 'cancel' },
-        { label: 'Set final time', value: 'ok', kind: 'primary', submit: true },
+        { label: t('manage.cancel'), value: 'cancel' },
+        { label: t('manage.setFinal'), value: 'ok', kind: 'primary', submit: true },
       ],
     });
     if (result !== 'ok') return;
     const start = Number(startSel.value);
-    const ok = await patch({ final: { start, end: start + Number(lenSel.value) * 60000 } }, 'Final time set. Guests can see it now.', '.final-card');
+    const ok = await patch({ final: { start, end: start + Number(lenSel.value) * 60000 } }, t('manage.finalSet'), '.final-card');
     if (ok) main.querySelector('.final-card')?.scrollIntoView({ block: 'start' });
   }
 
@@ -343,7 +347,7 @@ export async function renderManage(main, pollId) {
     const form = createPollForm({
       initial: poll,
       editing: true,
-      submitLabel: 'Save changes',
+      submitLabel: t('manage.saveChanges'),
       onSubmit: async (value) => {
         watcher.bump();
         ({ poll } = await api('PATCH', `/api/polls/${pollId}`, { token, body: value }));
@@ -352,15 +356,15 @@ export async function renderManage(main, pollId) {
         render();
         afterEditFocus();
         window.scrollTo({ top: 0 });
-        announce('Saved your changes');
+        announce(t('manage.saved'));
       },
     });
     const panel = h('section', { class: 'panel edit-panel', 'aria-labelledby': 'edit-title' },
       h('div', { class: 'edit-head' },
-        h('h2', { id: 'edit-title', class: 'section-title' }, 'Edit poll'),
-        h('button', { type: 'button', class: 'btn ghost', onclick: () => { editing = false; render(); afterEditFocus(); } }, 'Cancel')),
+        h('h2', { id: 'edit-title', class: 'section-title' }, t('manage.editTitle')),
+        h('button', { type: 'button', class: 'btn ghost', onclick: () => { editing = false; render(); afterEditFocus(); } }, t('manage.cancel'))),
       poll.responseCount
-        ? h('p', { class: 'notice small' }, 'People have already responded. If you add times, they’ll show as “hasn’t seen this time” for those people until they answer again. Times you remove are dropped from the results.')
+        ? h('p', { class: 'notice small' }, t('manage.editNotice'))
         : null,
       form.el);
     queueMicrotask(() => {
@@ -375,46 +379,48 @@ export async function renderManage(main, pollId) {
   function emailRow() {
     const row = h('div', { class: 'settings-row email-row', hidden: true },
       h('div', null,
-        h('p', { class: 'setting-name' }, 'Email'),
+        h('p', { class: 'setting-name' }, t('manage.email')),
         emailControl({ poll, role: 'organizer', token, linkKey: viaPassword() ? null : token })));
     serverConfig().then((cfg) => { row.hidden = !cfg.emails; });
     return row;
   }
 
+  const privacyLink = () => h('a', { href: '/privacy' }, t('manage.privacyLink'));
+
   function settingsSection() {
     const expires = poll.expiresAt ? new Date(poll.expiresAt) : null;
     const isOpen = poll.status === 'open';
     return h('section', { class: 'settings panel', 'aria-labelledby': 'settings-title' },
-      h('h2', { id: 'settings-title', class: 'section-title' }, 'Manage poll'),
+      h('h2', { id: 'settings-title', class: 'section-title' }, t('manage.settingsTitle')),
       h('div', { class: 'settings-row' },
         h('div', null,
-          h('p', { class: 'setting-name' }, 'Details and times'),
-          h('p', { class: 'muted small' }, 'Change anything: the name, note for guests, place, dates or days of the week, times, meeting length, closing date, and who can see or change responses.')),
-        h('button', { type: 'button', class: 'btn secondary', dataset: { action: 'edit' }, onclick: () => startEditing() }, icon('edit'), 'Edit poll')),
+          h('p', { class: 'setting-name' }, t('manage.detailsName')),
+          h('p', { class: 'muted small' }, t('manage.detailsText'))),
+        h('button', { type: 'button', class: 'btn secondary', dataset: { action: 'edit' }, onclick: () => startEditing() }, icon('edit'), t('manage.editPoll'))),
       h('div', { class: 'settings-row' },
         h('div', null,
-          h('p', { class: 'setting-name' }, isOpen ? 'Stop taking responses' : 'Take responses again'),
+          h('p', { class: 'setting-name' }, isOpen ? t('manage.closeName') : t('manage.reopenName')),
           h('p', { class: 'muted small' }, isOpen
-            ? 'Guests can still see the poll but can’t add or change answers.'
-            : poll.final ? 'Reopening clears the final time.' : 'Guests will be able to answer and edit again.')),
+            ? t('manage.closeText')
+            : poll.final ? t('manage.reopenClearsFinal') : t('manage.reopenText'))),
         isOpen
-          ? h('button', { type: 'button', class: 'btn secondary', onclick: () => patch({ status: 'closed' }, 'Poll closed') }, 'Close poll')
-          : h('button', { type: 'button', class: 'btn secondary', onclick: () => patch({ status: 'open' }, 'Poll reopened') }, 'Reopen poll')),
+          ? h('button', { type: 'button', class: 'btn secondary', onclick: () => patch({ status: 'closed' }, t('manage.closed')) }, t('manage.close'))
+          : h('button', { type: 'button', class: 'btn secondary', onclick: () => patch({ status: 'open' }, t('manage.reopened')) }, t('manage.reopen'))),
       h('div', { class: 'settings-row' },
         h('div', null,
-          h('p', { class: 'setting-name' }, 'Organizer password', poll.hasOrganizerPassword ? h('span', { class: 'chip on' }, 'On') : null),
+          h('p', { class: 'setting-name' }, t('manage.passwordName'), poll.hasOrganizerPassword ? h('span', { class: 'chip on' }, t('manage.on')) : null),
           h('p', { class: 'muted small' }, poll.hasOrganizerPassword
-            ? 'On any device, open the guest link and choose “Manage with your password”.'
-            : 'Optional. Manage this poll from any device with a password instead of keeping the private link.')),
+            ? t('manage.passwordOnText')
+            : t('manage.passwordOffText'))),
         h('div', { class: 'row-actions' },
           poll.hasOrganizerPassword && !viaPassword()
-            ? h('button', { type: 'button', class: 'btn ghost', onclick: removePassword }, 'Remove') : null,
-          h('button', { type: 'button', class: 'btn secondary', dataset: { action: 'password' }, onclick: setPassword }, icon('lock'), poll.hasOrganizerPassword ? 'Change password' : 'Set password'))),
+            ? h('button', { type: 'button', class: 'btn ghost', onclick: removePassword }, t('manage.remove')) : null,
+          h('button', { type: 'button', class: 'btn secondary', dataset: { action: 'password' }, onclick: setPassword }, icon('lock'), poll.hasOrganizerPassword ? t('manage.changePassword') : t('manage.setPassword')))),
       emailRow(),
       h('div', { class: 'settings-row' },
         h('div', null,
-          h('p', { class: 'setting-name' }, 'Duplicate'),
-          h('p', { class: 'muted small' }, 'Start a new poll with the same settings, for the next meeting. Responses aren’t copied.')),
+          h('p', { class: 'setting-name' }, t('manage.duplicateName')),
+          h('p', { class: 'muted small' }, t('manage.duplicateText'))),
         h('button', {
           type: 'button', class: 'btn secondary',
           onclick: () => {
@@ -422,23 +428,22 @@ export async function renderManage(main, pollId) {
             storage.setCopySource(Object.fromEntries(keys.map((k) => [k, poll[k]])));
             location.assign('/');
           },
-        }, 'Duplicate poll')),
+        }, t('manage.duplicate'))),
       h('div', { class: 'settings-row' },
         h('div', null,
-          h('p', { class: 'setting-name' }, 'Data'),
-          h('p', { class: 'muted small' }, expires
-            ? `This poll and every response will be deleted automatically on ${expires.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}. `
-            : 'This poll and its responses stay until you delete them. ',
-            h('a', { href: '/privacy' }, 'How Overlap handles data'))),
-        h('button', { type: 'button', class: 'btn danger', onclick: deletePoll }, icon('trash'), 'Delete poll now')),
+          h('p', { class: 'setting-name' }, t('manage.dataName')),
+          h('p', { class: 'muted small' }, ...(expires
+            ? tx('manage.dataExpires', { date: expires.toLocaleDateString(locale(), { year: 'numeric', month: 'long', day: 'numeric' }), link: privacyLink() })
+            : tx('manage.dataKept', { link: privacyLink() })))),
+        h('button', { type: 'button', class: 'btn danger', onclick: deletePoll }, icon('trash'), t('manage.deleteNow'))),
     );
   }
 
   async function deletePoll() {
     const ok = await confirmDialog({
-      title: 'Delete this poll?',
-      message: `“${poll.title}” and all ${f.plural(poll.responseCount, 'response')} will be erased right away. This can’t be undone, and both links will stop working.`,
-      confirm: 'Delete poll',
+      title: t('manage.deleteTitle'),
+      message: t('manage.deleteText', { title: poll.title, count: poll.responseCount }),
+      confirm: t('manage.deleteConfirm'),
       danger: true,
     });
     if (!ok) return;
@@ -446,9 +451,9 @@ export async function renderManage(main, pollId) {
       await api('DELETE', `/api/polls/${pollId}`, { token });
       storage.forgetManaged(pollId);
       clear(main).append(h('div', { class: 'page narrow message-page' },
-        h('h1', { class: 'page-title', tabindex: '-1' }, 'Poll deleted'),
-        h('p', { class: 'lede' }, 'The poll and all of its responses have been erased.'),
-        h('p', null, h('a', { class: 'btn primary', href: '/' }, 'Create a new poll'))));
+        h('h1', { class: 'page-title', tabindex: '-1' }, t('manage.deletedTitle')),
+        h('p', { class: 'lede' }, t('manage.deletedText')),
+        h('p', null, h('a', { class: 'btn primary', href: '/' }, t('manage.createNew')))));
       history.replaceState(null, '', `/m/${pollId}`);
       main.querySelector('h1')?.focus();
     } catch (err) {
@@ -467,10 +472,10 @@ export async function renderManage(main, pollId) {
       render();
       window.scrollTo(0, y);
       restore();
-      announce('Results updated');
+      announce(t('manage.resultsUpdated'));
     },
   });
 
   render();
-  if (passwordFailed) announce('Your poll is ready, but the organizer password wasn’t saved. Set it under Manage poll.', { tone: 'error' });
+  if (passwordFailed) announce(t('manage.passwordFailed'), { tone: 'error' });
 }

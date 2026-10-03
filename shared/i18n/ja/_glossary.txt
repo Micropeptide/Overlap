@@ -1,0 +1,54 @@
+Japanese (ja) glossary for Overlap
+Style: です/ます for sentences; short noun/verb forms for buttons; 「」 quotes; full-width punctuation （）：、。？
+Counters: people 人, responses 件, time slots 枠, dates 日, characters 文字
+
+poll                          日程調整
+weekly poll                   毎週の日程調整
+organizer                     主催者
+guest                         参加者
+response / answer             回答
+guest link                    参加者用リンク
+guest page                    参加者用ページ
+organizer view                主催者画面
+private link                  専用リンク
+private edit link             専用の編集リンク
+organizer password            主催者パスワード
+password                      パスワード
+sign in                       ログイン
+Available                     参加可能
+Preferred                     希望
+If needed                     必要なら可
+Not available                 参加不可
+Not answered                  未回答
+Hasn't seen this time         この時間を未確認
+Erase                         消去
+Only me                       自分のみ
+Everyone with the guest link  参加者用リンクを知っている全員
+Select a range                範囲を選択
+Whole day                     終日
+Copy to every day             全日にコピー
+Manage with your password     パスワードで管理
+Sign in with your name and password   名前とパスワードでログイン
+Copy my edit link             編集リンクをコピー
+Email me                      メールで受け取る
+Edit poll                     日程調整を編集
+Duplicate poll                日程調整を複製
+Manage poll                   日程調整の管理
+Never: I'll close it myself   なし：自分で締め切る  (short quote: 「なし」)
+More options                  その他のオプション
+final time                    確定日時
+Set final time / choose       日時を確定
+time zone                     タイムゾーン
+time (slot)                   時間帯 / counter 枠
+meeting length                所要時間
+time steps                    時間の刻み
+note for guests               参加者へのメモ
+Specific dates                特定の日付
+Days of the week (kind)       毎週の曜日
+Best times                    最適な時間
+Group results                 全体の結果
+Copy                          コピー
+Save changes                  変更を保存
+Submit availability           回答を送信
+calendar invite               カレンダー招待
+Close poll / Reopen poll      締め切る / 受付を再開

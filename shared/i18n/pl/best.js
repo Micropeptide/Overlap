@@ -1,0 +1,58 @@
+export default {
+  'best.heading': 'Najlepsze terminy',
+  'best.emptySummary': 'Pojawią się tu wraz z odpowiedziami',
+  'best.noResponses': 'Brak odpowiedzi',
+  'best.emptyBody': 'Udostępnij link dla gości. Najlepsze terminy pojawią się tu wraz z odpowiedziami.',
+  // {length} is a meeting length such as "45 minut".
+  'best.roomFor': 'Spotkanie ({length}) zmieści się w dowolnym miejscu tego przedziału',
+  // {fraction} is best.fraction, shown in bold.
+  'best.available': '{fraction} może',
+  'best.fraction': {
+    one: '{count} z {total}',
+    few: '{count} z {total}',
+    many: '{count} z {total}',
+    other: '{count} z {total}',
+  },
+  'best.maybeCount': {
+    one: 'ewentualnie: {count}',
+    few: 'ewentualnie: {count}',
+    many: 'ewentualnie: {count}',
+    other: 'ewentualnie: {count}',
+  },
+  'best.prefCount': {
+    one: '★ {count} osoba preferuje',
+    few: '★ {count} osoby preferują',
+    many: '★ {count} osób preferuje',
+    other: '★ {count} osoby preferuje',
+  },
+  'best.preferredNote': '(preferowane)',
+  'best.ifNeeded': 'Ewentualnie',
+  'best.ifNeededNote': '(ewentualnie)',
+  'best.choose': 'Wybierz',
+  'best.chooseLabel': 'Wybierz {time}',
+  'best.everyoneSingle': 'Pasuje jedynej osobie, która dotąd odpowiedziała',
+  'best.everyone': {
+    one: 'Te terminy pasują wszystkim ({count} osoba)',
+    few: 'Te terminy pasują wszystkim ({count} osoby)',
+    many: 'Te terminy pasują wszystkim ({count} osób)',
+    other: 'Te terminy pasują wszystkim ({count} osoby)',
+  },
+  'best.more': {
+    one: 'Jeszcze {count} termin pasuje wszystkim. Zobacz siatkę powyżej.',
+    few: 'Jeszcze {count} terminy pasują wszystkim. Zobacz siatkę powyżej.',
+    many: 'Jeszcze {count} terminów pasuje wszystkim. Zobacz siatkę powyżej.',
+    other: 'Jeszcze {count} terminu pasuje wszystkim. Zobacz siatkę powyżej.',
+  },
+  'best.noEveryone': 'Na razie żaden termin nie pasuje wszystkim. Te są najbliżej.',
+  'best.nextBest': 'Kolejne najlepsze',
+  'best.closest': 'Najbliższe dopasowania',
+  'best.nobody': 'Nikt jeszcze nie zaznaczył żadnych terminów.',
+  'best.noTimes': 'Brak terminów',
+  'best.summaryEveryone': 'Pasuje wszystkim: {day}, {time}',
+  'best.summaryClosest': {
+    one: 'Najbliżej: {count} z {total}: {day}, {time}',
+    few: 'Najbliżej: {count} z {total}: {day}, {time}',
+    many: 'Najbliżej: {count} z {total}: {day}, {time}',
+    other: 'Najbliżej: {count} z {total}: {day}, {time}',
+  },
+};

@@ -1,0 +1,21 @@
+export default {
+  'shell.skip': 'Saltar al contenido',
+  'shell.brandLabel': 'Overlap, crear una encuesta nueva',
+  'shell.navLabel': 'Sitio',
+  'shell.newPoll': 'Nueva encuesta',
+  'shell.about': 'Acerca de',
+  'shell.privacy': 'Privacidad',
+  'shell.loading': 'Cargando…',
+  'shell.footer': 'Sin cuentas, sin rastreo, sin anuncios. {retention} {privacyLink}. {aboutLink}, creado por Micropeptide.',
+  'shell.retentionKept': 'Las encuestas se conservan hasta que el organizador las elimina.',
+  'shell.retentionAuto': {
+    one: 'Las encuestas se eliminan automáticamente {count} día después de su última fecha (las semanales, después de su último cambio).',
+    many: 'Las encuestas se eliminan automáticamente {count} días después de su última fecha (las semanales, después de su último cambio).',
+    other: 'Las encuestas se eliminan automáticamente {count} días después de su última fecha (las semanales, después de su último cambio).',
+  },
+  'shell.privacyLink': 'Cómo se tratan tus datos',
+  'shell.aboutLink': 'Acerca de Overlap',
+  'shell.language': 'Idioma',
+  'shell.errorTitle': 'Algo salió mal',
+  'shell.errorReload': 'Recarga la página para volver a intentarlo.',
+};

@@ -131,7 +131,8 @@ CREATE TABLE IF NOT EXISTS email_subs (
   unsub_hash TEXT NOT NULL,
   created_at INTEGER NOT NULL,
   last_sent_at INTEGER,
-  pending_at INTEGER
+  pending_at INTEGER,
+  lang TEXT
 );
 CREATE UNIQUE INDEX IF NOT EXISTS email_subs_owner ON email_subs(poll_id, IFNULL(response_id, ''));
 CREATE INDEX IF NOT EXISTS email_subs_pending ON email_subs(pending_at);
@@ -158,6 +159,8 @@ export const MIGRATIONS = [
   ['responses', 'pw_hash', 'TEXT'],
   // Whether guests may change an answer after submitting it.
   ['polls', 'allow_edits', 'INTEGER NOT NULL DEFAULT 1'],
+  // The language emails are written in (null for older subscriptions: English).
+  ['email_subs', 'lang', 'TEXT'],
 ];
 
 /** Stored as the expiry of polls that are kept until someone deletes them. */
@@ -238,6 +241,7 @@ export function createStore(driver, { retentionDays = 0 } = {}) {
       createdAt: row.created_at,
       lastSentAt: row.last_sent_at ?? null,
       pendingAt: row.pending_at ?? null,
+      lang: row.lang ?? null,
     };
   }
 
@@ -332,16 +336,16 @@ export function createStore(driver, { retentionDays = 0 } = {}) {
     },
 
     /** Start (or restart) a subscription. Returns tokens for the confirm and unsubscribe links. */
-    async putEmailSub(pollId, responseId, email) {
+    async putEmailSub(pollId, responseId, email, lang = null) {
       const current = await this.getEmailSub(pollId, responseId);
       const confirmToken = newSecret();
       const unsubToken = newSecret();
       // Same address, already confirmed: keep it confirmed.
       const confirmed = current?.confirmed && current.email === email ? 1 : 0;
       await run('DELETE FROM email_subs WHERE poll_id = ? AND IFNULL(response_id, \'\') = ?', [pollId, responseId || '']);
-      await run(`INSERT INTO email_subs (id, poll_id, response_id, email, confirmed, confirm_hash, unsub_hash, created_at, last_sent_at, pending_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NULL)`, [randomId(12), pollId, responseId, email, confirmed,
-        await hashSecret(confirmToken), await hashSecret(unsubToken), Date.now(), confirmed ? current.lastSentAt : null]);
+      await run(`INSERT INTO email_subs (id, poll_id, response_id, email, confirmed, confirm_hash, unsub_hash, created_at, last_sent_at, pending_at, lang)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, ?)`, [randomId(12), pollId, responseId, email, confirmed,
+        await hashSecret(confirmToken), await hashSecret(unsubToken), Date.now(), confirmed ? current.lastSentAt : null, lang ?? null]);
       return { confirmToken, unsubToken, confirmed: !!confirmed };
     },
 

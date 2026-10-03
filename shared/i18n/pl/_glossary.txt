@@ -1,0 +1,53 @@
+Polish (pl) glossary for Overlap
+Tone: informal "ty"; avoid gendered 2nd-person past tense (use present/future, impersonal forms like "odpowiedziano", or nouns). Quotes: „…”.
+
+poll                                  ankieta
+organizer                             organizator
+guest / guests                        gość / goście
+response / answer                     odpowiedź
+guest link                            link dla gości
+private link                          prywatny link
+private edit link                     prywatny link do edycji
+organizer password                    hasło organizatora
+time (a slot)                         termin
+free (person)                         ma czas / masz czas
+final time                            ostateczny termin
+time zone                             strefa czasowa
+weekly poll                           ankieta cotygodniowa
+organizer view                        widok organizatora
+
+States (label / in-sentence word)
+Available                             Pasuje / pasuje
+Preferred                             Preferowane / preferowane
+If needed                             Ewentualnie / ewentualnie
+Not available                         Nie pasuje / nie pasuje
+Erase                                 Wymaż (marking mode: Wymazujesz)
+Not answered                          Bez odpowiedzi
+Hasn’t seen this time                 Nowy termin, bez odpowiedzi
+
+UI labels (quoted elsewhere exactly as written here)
+Only me                               Tylko ja
+Everyone with the guest link          Każdy, kto ma link dla gości
+Select a range                        Zaznacz zakres
+Whole day                             Cały dzień
+Copy to every day                     Kopiuj na każdy dzień
+Manage with your password             Zarządzaj za pomocą hasła
+Sign in with your name and password   Zaloguj się imieniem i hasłem
+Copy my edit link                     Kopiuj mój link do edycji
+Email me                              Wyślij mi e-mail
+Edit poll                             Edytuj ankietę
+Duplicate poll                        Duplikuj ankietę
+Never: I’ll close it myself           Nigdy: zamknę ją ręcznie   (quoted short form: „Nigdy”)
+More options                          Więcej opcji
+Manage poll (section)                 Zarządzaj ankietą
+Sign in                               Zaloguj się
+Copy                                  Kopiuj
+Cancel                                Anuluj
+
+Plurals (one / few / many / other)
+termin        termin / terminy / terminów / terminu
+odpowiedź     odpowiedź / odpowiedzi / odpowiedzi / odpowiedzi
+osoba         osoba / osoby / osób / osoby
+dzień         dzień / dni / dni / dnia
+znak          znak / znaki / znaków / znaku
+data          data / daty / dat / daty

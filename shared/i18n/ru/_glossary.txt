@@ -1,0 +1,41 @@
+Overlap — Russian (ru) glossary
+Address: polite «вы», lowercase. Quotes «…» (inner „…“). Buttons: infinitive («Сохранить»).
+Gender-neutral wording for the user: «вы» + plural past tense; avoid сам(а).
+Plurals: one / few / many / other (other = few form, for fractions).
+Ranges: times «9:00–17:00» (en dash, no spaces); dates «{from} — {to}».
+
+poll ............................ опрос
+organizer ....................... организатор
+guest ........................... участник (pl. участники)
+response / answer ............... ответ
+guest link ...................... ссылка для участников
+private link (organizer) ........ личная ссылка
+private edit link (guest) ....... личная ссылка для редактирования
+edit link ....................... ссылка для редактирования
+organizer password .............. пароль организатора
+organizer view .................. режим организатора
+Available (label) ............... Подходит   (word form: «подходит»)
+Preferred ....................... Лучше всего (word: «лучше всего»)
+If needed ....................... Если нужно (word: «если нужно»)
+Not available ................... Не подходит (word: «не подходит»)
+Hasn't seen this time ........... Добавлено после ответа (word: «добавлено после ответа»)
+Erase ........................... Стереть
+Only me ......................... Только я
+Everyone with the guest link .... Все, у кого есть ссылка для участников
+Select a range .................. Выбрать диапазон
+Whole day ....................... Весь день
+Copy to every day ............... Копировать на все дни
+Manage with your password ....... Управлять по паролю
+Sign in with your name and password  Войти по имени и паролю
+Copy my edit link ............... Скопировать ссылку для редактирования
+Email me ........................ Получать письма
+Edit poll ....................... Изменить опрос
+Duplicate poll .................. Дублировать опрос
+Never: I'll close it myself ..... Никогда: закрою вручную   («Никогда»)
+More options .................... Дополнительные настройки
+final time ...................... итоговое время
+time zone ....................... часовой пояс
+Manage poll ..................... Управление опросом
+time step ....................... шаг времени
+meeting length .................. длительность встречи
+calendar invite ................. приглашение в календарь

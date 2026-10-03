@@ -1,0 +1,53 @@
+Overlap – Portuguese (pt) glossary. Brazilian Portuguese, "você" (3rd-person imperative: "Escolha", "Toque").
+Avoid Brazil-only forms where an equally natural shared form exists. Quotes: “ ”. Plural categories: one, many, other (many = other).
+
+poll                          enquete
+organizer                     organizador
+guest                         convidado
+response / answer             resposta
+respond / answer (verb)       responder
+guest link                    link de convite
+private link                  link privado
+private edit link             link privado de edição
+organizer password            senha do organizador
+password                      senha
+time (slot)                   horário (pl. horários)
+final time                    horário definitivo
+time zone                     fuso horário
+meeting length                duração da reunião
+time steps                    intervalos de horário
+note                          observação
+Available                     Disponível            (word form: disponível)
+Preferred                     Preferido             (word form: preferido)
+If needed                     Se necessário         (word form: se necessário)
+Not available                 Indisponível          (word form: indisponível)
+Erase (brush)                 Apagar
+Not answered                  Sem resposta
+Hasn’t seen this time         Ainda não viu este horário
+Only me                       Só eu
+Everyone with the guest link  Todos com o link de convite
+Select a range                Selecionar intervalo
+Whole day                     Dia inteiro
+Copy to every day             Copiar para todos os dias
+Manage with your password     Administrar com sua senha
+Manage poll                   Administrar enquete
+Sign in with your name and password   Entrar com seu nome e senha
+Sign in                       Entrar
+Copy my edit link             Copiar meu link de edição
+Email me                      Receber por e-mail
+Edit poll                     Editar enquete
+Duplicate poll                Duplicar enquete
+Never: I’ll close it myself   Nunca: encerro manualmente
+More options                  Mais opções
+Close poll / Reopen poll      Encerrar enquete / Reabrir enquete
+Delete                        Excluir
+Remove                        Remover
+Clear                         Limpar
+Undo                          Desfazer
+Copy / Copied                 Copiar / Copiado
+Share                         Compartilhar
+Submit / Send                 Enviar
+Forget (saved poll)           Esquecer
+email                         e-mail
+every week                    todas as semanas  (weekday-name gender makes “todo/toda {day}” impossible)
+from X to Y (times)           das X às Y / de X a Y (when {start}/{end} may be a day+time)

@@ -6,6 +6,7 @@ import { h } from '../lib/dom.js';
 import * as f from '../lib/format.js';
 import { rankWindows } from '/shared/overlap.js';
 import { storage } from '../lib/storage.js';
+import { t, tx } from '../lib/i18n.js';
 
 export function bestTimes({ poll, timeZone, onChoose, emptyAction, onHighlight = () => {} }) {
   const weekly = poll.kind === 'weekly';
@@ -13,15 +14,15 @@ export function bestTimes({ poll, timeZone, onChoose, emptyAction, onHighlight =
   const summaryLine = h('span', { class: 'best-summary' });
   const root = h('div', { class: 'best-body' });
   const details = h('details', { class: 'best', open: storage.pref('showBest', false) ? true : null },
-    h('summary', null, h('span', { class: 'best-heading' }, 'Best times'), summaryLine),
+    h('summary', null, h('span', { class: 'best-heading' }, t('best.heading')), summaryLine),
     root);
   details.addEventListener('toggle', () => storage.setPref('showBest', details.open));
 
   if (!responses.length) {
-    summaryLine.textContent = 'Appear here as people answer';
+    summaryLine.textContent = t('best.emptySummary');
     root.append(h('div', { class: 'empty-state' },
-      h('p', { class: 'empty-title' }, 'No responses yet'),
-      h('p', null, 'Share the guest link. The best times will appear here as people answer.'),
+      h('p', { class: 'empty-title' }, t('best.noResponses')),
+      h('p', null, t('best.emptyBody')),
       emptyAction || null,
     ));
     return details;
@@ -45,26 +46,26 @@ export function bestTimes({ poll, timeZone, onChoose, emptyAction, onHighlight =
         h('p', { class: 'best-day' }, weekly ? f.finalDay(w.start, timeZone, true) : f.dayOf(w.start, timeZone)),
         h('p', { class: 'best-time' }, f.timeRange(w.start, w.end, timeZone)),
         roomy && poll.durationMinutes
-          ? h('p', { class: 'best-note' }, `Room for a ${f.duration(meetingMinutes)} meeting anywhere in this window`)
+          ? h('p', { class: 'best-note' }, t('best.roomFor', { length: f.duration(meetingMinutes) }))
           : null,
       ),
       h('div', { class: 'best-who' },
         h('p', { class: 'best-count' },
-          h('strong', null, `${w.count} of ${ranked.total}`), ' available',
-          w.maybe.length ? h('span', { class: 'maybe-tag' }, `${w.maybe.length} if needed`) : null,
-          w.pref.length ? h('span', { class: 'pref-tag' }, `★ ${w.pref.length} prefer${w.pref.length === 1 ? 's' : ''}`) : null),
+          tx('best.available', { fraction: h('strong', null, t('best.fraction', { count: w.count, total: ranked.total })) }),
+          w.maybe.length ? h('span', { class: 'maybe-tag' }, t('best.maybeCount', { count: w.maybe.length })) : null,
+          w.pref.length ? h('span', { class: 'pref-tag' }, t('best.prefCount', { count: w.pref.length })) : null),
         h('p', { class: 'best-names' },
           w.yes.map((id) => h('span', { class: `name-chip${w.pref.includes(id) ? ' pref' : ''}` }, names.get(id),
-            w.pref.includes(id) ? h('span', { class: 'visually-hidden' }, ' (preferred)') : null)),
-          w.maybe.map((id) => h('span', { class: 'name-chip maybe', title: 'If needed' }, names.get(id), h('span', { class: 'visually-hidden' }, ' (if needed)'))),
+            w.pref.includes(id) ? h('span', { class: 'visually-hidden' }, ' ', t('best.preferredNote')) : null)),
+          w.maybe.map((id) => h('span', { class: 'name-chip maybe', title: t('best.ifNeeded') }, names.get(id), h('span', { class: 'visually-hidden' }, ' ', t('best.ifNeededNote')))),
         ),
       ),
       onChoose ? h('button', {
         type: 'button',
         class: `btn ${everyone ? 'primary' : 'secondary'} small best-choose`,
         onclick: () => onChoose(w),
-        'aria-label': `Choose ${f.slotRange(w.start, Math.min(w.end, w.start + meetingMinutes * 60000), timeZone, weekly)}`,
-      }, 'Choose') : null,
+        'aria-label': t('best.chooseLabel', { time: f.slotRange(w.start, Math.min(w.end, w.start + meetingMinutes * 60000), timeZone, weekly) }),
+      }, t('best.choose')) : null,
     );
     // Point at or focus an option to outline it on the grid below.
     const slotsIn = poll.slots.filter((s) => s >= w.start && s < w.end);
@@ -77,24 +78,29 @@ export function bestTimes({ poll, timeZone, onChoose, emptyAction, onHighlight =
 
   if (ranked.everyone.length) {
     root.append(
-      h('h3', { class: 'best-sub' }, ranked.total === 1 ? 'Works for the one response so far' : `Everyone can make these (${ranked.total} people)`),
+      h('h3', { class: 'best-sub' }, ranked.total === 1 ? t('best.everyoneSingle') : t('best.everyone', { count: ranked.total })),
       h('ol', { class: 'best-list' }, ranked.everyone.slice(0, 6).map((w) => item(w, true))),
     );
-    if (ranked.everyone.length > 6) root.append(h('p', { class: 'muted small' }, `${ranked.everyone.length - 6} more times work for everyone. See the grid above.`));
+    if (ranked.everyone.length > 6) root.append(h('p', { class: 'muted small' }, t('best.more', { count: ranked.everyone.length - 6 })));
   } else {
-    root.append(h('p', { class: 'no-everyone' }, 'No time works for everyone yet. These come closest.'));
+    root.append(h('p', { class: 'no-everyone' }, t('best.noEveryone')));
   }
 
   if (ranked.partial.length) {
     root.append(
-      h('h3', { class: 'best-sub' }, ranked.everyone.length ? 'Next best' : 'Closest matches'),
+      h('h3', { class: 'best-sub' }, ranked.everyone.length ? t('best.nextBest') : t('best.closest')),
       h('ol', { class: 'best-list' }, ranked.partial.map((w) => item(w, false))),
     );
   } else if (!ranked.everyone.length) {
-    root.append(h('p', { class: 'muted' }, 'Nobody has marked any times yet.'));
+    root.append(h('p', { class: 'muted' }, t('best.nobody')));
   }
   const top = ranked.everyone[0] || ranked.partial[0];
-  summaryLine.textContent = !top ? 'No times yet'
-    : `${ranked.everyone.length ? 'Works for everyone' : `Closest: ${top.count} of ${ranked.total}`}: ${weekly ? f.finalDay(top.start, timeZone, true) : f.dayOf(top.start, timeZone)}, ${f.timeRange(top.start, top.end, timeZone)}`;
+  if (!top) summaryLine.textContent = t('best.noTimes');
+  else {
+    const when = { day: weekly ? f.finalDay(top.start, timeZone, true) : f.dayOf(top.start, timeZone), time: f.timeRange(top.start, top.end, timeZone) };
+    summaryLine.textContent = ranked.everyone.length
+      ? t('best.summaryEveryone', when)
+      : t('best.summaryClosest', { ...when, count: top.count, total: ranked.total });
+  }
   return details;
 }

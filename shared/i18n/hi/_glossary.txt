@@ -1,0 +1,47 @@
+Hindi (hi) glossary for Overlap. Polite "आप", imperative -एँ forms (करें, चुनें).
+Sentence end: । (purna viram); ? and ! as usual. Quotes: “…”. Nukta on ज़, फ़ (ज़रूरत, सिर्फ़, हफ़्ता, फ़ाइल).
+Plural categories: one (n = 0 or 1), other. Every "one" form keeps {count}, since 0 uses it too.
+
+poll                          पोल (masculine)
+weekly poll                   साप्ताहिक पोल
+organizer                     आयोजक
+guest                         मेहमान
+response / answer             जवाब
+respond / answer (verb)       जवाब देना
+guest link                    मेहमान लिंक
+private link                  निजी लिंक
+private edit link             निजी एडिट लिंक
+organizer password            आयोजक पासवर्ड
+organizer view                आयोजक व्यू
+final time                    तय समय  (set final time = समय तय करें; final time chosen = समय तय हो गया)
+time zone                     टाइम ज़ोन
+time (a slot)                 समय
+dates / days of the week      तारीखें / हफ़्ते के दिन
+manage                        मैनेज करना
+sign in                       साइन इन करना
+delete                        डिलीट करना (data "erased" = मिटा दिया जाना)
+close / reopen poll           पोल बंद करें / पोल फिर से खोलें
+
+UI labels (quoted labels elsewhere must match exactly)
+Available                     उपलब्ध
+Preferred                     पसंदीदा
+If needed                     ज़रूरत हो तो
+Not available                 उपलब्ध नहीं
+Erase                         मिटाएँ
+"word" forms (inside sentences): पसंदीदा / उपलब्ध / ज़रूरत पड़ने पर उपलब्ध / उपलब्ध नहीं / यह समय नहीं देखा
+Hasn't seen this time         यह समय नहीं देखा
+Only me                       सिर्फ़ मैं
+Everyone with the guest link  मेहमान लिंक वाले सभी लोग
+Select a range                रेंज चुनें
+Whole day                     पूरा दिन
+Copy to every day             हर दिन पर कॉपी करें
+Manage with your password     अपने पासवर्ड से मैनेज करें
+Sign in with your name and password   अपने नाम और पासवर्ड से साइन इन करें
+Copy my edit link             मेरा एडिट लिंक कॉपी करें
+Email me                      मुझे ईमेल करें
+Edit poll                     पोल एडिट करें
+Duplicate poll                पोल की कॉपी बनाएँ
+Never: I'll close it myself   कभी नहीं: खुद बंद करना है   (short label "Never" = कभी नहीं)
+More options                  और विकल्प
+Manage poll                   पोल मैनेज करें
+Copy / Copied                 कॉपी करें / कॉपी हो गया

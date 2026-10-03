@@ -5,12 +5,13 @@ import { h, clear, confirmDialog, icon, announce } from '../lib/dom.js';
 import * as f from '../lib/format.js';
 import { tallySlots, statusAt } from '/shared/overlap.js';
 import { createGrid, slotDetail } from './grid.js';
+import { t } from '../lib/i18n.js';
 
 /**
  * `state` is owned by the page so choices survive re-renders and refreshes:
  * { focusId, showCounts, day }.
  */
-export function resultsSection({ poll, timeZone, selfId = null, onPick = null, onRemove = null, exportable = false, title = 'Everyone’s availability', state = {} }) {
+export function resultsSection({ poll, timeZone, selfId = null, onPick = null, onRemove = null, exportable = false, title = t('results.title'), state = {} }) {
   const responses = poll.responses || [];
   const tally = tallySlots(poll.slots, responses);
   const weekly = poll.kind === 'weekly';
@@ -25,16 +26,16 @@ export function resultsSection({ poll, timeZone, selfId = null, onPick = null, o
 
   if (!responses.length) {
     root.append(h('div', { class: 'empty-state' },
-      h('p', { class: 'empty-title' }, 'Nothing to compare yet'),
-      h('p', null, 'Once people respond, darker squares show times more of them can make.')));
+      h('p', { class: 'empty-title' }, t('results.emptyTitle')),
+      h('p', null, t('results.emptyBody'))));
     return root;
   }
 
-  const legend = h('div', { class: 'legend', 'aria-label': 'Legend' });
+  const legend = h('div', { class: 'legend', 'aria-label': t('results.legend') });
   const detailHost = h('div', { class: 'detail-host', 'aria-live': 'polite' });
   const detailIdle = () => h('p', { class: 'muted small detail-idle' }, onPick
-    ? 'Point at or tab to a time to see who can make it. Click a time to make it the final time.'
-    : 'Point at or tab to a time to see who can make it.');
+    ? t('results.idlePick')
+    : t('results.idle'));
   detailHost.append(detailIdle());
 
   const grid = createGrid({
@@ -44,7 +45,7 @@ export function resultsSection({ poll, timeZone, selfId = null, onPick = null, o
     slotMinutes: poll.slotMinutes,
     timeZone,
     responses,
-    label: 'Group availability',
+    label: t('results.gridLabel'),
     describedBy: 'results-help',
     focusId,
     showCounts,
@@ -64,15 +65,15 @@ export function resultsSection({ poll, timeZone, selfId = null, onPick = null, o
     if (focusId) {
       const who = responses.find((r) => r.id === focusId)?.name;
       legend.append(
-        h('span', { class: 'legend-who' }, `Showing ${who}`),
-        item('sw-pref', 'Preferred'), item('sw-yes', 'Available'), item('sw-maybe', 'If needed'),
-        item('sw-no', 'Not available'), item('sw-unanswered', 'Hasn’t seen this time'),
+        h('span', { class: 'legend-who' }, t('results.showing', { name: who })),
+        item('sw-pref', t('results.legendPref')), item('sw-yes', t('results.legendYes')), item('sw-maybe', t('results.legendMaybe')),
+        item('sw-no', t('results.legendNo')), item('sw-unanswered', t('results.legendUnanswered')),
       );
     } else {
       legend.append(
-        item('sw-ramp', 'Darker means more people'),
-        item('sw-all', 'Everyone'),
-        item('sw-has-maybe', 'Includes “if needed”'),
+        item('sw-ramp', t('results.legendRamp')),
+        item('sw-all', t('results.legendAll')),
+        item('sw-has-maybe', t('results.legendHasMaybe')),
       );
     }
   }
@@ -85,9 +86,7 @@ export function resultsSection({ poll, timeZone, selfId = null, onPick = null, o
       const yes = r.available.length + pref;
       const maybe = r.ifNeeded.length;
       const unseen = r.answered ? poll.slots.filter((s) => !r.answered.includes(s)).length : 0;
-      const summary = yes || maybe
-        ? `${yes} available${pref ? ` (${pref} preferred)` : ''}${maybe ? `, ${maybe} if needed` : ''}`
-        : 'None of these times work';
+      const summary = personSummary({ yes, pref, maybe });
       const pressed = focusId === r.id;
       const li = h('li', { class: `person${pressed ? ' active' : ''}`, dataset: { id: r.id } },
         h('button', {
@@ -103,19 +102,19 @@ export function resultsSection({ poll, timeZone, selfId = null, onPick = null, o
             people.querySelector(`[data-id="${r.id}"] .person-btn`)?.focus();
           },
         },
-        h('span', { class: 'person-name' }, r.name, r.id === selfId ? h('span', { class: 'you-tag' }, 'You') : null),
-        h('span', { class: 'person-meta' }, summary + (unseen ? `, hasn’t seen ${unseen} newer times` : '')),
-        r.note ? h('span', { class: 'person-note' }, `“${r.note}”`) : null,
-        r.updatedAt ? h('span', { class: 'person-when' }, `Answered ${f.ago(r.updatedAt)}`) : null),
+        h('span', { class: 'person-name' }, r.name, r.id === selfId ? h('span', { class: 'you-tag' }, t('results.you')) : null),
+        h('span', { class: 'person-meta' }, unseen ? t('results.unseen', { summary, count: unseen }) : summary),
+        r.note ? h('span', { class: 'person-note' }, t('results.note', { note: r.note })) : null,
+        r.updatedAt ? h('span', { class: 'person-when' }, t('results.answered', { when: f.ago(r.updatedAt) })) : null),
         onRemove ? h('button', {
           type: 'button',
           class: 'icon-btn danger-text',
-          'aria-label': `Remove ${r.name}’s response`,
+          'aria-label': t('results.removeLabel', { name: r.name }),
           onclick: async () => {
             const ok = await confirmDialog({
-              title: `Remove ${r.name}’s response?`,
-              message: 'Their times will be deleted for good. They can respond again while the poll is open.',
-              confirm: 'Remove response',
+              title: t('results.removeTitle', { name: r.name }),
+              message: t('results.removeMessage'),
+              confirm: t('results.removeConfirm'),
               danger: true,
             });
             if (ok) onRemove(r);
@@ -132,20 +131,20 @@ export function resultsSection({ poll, timeZone, selfId = null, onPick = null, o
       checked: showCounts,
       onchange: (e) => { showCounts = e.target.checked; state.showCounts = showCounts; grid.update({ showCounts }); },
     }),
-    h('span', null, 'Show numbers'));
+    h('span', null, t('results.showNumbers')));
 
   renderLegend();
   renderPeople();
 
   root.append(
-    h('p', { class: 'muted small', id: 'results-help' }, 'Select a name to see just that person’s answers.'),
+    h('p', { class: 'muted small', id: 'results-help' }, t('results.help')),
     h('div', { class: 'legend-row' }, legend, h('div', { class: 'results-tools' },
       countsToggle,
-      exportable ? h('button', { type: 'button', class: 'btn small ghost', onclick: () => downloadCsv(poll, timeZone) }, icon('download'), 'Export CSV') : null)),
+      exportable ? h('button', { type: 'button', class: 'btn small ghost', onclick: () => downloadCsv(poll, timeZone) }, icon('download'), t('results.exportCsv')) : null)),
     h('div', { class: 'results-layout' },
       h('div', { class: 'results-grid' }, grid.el),
-      h('aside', { class: 'results-side', 'aria-label': 'Who responded' },
-        h('h3', { class: 'side-title' }, `Responses (${responses.length})`),
+      h('aside', { class: 'results-side', 'aria-label': t('results.whoResponded') },
+        h('h3', { class: 'side-title' }, t('results.responses', { count: responses.length })),
         people,
         h('div', { class: 'detail-card' }, detailHost),
       ),
@@ -154,6 +153,16 @@ export function resultsSection({ poll, timeZone, selfId = null, onPick = null, o
   root.destroy = () => grid.destroy();
   root.highlight = (slots) => grid.highlight(slots);
   return root;
+}
+
+/** "3 available (1 preferred), 2 if needed", or that none of the times work. */
+function personSummary({ yes, pref, maybe }) {
+  if (!yes && !maybe) return t('results.noneWork');
+  const vars = { count: yes, pref, maybe };
+  if (pref && maybe) return t('results.summaryPrefMaybe', vars);
+  if (pref) return t('results.summaryPref', vars);
+  if (maybe) return t('results.summaryMaybe', vars);
+  return t('results.summary', vars);
 }
 
 /** One row per person, one column per time, in the viewer's time zone. */
@@ -166,19 +175,19 @@ export function buildCsv(poll, timeZone) {
     maybe: new Set(r.ifNeeded || []),
     answered: r.answered ? new Set(r.answered) : null,
   }));
-  const word = { yes: 'Available', maybe: 'If needed', no: 'Not available', unanswered: 'Not answered' };
+  const word = { yes: t('results.csvYes'), maybe: t('results.csvMaybe'), no: t('results.csvNo'), unanswered: t('results.csvUnanswered') };
   const cell = (v) => {
     let s = String(v ?? '');
     if (/^[=+\-@\t\r]/.test(s)) s = `'${s}`; // keep spreadsheets from running it as a formula
     return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
   };
-  const header = ['Name', 'Note', ...poll.slots.map((s) => `${f.slotDay(s, timeZone, weekly)} ${f.time(s, timeZone)}`)];
+  const header = [t('results.csvName'), t('results.csvNote'), ...poll.slots.map((s) => t('results.csvTime', { day: f.slotDay(s, timeZone, weekly), time: f.time(s, timeZone) }))];
   const rows = responses.map((r, i) => [
     r.name,
     r.note || '',
-    ...poll.slots.map((s) => (indexed[i].pref.has(s) ? 'Preferred' : word[statusAt(indexed[i], s)])),
+    ...poll.slots.map((s) => (indexed[i].pref.has(s) ? t('results.csvPref') : word[statusAt(indexed[i], s)])),
   ]);
-  const counts = ['Available (count)', '', ...poll.slots.map((s) => indexed.filter((p) => p.yes.has(s) || p.maybe.has(s)).length)];
+  const counts = [t('results.csvCount'), '', ...poll.slots.map((s) => indexed.filter((p) => p.yes.has(s) || p.maybe.has(s)).length)];
   return [header, ...rows, counts].map((row) => row.map(cell).join(',')).join('\r\n') + '\r\n';
 }
 
@@ -190,5 +199,5 @@ function downloadCsv(poll, timeZone) {
   a.click();
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
-  announce('Downloaded the responses as a CSV file');
+  announce(t('results.downloaded'));
 }

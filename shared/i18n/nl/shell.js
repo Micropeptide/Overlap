@@ -1,0 +1,20 @@
+export default {
+  'shell.skip': 'Naar de inhoud',
+  'shell.brandLabel': 'Overlap, nieuwe peiling maken',
+  'shell.navLabel': 'Site',
+  'shell.newPoll': 'Nieuwe peiling',
+  'shell.about': 'Over',
+  'shell.privacy': 'Privacy',
+  'shell.loading': 'Laden…',
+  'shell.footer': 'Geen accounts, geen tracking, geen advertenties. {retention} {privacyLink}. {aboutLink}, gemaakt door Micropeptide.',
+  'shell.retentionKept': 'Peilingen blijven bestaan tot de organisator ze verwijdert.',
+  'shell.retentionAuto': {
+    one: 'Peilingen worden automatisch verwijderd {count} dag na hun laatste datum (wekelijkse peilingen: na hun laatste wijziging).',
+    other: 'Peilingen worden automatisch verwijderd {count} dagen na hun laatste datum (wekelijkse peilingen: na hun laatste wijziging).',
+  },
+  'shell.privacyLink': 'Zo gaan we met je gegevens om',
+  'shell.aboutLink': 'Over Overlap',
+  'shell.language': 'Taal',
+  'shell.errorTitle': 'Er ging iets mis',
+  'shell.errorReload': 'Laad de pagina opnieuw om het nog eens te proberen.',
+};
