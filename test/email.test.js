@@ -105,6 +105,18 @@ test('the organizer gets their link, confirms, and then hears about responses', 
   assert.equal(store.db.prepare('SELECT COUNT(*) AS n FROM email_subs WHERE email = ?').get('org@example.com').n, 0);
 });
 
+test('the first update after confirming goes out within minutes, not after the 30-minute gap', async () => {
+  outbox.length = 0;
+  const { poll, adminToken } = (await api('POST', '/api/polls', { body: POLL })).json;
+  const auth = `Bearer ${adminToken}`;
+  await api('PUT', `/api/polls/${poll.id}/email`, { auth, body: { email: 'quick@example.com', updates: true } });
+  await api('POST', '/api/email/confirm', { body: { token: tokenIn(outbox[0], '/e/confirm') } });
+  await api('POST', `/api/polls/${poll.id}/responses`, { body: { name: 'Prompt', available: [], ifNeeded: [] } });
+  outbox.length = 0;
+  assert.equal(await sendDueDigests({ store, mailer, publicUrl: 'https://o.test', apiUrl: 'https://api.o.test', now: Date.now() + 3 * 60e3 }), 1);
+  assert.match(outbox[0].text, /New response: Prompt\./);
+});
+
 test('guests hear about the final time, not about their own changes', async () => {
   outbox.length = 0;
   const { poll, adminToken } = (await api('POST', '/api/polls', { body: POLL })).json;

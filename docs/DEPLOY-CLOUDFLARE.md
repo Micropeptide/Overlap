@@ -73,7 +73,7 @@ Cloudflare's own email sending needs a paid Workers plan, so it isn't used.
    `EMAIL_FROM = "Overlap <overlap@mail.runtian.uk>"`, then `npm run worker:deploy`.
 
 `/api/config` then reports `"emails": true` and the "Email me" controls appear.
-The Worker's cron (every 10 minutes) sends update digests. To turn email off
+The Worker's cron (every 5 minutes) sends update digests. To turn email off
 again, set `EMAIL_FROM = ""` or delete the secret (`npx wrangler secret delete RESEND_API_KEY`).
 
 ## Updating
