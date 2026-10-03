@@ -35,6 +35,11 @@ writeFileSync(join(out, 'index.html'), html);
 // Poll links like /p/abc123 aren't files; GitHub Pages answers them with 404.html,
 // which is the same app shell, and the app routes from the address.
 writeFileSync(join(out, '404.html'), html);
+// Fixed pages get real files so they answer 200 rather than via the 404 fallback.
+for (const page of ['about', 'privacy']) {
+  mkdirSync(join(out, page), { recursive: true });
+  writeFileSync(join(out, page, 'index.html'), html);
+}
 writeFileSync(join(out, '.nojekyll'), '');
 if (args.domain) writeFileSync(join(out, 'CNAME'), `${args.domain}\n`);
 if (!existsSync(join(out, 'README.md'))) {
