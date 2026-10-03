@@ -134,6 +134,11 @@ export function validatePollFields(body, current = null) {
     else out.durationMinutes = d;
   }
 
+  if (!partial || has('allowEdits')) {
+    const v = partial ? body.allowEdits : body.allowEdits ?? true;
+    if (typeof v !== 'boolean') throw bad('Say whether guests can change their answers (true or false).', 'allowEdits');
+    out.allowEdits = v;
+  }
   if (!partial || has('resultsVisibility')) {
     const v = partial ? body.resultsVisibility : body.resultsVisibility ?? 'everyone';
     if (!VISIBILITY.includes(v)) throw bad('Choose who can see responses.', 'resultsVisibility');

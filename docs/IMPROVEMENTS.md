@@ -145,3 +145,6 @@ worth the complexity yet), **No** (conflicts with the product's rules).
 | Optional organizer and guest passwords | Built | Keys derived in the browser; per-poll guess limit in the database |
 | Optional email: link by email, confirmed update digests, one-click unsubscribe | Built | Resend; off until configured |
 | Accounts / sign-in (passkeys, Google, Microsoft, GitHub) | No | The maintainer's choice: keep "no login, nothing stored about you" |
+| Organizer can lock answers after sending (`allowEdits`) | Built | Guests can still delete their own answer, as the privacy page promises |
+| "Copy my edit link" any time, not only right after sending | Built | |
+| First email update waited 30 minutes after confirming | Fixed | Confirming counted as "last emailed" |

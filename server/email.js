@@ -156,7 +156,8 @@ export async function sendDueDigests({ store, mailer, publicUrl, apiUrl, now = D
   for (const sub of await store.dueEmailSubs({ now })) {
     const poll = await store.getPoll(sub.pollId);
     if (!poll) { await store.deleteEmailSub(sub.pollId, sub.responseId); continue; }
-    const events = await store.eventsSince(poll.id, sub.lastSentAt || sub.createdAt);
+    // Changes after the last email, or from the moment updates were confirmed (inclusive).
+    const events = await store.eventsSince(poll.id, sub.lastSentAt ?? sub.createdAt - 1);
     const lines = digestLines({ poll, sub, events, responses: await store.listResponses(poll.id) });
     if (lines.length) {
       const token = await store.newUnsubToken(sub.id);

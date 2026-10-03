@@ -134,6 +134,7 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
       slotMinutes: poll.slotMinutes,
       durationMinutes: poll.durationMinutes,
       resultsVisibility: poll.resultsVisibility,
+      allowEdits: poll.allowEdits,
       status: status(poll),
       final: poll.final,
       slots: poll.slots,
@@ -311,6 +312,7 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
       const poll = await requirePoll(id);
       await guestResponseFor(req, poll, rid);
       if (poll.closed) throw new HttpError(409, 'This poll is closed, so responses can no longer be changed.');
+      if (!poll.allowEdits) throw new HttpError(409, 'The organizer doesn’t allow changing answers after they’re sent. You can still delete yours.');
       const data = validateResponse(body, poll);
       if (poll.resultsVisibility === 'everyone' && await store.nameTaken(id, data.name, rid)) {
         throw new HttpError(409, `Someone else already responded as “${data.name}”. Try adding a last initial.`, 'name');

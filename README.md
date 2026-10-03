@@ -15,7 +15,8 @@ everyone sees where the times overlap.
 - Specific dates or days of the week, in each person's own time zone.
 - Best times first: everyone, then the closest matches.
 - Mark times as available, preferred or if needed, by drag, keyboard or tap.
-- Private edit links: nobody can overwrite your answer by typing your name.
+- Private edit links, copyable any time: nobody can overwrite your answer by typing your name.
+- The organizer can lock answers once sent (guests can still delete theirs).
 - Close, finalize, export to CSV, and download a calendar invite.
 - Polls stay until the organizer deletes them; guests can delete their own answers any time.
 
@@ -223,12 +224,12 @@ when it was saved. If the organizer later adds dates, those new slots show as
 | `POST` | `/api/polls` | anyone: `kind: "dates"` with `dates`, or `kind: "weekly"` with `weekdays` (0 = Sunday … 6 = Saturday) |
 | `GET` | `/api/polls/:id` | anyone with the id (responses omitted if hidden) |
 | `GET` | `/api/polls/:id/manage` | organizer |
-| `PATCH` | `/api/polls/:id` | organizer: any poll field (incl. `location`, `closesOn`), `status: open\|closed`, `final: {start,end}\|null` (start must be one of the poll's slots) |
+| `PATCH` | `/api/polls/:id` | organizer: any poll field (incl. `location`, `closesOn`, `allowEdits`), `status: open\|closed`, `final: {start,end}\|null` (start must be one of the poll's slots) |
 | `DELETE` | `/api/polls/:id` | organizer |
 | `POST` | `/api/polls/:id/private-link` | organizer: replace key |
 | `POST` | `/api/polls/:id/responses` | guest (poll must be open): `name`, `available`, `preferred`, `ifNeeded` (lists of slot instants), optional `note` |
 | `GET` | `/api/polls/:id/my-response` | guest, with edit key |
-| `PUT` | `/api/polls/:id/responses/:rid` | that guest only |
+| `PUT` | `/api/polls/:id/responses/:rid` | that guest only, while the poll is open and `allowEdits` is on |
 | `DELETE` | `/api/polls/:id/responses/:rid` | that guest or the organizer |
 | `GET` | `/api/polls/:id/invite.ics` | anyone, once a final time is set |
 | `POST` | `/api/polls/:id/sign-in` | guest: `name` and `password` (a derived key) |

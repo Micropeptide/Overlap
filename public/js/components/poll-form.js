@@ -24,6 +24,7 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
     durationMinutes: initial.durationMinutes || 0,
     timezone: tz0,
     resultsVisibility: initial.resultsVisibility || 'everyone',
+    allowEdits: initial.allowEdits !== false,
   };
 
   const errors = {};
@@ -201,7 +202,9 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
     hint: 'Optional. Lets you manage the poll from any device: open the guest link and choose “Manage with your password”. You’ll still get a private link.',
   });
 
-  const more = h('details', { class: 'more', open: editing && (v.durationMinutes || v.resultsVisibility !== 'everyone' || v.description || v.location || v.closesOn) ? true : null },
+  const allowEdits = h('input', { type: 'checkbox', checked: v.allowEdits, 'aria-describedby': 'edits-hint', onchange: (e) => { v.allowEdits = e.target.checked; } });
+
+  const more = h('details', { class: 'more', open: editing && (v.durationMinutes || v.resultsVisibility !== 'everyone' || !v.allowEdits || v.description || v.location || v.closesOn) ? true : null },
     h('summary', null, 'More options'),
     h('div', { class: 'more-body' },
       h('div', { class: 'field' },
@@ -216,6 +219,9 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
         h('legend', null, 'Who can see responses'),
         visRadio('everyone', 'Everyone with the guest link', 'Guests see each other’s names and times. Most groups prefer this.'),
         visRadio('organizer', 'Only me', 'Guests see only their own response. You see everything.')),
+      h('div', { class: 'field' },
+        h('label', { class: 'check' }, allowEdits, h('span', null, 'Guests can change their answer after sending it')),
+        h('p', { class: 'field-hint', id: 'edits-hint' }, 'Turn this off to keep answers as first sent. Guests can still delete their own answer.')),
       h('div', { class: 'field' },
         h('label', { for: 'f-location' }, 'Where'),
         loc,
@@ -297,6 +303,7 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
       durationMinutes: v.durationMinutes || null,
       timezone: v.timezone,
       resultsVisibility: v.resultsVisibility,
+      allowEdits: v.allowEdits,
     };
     if (!value.title) return showError('Give your event a name so guests know what it’s for.', 'title');
     if (v.kind === 'weekly' && !value.weekdays.length) return showError('Pick at least one day of the week.', 'weekdays');

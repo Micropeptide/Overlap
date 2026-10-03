@@ -20,6 +20,9 @@ export function pollFacts(poll, { audience }) {
     fact('lock', poll.resultsVisibility === 'everyone'
       ? (audience === 'guest' ? 'Everyone with this link can see responses' : 'Guests can see each other’s responses')
       : (audience === 'guest' ? 'Only the organizer can see responses' : 'Only you can see responses')),
+    poll.allowEdits === false
+      ? fact('edit', audience === 'guest' ? 'Answers can’t be changed after they’re sent' : 'Guests can’t change answers after sending')
+      : null,
   );
 }
 

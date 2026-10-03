@@ -93,7 +93,8 @@ CREATE TABLE IF NOT EXISTS polls (
   created_at INTEGER NOT NULL,
   updated_at INTEGER NOT NULL,
   expires_at INTEGER NOT NULL,
-  admin_pw_hash TEXT
+  admin_pw_hash TEXT,
+  allow_edits INTEGER NOT NULL DEFAULT 1
 );
 CREATE TABLE IF NOT EXISTS responses (
   id TEXT PRIMARY KEY,
@@ -155,6 +156,8 @@ export const MIGRATIONS = [
   // Optional passwords, stored as hashes of keys derived in the browser.
   ['polls', 'admin_pw_hash', 'TEXT'],
   ['responses', 'pw_hash', 'TEXT'],
+  // Whether guests may change an answer after submitting it.
+  ['polls', 'allow_edits', 'INTEGER NOT NULL DEFAULT 1'],
 ];
 
 /** Stored as the expiry of polls that are kept until someone deletes them. */
@@ -192,6 +195,7 @@ export function createStore(driver, { retentionDays = 0 } = {}) {
       slotMinutes: row.slot_minutes,
       durationMinutes: row.duration_minutes,
       resultsVisibility: row.results_visibility,
+      allowEdits: row.allow_edits !== 0,
       location: row.location || '',
       closesOn: row.closes_on || null,
       manualClosed: !!row.closed,
@@ -247,12 +251,12 @@ export function createStore(driver, { retentionDays = 0 } = {}) {
       const adminToken = newSecret();
       const now = Date.now();
       await run(`INSERT INTO polls (id, admin_hash, kind, title, description, location, closes_on, timezone, dates, start_minute,
-        end_minute, slot_minutes, duration_minutes, results_visibility, closed, final_start, final_end, created_at, updated_at, expires_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, NULL, NULL, ?, ?, ?)`, [
+        end_minute, slot_minutes, duration_minutes, results_visibility, closed, final_start, final_end, created_at, updated_at, expires_at,
+        allow_edits) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, NULL, NULL, ?, ?, ?, ?)`, [
         id, await hashSecret(adminToken), input.kind || 'dates', input.title, input.description, input.location || '',
         input.closesOn || null, input.timezone, JSON.stringify(input.dates),
         input.startMinute, input.endMinute, input.slotMinutes, input.durationMinutes ?? null, input.resultsVisibility,
-        now, now, expiryFor(input)]);
+        now, now, expiryFor(input), input.allowEdits === false ? 0 : 1]);
       return { poll: await this.getPoll(id), adminToken };
     },
 
@@ -266,11 +270,11 @@ export function createStore(driver, { retentionDays = 0 } = {}) {
       const next = { ...current, ...changes };
       await run(`UPDATE polls SET title = ?, description = ?, location = ?, closes_on = ?, timezone = ?, dates = ?, start_minute = ?,
         end_minute = ?, slot_minutes = ?, duration_minutes = ?, results_visibility = ?, closed = ?, final_start = ?, final_end = ?,
-        updated_at = ?, expires_at = ? WHERE id = ?`, [
+        updated_at = ?, expires_at = ?, allow_edits = ? WHERE id = ?`, [
         next.title, next.description, next.location || '', next.closesOn || null, next.timezone, JSON.stringify(next.dates),
         next.startMinute, next.endMinute, next.slotMinutes, next.durationMinutes ?? null, next.resultsVisibility, next.manualClosed ? 1 : 0,
         next.final ? next.final.start : null, next.final ? next.final.end : null,
-        Date.now(), expiryFor(next), id]);
+        Date.now(), expiryFor(next), next.allowEdits === false ? 0 : 1, id]);
       return this.getPoll(id);
     },
 

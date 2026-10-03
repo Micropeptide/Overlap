@@ -452,3 +452,23 @@ test('by default nothing is deleted automatically', async () => {
   app.close();
   keep.close();
 });
+
+test('organizers can stop guests changing answers; guests can still delete theirs', async () => {
+  const { poll, adminToken } = await newPoll({ allowEdits: false });
+  assert.equal(poll.allowEdits, false);
+  const sent = await api('POST', `/api/polls/${poll.id}/responses`, { body: { name: 'Locked', available: [poll.slots[0]], ifNeeded: [] } });
+  assert.equal(sent.status, 201);
+  const rid = sent.json.response.id;
+  const edit = await api('PUT', `/api/polls/${poll.id}/responses/${rid}`, { token: sent.json.editToken, body: { name: 'Locked', available: [], ifNeeded: [] } });
+  assert.equal(edit.status, 409);
+  assert.match(edit.json.error, /doesn’t allow changing answers/);
+  // The organizer can turn edits back on; null isn't a way to reset it.
+  assert.equal((await api('PATCH', `/api/polls/${poll.id}`, { token: adminToken, body: { allowEdits: null } })).json.field, 'allowEdits');
+  const on = await api('PATCH', `/api/polls/${poll.id}`, { token: adminToken, body: { allowEdits: true } });
+  assert.equal(on.json.poll.allowEdits, true);
+  assert.equal((await api('PUT', `/api/polls/${poll.id}/responses/${rid}`, { token: sent.json.editToken, body: { name: 'Locked', available: [], ifNeeded: [] } })).status, 200);
+  await api('PATCH', `/api/polls/${poll.id}`, { token: adminToken, body: { allowEdits: false } });
+  assert.equal((await api('DELETE', `/api/polls/${poll.id}/responses/${rid}`, { token: sent.json.editToken })).status, 204);
+  // Default stays on.
+  assert.equal((await newPoll()).poll.allowEdits, true);
+});
