@@ -548,10 +548,14 @@ textarea.input { resize: vertical; min-height: 5rem; }
 .email-control[hidden] { display: none; }
 .range-hint { display: flex; align-items: center; gap: 0.75rem; margin: 0 0 0.6rem; padding: 0.5rem 0.75rem;
   border-radius: var(--radius-m); font-size: var(--step--1); line-height: 1.4;
-  background: color-mix(in srgb, var(--pref) 12%, var(--surface)); color: var(--ink);
+  background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line);
   /* Room for two lines always, so the list below never moves as the text changes. */
-  min-height: calc(2 * 1.4em + 1rem); box-sizing: border-box; }
+  min-height: calc(2 * 1.4em + 1rem + 2px); box-sizing: border-box; }
 .range-hint-text { flex: 1; }
+/* In range mode the tip turns violet and stays in view while scrolling to the end time.
+   Sticky doesn't change its place in the flow, so nothing below moves. */
+.range-hint.on { position: sticky; top: 0.5rem; z-index: 2; color: var(--ink); border-color: transparent;
+  background: color-mix(in srgb, var(--pref) 14%, var(--surface)); box-shadow: 0 4px 14px -8px rgb(0 0 0 / 0.35); }
 .range-cancel { flex: none; font-weight: 700; }
 .day-tools .btn.on { border-color: var(--pref); color: var(--pref); background: color-mix(in srgb, var(--pref) 10%, var(--surface)); }
 .slot-btn.range-start { outline: 2.5px solid var(--pref); outline-offset: 2px; }

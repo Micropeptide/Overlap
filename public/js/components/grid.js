@@ -549,7 +549,9 @@ export function createGrid(options) {
     const list = h('ul', { class: `slot-list slot-list-${s.mode}${s.mode === 'edit' && phoneRange ? ' range-mode' : ''}`, role: 'list' });
     for (const cell of daySlots) list.append(s.mode === 'edit' ? phoneEditItem(cell.slot) : phoneResultItem(cell.slot));
 
-    const rangeHint = s.mode === 'edit' && phoneRange && canEdit() ? h('div', { class: 'range-hint' }) : null;
+    // Always present while marking, at a fixed height: turning range mode on or
+    // off changes only its text, so the list below never moves.
+    const rangeHint = s.mode === 'edit' && canEdit() ? h('div', { class: 'range-hint' }) : null;
     const parts = [strip, h('div', { class: 'day-head' }, title, s.mode === 'edit' ? dayTools(daySlots) : null), rangeHint, list];
     const idx = cols.indexOf(mobileDay);
     const go = (dk) => { mobileDay = dk; s.onDayChange(dk); expandedSlot = null; render(); scrollToTop(); root.querySelector('.day-title')?.focus({ preventScroll: true }); };
@@ -610,7 +612,7 @@ export function createGrid(options) {
       onclick: () => { run(); root.querySelector(`[data-tool="${id}"]`)?.focus(); },
     }, label);
     const range = h('button', {
-      type: 'button', class: `btn small ${phoneRange ? 'secondary on' : 'ghost'}`, dataset: { tool: 'range' }, disabled: !canEdit(),
+      type: 'button', class: `btn small ghost${phoneRange ? ' on' : ''}`, dataset: { tool: 'range' }, disabled: !canEdit(),
       'aria-pressed': phoneRange ? 'true' : 'false',
       onclick: () => setRangeMode(!phoneRange),
     }, 'Select a range');
@@ -658,16 +660,10 @@ export function createGrid(options) {
     cancelRange({ quiet: true });
     const btn = root.querySelector('[data-tool="range"]');
     if (btn) {
-      btn.className = `btn small ${on ? 'secondary on' : 'ghost'}`;
+      btn.className = `btn small ghost${on ? ' on' : ''}`;
       btn.setAttribute('aria-pressed', String(on));
     }
-    const list = root.querySelector('.slot-list-edit');
-    list?.classList.toggle('range-mode', on);
-    let hint = root.querySelector('.range-hint');
-    if (on && !hint && list) {
-      hint = h('div', { class: 'range-hint' });
-      list.before(hint);
-    } else if (!on) hint?.remove();
+    root.querySelector('.slot-list-edit')?.classList.toggle('range-mode', on);
     updateRangeHint();
     announce(on ? 'Range on: tap where the range starts, then where it ends' : 'Range off: each tap marks one time', { silent: on });
   }
@@ -676,12 +672,16 @@ export function createGrid(options) {
   function updateRangeHint() {
     const hint = root.querySelector('.range-hint');
     if (!hint) return;
-    const text = rangeStart == null
+    hint.classList.toggle('on', phoneRange);
+    const text = !phoneRange
+      ? 'Tip: “Select a range” marks a long stretch with just two taps.'
+      : rangeStart == null
       ? 'Tap where the range starts, then where it ends.'
       : `From ${f.time(rangeStart, s.timeZone)}: tap the end to ${rangeClears() ? 'clear' : `mark “${MARKS[s.brush].label}”`}.`;
-    hint.replaceChildren(
+    hint.replaceChildren(...[
       h('span', { class: 'range-hint-text' }, text),
-      rangeStart == null ? null : h('button', { type: 'button', class: 'link-btn range-cancel', onclick: () => cancelRange() }, 'Cancel'));
+      rangeStart == null ? null : h('button', { type: 'button', class: 'link-btn range-cancel', onclick: () => cancelRange() }, 'Cancel'),
+    ].filter(Boolean)); // replaceChildren(null) would show the word "null"
   }
 
   function setStartMark(slot, on) {
