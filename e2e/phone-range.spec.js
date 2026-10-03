@@ -10,11 +10,17 @@ test('on a phone, "Select a range" marks or clears everything between two taps, 
   await page.goto(guestPath);
   await page.getByLabel('Your name').fill('Rana');
   const range = page.getByRole('button', { name: 'Select a range' });
+  const hint = page.locator('.range-hint');
+  await expect(hint).toContainText('Tip: “Select a range”');
+  await expect(hint).not.toContainText('null');
+  const slots = page.locator('.slot-list-edit .slot-btn');
+  // Turning range mode on changes the tip's words, not the layout.
+  await range.scrollIntoViewIfNeeded();
+  const off = await position(page);
   await range.tap();
   await expect(range).toHaveAttribute('aria-pressed', 'true');
-  const hint = page.locator('.range-hint');
   await expect(hint).toContainText('Tap where the range starts');
-  const slots = page.locator('.slot-list-edit .slot-btn');
+  expect(await position(page)).toEqual(off);
 
   // Scroll partway down the list, as someone would for afternoon times.
   await slots.nth(6).scrollIntoViewIfNeeded();
@@ -37,6 +43,7 @@ test('on a phone, "Select a range" marks or clears everything between two taps, 
   // Cancel drops a half-picked range without changing anything.
   await slots.nth(2).tap();
   await expect(slots.nth(2)).toHaveClass(/range-start/);
+  await expect(hint).not.toContainText('null');
   await hint.getByRole('button', { name: 'Cancel' }).tap();
   await expect(slots.nth(2)).not.toHaveClass(/range-start/);
   await expect(hint.getByRole('button', { name: 'Cancel' })).toHaveCount(0);
@@ -48,7 +55,7 @@ test('on a phone, "Select a range" marks or clears everything between two taps, 
 
   // Turning range off goes back to one time per tap.
   await range.tap();
-  await expect(hint).toHaveCount(0);
+  await expect(hint).toContainText('Tip: “Select a range”');
   await slots.nth(0).tap();
   await expect(page.getByText('7 times available')).toBeVisible();
   await page.getByRole('button', { name: 'Submit availability' }).tap();
@@ -62,10 +69,13 @@ test('the range hint keeps its height on a narrow phone', async ({ page, request
   await page.setViewportSize({ width: 320, height: 640 });
   const { guestPath } = await createPoll(request, { endMinute: 17 * 60 });
   await page.goto(guestPath);
-  await page.getByRole('button', { name: 'Select a range' }).tap();
-  await page.locator('label.brush-maybe').tap(); // the longest label
   const hint = page.locator('.range-hint');
+  const h0 = (await hint.boundingBox()).height; // the tip shown before range mode
+  await page.locator('label.brush-maybe').tap(); // the longest label
   const h1 = (await hint.boundingBox()).height;
+  expect(h1).toBe(h0);
+  await page.getByRole('button', { name: 'Select a range' }).tap();
+  expect((await hint.boundingBox()).height).toBe(h0);
   await page.locator('.slot-list-edit .slot-btn').nth(13).tap(); // 3:30 PM
   await expect(hint).toContainText('mark “If needed”');
   expect((await hint.boundingBox()).height).toBe(h1);
