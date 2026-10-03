@@ -3,6 +3,7 @@ import { api } from '../lib/api.js';
 import { storage } from '../lib/storage.js';
 import { createPollForm } from '../components/poll-form.js';
 import * as f from '../lib/format.js';
+import { passwordKey } from '/shared/password.js';
 
 // Three people's free time drawn as translucent bands; where all three stack
 // up is the overlap. Purely illustrative.
@@ -46,14 +47,24 @@ export async function renderHome(main) {
   const form = createPollForm({
     initial,
     submitLabel: 'Create poll',
-    onSubmit: async (value) => {
+    onSubmit: async (value, { password }) => {
       const { poll, adminToken } = await api('POST', '/api/polls', { body: value });
+      // The password's key is salted with the poll id, so it is set once the poll exists.
+      let passwordSaved = true;
+      if (password) {
+        try {
+          const organizerPassword = await passwordKey(password, poll.id, 'organizer');
+          await api('PATCH', `/api/polls/${poll.id}`, { token: adminToken, body: { organizerPassword } });
+        } catch {
+          passwordSaved = false;
+        }
+      }
       storage.setFormPrefs({
         startMinute: value.startMinute, endMinute: value.endMinute, slotMinutes: value.slotMinutes,
         durationMinutes: value.durationMinutes, resultsVisibility: value.resultsVisibility,
       });
       storage.saveManaged(poll.id, { token: adminToken, title: poll.title });
-      location.assign(`/m/${poll.id}#k=${encodeURIComponent(adminToken)}&new=1`);
+      location.assign(`/m/${poll.id}#k=${encodeURIComponent(adminToken)}&new=1${passwordSaved ? '' : '&pw=0'}`);
     },
   });
 

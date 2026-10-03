@@ -532,6 +532,27 @@ textarea.input { resize: vertical; min-height: 5rem; }
 .settings-row { display: flex; justify-content: space-between; align-items: center; gap: 1rem 2rem; padding: 1rem 0; border-top: 1px solid var(--line); }
 .settings-row > div { max-width: 46ch; }
 .settings-row p { margin: 0; }
+.settings-row .row-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: flex-end; }
+.setting-name .chip { margin-left: 0.5rem; vertical-align: 0.1em; }
+.chip.on { display: inline-block; padding: 0.05rem 0.55rem; border-radius: 999px; font-size: 0.72rem; font-weight: 700;
+  background: color-mix(in srgb, var(--everyone) 18%, transparent); color: var(--everyone-ink); }
+
+/* passwords */
+.label-row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+.pw-toggle { font-size: 0.8rem; }
+.pw-section { margin: 1.25rem 0 0; border: 1px solid var(--line); border-radius: var(--radius-m); background: var(--surface-2); }
+.pw-section > summary { cursor: pointer; display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; font-weight: 600; font-size: var(--step--1); list-style: none; }
+.pw-section > summary::-webkit-details-marker { display: none; }
+.pw-section > summary::after { content: ''; margin-left: auto; width: 0.5rem; height: 0.5rem; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg); transition: transform 0.15s; opacity: 0.6; }
+.pw-section[open] > summary::after { transform: rotate(225deg); }
+.pw-section .icon { width: 1rem; height: 1rem; color: var(--pref); }
+.pw-body { padding: 0 1rem 1rem; max-width: 30rem; }
+.pw-body .field { margin-bottom: 0.5rem; }
+.pw-create { border-top: 1px solid var(--line); padding-top: 1rem; }
+.sign-in-line { margin: 0 0 1rem; color: var(--ink-2); }
+.access-links { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; margin: 1.25rem 0 0; color: var(--ink-2); }
+.dialog .field { margin-bottom: 0.9rem; }
+.dialog .form-error { margin: 0 0 0.75rem; }
 .setting-name { font-weight: 700; }
 .edit-head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1rem; }
 .edit-head .section-title { margin: 0; }

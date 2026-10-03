@@ -1,4 +1,4 @@
-import { h, clear, icon, announce, copyText, confirmDialog, linkify } from '../lib/dom.js';
+import { h, clear, icon, announce, copyText, confirmDialog, formDialog, passwordField, linkify } from '../lib/dom.js';
 import { api, ApiError } from '../lib/api.js';
 import { storage, hashParams } from '../lib/storage.js';
 import * as f from '../lib/format.js';
@@ -8,6 +8,7 @@ import { bestTimes } from '../components/best-times.js';
 import { resultsSection } from '../components/results.js';
 import { renderNotFound } from './not-found.js';
 import { isValidTimeZone } from '/shared/time.js';
+import { passwordKey, passwordProblem } from '/shared/password.js';
 import { pollFacts, finalCard, statusBanner, locationLine, watchForUpdates, captureFocus } from './shared.js';
 
 const BRUSHES = [
@@ -44,7 +45,8 @@ export async function renderGuest(main, pollId) {
       ({ response: mine } = await api('GET', `/api/polls/${pollId}/my-response`, { token }));
       storage.saveAnswer(pollId, { token, responseId: mine.id, name: mine.name, title: poll.title });
     } catch (err) {
-      if (err instanceof ApiError && err.status === 404) {
+      // 404: the response is gone. 403: the password it was opened with has changed.
+      if (err instanceof ApiError && (err.status === 404 || err.status === 403)) {
         storage.forgetAnswer(pollId);
         token = null;
       } else throw err;
@@ -62,6 +64,8 @@ export async function renderGuest(main, pollId) {
   let brush = 'yes';
   let showOthers = false;
   let zoneExpanded = false;
+  // Signed in here with a password rather than the private edit link.
+  const viaPassword = () => !!token && token.includes(':');
 
   // The guest's work in progress lives here, outside the rendered panel, so
   // switching tabs or time zones never throws away unsaved marks.
@@ -253,6 +257,7 @@ export async function renderGuest(main, pollId) {
     }
 
     page.append(tab === 'mine' ? minePanel(zone) : groupPanel(zone));
+    page.append(accessLinks());
     main.append(page);
   }
 
@@ -271,6 +276,11 @@ export async function renderGuest(main, pollId) {
     }
     if (!open) {
       panel.append(h('p', { class: 'notice' }, 'This poll is closed, so responses can’t be changed. You can still delete yours.'));
+    }
+    if (!mine && open) {
+      panel.append(h('p', { class: 'sign-in-line small' },
+        'Already answered on another device? ',
+        h('button', { type: 'button', class: 'link-btn', onclick: signInAsGuest }, 'Sign in with your name and password')));
     }
 
     const visibleTo = poll.resultsVisibility === 'everyone' ? 'Shown to the organizer and everyone with the guest link.' : 'Shown only to the organizer.';
@@ -292,6 +302,26 @@ export async function renderGuest(main, pollId) {
       placeholder: 'e.g. “Remote only” or “Can’t stay past 4”', 'aria-describedby': 'g-note-hint',
     });
     noteInput.addEventListener('input', () => { draft.note = noteInput.value; markDirty(); });
+
+    // Optional password: lets the guest open their response anywhere with their name.
+    const pw = passwordField({
+      id: 'g-password', label: mine?.hasPassword ? 'New password' : 'Password',
+      autocomplete: 'new-password',
+      hint: mine?.hasPassword
+        ? 'Leave empty to keep your current password.'
+        : 'Optional. With it, you can change your answer from any device by signing in with your name. At least 8 characters.',
+    });
+    pw.input.disabled = !open;
+    let removePassword = false;
+    const pwSection = h('details', { class: 'pw-section', open: draft.passwordOpen || null },
+      h('summary', null, icon('lock'), mine?.hasPassword ? 'Password is on' : 'Add a password (optional)'),
+      h('div', { class: 'pw-body' },
+        pw.el,
+        mine?.hasPassword && !viaPassword() ? h('label', { class: 'check small' },
+          h('input', { type: 'checkbox', disabled: !open, onchange: (e) => { removePassword = e.target.checked; pw.input.disabled = removePassword; } }),
+          h('span', null, 'Remove my password')) : null,
+        mine?.hasPassword && viaPassword() ? h('p', { class: 'field-hint' }, 'You signed in with your password on this device, so you can change it here but not remove it.') : null));
+    pwSection.addEventListener('toggle', () => { draft.passwordOpen = pwSection.open; });
 
     const unseen = mine?.answered ? poll.slots.filter((s) => !mine.answered.includes(s)).length : 0; // null means all seen
 
@@ -389,6 +419,7 @@ export async function renderGuest(main, pollId) {
         h('label', { for: 'g-note', class: 'field-label' }, 'Note ', h('span', { class: 'optional' }, '(optional)')),
         noteInput,
         h('p', { class: 'field-hint', id: 'g-note-hint' }, 'Anything the organizer should know. Shown next to your name.')),
+      pwSection,
       formError,
       h('div', { class: 'action-bar' },
         h('div', { class: 'action-status' }, counter),
@@ -408,6 +439,17 @@ export async function renderGuest(main, pollId) {
         nameInput.focus();
         return;
       }
+      const password = pw.input.value;
+      if (password && !removePassword) {
+        const problem = passwordProblem(password);
+        if (problem) {
+          pwSection.open = true;
+          formError.textContent = `Password: ${problem}`;
+          formError.hidden = false;
+          pw.input.focus();
+          return;
+        }
+      }
       const marks = [...draft.value];
       const body = {
         name,
@@ -422,9 +464,13 @@ export async function renderGuest(main, pollId) {
       watcher.bump();
       const sent = { value: new Map(draft.value), name: draft.name, note: draft.note };
       try {
+        if (removePassword) body.password = null;
+        else if (password) body.password = await passwordKey(password, pollId, 'guest');
         if (mine) {
           ({ response: mine } = await api('PUT', `/api/polls/${pollId}/responses/${mine.id}`, { token, body }));
-          announce('Saved your changes');
+          // Signed in with the old password: carry on with the new one.
+          if (viaPassword() && body.password) token = `${mine.id}:${body.password}`;
+          announce(body.password ? 'Saved your changes and your new password' : 'Saved your changes');
         } else {
           const res = await api('POST', `/api/polls/${pollId}/responses`, { body });
           mine = res.response;
@@ -434,6 +480,7 @@ export async function renderGuest(main, pollId) {
         }
         storage.saveAnswer(pollId, { token, responseId: mine.id, name: mine.name, title: poll.title, savedAt: Date.now() });
         storage.setLastName(mine.name);
+        draft.passwordOpen = false;
         // Keep anything the guest changed while the save was on its way.
         const editedMeanwhile = draft.name !== sent.name || draft.note !== sent.note || draft.value.size !== sent.value.size
           || [...draft.value].some(([k, v]) => sent.value.get(k) !== v);
@@ -474,7 +521,9 @@ export async function renderGuest(main, pollId) {
     const input = h('input', { class: 'input mono-link', readonly: true, value: link, 'aria-label': 'Your private edit link', onfocus: (e) => e.target.select() });
     return h('div', { class: 'saved-notice callout success', tabindex: '-1' },
       h('p', { class: 'callout-title' }, icon('check'), `Thanks, ${mine.name}. Your times are in.`),
-      h('p', null, 'You can change or delete your response from this browser any time. To do it from another device, use your private edit link. Don’t share it: anyone with it can change your answer.'),
+      h('p', null, mine.hasPassword
+        ? 'You can change or delete your response from this browser any time. On another device, open this poll and sign in with your name and password, or use your private edit link. Don’t share the link: anyone with it can change your answer.'
+        : 'You can change or delete your response from this browser any time. To do it from another device, use your private edit link, or add a password below. Don’t share the link: anyone with it can change your answer.'),
       h('div', { class: 'link-row' }, input,
         h('button', { type: 'button', class: 'btn secondary', onclick: () => copyText(link, 'Copied your private edit link') }, icon('copy'), 'Copy')),
       canSeeResults() ? h('p', null, h('button', { type: 'button', class: 'link-btn', onclick: () => { tab = 'group'; justSaved = false; render(); document.getElementById('tab-group')?.focus(); } }, 'See group results')) : null,
@@ -506,6 +555,64 @@ export async function renderGuest(main, pollId) {
     } catch (err) {
       announce(err.message, { tone: 'error' });
     }
+  }
+
+  /** Ways back in without a private link, shown at the foot of the poll. */
+  function accessLinks() {
+    const items = [];
+    if (!mine && !isOpen() && poll.responseCount) items.push(h('button', { type: 'button', class: 'link-btn', onclick: signInAsGuest }, 'Sign in to your response'));
+    if (poll.hasOrganizerPassword) items.push(h('button', { type: 'button', class: 'link-btn', onclick: manageWithPassword }, 'Organizer? Manage with your password'));
+    return items.length ? h('p', { class: 'access-links small' }, ...items) : null;
+  }
+
+  async function signInAsGuest() {
+    const name = h('input', { id: 'si-name', class: 'input', type: 'text', maxlength: '40', autocomplete: 'nickname', required: true, value: storage.lastName() || '' });
+    const pwd = passwordField({ id: 'si-password', label: 'Password' });
+    const signed = await formDialog({
+      title: 'Sign in to your response',
+      intro: h('p', { class: 'dialog-text' }, 'Use the name you answered with and the password you added. This only works if you added a password when you answered.'),
+      fields: [h('div', { class: 'field' }, h('label', { for: 'si-name', class: 'field-label' }, 'Your name'), name), pwd.el],
+      submitLabel: 'Sign in',
+    }, async () => {
+      if (!name.value.trim()) throw new Error('Enter the name you answered with.');
+      if (!pwd.input.value) throw new Error('Enter your password.');
+      const key = await passwordKey(pwd.input.value, pollId, 'guest');
+      const { response } = await api('POST', `/api/polls/${pollId}/sign-in`, { body: { name: name.value, password: key } });
+      return { response, key };
+    });
+    if (!signed) return;
+    mine = signed.response;
+    token = `${mine.id}:${signed.key}`;
+    storage.saveAnswer(pollId, { token, responseId: mine.id, name: mine.name, title: poll.title, savedAt: Date.now() });
+    clearDraft();
+    loadDraftFromResponse();
+    tab = isOpen() ? 'mine' : 'group';
+    render();
+    announce(`Signed in as ${mine.name}`);
+    main.querySelector('#g-name, h1')?.focus();
+  }
+
+  async function manageWithPassword() {
+    const pwd = passwordField({ id: 'mp-password', label: 'Organizer password' });
+    const key = await formDialog({
+      title: 'Manage this poll',
+      intro: h('p', { class: 'dialog-text' }, 'Enter the password the organizer set for this poll. Your private link works too, if you have it.'),
+      fields: pwd.el,
+      submitLabel: 'Open organizer view',
+    }, async () => {
+      if (!pwd.input.value) throw new Error('Enter the password.');
+      const k = await passwordKey(pwd.input.value, pollId, 'organizer');
+      try {
+        await api('GET', `/api/polls/${pollId}/manage`, { token: k });
+      } catch (err) {
+        if (err.status === 403) throw new Error('That password isn’t right for this poll.');
+        throw err;
+      }
+      return k;
+    });
+    if (!key) return;
+    storage.saveManaged(pollId, { token: key, title: poll.title });
+    location.assign(`/m/${pollId}#k=${encodeURIComponent(key)}`);
   }
 
   function groupPanel(zone) {

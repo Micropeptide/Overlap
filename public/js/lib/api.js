@@ -13,7 +13,8 @@ export class ApiError extends Error {
 export async function api(method, path, { body, token } = {}) {
   const headers = { Accept: 'application/json' };
   if (body !== undefined) headers['Content-Type'] = 'application/json';
-  if (token) headers.Authorization = `Bearer ${token}`;
+  // A guest signed in with a password holds "<response id>:<key>"; link keys never contain ":".
+  if (token) headers.Authorization = token.includes(':') ? `Password ${token}` : `Bearer ${token}`;
   let res;
   try {
     res = await fetch(API_BASE + path, { method, headers, body: body === undefined ? undefined : JSON.stringify(body), cache: 'no-store' });

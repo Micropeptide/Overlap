@@ -1,4 +1,4 @@
-import { h, clear, icon, announce, copyText, confirmDialog, openDialog, linkify } from '../lib/dom.js';
+import { h, clear, icon, announce, copyText, confirmDialog, openDialog, formDialog, passwordField, linkify } from '../lib/dom.js';
 import { api, ApiError } from '../lib/api.js';
 import { storage, hashParams } from '../lib/storage.js';
 import * as f from '../lib/format.js';
@@ -11,16 +11,18 @@ import { LENGTHS } from '../components/lengths.js';
 import { renderNotFound } from './not-found.js';
 import { pollFacts, finalCard, locationLine, watchForUpdates, captureFocus } from './shared.js';
 import { isValidTimeZone } from '/shared/time.js';
+import { passwordKey, passwordProblem, KEY_PATTERN } from '/shared/password.js';
 
 export async function renderManage(main, pollId) {
   const params = hashParams();
   let token = params.get('k') || storage.getManaged(pollId)?.token || null;
   const isNew = params.get('new') === '1';
+  const passwordFailed = params.get('pw') === '0';
 
   if (!token) {
     return renderNotFound(main, {
       title: 'Open this page with your private link',
-      message: 'Managing a poll needs the private link you got when you created it. If you only have the guest link, you can respond but not manage.',
+      message: 'Managing a poll needs the private link you got when you created it. If you set an organizer password, open the guest link and choose “Manage with your password”.',
     });
   }
 
@@ -33,7 +35,7 @@ export async function renderManage(main, pollId) {
       // shouldn't erase a newer key saved in this browser.
       if (err.status === 404 || storage.getManaged(pollId)?.token === token) storage.forgetManaged(pollId);
       return renderNotFound(main, err.status === 403
-        ? { title: 'This private link no longer works', message: 'It may have been replaced with a new one. Use the newest private link for this poll.' }
+        ? { title: 'This private link no longer works', message: 'It may have been replaced with a new one, or the password changed. Use the newest private link, or open the guest link and choose “Manage with your password”.' }
         : { title: 'This poll isn’t here', message: 'It may have been deleted.' });
     }
     throw err;
@@ -52,6 +54,8 @@ export async function renderManage(main, pollId) {
   let zoneExpanded = false;
   let results = null;
 
+  // Opened with the organizer password: the page holds a key derived from it, not a link key.
+  const viaPassword = () => KEY_PATTERN.test(token);
   const guestUrl = () => `${location.origin}/p/${pollId}`;
   const privateUrl = () => `${location.origin}/m/${pollId}#k=${encodeURIComponent(token)}`;
 
@@ -203,7 +207,11 @@ export async function renderManage(main, pollId) {
           h('button', { type: 'button', class: 'link-btn', onclick: () => copyText(inviteMessage(), 'Copied an invitation message you can paste anywhere') }, 'Copy an invitation message'),
           ' with the link and a line explaining what to do.'),
       }),
-      linkBlock({
+      viaPassword() ? h('div', { class: 'link-block private' },
+        h('p', { class: 'link-label', id: 'private-link', tabindex: '-1' }, icon('lock'), 'Signed in with your password'),
+        h('p', { class: 'link-desc' }, 'You opened this page with the organizer password, so there’s no private link to show here. If you’d like a link too, create a new one. Any older private link stops working.'),
+        h('div', { class: 'link-row' },
+          h('button', { type: 'button', class: 'btn secondary', onclick: replaceLink }, icon('refresh'), 'Create a new private link'))) : linkBlock({
         id: 'private-link',
         label: 'Private link: keep this to yourself',
         description: 'Anyone with this link can manage the poll: edit it, close it, remove responses or delete it. It’s saved in this browser. Copy it somewhere safe to manage from another device.',
@@ -236,6 +244,44 @@ export async function renderManage(main, pollId) {
     } catch (err) {
       announce(err.message, { tone: 'error' });
     }
+  }
+
+  async function setPassword() {
+    const pw = passwordField({ id: 'op-new', label: 'New password', autocomplete: 'new-password', hint: 'At least 8 characters. It never leaves this browser: only a scrambled key derived from it is sent.' });
+    const again = passwordField({ id: 'op-again', label: 'Type it again', autocomplete: 'new-password' });
+    const key = await formDialog({
+      title: poll.hasOrganizerPassword ? 'Change the organizer password' : 'Set an organizer password',
+      intro: h('p', { class: 'dialog-text' }, 'With a password, you can manage this poll from any device: open the guest link and choose “Manage with your password”. Your private link keeps working.'),
+      fields: [pw.el, again.el],
+      submitLabel: 'Save password',
+    }, async () => {
+      const problem = passwordProblem(pw.input.value);
+      if (problem) throw new Error(problem);
+      if (pw.input.value !== again.input.value) throw new Error('The two passwords don’t match.');
+      const k = await passwordKey(pw.input.value, pollId, 'organizer');
+      ({ poll } = await api('PATCH', `/api/polls/${pollId}`, { token, body: { organizerPassword: k } }));
+      return k;
+    });
+    if (!key) return;
+    watcher.bump();
+    if (viaPassword()) {
+      token = key;
+      storage.saveManaged(pollId, { token, title: poll.title });
+      history.replaceState(null, '', `/m/${pollId}#k=${encodeURIComponent(token)}`);
+    }
+    render();
+    main.querySelector('[data-action="password"]')?.focus();
+    announce('Organizer password saved');
+  }
+
+  async function removePassword() {
+    const ok = await confirmDialog({
+      title: 'Remove the organizer password?',
+      message: 'You’ll need the private link to manage this poll from other devices.',
+      confirm: 'Remove password',
+    });
+    if (!ok) return;
+    await patch({ organizerPassword: null }, 'Organizer password removed', '[data-action="password"]');
   }
 
   async function chooseFinal(startSlot, minutes) {
@@ -325,6 +371,16 @@ export async function renderManage(main, pollId) {
           : h('button', { type: 'button', class: 'btn secondary', onclick: () => patch({ status: 'open' }, 'Poll reopened') }, 'Reopen poll')),
       h('div', { class: 'settings-row' },
         h('div', null,
+          h('p', { class: 'setting-name' }, 'Organizer password', poll.hasOrganizerPassword ? h('span', { class: 'chip on' }, 'On') : null),
+          h('p', { class: 'muted small' }, poll.hasOrganizerPassword
+            ? 'On any device, open the guest link and choose “Manage with your password”.'
+            : 'Optional. Manage this poll from any device with a password instead of keeping the private link.')),
+        h('div', { class: 'row-actions' },
+          poll.hasOrganizerPassword && !viaPassword()
+            ? h('button', { type: 'button', class: 'btn ghost', onclick: removePassword }, 'Remove') : null,
+          h('button', { type: 'button', class: 'btn secondary', dataset: { action: 'password' }, onclick: setPassword }, icon('lock'), poll.hasOrganizerPassword ? 'Change password' : 'Set password'))),
+      h('div', { class: 'settings-row' },
+        h('div', null,
           h('p', { class: 'setting-name' }, 'Duplicate'),
           h('p', { class: 'muted small' }, 'Start a new poll with the same settings, for the next meeting. Responses aren’t copied.')),
         h('button', {
@@ -384,4 +440,5 @@ export async function renderManage(main, pollId) {
   });
 
   render();
+  if (passwordFailed) announce('Your poll is ready, but the organizer password wasn’t saved. Set it under Manage poll.', { tone: 'error' });
 }

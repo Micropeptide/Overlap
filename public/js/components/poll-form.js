@@ -1,9 +1,10 @@
 // The poll form, used both to create a poll and to edit one. Only the name,
 // dates and times are up front; everything else sits under "More options".
 
-import { h, icon, announce } from '../lib/dom.js';
+import { h, icon, announce, passwordField } from '../lib/dom.js';
 import * as f from '../lib/format.js';
 import { todayIn, addDays, weekdayOf, WEEK_ORDER } from '/shared/time.js';
+import { passwordProblem } from '/shared/password.js';
 import { createDatePicker } from './date-picker.js';
 import { LENGTHS } from './lengths.js';
 
@@ -194,6 +195,12 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
     'aria-describedby': 'closes-hint err-closesOn',
   });
 
+  // New polls only: an organizer password is changed later from the manage page.
+  const orgPw = editing ? null : passwordField({
+    id: 'f-password', label: 'Organizer password', autocomplete: 'new-password',
+    hint: 'Optional. Lets you manage the poll from any device: open the guest link and choose “Manage with your password”. You’ll still get a private link.',
+  });
+
   const more = h('details', { class: 'more', open: editing && (v.durationMinutes || v.resultsVisibility !== 'everyone' || v.description || v.location || v.closesOn) ? true : null },
     h('summary', null, 'More options'),
     h('div', { class: 'more-body' },
@@ -221,6 +228,7 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
         closes,
         h('p', { class: 'field-hint', id: 'closes-hint' }, 'Optional. The poll closes itself at the end of this day. Leave empty to close it yourself.'),
         errorEl('closesOn')),
+      orgPw ? h('div', { class: 'pw-create' }, orgPw.el, errorEl('password')) : null,
     ),
   );
 
@@ -259,7 +267,8 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
     if (target) {
       target.textContent = message;
       target.hidden = false;
-      const control = { title, dates: picker.el.querySelector('.dp-day:not([disabled])'), weekdays: weekdayButtons[0], endMinute: endSel, startMinute: startSel, closesOn: closes }[field];
+      if (field === 'password') more.open = true;
+      const control = { password: orgPw?.input, title, dates: picker.el.querySelector('.dp-day:not([disabled])'), weekdays: weekdayButtons[0], endMinute: endSel, startMinute: startSel, closesOn: closes }[field];
       if (field === 'closesOn') more.open = true;
       control?.focus();
       if (field === 'title') title.setAttribute('aria-invalid', 'true');
@@ -293,11 +302,16 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
     if (v.kind === 'weekly' && !value.weekdays.length) return showError('Pick at least one day of the week.', 'weekdays');
     if (v.kind === 'dates' && !value.dates.length) return showError('Pick at least one date.', 'dates');
     if (value.closesOn && !editing && value.closesOn < today) return showError('Choose a closing date that hasn’t passed.', 'closesOn');
+    const password = orgPw?.input.value || '';
+    if (password && passwordProblem(password)) {
+      more.open = true;
+      return showError(`Organizer password: ${passwordProblem(password)}`, 'password');
+    }
     if (editing) delete value.kind; // a poll can't switch kinds
     submit.disabled = true;
     submit.dataset.busy = 'true';
     try {
-      await onSubmit(value);
+      await onSubmit(value, { password });
     } catch (err) {
       showError(err.message, err.field === 'durationMinutes' ? null : err.field);
     } finally {

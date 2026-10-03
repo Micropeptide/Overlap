@@ -90,7 +90,8 @@ CREATE TABLE IF NOT EXISTS polls (
   final_end INTEGER,
   created_at INTEGER NOT NULL,
   updated_at INTEGER NOT NULL,
-  expires_at INTEGER NOT NULL
+  expires_at INTEGER NOT NULL,
+  admin_pw_hash TEXT
 );
 CREATE TABLE IF NOT EXISTS responses (
   id TEXT PRIMARY KEY,
@@ -106,11 +107,17 @@ CREATE TABLE IF NOT EXISTS responses (
   answered_config TEXT,
   created_at INTEGER NOT NULL,
   updated_at INTEGER NOT NULL,
+  pw_hash TEXT,
   UNIQUE (poll_id, name_key)
 );
 CREATE INDEX IF NOT EXISTS responses_poll ON responses(poll_id);
 CREATE INDEX IF NOT EXISTS responses_edit ON responses(poll_id, edit_hash);
 CREATE INDEX IF NOT EXISTS polls_expiry ON polls(expires_at);
+CREATE TABLE IF NOT EXISTS throttle (
+  key TEXT PRIMARY KEY,
+  count INTEGER NOT NULL,
+  reset_at INTEGER NOT NULL
+);
 `;
 
 /** Columns added after the first release, for upgrading older databases in place. */
@@ -122,6 +129,9 @@ export const MIGRATIONS = [
   ['responses', 'note', "TEXT NOT NULL DEFAULT ''"],
   // Which times a response was given against, as the poll settings at the time.
   ['responses', 'answered_config', 'TEXT'],
+  // Optional passwords, stored as hashes of keys derived in the browser.
+  ['polls', 'admin_pw_hash', 'TEXT'],
+  ['responses', 'pw_hash', 'TEXT'],
 ];
 
 /** Stored as the expiry of polls that are kept until someone deletes them. */
@@ -148,6 +158,7 @@ export function createStore(driver, { retentionDays = 0 } = {}) {
     const poll = {
       id: row.id,
       adminHash: row.admin_hash,
+      adminPwHash: row.admin_pw_hash || null,
       kind: row.kind || 'dates',
       title: row.title,
       description: row.description,
@@ -179,6 +190,7 @@ export function createStore(driver, { retentionDays = 0 } = {}) {
       id: row.id,
       name: row.name,
       editHash: row.edit_hash,
+      pwHash: row.pw_hash || null,
       available: parseList(row.available),
       ifNeeded: parseList(row.if_needed),
       preferred: parseList(row.preferred),
@@ -236,11 +248,47 @@ export function createStore(driver, { retentionDays = 0 } = {}) {
       return adminToken;
     },
 
+    /** Set (a key) or remove (null) the organizer password. */
+    async setAdminPassword(id, passwordKey) {
+      await run('UPDATE polls SET admin_pw_hash = ?, updated_at = ? WHERE id = ?',
+        [passwordKey ? await hashSecret(passwordKey) : null, Date.now(), id]);
+    },
+
+    async setResponsePassword(pollId, id, passwordKey) {
+      await run('UPDATE responses SET pw_hash = ? WHERE poll_id = ? AND id = ?',
+        [passwordKey ? await hashSecret(passwordKey) : null, pollId, id]);
+    },
+
+    /** Responses under this name: one when names are unique, possibly several when results are hidden. */
+    async responsesNamed(pollId, name) {
+      const key = nameKey(name);
+      const rows = await all('SELECT * FROM responses WHERE poll_id = ? AND (name_key = ? OR (name_key >= ? AND name_key < ?))',
+        [pollId, key, `${key}${SEP}`, `${key} `]);
+      return rows.map(hydrateResponse);
+    },
+
+    /**
+     * Wrong-password limits, kept in the database so they hold across every
+     * server instance. `blocked` is checked before a password is compared and
+     * `miss` records a wrong one; a key's count resets after its window.
+     */
+    async throttleBlocked(key, max) {
+      const row = await get('SELECT count, reset_at FROM throttle WHERE key = ?', [key]);
+      return !!row && row.reset_at > Date.now() && row.count >= max;
+    },
+    async throttleMiss(key, windowMs) {
+      const now = Date.now();
+      await run('DELETE FROM throttle WHERE reset_at <= ?', [now]);
+      const { changes } = await run('UPDATE throttle SET count = count + 1 WHERE key = ?', [key]);
+      if (!changes) await run('INSERT INTO throttle (key, count, reset_at) VALUES (?, 1, ?)', [key, now + windowMs]);
+    },
+
     async deletePoll(id) {
       // Responses would go with the poll (ON DELETE CASCADE); deleting them
       // explicitly too doesn't rely on foreign keys being switched on.
       await run('DELETE FROM responses WHERE poll_id = ?', [id]);
       await run('DELETE FROM polls WHERE id = ?', [id]);
+      await run('DELETE FROM throttle WHERE key IN (?, ?)', [`organizer:${id}`, `guest:${id}`]);
       await flush();
     },
 
@@ -279,15 +327,16 @@ export function createStore(driver, { retentionDays = 0 } = {}) {
      * hidden, names needn't be unique (each response has its own key anyway), so
      * the key gets a suffix and nobody can probe who responded by trying names.
      */
-    async createResponse(poll, { name, available, ifNeeded, preferred = [], note = '' }) {
+    async createResponse(poll, { name, available, ifNeeded, preferred = [], note = '' }, { passwordKey = null } = {}) {
       const id = randomId(12);
       const editToken = newSecret();
       const now = Date.now();
       const key = poll.resultsVisibility === 'organizer' ? `${nameKey(name)}${SEP}${id}` : nameKey(name);
       await run(`INSERT INTO responses (id, poll_id, name, name_key, edit_hash, available, if_needed, preferred, note,
-        answered, answered_config, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, '[]', ?, ?, ?)`, [
+        answered, answered_config, created_at, updated_at, pw_hash) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, '[]', ?, ?, ?, ?)`, [
         id, poll.id, name, key, await hashSecret(editToken), JSON.stringify(available),
-        JSON.stringify(ifNeeded), JSON.stringify(preferred), note, slotConfig(poll), now, now]);
+        JSON.stringify(ifNeeded), JSON.stringify(preferred), note, slotConfig(poll), now, now,
+        passwordKey ? await hashSecret(passwordKey) : null]);
       await touchWeekly(poll.id, now);
       return { response: await this.getResponse(poll.id, id), editToken };
     },
