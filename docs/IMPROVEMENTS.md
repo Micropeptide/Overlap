@@ -149,3 +149,5 @@ worth the complexity yet), **No** (conflicts with the product's rules).
 | "Copy my edit link" any time, not only right after sending | Built | |
 | First email update waited 30 minutes after confirming | Fixed | Confirming counted as "last emailed" |
 | Phone "Select a range": tap first and last time | Built | Long blocks took a tap per half hour |
+| Organizer edits from the top of the page; quick "Add a note" / "Add a place" links; all options shown while editing | Built | Editing was at the bottom, with the note hidden under "More options" |
+| Switch a poll between dates and days of the week | Built | With a warning when people have answered |

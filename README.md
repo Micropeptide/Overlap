@@ -307,7 +307,8 @@ Hyperlegible Next) are under the SIL Open Font License; see `public/fonts/OFL-*.
   different dates (e.g. the US and Europe, for a few weeks each spring and
   autumn), a guest may see times shifted by an hour during those weeks. The
   organizer's own times never shift.
-- **A poll can't switch** between dates and days of the week after it's created.
+- **Switching a poll** between dates and days of the week is allowed, but people who
+  already answered need to answer again, since none of the new times match theirs.
 - **Overnight ranges** (e.g. 10 pm to 2 am) need to be set up as two dates.
 - **Fall-back repeated hour:** on the night clocks go back in the organizer's zone,
   the repeated hour is offered once.

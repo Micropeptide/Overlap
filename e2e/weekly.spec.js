@@ -88,8 +88,10 @@ test('organizer adds a day to a weekly poll without losing answers', async ({ pa
   const { poll, managePath } = await weekly(request);
   await request.post(`/api/polls/${poll.id}/responses`, { data: { name: 'Pia', available: [poll.slots[0]] } });
   await page.goto(managePath);
-  await page.getByRole('button', { name: 'Edit poll' }).click();
-  await expect(page.getByRole('radio', { name: 'Specific dates' })).toHaveCount(0); // kind is fixed once created
+  await page.getByRole('button', { name: 'Edit poll' }).first().click();
+  // The kind can be switched, and starts on the poll's own.
+  await expect(page.getByRole('radio', { name: 'Days of the week' })).toBeChecked();
+  await expect(page.getByRole('radio', { name: 'Specific dates' })).not.toBeChecked();
   await expect(page.getByRole('button', { name: 'Wednesday' })).toHaveAttribute('aria-pressed', 'true');
   await page.getByRole('button', { name: 'Friday' }).click();
   await page.getByRole('button', { name: 'Save changes' }).click();

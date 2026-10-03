@@ -268,10 +268,10 @@ export function createStore(driver, { retentionDays = 0 } = {}) {
       const current = await this.getPoll(id);
       if (!current) return null;
       const next = { ...current, ...changes };
-      await run(`UPDATE polls SET title = ?, description = ?, location = ?, closes_on = ?, timezone = ?, dates = ?, start_minute = ?,
+      await run(`UPDATE polls SET kind = ?, title = ?, description = ?, location = ?, closes_on = ?, timezone = ?, dates = ?, start_minute = ?,
         end_minute = ?, slot_minutes = ?, duration_minutes = ?, results_visibility = ?, closed = ?, final_start = ?, final_end = ?,
         updated_at = ?, expires_at = ?, allow_edits = ? WHERE id = ?`, [
-        next.title, next.description, next.location || '', next.closesOn || null, next.timezone, JSON.stringify(next.dates),
+        next.kind || 'dates', next.title, next.description, next.location || '', next.closesOn || null, next.timezone, JSON.stringify(next.dates),
         next.startMinute, next.endMinute, next.slotMinutes, next.durationMinutes ?? null, next.resultsVisibility, next.manualClosed ? 1 : 0,
         next.final ? next.final.start : null, next.final ? next.final.end : null,
         Date.now(), expiryFor(next), next.allowEdits === false ? 0 : 1, id]);

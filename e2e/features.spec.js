@@ -97,7 +97,7 @@ test('location, closing date and clickable links show on the poll', async ({ pag
   await expect(page.getByRole('link', { name: 'https://docs.example.com/plan' })).toBeVisible();
   await expect(page.getByText('Responses close at the end of Mon, Mar 1')).toBeVisible();
   await page.goto(managePath);
-  await page.getByRole('button', { name: 'Edit poll' }).click();
+  await page.getByRole('button', { name: 'Edit poll' }).first().click();
   await expect(page.getByLabel('Where')).toHaveValue('https://meet.example.com/abc');
   await expect(page.getByLabel('Stop taking responses after')).toHaveValue('2027-03-01');
 });
