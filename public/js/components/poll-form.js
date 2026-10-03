@@ -191,10 +191,27 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
     id: 'f-location', class: 'input', type: 'text', maxlength: '300', value: v.location,
     placeholder: 'An address, a room, or a video call link', 'aria-describedby': 'location-hint',
   });
+  // Closing: "never" (the organizer closes it) unless a date is chosen. The
+  // date box shows only for "On a date", since an empty date box can look
+  // filled in (Safari shows today's date in it).
   const closes = h('input', {
     id: 'f-closes', class: 'input date-input', type: 'date', value: v.closesOn, min: editing ? null : today,
-    'aria-describedby': 'closes-hint err-closesOn',
+    'aria-label': 'Last day to take responses', 'aria-describedby': 'closes-hint err-closesOn',
   });
+  let closeOnDate = !!v.closesOn;
+  const closesDate = h('div', { class: 'closes-date', hidden: !closeOnDate }, closes,
+    h('p', { class: 'field-hint', id: 'closes-hint' }, 'The poll closes itself at the end of this day.'));
+  const closeRadio = (onDate, label) => h('label', { class: 'radio' },
+    h('input', {
+      type: 'radio', name: 'closes-mode', value: onDate ? 'date' : 'never', checked: closeOnDate === onDate,
+      onchange: () => {
+        closeOnDate = onDate;
+        closesDate.hidden = !onDate;
+        clearError('closesOn');
+        if (onDate) closes.focus();
+      },
+    }),
+    h('span', null, h('span', { class: 'radio-label' }, label)));
 
   // New polls only: an organizer password is changed later from the manage page.
   const orgPw = editing ? null : passwordField({
@@ -230,10 +247,11 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
       h('div', { class: 'field' },
         h('label', { for: 'f-desc' }, 'Note for guests'),
         desc),
-      h('div', { class: 'field' },
-        h('label', { for: 'f-closes' }, 'Stop taking responses after'),
-        closes,
-        h('p', { class: 'field-hint', id: 'closes-hint' }, 'Optional. The poll closes itself at the end of this day. Leave empty to close it yourself.'),
+      h('fieldset', { class: 'field' },
+        h('legend', null, 'Stop taking responses'),
+        closeRadio(false, 'Never: I’ll close it myself'),
+        closeRadio(true, 'On a date'),
+        closesDate,
         errorEl('closesOn')),
       orgPw ? h('div', { class: 'pw-create' }, orgPw.el, errorEl('password')) : null,
     ),
@@ -295,7 +313,7 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
       title: title.value.trim(),
       description: desc.value.trim(),
       location: loc.value.trim(),
-      closesOn: closes.value || null,
+      closesOn: closeOnDate ? closes.value || null : null,
       kind: v.kind,
       ...(v.kind === 'weekly' ? { weekdays: [...v.weekdays].sort() } : { dates: picker.value }),
       startMinute: v.startMinute,
@@ -309,6 +327,7 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
     if (!value.title) return showError('Give your event a name so guests know what it’s for.', 'title');
     if (v.kind === 'weekly' && !value.weekdays.length) return showError('Pick at least one day of the week.', 'weekdays');
     if (v.kind === 'dates' && !value.dates.length) return showError('Pick at least one date.', 'dates');
+    if (closeOnDate && !value.closesOn) return showError('Pick the last day to take responses, or choose “Never”.', 'closesOn');
     if (value.closesOn && !editing && value.closesOn < today) return showError('Choose a closing date that hasn’t passed.', 'closesOn');
     const password = orgPw?.input.value || '';
     if (password && passwordProblem(password)) {

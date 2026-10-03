@@ -87,7 +87,7 @@ test('switching time zone or tabs keeps unsaved marks', async ({ page, request }
 });
 
 test('location, closing date and clickable links show on the poll', async ({ page, request }) => {
-  const { guestPath, managePath } = await createPoll(request, {
+  const { poll, guestPath, managePath } = await createPoll(request, {
     location: 'https://meet.example.com/abc',
     description: 'Agenda: https://docs.example.com/plan.',
     closesOn: '2027-03-01',
@@ -99,7 +99,33 @@ test('location, closing date and clickable links show on the poll', async ({ pag
   await page.goto(managePath);
   await page.getByRole('button', { name: 'Edit poll' }).first().click();
   await expect(page.getByLabel('Where')).toHaveValue('https://meet.example.com/abc');
-  await expect(page.getByLabel('Stop taking responses after')).toHaveValue('2027-03-01');
+  await expect(page.getByRole('radio', { name: 'On a date' })).toBeChecked();
+  await expect(page.getByLabel('Last day to take responses')).toHaveValue('2027-03-01');
+  // Switching to "Never" removes the closing date.
+  await page.getByRole('radio', { name: 'Never: I’ll close it myself' }).check();
+  await expect(page.getByLabel('Last day to take responses')).toBeHidden();
+  await page.getByRole('button', { name: 'Save changes' }).click();
+  await expect(page.locator('.facts')).not.toContainText('Responses close');
+  expect((await (await request.get(`/api/polls/${poll.id}`)).json()).poll.closesOn).toBeNull();
+});
+
+test('a new poll never stops taking responses unless a date is chosen', async ({ page, request }) => {
+  await page.goto('/');
+  await page.getByLabel('Event name').fill('Open-ended');
+  await page.getByRole('button', { name: 'Next 7 days' }).click();
+  await page.getByText('More options').click();
+  await expect(page.getByRole('radio', { name: 'Never: I’ll close it myself' })).toBeChecked();
+  await expect(page.getByLabel('Last day to take responses')).toBeHidden();
+  // "On a date" needs a date.
+  await page.getByRole('radio', { name: 'On a date' }).check();
+  await expect(page.getByLabel('Last day to take responses')).toBeFocused();
+  await page.getByRole('button', { name: 'Create poll' }).click();
+  await expect(page.getByText('Pick the last day to take responses, or choose “Never”.')).toBeVisible();
+  await page.getByRole('radio', { name: 'Never: I’ll close it myself' }).check();
+  await page.getByRole('button', { name: 'Create poll' }).click();
+  await expect(page).toHaveURL(/\/m\/[a-z0-9]+#k=/);
+  const id = new URL(page.url()).pathname.split('/')[2];
+  expect((await (await request.get(`/api/polls/${id}`)).json()).poll.closesOn).toBeNull();
 });
 
 test('organizer exports a CSV, duplicates a poll, and sees counts on the heatmap', async ({ page, request }, info) => {
