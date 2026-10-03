@@ -65,6 +65,7 @@ export function createGrid(options) {
   let focus = { r: 0, c: 0 };
   let mobileDay = s.day;
   let rangeStart = null; // phone range mode: the first time tapped
+  let rangeStartHad = ''; // and what it was marked as then, which decides mark vs clear
   let expandedSlot = null;
   let highlighted = new Set();
   let lastInspected;
@@ -548,11 +549,7 @@ export function createGrid(options) {
     const list = h('ul', { class: `slot-list slot-list-${s.mode}${s.mode === 'edit' && phoneRange ? ' range-mode' : ''}`, role: 'list' });
     for (const cell of daySlots) list.append(s.mode === 'edit' ? phoneEditItem(cell.slot) : phoneResultItem(cell.slot));
 
-    const rangeHint = s.mode === 'edit' && phoneRange && canEdit()
-      ? h('p', { class: 'range-hint', role: 'status' }, rangeStart == null
-        ? 'Range: tap the first time, then the last. Everything between fills in.'
-        : `From ${f.time(rangeStart, s.timeZone)}: now tap the last time.`)
-      : null;
+    const rangeHint = s.mode === 'edit' && phoneRange && canEdit() ? h('div', { class: 'range-hint' }) : null;
     const parts = [strip, h('div', { class: 'day-head' }, title, s.mode === 'edit' ? dayTools(daySlots) : null), rangeHint, list];
     const idx = cols.indexOf(mobileDay);
     const go = (dk) => { mobileDay = dk; s.onDayChange(dk); expandedSlot = null; render(); scrollToTop(); root.querySelector('.day-title')?.focus({ preventScroll: true }); };
@@ -561,7 +558,15 @@ export function createGrid(options) {
       idx < cols.length - 1 ? h('button', { type: 'button', class: 'btn ghost', onclick: () => go(cols[idx + 1]) }, `Next: ${f.dayName(cols[idx + 1], s.weekly, s.weekly ? 'long' : 'medium')}`) : h('span'),
     ));
     root.append(h('div', { class: `phone-grid phone-${s.mode}` }, parts));
-    root.querySelector('.day-chip[aria-pressed="true"]')?.scrollIntoView?.({ block: 'nearest', inline: 'center' });
+    if (rangeHint) updateRangeHint();
+    // Centre the chosen day in the strip by scrolling the strip only; scrollIntoView
+    // would also scroll the page, which made it jump on every re-render.
+    const chip = strip.querySelector('.day-chip[aria-pressed="true"]');
+    if (chip) {
+      const a = chip.getBoundingClientRect();
+      const b = strip.getBoundingClientRect();
+      strip.scrollLeft += a.left - b.left - (b.width - a.width) / 2;
+    }
   }
 
   function chipBadge(dk) {
@@ -607,13 +612,7 @@ export function createGrid(options) {
     const range = h('button', {
       type: 'button', class: `btn small ${phoneRange ? 'secondary on' : 'ghost'}`, dataset: { tool: 'range' }, disabled: !canEdit(),
       'aria-pressed': phoneRange ? 'true' : 'false',
-      onclick: () => {
-        phoneRange = !phoneRange;
-        rangeStart = null;
-        render();
-        root.querySelector('[data-tool="range"]')?.focus();
-        announce(phoneRange ? 'Range on: tap the first time, then the last' : 'Range off: each tap marks one time', { silent: phoneRange });
-      },
+      onclick: () => setRangeMode(!phoneRange),
     }, 'Select a range');
     return h('div', { class: 'day-tools' },
       range,
@@ -639,7 +638,7 @@ export function createGrid(options) {
         setMany([slot], paintValue(slot));
         const fresh = phoneEditItem(slot);
         btn.parentElement.replaceWith(fresh);
-        fresh.querySelector('button').focus();
+        fresh.querySelector('button').focus({ preventScroll: true });
         refreshStripBadges();
       },
     },
@@ -649,23 +648,81 @@ export function createGrid(options) {
     return h('li', null, btn);
   }
 
-  /** Range mode: the first tap picks a start; the second fills every time between with the brush. */
+  // ----- phone range mode. Everything updates in place (no re-render), so the page never moves. -----
+
+  /** Mark (with the brush) or clear? Like a single tap: clear if the first time already had this mark. */
+  const rangeClears = () => s.brush === 'erase' || rangeStartHad === s.brush;
+
+  function setRangeMode(on) {
+    phoneRange = on;
+    cancelRange({ quiet: true });
+    const btn = root.querySelector('[data-tool="range"]');
+    if (btn) {
+      btn.className = `btn small ${on ? 'secondary on' : 'ghost'}`;
+      btn.setAttribute('aria-pressed', String(on));
+    }
+    const list = root.querySelector('.slot-list-edit');
+    list?.classList.toggle('range-mode', on);
+    let hint = root.querySelector('.range-hint');
+    if (on && !hint && list) {
+      hint = h('div', { class: 'range-hint' });
+      list.before(hint);
+    } else if (!on) hint?.remove();
+    updateRangeHint();
+    announce(on ? 'Range on: tap where the range starts, then where it ends' : 'Range off: each tap marks one time', { silent: on });
+  }
+
+  /** The hint's text changes, but its height doesn't (see .range-hint in the CSS). */
+  function updateRangeHint() {
+    const hint = root.querySelector('.range-hint');
+    if (!hint) return;
+    const text = rangeStart == null
+      ? 'Tap where the range starts, then where it ends.'
+      : `From ${f.time(rangeStart, s.timeZone)}: tap the end to ${rangeClears() ? 'clear' : `mark “${MARKS[s.brush].label}”`}.`;
+    hint.replaceChildren(
+      h('span', { class: 'range-hint-text' }, text),
+      rangeStart == null ? null : h('button', { type: 'button', class: 'link-btn range-cancel', onclick: () => cancelRange() }, 'Cancel'));
+  }
+
+  function setStartMark(slot, on) {
+    root.querySelector(`.slot-btn[data-slot="${slot}"]`)?.classList.toggle('range-start', on);
+  }
+
+  function cancelRange({ quiet = false } = {}) {
+    if (rangeStart == null) return;
+    const slot = rangeStart;
+    rangeStart = null;
+    setStartMark(slot, false);
+    updateRangeHint();
+    if (!quiet) {
+      root.querySelector(`.slot-btn[data-slot="${slot}"]`)?.focus({ preventScroll: true });
+      announce('Range cancelled', { silent: true });
+    }
+  }
+
+  /** Range mode: the first tap picks a start; the second marks or clears every time between. */
   function rangeTap(slot) {
     if (rangeStart == null) {
       rangeStart = slot;
-      render();
-      root.querySelector(`.slot-btn[data-slot="${slot}"]`)?.focus();
-      announce(`From ${f.time(slot, s.timeZone)}. Now tap the last time.`, { silent: true });
+      rangeStartHad = s.value.get(slot) || '';
+      setStartMark(slot, true);
+      updateRangeHint();
+      announce(`From ${f.time(slot, s.timeZone)}. Now tap where it ends.`, { silent: true });
       return;
     }
     const day = layout.cells.filter((c) => c.dateKey === mobileDay).map((c) => c.slot).sort((a, b) => a - b);
     const [lo, hi] = [Math.min(rangeStart, slot), Math.max(rangeStart, slot)];
     const slots = day.filter((x) => x >= lo && x <= hi);
-    const value = s.brush === 'erase' ? '' : s.brush;
-    setMany(slots, value);
+    const value = rangeClears() ? '' : s.brush;
     rangeStart = null;
-    render();
-    root.querySelector(`.slot-btn[data-slot="${slot}"]`)?.focus();
+    setMany(slots, value);
+    for (const x of slots) {
+      const li = root.querySelector(`.slot-btn[data-slot="${x}"]`)?.parentElement;
+      li?.replaceWith(phoneEditItem(x));
+    }
+    refreshStripBadges();
+    updateRangeHint();
+    root.querySelector(`.slot-btn[data-slot="${slot}"]`)?.focus({ preventScroll: true });
     const what = `${f.time(lo, s.timeZone)} to ${f.time(hi + s.slotMinutes * 60e3, s.timeZone)}`;
     announce(value ? `Marked ${what} as ${MARKS[value].word}` : `Cleared ${what}`);
   }
@@ -746,6 +803,7 @@ export function createGrid(options) {
       if (PHONE.matches && s.mode === 'edit') {
         const tool = root.querySelector('[data-tool="whole"]');
         if (tool) tool.textContent = brush === 'erase' ? 'Clear day' : 'Whole day';
+        updateRangeHint();
       }
     },
     /** Replace all marks (e.g. "Clear all"); undoable. */
