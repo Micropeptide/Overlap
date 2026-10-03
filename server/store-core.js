@@ -32,6 +32,8 @@ export function newSecret() {
   return btoa(String.fromCharCode(...bytes)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 }
 
+export const hashText = (text) => hashSecret(text);
+
 export async function hashSecret(secret) {
   const digest = await crypto.subtle.digest('SHA-256', encoder.encode(String(secret)));
   return [...new Uint8Array(digest)].map((b) => b.toString(16).padStart(2, '0')).join('');
@@ -118,6 +120,27 @@ CREATE TABLE IF NOT EXISTS throttle (
   count INTEGER NOT NULL,
   reset_at INTEGER NOT NULL
 );
+CREATE TABLE IF NOT EXISTS email_subs (
+  id TEXT PRIMARY KEY,
+  poll_id TEXT NOT NULL,
+  response_id TEXT,
+  email TEXT NOT NULL,
+  confirmed INTEGER NOT NULL DEFAULT 0,
+  confirm_hash TEXT NOT NULL,
+  unsub_hash TEXT NOT NULL,
+  created_at INTEGER NOT NULL,
+  last_sent_at INTEGER,
+  pending_at INTEGER
+);
+CREATE UNIQUE INDEX IF NOT EXISTS email_subs_owner ON email_subs(poll_id, IFNULL(response_id, ''));
+CREATE INDEX IF NOT EXISTS email_subs_pending ON email_subs(pending_at);
+CREATE TABLE IF NOT EXISTS poll_events (
+  poll_id TEXT NOT NULL,
+  at INTEGER NOT NULL,
+  kind TEXT NOT NULL,
+  response_id TEXT
+);
+CREATE INDEX IF NOT EXISTS poll_events_poll ON poll_events(poll_id, at);
 `;
 
 /** Columns added after the first release, for upgrading older databases in place. */
@@ -198,6 +221,19 @@ export function createStore(driver, { retentionDays = 0 } = {}) {
       answered: row.answered_config ? slotsFor(JSON.parse(row.answered_config)) : parseList(row.answered),
       createdAt: row.created_at,
       updatedAt: row.updated_at,
+    };
+  }
+
+  function hydrateSub(row) {
+    return {
+      id: row.id,
+      pollId: row.poll_id,
+      responseId: row.response_id || null,
+      email: row.email,
+      confirmed: !!row.confirmed,
+      createdAt: row.created_at,
+      lastSentAt: row.last_sent_at ?? null,
+      pendingAt: row.pending_at ?? null,
     };
   }
 
@@ -283,12 +319,106 @@ export function createStore(driver, { retentionDays = 0 } = {}) {
       if (!changes) await run('INSERT INTO throttle (key, count, reset_at) VALUES (?, 1, ?)', [key, now + windowMs]);
     },
 
+    // Email updates. A subscription belongs to the organizer (responseId null)
+    // or to one response. The address is kept only while the subscription exists.
+
+    async getEmailSub(pollId, responseId = null) {
+      const row = await get('SELECT * FROM email_subs WHERE poll_id = ? AND IFNULL(response_id, \'\') = ?', [pollId, responseId || '']);
+      return row ? hydrateSub(row) : null;
+    },
+
+    /** Start (or restart) a subscription. Returns tokens for the confirm and unsubscribe links. */
+    async putEmailSub(pollId, responseId, email) {
+      const current = await this.getEmailSub(pollId, responseId);
+      const confirmToken = newSecret();
+      const unsubToken = newSecret();
+      // Same address, already confirmed: keep it confirmed.
+      const confirmed = current?.confirmed && current.email === email ? 1 : 0;
+      await run('DELETE FROM email_subs WHERE poll_id = ? AND IFNULL(response_id, \'\') = ?', [pollId, responseId || '']);
+      await run(`INSERT INTO email_subs (id, poll_id, response_id, email, confirmed, confirm_hash, unsub_hash, created_at, last_sent_at, pending_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NULL)`, [randomId(12), pollId, responseId, email, confirmed,
+        await hashSecret(confirmToken), await hashSecret(unsubToken), Date.now(), confirmed ? current.lastSentAt : null]);
+      return { confirmToken, unsubToken, confirmed: !!confirmed };
+    },
+
+    async deleteEmailSub(pollId, responseId = null) {
+      await run('DELETE FROM email_subs WHERE poll_id = ? AND IFNULL(response_id, \'\') = ?', [pollId, responseId || '']);
+      await flush();
+    },
+
+    async confirmEmailSub(token) {
+      if (typeof token !== 'string' || !token) return null;
+      const row = await get('SELECT * FROM email_subs WHERE confirm_hash = ?', [await hashSecret(token)]);
+      if (!row) return null;
+      // Start counting changes from now, so the first update covers only what's new.
+      await run('UPDATE email_subs SET confirmed = 1, last_sent_at = COALESCE(last_sent_at, ?) WHERE id = ?', [Date.now(), row.id]);
+      return hydrateSub({ ...row, confirmed: 1 });
+    },
+
+    async unsubscribe(token) {
+      if (typeof token !== 'string' || !token) return null;
+      const row = await get('SELECT * FROM email_subs WHERE unsub_hash = ?', [await hashSecret(token)]);
+      if (!row) return null;
+      await run('DELETE FROM email_subs WHERE id = ?', [row.id]);
+      await flush();
+      return hydrateSub(row);
+    },
+
+    /** A new unsubscribe token for each email sent, so every email's link works. */
+    async newUnsubToken(subId) {
+      const token = newSecret();
+      await run('UPDATE email_subs SET unsub_hash = ? WHERE id = ?', [await hashSecret(token), subId]);
+      return token;
+    },
+
+    /**
+     * Note something subscribers may want to hear about, and mark them as
+     * having news. Kinds: response_new, response_updated, response_deleted
+     * (for the organizer, and for guests when results are public), and final,
+     * closed, reopened, edited (for guests). Nobody hears about their own doing:
+     * `byOrganizer` skips the organizer, and the response's own guest is skipped.
+     */
+    async recordEvent(poll, kind, responseId = null, { byOrganizer = false } = {}) {
+      // Only polls someone follows by email keep a record of changes.
+      if (!(await get('SELECT 1 AS x FROM email_subs WHERE poll_id = ? AND confirmed = 1 LIMIT 1', [poll.id]))) return;
+      const now = Date.now();
+      await run('INSERT INTO poll_events (poll_id, at, kind, response_id) VALUES (?, ?, ?, ?)', [poll.id, now, kind, responseId]);
+      const aboutResponse = kind.startsWith('response_');
+      const organizer = aboutResponse && !byOrganizer;
+      const guests = !aboutResponse || poll.resultsVisibility === 'everyone';
+      const who = [organizer ? 'response_id IS NULL' : null, guests ? '(response_id IS NOT NULL AND response_id <> ?)' : null].filter(Boolean);
+      if (who.length) {
+        await run(`UPDATE email_subs SET pending_at = COALESCE(pending_at, ?) WHERE poll_id = ? AND confirmed = 1 AND (${who.join(' OR ')})`,
+          guests ? [now, poll.id, responseId || ''] : [now, poll.id]);
+      }
+      await run('DELETE FROM poll_events WHERE at < ?', [now - 30 * 86400e3]);
+    },
+
+    /** Subscriptions with news, settled for `settleMs` and not emailed within `gapMs`. */
+    async dueEmailSubs({ now = Date.now(), settleMs = 5 * 60e3, gapMs = 30 * 60e3, limit = 20 } = {}) {
+      const rows = await all(`SELECT * FROM email_subs WHERE confirmed = 1 AND pending_at IS NOT NULL AND pending_at <= ?
+        AND (last_sent_at IS NULL OR last_sent_at <= ?) ORDER BY pending_at LIMIT ?`, [now - settleMs, now - gapMs, limit]);
+      return rows.map(hydrateSub);
+    },
+
+    async eventsSince(pollId, since) {
+      return all('SELECT at, kind, response_id AS responseId FROM poll_events WHERE poll_id = ? AND at > ? ORDER BY at', [pollId, since || 0]);
+    },
+
+    async markEmailed(subId, at = Date.now()) {
+      // Anything that happened while this email was being put together stays pending.
+      await run(`UPDATE email_subs SET last_sent_at = ?,
+        pending_at = (SELECT MIN(e.at) FROM poll_events e WHERE e.poll_id = email_subs.poll_id AND e.at > ?) WHERE id = ?`, [at, at, subId]);
+    },
+
     async deletePoll(id) {
       // Responses would go with the poll (ON DELETE CASCADE); deleting them
       // explicitly too doesn't rely on foreign keys being switched on.
+      await run('DELETE FROM email_subs WHERE poll_id = ?', [id]);
+      await run('DELETE FROM poll_events WHERE poll_id = ?', [id]);
       await run('DELETE FROM responses WHERE poll_id = ?', [id]);
       await run('DELETE FROM polls WHERE id = ?', [id]);
-      await run('DELETE FROM throttle WHERE key IN (?, ?)', [`organizer:${id}`, `guest:${id}`]);
+      await run('DELETE FROM throttle WHERE key IN (?, ?, ?)', [`organizer:${id}`, `guest:${id}`, `email-poll:${id}`]);
       await flush();
     },
 
@@ -353,12 +483,15 @@ export function createStore(driver, { retentionDays = 0 } = {}) {
     },
 
     async deleteResponse(pollId, id) {
+      await run('DELETE FROM email_subs WHERE poll_id = ? AND response_id = ?', [pollId, id]);
       await run('DELETE FROM responses WHERE poll_id = ? AND id = ?', [pollId, id]);
       await flush();
     },
 
     async deleteExpired(now = Date.now()) {
       if (!retentionDays) return 0; // automatic deletion is off
+      await run('DELETE FROM email_subs WHERE poll_id IN (SELECT id FROM polls WHERE expires_at < ?)', [now]);
+      await run('DELETE FROM poll_events WHERE poll_id IN (SELECT id FROM polls WHERE expires_at < ?)', [now]);
       await run('DELETE FROM responses WHERE poll_id IN (SELECT id FROM polls WHERE expires_at < ?)', [now]);
       const { changes } = await run('DELETE FROM polls WHERE expires_at < ?', [now]);
       if (changes) await flush();

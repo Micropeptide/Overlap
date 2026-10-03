@@ -22,6 +22,6 @@ export default defineConfig({
     command: `rm -rf data-test && node server/index.js`,
     url: `http://127.0.0.1:${PORT}/api/config`,
     reuseExistingServer: false,
-    env: { PORT: String(PORT), DATA_DIR: 'data-test', RATE_LIMIT_CREATE: '10000', RATE_LIMIT_WRITE: '10000', RATE_LIMIT_READ: '100000' },
+    env: { PORT: String(PORT), DATA_DIR: 'data-test', RATE_LIMIT_CREATE: '10000', RATE_LIMIT_WRITE: '10000', RATE_LIMIT_READ: '100000', RATE_LIMIT_EMAIL: '10000', EMAIL_OUTBOX: 'data-test/outbox' },
   },
 });

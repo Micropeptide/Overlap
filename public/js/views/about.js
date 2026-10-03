@@ -15,7 +15,7 @@ export function renderAbout(main) {
 
     section('How it works',
       h('ul', null,
-        h('li', null, 'Nobody signs up, signs in, connects a calendar or gives an email address, not even the organizer.'),
+        h('li', null, 'Nobody signs up, signs in or connects a calendar, not even the organizer. Email is optional too: only if you want your link or updates sent to you.'),
         h('li', null, 'Each poll has a guest link to share and a private link for the organizer. Guests get their own private link to change their answer. Anyone can add an optional password instead of keeping track of links.'),
         h('li', null, 'Times are stored as exact moments and shown in each person’s own time zone, across daylight saving changes.'),
         h('li', null, 'No ads and no tracking. Polls stay until the organizer deletes them, and guests can delete their own answers. ', h('a', { href: '/privacy' }, 'How your data is handled'), '.'))),

@@ -14,9 +14,9 @@ Browser ──> https://overlap.runtian.uk        GitHub Pages (static pages, HT
 - **API** is `worker/index.js`: the same `server/api.js` used by the Node server,
   backed by Cloudflare D1 (SQLite). Only the page origin may call it from a
   browser (CORS, `ALLOWED_ORIGINS`).
-- Polls stay until the organizer deletes them (`RETENTION_DAYS = "0"`). To turn on
-  automatic deletion, set `RETENTION_DAYS` and add the hourly cron trigger shown
-  in `worker/wrangler.toml`.
+- Polls stay until the organizer deletes them (`RETENTION_DAYS = "0"`). Setting
+  `RETENTION_DAYS` turns on automatic deletion, run by the same 10-minute cron
+  that sends update emails.
 
 ## Free-tier limits (checked 2026-10)
 
@@ -52,6 +52,30 @@ Finally:
 - **DNS:** add `overlap` CNAME → `micropeptide.github.io` at WordPress.com.
 - **HTTPS:** follow `docs/runtian-uk-website.md`, gotcha #3. Once the certificate shows `CN=overlap.runtian.uk`, enforce HTTPS.
 
+## Email (optional, off until set up)
+
+Email uses [Resend](https://resend.com) (free tier: 3,000 emails a month, 100 a day).
+Cloudflare's own email sending needs a paid Workers plan, so it isn't used.
+
+1. **Resend → Domains → Add domain:** `mail.runtian.uk` (a subdomain keeps the
+   main domain's reputation separate). Resend lists a few DNS records (an MX
+   and an SPF TXT on `send.mail`, and a DKIM TXT on `resend._domainkey.mail`).
+2. **Add those records** at WordPress.com (Domains → runtian.uk → DNS), then
+   click Verify in Resend.
+3. **Resend → API Keys → Create:** permission *Sending access*, domain
+   `mail.runtian.uk`. Never paste the key into chat or a file; store it straight
+   in Cloudflare:
+
+   ```bash
+   cd worker && npx wrangler secret put RESEND_API_KEY
+   ```
+4. **Set the sender** in `worker/wrangler.toml`:
+   `EMAIL_FROM = "Overlap <overlap@mail.runtian.uk>"`, then `npm run worker:deploy`.
+
+`/api/config` then reports `"emails": true` and the "Email me" controls appear.
+The Worker's cron (every 10 minutes) sends update digests. To turn email off
+again, set `EMAIL_FROM = ""` or delete the secret (`npx wrangler secret delete RESEND_API_KEY`).
+
 ## Updating
 
 - **API change:** `npm run worker:deploy`. This applies any new migration file in
@@ -65,4 +89,5 @@ Finally:
 
 Add the column to `SCHEMA` and `MIGRATIONS` in `server/store-core.js`, which the
 Node server applies itself. For D1, also add a numbered file such as
-`worker/migrations/0002_<what>.sql` with the matching `ALTER TABLE`.
+`worker/migrations/0004_<what>.sql` with the matching `ALTER TABLE` (0002 added
+passwords, 0003 email).

@@ -9,6 +9,7 @@ import { resultsSection } from '../components/results.js';
 import { renderNotFound } from './not-found.js';
 import { isValidTimeZone } from '/shared/time.js';
 import { passwordKey, passwordProblem } from '/shared/password.js';
+import { emailControl } from '../components/email-control.js';
 import { pollFacts, finalCard, statusBanner, locationLine, watchForUpdates, captureFocus } from './shared.js';
 
 const BRUSHES = [
@@ -257,7 +258,8 @@ export async function renderGuest(main, pollId) {
     }
 
     page.append(tab === 'mine' ? minePanel(zone) : groupPanel(zone));
-    page.append(accessLinks());
+    const access = accessLinks();
+    if (access) page.append(access);
     main.append(page);
   }
 
@@ -513,6 +515,7 @@ export async function renderGuest(main, pollId) {
     });
 
     panel.append(form);
+    if (mine) panel.append(emailControl({ poll, role: 'guest', responseId: mine.id, token, linkKey: viaPassword() ? null : token, compact: true }));
     return panel;
   }
 

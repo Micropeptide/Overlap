@@ -6,8 +6,12 @@ Free group scheduling with no accounts. The organizer picks some dates and
 shares one link. Guests type a display name and mark when they're free, and
 everyone sees where the times overlap.
 
-- No sign-up, sign-in, email, calendar connection or payment, for anyone.
+- No sign-up, sign-in, calendar connection or payment, for anyone. Email is optional.
 - One guest link to share, plus a private link to manage the poll.
+- Optional passwords: organizers and guests can get back in from any device
+  without keeping links (the password never leaves the browser).
+- Optional email: your private link sent to you, and update digests (new
+  responses, the final time), with confirmation first and one-click unsubscribe.
 - Specific dates or days of the week, in each person's own time zone.
 - Best times first: everyone, then the closest matches.
 - Mark times as available, preferred or if needed, by drag, keyboard or tap.
@@ -73,6 +77,10 @@ All settings are environment variables. Every one is optional.
 | `RATE_LIMIT_CREATE` | `30` | New polls per connection per hour |
 | `RATE_LIMIT_WRITE` | `300` | Other changes per connection per 10 minutes |
 | `RATE_LIMIT_READ` | `1200` | Page data requests per connection per 10 minutes |
+| `RATE_LIMIT_EMAIL` | `10` | Emails a connection may ask for per hour (also capped at 5 per address and 40 per poll per day) |
+| `RESEND_API_KEY` | none | Turns on email, together with `EMAIL_FROM`. A [Resend](https://resend.com) key with sending access only |
+| `EMAIL_FROM` | none | Sender, e.g. `Overlap <overlap@example.com>`, on a domain verified in Resend |
+| `EMAIL_OUTBOX` | none | Development: write each email as JSON into this folder instead of sending it |
 
 Overlap refuses to start if a number setting isn't a sensible whole number,
 rather than silently running without limits.
@@ -184,6 +192,26 @@ to the API. The database stores SHA-256 hashes of keys, never the keys themselve
 Keys are also kept in the browser's `localStorage`, so returning on the same
 device just works.
 
+**Optional passwords.** The browser turns a password into a key with
+PBKDF2-SHA-256 (210,000 rounds, salted with `overlap/v1/<role>/<poll id>`), and
+the server stores a SHA-256 hash of that key, as it does for link keys. An
+organizer password is accepted as `Authorization: Bearer <key>` alongside the
+private link. A guest signs in with `POST /sign-in {name, password: key}` and
+then sends `Authorization: Password <response id>:<key>`. After 30 wrong
+passwords in an hour a poll refuses all passwords (right or wrong) until the
+hour is up; the count lives in the database (`throttle`), so it holds across
+Worker instances. Links are never locked out.
+
+**Optional email.** `PUT …/email {email, updates, link}` sends one email: the
+private link (only a key the browser already holds, checked against its hash)
+and/or a button to confirm updates. Nothing else is sent until confirmed. While
+a poll has a confirmed subscriber, changes are noted in `poll_events` (kind,
+time, response id; no names), and every few minutes (Node timer, Worker cron)
+`sendDueDigests` sends each subscriber one digest after changes settle for 5
+minutes, at most every 30 minutes, never about their own doing. Update emails
+never contain private links. Addresses are deleted on unsubscribe, response
+deletion or poll deletion; a link-only request stores none.
+
 **"Unanswered" vs "unavailable".** Each response records which slots existed
 when it was saved. If the organizer later adds dates, those new slots show as
 "hasn't seen this time" (crosshatched) rather than "not available".
@@ -203,7 +231,12 @@ when it was saved. If the organizer later adds dates, those new slots show as
 | `PUT` | `/api/polls/:id/responses/:rid` | that guest only |
 | `DELETE` | `/api/polls/:id/responses/:rid` | that guest or the organizer |
 | `GET` | `/api/polls/:id/invite.ics` | anyone, once a final time is set |
-| `GET` | `/api/config` | retention period and limits |
+| `POST` | `/api/polls/:id/sign-in` | guest: `name` and `password` (a derived key) |
+| `GET` `PUT` `DELETE` | `/api/polls/:id/email` | organizer: email status, send link / start updates, stop |
+| `GET` `PUT` `DELETE` | `/api/polls/:id/responses/:rid/email` | that guest: the same |
+| `POST` | `/api/email/confirm` | anyone with a confirmation key (`{token}`) |
+| `POST` | `/api/email/unsubscribe` | anyone with an unsubscribe key (`{token}`, or `?t=` for one-click) |
+| `GET` | `/api/config` | retention period, limits, and whether email is on |
 
 ## Privacy, as implemented
 
@@ -211,7 +244,10 @@ The in-app privacy page (`/privacy`, source in `public/js/views/privacy.js`)
 is the user-facing statement. Every claim on it matches the code above:
 
 - Stored: poll details (including an optional place and closing date), display
-  names, marked times, optional guest notes, timestamps, key hashes. Nothing else.
+  names, marked times, optional guest notes, timestamps, key hashes, optional
+  password-key hashes, per-poll wrong-password counts, and (only for people who
+  ask for updates) email addresses plus a 30-day record of what changed. Nothing else.
+- Email goes through Resend only when someone asks for an email.
 - Deleted data is overwritten on disk (`secure_delete` plus a write-ahead-log
   checkpoint), not just unlinked.
 - The browser keeps private links, the last name typed, form settings and
@@ -262,7 +298,10 @@ Hyperlegible Next) are under the SIL Open Font License; see `public/fonts/OFL-*.
 - **Anyone with a guest link can answer.** There is no way to stop someone with
   the link from adding a made-up name. The organizer can remove responses.
 - **Edit links are bearer keys.** Lose the link and clear your browser storage,
-  and that response can only be removed by the organizer. Overlap can't recover it.
+  and without a password or an emailed copy, that response can only be removed
+  by the organizer. Overlap can't recover it.
+- **Passwords are only as strong as people make them.** Online guessing is capped
+  per poll, but someone with a copy of the database could guess weak ones offline.
 - **Weekly polls across time zones** convert using the offsets in effect when the
   poll was created. If the organizer's and a guest's zones change clocks on
   different dates (e.g. the US and Europe, for a few weeks each spring and

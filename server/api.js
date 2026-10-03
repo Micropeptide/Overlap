@@ -8,17 +8,23 @@
 // the server sees (the browser keeps them in the link's #fragment).
 
 import { HttpError, LIMITS, validateFinal, validatePollFields, validateResponse } from './validate.js';
-import { secretMatches, slotsFor } from './store-core.js';
+import { secretMatches, slotsFor, hashText } from './store-core.js';
 import { buildInvite } from './ics.js';
 import { KEY_PATTERN } from '../shared/password.js';
+import { cleanEmail, welcomeEmail } from './email.js';
 
 const MAX_BODY = 200_000;
 // Wrong passwords allowed per poll (organizer and guests counted separately)
 // before password sign-in pauses. Private links keep working throughout.
 const GUESS_MAX = 30;
 const GUESS_WINDOW_MS = 60 * 60e3;
+// Emails Overlap will send on request, so it can't be used to flood an inbox.
+const EMAILS_PER_ADDRESS_PER_DAY = 5;
+const EMAILS_PER_POLL_PER_DAY = 40;
 
-export function createApi({ store, limiter, publicUrl = '', info = {} }) {
+export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = null }) {
+  const siteUrl = (req) => (publicUrl ? publicUrl.replace(/\/$/, '') : req.origin);
+  const record = (poll, kind, responseId, opts) => (mailer ? store.recordEvent(poll, kind, responseId, opts) : null);
   const bearer = (req) => {
     const m = /^Bearer\s+([A-Za-z0-9_-]{16,128})$/.exec(req.header('authorization') || '');
     return m ? m[1] : null;
@@ -157,11 +163,21 @@ export function createApi({ store, limiter, publicUrl = '', info = {} }) {
     return r;
   }
 
+  /** The organizer (no response id) or the guest who wrote `rid`. */
+  async function emailOwner(req, id, rid) {
+    const poll = await requirePoll(id);
+    if (!rid) {
+      await requireAdmin(req, poll);
+      return { poll };
+    }
+    return { poll, response: await guestResponseFor(req, poll, rid) };
+  }
+
   /** What the guest who wrote a response sees about it, beyond what everyone sees. */
   const ownResponse = (r, poll) => ({ ...publicResponse(r, poll), hasPassword: !!r.pwHash });
 
   const routes = [
-    ['GET', /^\/api\/config$/, () => ({ body: { retentionDays: store.retentionDays, limits: LIMITS, ...info } })],
+    ['GET', /^\/api\/config$/, () => ({ body: { retentionDays: store.retentionDays, limits: LIMITS, emails: !!mailer, ...info } })],
 
     ['POST', /^\/api\/polls$/, async (req) => {
       limiter.check(req.ip, 'create');
@@ -215,6 +231,11 @@ export function createApi({ store, limiter, publicUrl = '', info = {} }) {
       }
       if (passwordKey !== undefined) await store.setAdminPassword(id, passwordKey);
       const updated = await store.updatePoll(id, changes);
+      if (changes.final && changes.final.start !== poll.final?.start) await record(updated, 'final');
+      else if (nextStatus === 'closed' && !poll.closed) await record(updated, 'closed');
+      else if (nextStatus === 'open' && poll.closed) await record(updated, 'reopened');
+      const EDITS = ['title', 'location', 'description', 'dates', 'startMinute', 'endMinute', 'slotMinutes', 'timezone', 'durationMinutes'];
+      if (EDITS.some((k) => k in changes && JSON.stringify(changes[k]) !== JSON.stringify(poll[k]))) await record(updated, 'edited');
       return { body: { poll: await serializePoll(updated, { admin: true }) } };
     }],
 
@@ -248,6 +269,7 @@ export function createApi({ store, limiter, publicUrl = '', info = {} }) {
         throw new HttpError(409, `Someone already responded as “${data.name}”. If that was you, open your private edit link. Otherwise, add a last initial.`, 'name');
       }
       const { response, editToken } = await store.createResponse(poll, data, { passwordKey });
+      await record(poll, 'response_new', response.id);
       return { status: 201, body: { response: ownResponse(response, poll), editToken } };
     }],
 
@@ -296,6 +318,7 @@ export function createApi({ store, limiter, publicUrl = '', info = {} }) {
       const passwordKey = passwordKeyField(body?.password);
       let updated = await store.updateResponse(poll, rid, data);
       if (!updated) throw new HttpError(404, 'That response no longer exists.');
+      await record(poll, 'response_updated', rid);
       if (passwordKey !== undefined) {
         await store.setResponsePassword(poll.id, rid, passwordKey);
         updated = await store.getResponse(poll.id, rid);
@@ -308,10 +331,89 @@ export function createApi({ store, limiter, publicUrl = '', info = {} }) {
       const poll = await requirePoll(id);
       // The guest who wrote it, or the organizer, can delete a response. Deleting
       // your own data works even after the poll is closed.
-      if (!(await isAdmin(req, poll))) await guestResponseFor(req, poll, rid);
+      const byOrganizer = await isAdmin(req, poll);
+      if (!byOrganizer) await guestResponseFor(req, poll, rid);
       else if (!(await store.getResponse(id, rid))) throw new HttpError(404, 'That response no longer exists.');
       await store.deleteResponse(id, rid);
+      await record(poll, byOrganizer ? 'response_removed' : 'response_deleted', rid, { byOrganizer });
       return { status: 204 };
+    }],
+
+    // Email: the organizer's (…/email) or one guest's (…/responses/<id>/email).
+    ['GET', /^\/api\/polls\/([a-z0-9]+)(?:\/responses\/([a-z0-9]+))?\/email$/, async (req, [id, rid]) => {
+      limiter.check(req.ip, 'read');
+      const { poll } = await emailOwner(req, id, rid);
+      const sub = await store.getEmailSub(poll.id, rid || null);
+      return { body: { email: sub?.email ?? null, confirmed: !!sub?.confirmed } };
+    }],
+
+    ['PUT', /^\/api\/polls\/([a-z0-9]+)(?:\/responses\/([a-z0-9]+))?\/email$/, async (req, [id, rid]) => {
+      limiter.check(req.ip, 'write');
+      const body = await readJson(req);
+      const { poll, response } = await emailOwner(req, id, rid);
+      if (!mailer) throw new HttpError(404, 'Email isn’t set up on this copy of Overlap.');
+      const email = cleanEmail(body?.email);
+      if (!email) throw new HttpError(400, 'That doesn’t look like an email address.', 'email');
+      const wantsUpdates = body.updates === true;
+      // The link is only ever one the browser already holds, checked against its hash.
+      let link = null;
+      if (typeof body.link === 'string' && body.link) {
+        const ok = rid ? await secretMatches(body.link, response.editHash) : await secretMatches(body.link, poll.adminHash);
+        if (!ok) throw new HttpError(400, 'That private link isn’t current. Reload the page and try again.', 'link');
+        link = rid ? `${siteUrl(req)}/p/${poll.id}#r=${body.link}` : `${siteUrl(req)}/m/${poll.id}#k=${body.link}`;
+      }
+      if (!link && !wantsUpdates) throw new HttpError(400, 'Choose what to email: your link, updates, or both.');
+      limiter.check(req.ip, 'email');
+      const addressKey = `email-addr:${await hashText(email.toLowerCase())}`;
+      if (await store.throttleBlocked(addressKey, EMAILS_PER_ADDRESS_PER_DAY) || await store.throttleBlocked(`email-poll:${poll.id}`, EMAILS_PER_POLL_PER_DAY)) {
+        throw new HttpError(429, 'Overlap has sent enough emails to that address (or for this poll) today. Try again tomorrow.');
+      }
+      let confirmUrl = null;
+      let confirmed = false;
+      if (wantsUpdates) {
+        const sub = await store.putEmailSub(poll.id, rid || null, email);
+        confirmed = sub.confirmed;
+        if (!confirmed) confirmUrl = `${siteUrl(req)}/e/confirm#t=${sub.confirmToken}`;
+      }
+      if (link || confirmUrl) {
+        const msg = welcomeEmail({ poll, role: rid ? 'guest' : 'organizer', link, confirmUrl, publicUrl: siteUrl(req) });
+        try {
+          await mailer.send({ to: email, ...msg });
+        } catch (err) {
+          console.error('Email not sent:', err.message);
+          throw new HttpError(502, 'The email couldn’t be sent just now. Try again in a minute.');
+        }
+        await store.throttleMiss(addressKey, 86400e3);
+        await store.throttleMiss(`email-poll:${poll.id}`, 86400e3);
+      }
+      return { body: { email: wantsUpdates ? email : (await store.getEmailSub(poll.id, rid || null))?.email ?? null, confirmed, sent: !!(link || confirmUrl) } };
+    }],
+
+    ['DELETE', /^\/api\/polls\/([a-z0-9]+)(?:\/responses\/([a-z0-9]+))?\/email$/, async (req, [id, rid]) => {
+      limiter.check(req.ip, 'write');
+      const { poll } = await emailOwner(req, id, rid);
+      await store.deleteEmailSub(poll.id, rid || null);
+      return { status: 204 };
+    }],
+
+    ['POST', /^\/api\/email\/confirm$/, async (req) => {
+      limiter.check(req.ip, 'write');
+      const body = await readJson(req);
+      const sub = await store.confirmEmailSub(body?.token);
+      if (!sub) throw new HttpError(404, 'This confirmation link has expired or was already replaced. Ask for emails again from the poll.');
+      const poll = await store.getPoll(sub.pollId);
+      return { body: { poll: poll ? { id: poll.id, title: poll.title } : null, role: sub.responseId ? 'guest' : 'organizer' } };
+    }],
+
+    // From the page (JSON), or one-click from a mail app (form post with ?t=).
+    ['POST', /^\/api\/email\/unsubscribe$/, async (req) => {
+      limiter.check(req.ip, 'write');
+      let token = req.query?.get('t') || null;
+      if (!token && (req.header('content-type') || '').startsWith('application/json')) token = (await readJson(req))?.token;
+      const sub = await store.unsubscribe(token);
+      if (!sub) return { body: { found: false, poll: null } }; // already stopped, or a stale link
+      const poll = await store.getPoll(sub.pollId);
+      return { body: { found: true, poll: poll ? { id: poll.id, title: poll.title } : null } };
     }],
 
     ['GET', /^\/api\/polls\/([a-z0-9]+)\/invite\.ics$/, async (req, [id]) => {
