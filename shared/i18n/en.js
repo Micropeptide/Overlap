@@ -64,6 +64,27 @@ export default {
   "datePicker.month": "Month",
   "datePicker.nextMonth": "Next month",
   "datePicker.previousMonth": "Previous month",
+  "datePicker.rangeAdded": {
+    "one": "Added {count} day",
+    "other": "Added {count} days"
+  },
+  "datePicker.rangeButton": "Select a range",
+  "datePicker.rangeCancel": "Cancel",
+  "datePicker.rangeCapped": {
+    "one": "A poll can have up to {max} dates, so only {count} more day was added.",
+    "other": "A poll can have up to {max} dates, so only {count} more days were added."
+  },
+  "datePicker.rangeFromAdd": "From {date}: tap the last day to add every day in between.",
+  "datePicker.rangeFromRemove": "From {date}: tap the last day to remove every day in between.",
+  "datePicker.rangeOff": "Range off: each tap picks one day",
+  "datePicker.rangeRemoved": {
+    "one": "Removed {count} day",
+    "other": "Removed {count} days"
+  },
+  "datePicker.rangeStarted": "From {date}. Now tap the last day.",
+  "datePicker.rangeStartHint": "Tap the first day, then the last. You can change months in between.",
+  "datePicker.rangeTip": "Tip: “Select a range” picks a long stretch of days with two taps.",
+  "datePicker.skipWeekends": "Skip weekends",
   "datePicker.today": "{day}, today",
   "datePicker.year": "Year",
   "dom.cancel": "Cancel",

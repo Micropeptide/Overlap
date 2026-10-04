@@ -25,7 +25,7 @@ export const LIMITS = {
   location: 300,
   note: 200,
   name: 40,
-  dates: 60,
+  dates: 92, // about three months; longer spans suit a weekly poll
   slots: 2000,
   responses: 200,
 };

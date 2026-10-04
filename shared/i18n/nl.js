@@ -64,6 +64,27 @@ export default {
   "datePicker.month": "Maand",
   "datePicker.nextMonth": "Volgende maand",
   "datePicker.previousMonth": "Vorige maand",
+  "datePicker.rangeAdded": {
+    "one": "{count} dag toegevoegd",
+    "other": "{count} dagen toegevoegd"
+  },
+  "datePicker.rangeButton": "Bereik selecteren",
+  "datePicker.rangeCancel": "Annuleren",
+  "datePicker.rangeCapped": {
+    "one": "Een peiling kan maximaal {max} datums hebben, dus er is nog maar {count} dag toegevoegd.",
+    "other": "Een peiling kan maximaal {max} datums hebben, dus er zijn nog maar {count} dagen toegevoegd."
+  },
+  "datePicker.rangeFromAdd": "Vanaf {date}: tik op de laatste dag om alle dagen daartussen toe te voegen.",
+  "datePicker.rangeFromRemove": "Vanaf {date}: tik op de laatste dag om alle dagen daartussen te verwijderen.",
+  "datePicker.rangeOff": "Bereik uit: elke tik kiest één dag",
+  "datePicker.rangeRemoved": {
+    "one": "{count} dag verwijderd",
+    "other": "{count} dagen verwijderd"
+  },
+  "datePicker.rangeStarted": "Vanaf {date}. Tik nu op de laatste dag.",
+  "datePicker.rangeStartHint": "Tik op de eerste dag en daarna op de laatste. Tussendoor kun je van maand wisselen.",
+  "datePicker.rangeTip": "Tip: met “Bereik selecteren” kies je een lange reeks dagen met maar twee tikken.",
+  "datePicker.skipWeekends": "Weekenden overslaan",
   "datePicker.today": "{day}, vandaag",
   "datePicker.year": "Jaar",
   "dom.cancel": "Annuleren",

@@ -64,6 +64,27 @@ export default {
   "datePicker.month": "महीना",
   "datePicker.nextMonth": "अगला महीना",
   "datePicker.previousMonth": "पिछला महीना",
+  "datePicker.rangeAdded": {
+    "one": "{count} दिन जोड़ा गया",
+    "other": "{count} दिन जोड़े गए"
+  },
+  "datePicker.rangeButton": "रेंज चुनें",
+  "datePicker.rangeCancel": "रद्द करें",
+  "datePicker.rangeCapped": {
+    "one": "एक पोल में ज़्यादा से ज़्यादा {max} तारीखें हो सकती हैं, इसलिए सिर्फ़ {count} और दिन जोड़ा गया।",
+    "other": "एक पोल में ज़्यादा से ज़्यादा {max} तारीखें हो सकती हैं, इसलिए सिर्फ़ {count} और दिन जोड़े गए।"
+  },
+  "datePicker.rangeFromAdd": "{date} से: बीच के सभी दिन जोड़ने के लिए आखिरी दिन पर टैप करें।",
+  "datePicker.rangeFromRemove": "{date} से: बीच के सभी दिन हटाने के लिए आखिरी दिन पर टैप करें।",
+  "datePicker.rangeOff": "रेंज बंद: हर टैप एक दिन चुनता है",
+  "datePicker.rangeRemoved": {
+    "one": "{count} दिन हटाया गया",
+    "other": "{count} दिन हटाए गए"
+  },
+  "datePicker.rangeStarted": "{date} से। अब आखिरी दिन पर टैप करें।",
+  "datePicker.rangeStartHint": "पहले दिन पर टैप करें, फिर आखिरी दिन पर। बीच में आप महीना बदल सकते हैं।",
+  "datePicker.rangeTip": "टिप: “रेंज चुनें” से लगातार कई दिन सिर्फ़ दो टैप में चुने जा सकते हैं।",
+  "datePicker.skipWeekends": "वीकेंड छोड़ें",
   "datePicker.today": "{day}, आज",
   "datePicker.year": "साल",
   "dom.cancel": "रद्द करें",

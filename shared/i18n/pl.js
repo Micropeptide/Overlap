@@ -76,6 +76,33 @@ export default {
   "datePicker.month": "Miesiąc",
   "datePicker.nextMonth": "Następny miesiąc",
   "datePicker.previousMonth": "Poprzedni miesiąc",
+  "datePicker.rangeAdded": {
+    "one": "Dodano {count} dzień",
+    "few": "Dodano {count} dni",
+    "many": "Dodano {count} dni",
+    "other": "Dodano {count} dnia"
+  },
+  "datePicker.rangeButton": "Zaznacz zakres",
+  "datePicker.rangeCancel": "Anuluj",
+  "datePicker.rangeCapped": {
+    "one": "Limit dat w ankiecie wynosi {max}, więc dodano jeszcze tylko {count} dzień.",
+    "few": "Limit dat w ankiecie wynosi {max}, więc dodano jeszcze tylko {count} dni.",
+    "many": "Limit dat w ankiecie wynosi {max}, więc dodano jeszcze tylko {count} dni.",
+    "other": "Limit dat w ankiecie wynosi {max}, więc dodano jeszcze tylko {count} dnia."
+  },
+  "datePicker.rangeFromAdd": "Początek: {date}. Dotknij ostatniego dnia, aby dodać wszystkie dni pomiędzy.",
+  "datePicker.rangeFromRemove": "Początek: {date}. Dotknij ostatniego dnia, aby usunąć wszystkie dni pomiędzy.",
+  "datePicker.rangeOff": "Zakres wyłączony: każde dotknięcie wybiera jeden dzień",
+  "datePicker.rangeRemoved": {
+    "one": "Usunięto {count} dzień",
+    "few": "Usunięto {count} dni",
+    "many": "Usunięto {count} dni",
+    "other": "Usunięto {count} dnia"
+  },
+  "datePicker.rangeStarted": "Początek: {date}. Teraz dotknij ostatniego dnia.",
+  "datePicker.rangeStartHint": "Dotknij pierwszego dnia, a potem ostatniego. W międzyczasie możesz zmienić miesiąc.",
+  "datePicker.rangeTip": "Wskazówka: „Zaznacz zakres” wybiera wiele dni z rzędu dwoma dotknięciami.",
+  "datePicker.skipWeekends": "Pomiń weekendy",
   "datePicker.today": "{day}, dziś",
   "datePicker.year": "Rok",
   "dom.cancel": "Anuluj",

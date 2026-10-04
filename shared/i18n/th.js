@@ -58,6 +58,24 @@ export default {
   "datePicker.month": "เดือน",
   "datePicker.nextMonth": "เดือนถัดไป",
   "datePicker.previousMonth": "เดือนก่อนหน้า",
+  "datePicker.rangeAdded": {
+    "other": "เพิ่ม {count} วันแล้ว"
+  },
+  "datePicker.rangeButton": "เลือกเป็นช่วง",
+  "datePicker.rangeCancel": "ยกเลิก",
+  "datePicker.rangeCapped": {
+    "other": "โพลหนึ่งมีได้สูงสุด {max} วันที่ จึงเพิ่มได้อีกแค่ {count} วัน"
+  },
+  "datePicker.rangeFromAdd": "เริ่มจาก {date}: แตะวันสุดท้ายเพื่อเพิ่มทุกวันที่อยู่ระหว่างนั้น",
+  "datePicker.rangeFromRemove": "เริ่มจาก {date}: แตะวันสุดท้ายเพื่อเอาทุกวันที่อยู่ระหว่างนั้นออก",
+  "datePicker.rangeOff": "โหมดช่วงปิดอยู่: แตะหนึ่งครั้งเลือกหนึ่งวัน",
+  "datePicker.rangeRemoved": {
+    "other": "เอาออก {count} วันแล้ว"
+  },
+  "datePicker.rangeStarted": "เริ่มจาก {date} ต่อไปแตะวันสุดท้าย",
+  "datePicker.rangeStartHint": "แตะวันแรก แล้วแตะวันสุดท้าย ระหว่างนั้นเปลี่ยนเดือนได้",
+  "datePicker.rangeTip": "เคล็ดลับ: “เลือกเป็นช่วง” เลือกหลายวันติดกันได้ด้วยการแตะแค่สองครั้ง",
+  "datePicker.skipWeekends": "ข้ามวันหยุดสุดสัปดาห์",
   "datePicker.today": "{day} (วันนี้)",
   "datePicker.year": "ปี",
   "dom.cancel": "ยกเลิก",

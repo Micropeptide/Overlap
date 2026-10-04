@@ -151,3 +151,5 @@ worth the complexity yet), **No** (conflicts with the product's rules).
 | Phone "Select a range": tap first and last time | Built | Long blocks took a tap per half hour |
 | Organizer edits from the top of the page; quick "Add a note" / "Add a place" links; all options shown while editing | Built | Editing was at the bottom, with the note hidden under "More options" |
 | Switch a poll between dates and days of the week | Built | With a warning when people have answered |
+| Date picker "Select a range": first and last day, across months, optional "Skip weekends" (by region) | Built | Long ranges took a click per day |
+| Up to 92 dates per poll (was 60) | Changed | About three months; longer spans suit a weekly poll |

@@ -509,9 +509,9 @@ test('errors carry a code (and vars when the message needs them) for translation
   assert.equal(missing.json.error, 'Add a title.');
   assert.equal(missing.json.code, 'title_required');
   assert.equal('vars' in missing.json, false);
-  const many = await api('POST', '/api/polls', { body: { ...POLL, dates: Array.from({ length: 61 }, (_, i) => new Date(Date.UTC(2027, 0, 1 + i)).toISOString().slice(0, 10)) } });
+  const many = await api('POST', '/api/polls', { body: { ...POLL, dates: Array.from({ length: 93 }, (_, i) => new Date(Date.UTC(2027, 0, 1 + i)).toISOString().slice(0, 10)) } });
   assert.equal(many.json.code, 'too_many_dates');
-  assert.deepEqual(many.json.vars, { count: 60 });
+  assert.deepEqual(many.json.vars, { count: 92 });
   const gone = await api('GET', '/api/polls/doesnotexist1');
   assert.equal(gone.status, 404);
   assert.equal(gone.json.code, 'poll_not_found');

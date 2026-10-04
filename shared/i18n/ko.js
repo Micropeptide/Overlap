@@ -58,6 +58,24 @@ export default {
   "datePicker.month": "월",
   "datePicker.nextMonth": "다음 달",
   "datePicker.previousMonth": "이전 달",
+  "datePicker.rangeAdded": {
+    "other": "{count}일 추가됨"
+  },
+  "datePicker.rangeButton": "범위 선택",
+  "datePicker.rangeCancel": "취소",
+  "datePicker.rangeCapped": {
+    "other": "투표에는 날짜를 최대 {max}개까지 넣을 수 있어서 {count}일만 더 추가됐어요."
+  },
+  "datePicker.rangeFromAdd": "{date}부터: 마지막 날을 탭하면 그 사이의 모든 날이 추가돼요.",
+  "datePicker.rangeFromRemove": "{date}부터: 마지막 날을 탭하면 그 사이의 모든 날이 제외돼요.",
+  "datePicker.rangeOff": "범위 선택 꺼짐: 탭할 때마다 하루씩 골라요",
+  "datePicker.rangeRemoved": {
+    "other": "{count}일 제외됨"
+  },
+  "datePicker.rangeStarted": "{date}부터. 이제 마지막 날을 탭하세요.",
+  "datePicker.rangeStartHint": "첫날을 탭한 다음 마지막 날을 탭하세요. 그 사이에 달을 바꿔도 돼요.",
+  "datePicker.rangeTip": "팁: “범위 선택”을 쓰면 두 번만 탭해서 여러 날을 한꺼번에 고를 수 있어요.",
+  "datePicker.skipWeekends": "주말 건너뛰기",
   "datePicker.today": "{day}, 오늘",
   "datePicker.year": "연도",
   "dom.cancel": "취소",

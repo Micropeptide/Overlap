@@ -70,6 +70,30 @@ export default {
   "datePicker.month": "Mes",
   "datePicker.nextMonth": "Mes siguiente",
   "datePicker.previousMonth": "Mes anterior",
+  "datePicker.rangeAdded": {
+    "one": "Se añadió {count} día",
+    "many": "Se añadieron {count} días",
+    "other": "Se añadieron {count} días"
+  },
+  "datePicker.rangeButton": "Seleccionar un intervalo",
+  "datePicker.rangeCancel": "Cancelar",
+  "datePicker.rangeCapped": {
+    "one": "Una encuesta puede tener hasta {max} fechas, así que solo se añadió {count} día más.",
+    "many": "Una encuesta puede tener hasta {max} fechas, así que solo se añadieron {count} días más.",
+    "other": "Una encuesta puede tener hasta {max} fechas, así que solo se añadieron {count} días más."
+  },
+  "datePicker.rangeFromAdd": "Desde el {date}: toca el último día para añadir todos los días intermedios.",
+  "datePicker.rangeFromRemove": "Desde el {date}: toca el último día para quitar todos los días intermedios.",
+  "datePicker.rangeOff": "Intervalo desactivado: cada toque elige un día",
+  "datePicker.rangeRemoved": {
+    "one": "Se quitó {count} día",
+    "many": "Se quitaron {count} días",
+    "other": "Se quitaron {count} días"
+  },
+  "datePicker.rangeStarted": "Desde el {date}. Ahora toca el último día.",
+  "datePicker.rangeStartHint": "Toca el primer día y luego el último. Entre un toque y otro puedes cambiar de mes.",
+  "datePicker.rangeTip": "Consejo: “Seleccionar un intervalo” elige muchos días seguidos con solo dos toques.",
+  "datePicker.skipWeekends": "Omitir fines de semana",
   "datePicker.today": "{day}, hoy",
   "datePicker.year": "Año",
   "dom.cancel": "Cancelar",
