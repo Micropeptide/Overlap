@@ -160,4 +160,5 @@ export default {
   'grid.whoNo': 'غير متاح ({count})',
   'grid.whoUnanswered': 'لم يروا هذا الوقت ({count})',
   'grid.chooseFinal': 'اختيار موعد معتمد يبدأ هنا',
+  'grid.moreChips': '+{count}',
 };

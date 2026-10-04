@@ -49,4 +49,10 @@ export default {
   'results.csvNo': 'उपलब्ध नहीं',
   'results.csvUnanswered': 'जवाब नहीं दिया',
   'results.csvCount': 'उपलब्ध (संख्या)',
+  'results.viewLabel': 'ऐसे दिखाएँ',
+  'results.viewPeople': 'लोग',
+  'results.viewHeat': 'हीटमैप',
+  'results.legendPeople': 'हर रंग एक व्यक्ति है',
+  'results.peopleTooMany': 'हर व्यक्ति का अलग रंग ज़्यादा से ज़्यादा {max} लोगों तक ही संभव है',
+  'results.markEveryone': 'वे समय हाइलाइट करें जब सभी आ सकते हैं',
 };

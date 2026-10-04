@@ -70,4 +70,10 @@ export default {
   'results.csvNo': 'Indisponible',
   'results.csvUnanswered': 'Sans réponse',
   'results.csvCount': 'Disponibles (nombre)',
+  'results.viewLabel': 'Afficher par',
+  'results.viewPeople': 'Personnes',
+  'results.viewHeat': 'Carte de chaleur',
+  'results.legendPeople': 'Chaque couleur correspond à une personne',
+  'results.peopleTooMany': 'Une couleur par personne fonctionne jusqu’à {max} personnes',
+  'results.markEveryone': 'Mettre en évidence les créneaux où tout le monde est disponible',
 };

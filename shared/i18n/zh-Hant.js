@@ -316,6 +316,7 @@ export default {
     "other": "已將 {count} 個時段標記為{state}"
   },
   "grid.markedWholeDay": "已將整天標記為{state}",
+  "grid.moreChips": "+{count}",
   "grid.nextDay": "後一天：{day}",
   "grid.noResponses": "還沒有回覆",
   "grid.noTimes": "這個投票沒有可選的時間。",
@@ -756,12 +757,15 @@ export default {
   "results.legendHasMaybe": "包含「必要時可以」",
   "results.legendMaybe": "必要時可以",
   "results.legendNo": "沒空",
+  "results.legendPeople": "每種顏色代表一個人",
   "results.legendPref": "首選",
   "results.legendRamp": "顏色越深，人數越多",
   "results.legendUnanswered": "還沒看到這個時段",
   "results.legendYes": "有空",
+  "results.markEveryone": "標示所有人都有空的時間",
   "results.noneWork": "這些時間都不行",
   "results.note": "「{note}」",
+  "results.peopleTooMany": "最多 {max} 人時可按人分色顯示",
   "results.removeConfirm": "移除回覆",
   "results.removeLabel": "移除「{name}」的回覆",
   "results.removeMessage": "對方的時間會被永久刪除。投票開放期間，對方可以再次回覆。",
@@ -787,6 +791,9 @@ export default {
   "results.unseen": {
     "other": "{summary}，有 {count} 個新時段還沒看到"
   },
+  "results.viewHeat": "熱度圖",
+  "results.viewLabel": "顯示方式",
+  "results.viewPeople": "按人",
   "results.whoResponded": "已回覆的人",
   "results.you": "你",
   "shared.addToCalendar": "也可以加入{google}。開啟後，就會把活動詳細資訊（包括這個投票的邀請連結）傳送給該公司。",

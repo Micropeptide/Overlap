@@ -51,4 +51,10 @@ export default {
   'results.csvNo': '불가',
   'results.csvUnanswered': '응답 안 함',
   'results.csvCount': '가능(인원)',
+  'results.viewLabel': '보기 방식',
+  'results.viewPeople': '사람별',
+  'results.viewHeat': '히트맵',
+  'results.legendPeople': '색 하나가 한 사람',
+  'results.peopleTooMany': '한 사람당 한 색은 최대 {max}명까지 가능해요',
+  'results.markEveryone': '모두 가능한 시간 강조',
 };

@@ -103,4 +103,6 @@ export default {
   'grid.whoNo': 'Not available ({count})',
   'grid.whoUnanswered': 'Haven’t seen this time ({count})',
   'grid.chooseFinal': 'Choose a final time starting here',
+  // Phone results: after the colored initials of the first few people free at a time.
+  'grid.moreChips': '+{count}',
 };

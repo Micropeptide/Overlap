@@ -316,6 +316,7 @@ export default {
     "other": "{count}枠を「{state}」にしました"
   },
   "grid.markedWholeDay": "終日を「{state}」にしました",
+  "grid.moreChips": "+{count}",
   "grid.nextDay": "次の日：{day}",
   "grid.noResponses": "まだ回答はありません",
   "grid.noTimes": "この日程調整には選べる時間帯がありません。",
@@ -756,12 +757,15 @@ export default {
   "results.legendHasMaybe": "「必要なら可」を含む",
   "results.legendMaybe": "必要なら可",
   "results.legendNo": "参加不可",
+  "results.legendPeople": "1色が1人を表します",
   "results.legendPref": "希望",
   "results.legendRamp": "色が濃いほど人数が多い",
   "results.legendUnanswered": "この時間を未確認",
   "results.legendYes": "参加可能",
+  "results.markEveryone": "全員が参加可能な時間を強調表示",
   "results.noneWork": "どの時間も都合が合わない",
   "results.note": "「{note}」",
+  "results.peopleTooMany": "1人1色で表示できるのは{max}人までです",
   "results.removeConfirm": "回答を削除",
   "results.removeLabel": "{name}さんの回答を削除",
   "results.removeMessage": "この人の時間帯は完全に削除されます。日程調整の受付中であれば、もう一度回答できます。",
@@ -787,6 +791,9 @@ export default {
   "results.unseen": {
     "other": "{summary}、新しい{count}枠を未確認"
   },
+  "results.viewHeat": "ヒートマップ",
+  "results.viewLabel": "表示方法",
+  "results.viewPeople": "人ごと",
   "results.whoResponded": "回答した人",
   "results.you": "あなた",
   "shared.addToCalendar": "{google}に追加することもできます。開くと、この日程調整の参加者用リンクを含む予定の詳細がその会社に送信されます。",

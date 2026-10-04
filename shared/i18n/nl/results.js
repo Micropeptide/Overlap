@@ -49,4 +49,10 @@ export default {
   'results.csvNo': 'Niet beschikbaar',
   'results.csvUnanswered': 'Niet ingevuld',
   'results.csvCount': 'Beschikbaar (aantal)',
+  'results.viewLabel': 'Weergeven per',
+  'results.viewPeople': 'Personen',
+  'results.viewHeat': 'Heatmap',
+  'results.legendPeople': 'Elke kleur is één persoon',
+  'results.peopleTooMany': 'Eén kleur per persoon werkt tot {max} personen',
+  'results.markEveryone': 'Tijden markeren waarop iedereen kan',
 };

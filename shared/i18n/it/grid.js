@@ -124,4 +124,5 @@ export default {
   'grid.whoNo': 'Non disponibili ({count})',
   'grid.whoUnanswered': 'Non hanno visto questo orario ({count})',
   'grid.chooseFinal': 'Scegli un orario definitivo che inizia qui',
+  'grid.moreChips': '+{count}',
 };

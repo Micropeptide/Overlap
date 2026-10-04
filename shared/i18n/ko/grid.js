@@ -95,4 +95,5 @@ export default {
   'grid.whoNo': '불가({count})',
   'grid.whoUnanswered': '이 시간을 아직 못 봄({count})',
   'grid.chooseFinal': '여기서 시작하는 확정 시간 선택',
+  'grid.moreChips': '+{count}',
 };

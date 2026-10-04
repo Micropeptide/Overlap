@@ -9,7 +9,8 @@ export function h(tag, props, ...children) {
       if (v == null || v === false) continue;
       if (k === 'class') el.className = v;
       else if (k === 'dataset') Object.assign(el.dataset, v);
-      else if (k === 'style') Object.assign(el.style, v);
+      // An object of style properties, or CSS text (needed for custom properties like --pc).
+      else if (k === 'style') { if (typeof v === 'string') el.style.cssText = v; else Object.assign(el.style, v); }
       else if (k.startsWith('on') && typeof v === 'function') el.addEventListener(k.slice(2).toLowerCase(), v);
       else if (k === 'value' || k === 'checked' || k === 'selected') el[k] = v;
       else if (v === true) el.setAttribute(k, '');

@@ -97,4 +97,5 @@ export default {
   'grid.whoNo': 'Uygun değil ({count})',
   'grid.whoUnanswered': 'Bu saati görmeyenler ({count})',
   'grid.chooseFinal': 'Buradan başlayan bir kesin saat seç',
+  'grid.moreChips': '+{count}',
 };

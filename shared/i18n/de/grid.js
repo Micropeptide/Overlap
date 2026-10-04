@@ -97,4 +97,5 @@ export default {
   'grid.whoNo': 'Nicht verfügbar ({count})',
   'grid.whoUnanswered': 'Zeit noch nicht gesehen ({count})',
   'grid.chooseFinal': 'Termin ab hier festlegen',
+  'grid.moreChips': '+{count}',
 };

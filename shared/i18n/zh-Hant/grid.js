@@ -90,4 +90,5 @@ export default {
   'grid.whoNo': '沒空（{count}）',
   'grid.whoUnanswered': '還沒看到這個時段（{count}）',
   'grid.chooseFinal': '選定從這裡開始的最終時間',
+  'grid.moreChips': '+{count}',
 };

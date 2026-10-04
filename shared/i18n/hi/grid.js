@@ -97,4 +97,5 @@ export default {
   'grid.whoNo': 'उपलब्ध नहीं ({count})',
   'grid.whoUnanswered': 'यह समय नहीं देखा ({count})',
   'grid.chooseFinal': 'यहाँ से शुरू होने वाला समय तय करें',
+  'grid.moreChips': '+{count}',
 };

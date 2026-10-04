@@ -51,4 +51,10 @@ export default {
   'results.csvNo': 'Tidak tersedia',
   'results.csvUnanswered': 'Belum dijawab',
   'results.csvCount': 'Tersedia (jumlah)',
+  'results.viewLabel': 'Tampilkan per',
+  'results.viewPeople': 'Orang',
+  'results.viewHeat': 'Peta panas',
+  'results.legendPeople': 'Setiap warna mewakili satu orang',
+  'results.peopleTooMany': 'Satu warna per orang hanya bisa untuk maksimal {max} orang',
+  'results.markEveryone': 'Sorot waktu yang cocok untuk semua orang',
 };

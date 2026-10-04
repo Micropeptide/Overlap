@@ -91,4 +91,5 @@ export default {
   'grid.whoNo': '参加不可（{count}）',
   'grid.whoUnanswered': 'この時間を未確認（{count}）',
   'grid.chooseFinal': 'この時間から日時を確定',
+  'grid.moreChips': '+{count}',
 };

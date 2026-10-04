@@ -316,6 +316,7 @@ export default {
     "other": "ทำเครื่องหมาย {count} ช่วงเวลาเป็น “{state}” แล้ว"
   },
   "grid.markedWholeDay": "ทำเครื่องหมายทั้งวันเป็น “{state}” แล้ว",
+  "grid.moreChips": "+{count}",
   "grid.nextDay": "ถัดไป: {day}",
   "grid.noResponses": "ยังไม่มีคำตอบ",
   "grid.noTimes": "โพลนี้ไม่มีช่วงเวลาให้เลือก",
@@ -756,12 +757,15 @@ export default {
   "results.legendHasMaybe": "รวม “ได้ถ้าจำเป็น”",
   "results.legendMaybe": "ได้ถ้าจำเป็น",
   "results.legendNo": "ไม่ว่าง",
+  "results.legendPeople": "หนึ่งสีคือหนึ่งคน",
   "results.legendPref": "สะดวกที่สุด",
   "results.legendRamp": "สีเข้มขึ้น = คนมากขึ้น",
   "results.legendUnanswered": "ยังไม่เห็นช่วงเวลานี้",
   "results.legendYes": "ว่าง",
+  "results.markEveryone": "ไฮไลต์เวลาที่ทุกคนว่าง",
   "results.noneWork": "ไม่มีช่วงเวลาไหนสะดวกเลย",
   "results.note": "“{note}”",
+  "results.peopleTooMany": "แยกสีรายคนได้สูงสุด {max} คน",
   "results.removeConfirm": "ลบคำตอบ",
   "results.removeLabel": "ลบคำตอบของ {name}",
   "results.removeMessage": "เวลาของคนนี้จะถูกลบอย่างถาวร เขายังตอบใหม่ได้ระหว่างที่โพลเปิดอยู่",
@@ -787,6 +791,9 @@ export default {
   "results.unseen": {
     "other": "{summary} ยังไม่เห็นช่วงเวลาใหม่ {count} ช่วง"
   },
+  "results.viewHeat": "ฮีตแมป",
+  "results.viewLabel": "แสดงตาม",
+  "results.viewPeople": "รายคน",
   "results.whoResponded": "ใครตอบแล้วบ้าง",
   "results.you": "คุณ",
   "shared.addToCalendar": "หรือเพิ่มลงใน {google} การเปิดลิงก์นี้จะส่งรายละเอียดกิจกรรมให้บริษัทนั้น รวมถึงลิงก์ผู้เข้าร่วมของโพลนี้ด้วย",

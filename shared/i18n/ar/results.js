@@ -88,4 +88,10 @@ export default {
   'results.csvNo': 'غير متاح',
   'results.csvUnanswered': 'بلا إجابة',
   'results.csvCount': 'متاح (العدد)',
+  'results.viewLabel': 'العرض حسب',
+  'results.viewPeople': 'الأشخاص',
+  'results.viewHeat': 'خريطة حرارية',
+  'results.legendPeople': 'كل لون يمثّل شخصًا واحدًا',
+  'results.peopleTooMany': 'لون لكل شخص متاح حتى {max} شخصًا',
+  'results.markEveryone': 'تمييز الأوقات التي يناسب فيها الجميع',
 };

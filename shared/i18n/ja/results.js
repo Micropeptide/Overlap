@@ -51,4 +51,10 @@ export default {
   'results.csvNo': '参加不可',
   'results.csvUnanswered': '未回答',
   'results.csvCount': '参加可能（人数）',
+  'results.viewLabel': '表示方法',
+  'results.viewPeople': '人ごと',
+  'results.viewHeat': 'ヒートマップ',
+  'results.legendPeople': '1色が1人を表します',
+  'results.peopleTooMany': '1人1色で表示できるのは{max}人までです',
+  'results.markEveryone': '全員が参加可能な時間を強調表示',
 };

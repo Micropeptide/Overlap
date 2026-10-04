@@ -53,4 +53,13 @@ export default {
   'results.csvNo': 'Not available',
   'results.csvUnanswered': 'Not answered',
   'results.csvCount': 'Available (count)',
+  // People / Heatmap: two ways to show the group's availability.
+  'results.viewLabel': 'Show by',
+  'results.viewPeople': 'People',
+  'results.viewHeat': 'Heatmap',
+  'results.legendPeople': 'Each color is one person',
+  // Tooltip on the disabled "People" choice when too many people answered.
+  'results.peopleTooMany': 'One color per person works for up to {max} people',
+  // Checkbox: color the times everyone can make (off by default).
+  'results.markEveryone': 'Highlight times everyone can make',
 };

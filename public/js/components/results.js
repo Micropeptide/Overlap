@@ -4,8 +4,12 @@
 import { h, clear, confirmDialog, icon, announce } from '../lib/dom.js';
 import * as f from '../lib/format.js';
 import { tallySlots, statusAt } from '/shared/overlap.js';
-import { createGrid, slotDetail } from './grid.js';
+import { createGrid, slotDetail, personColor, MAX_PEOPLE_LANES } from './grid.js';
 import { t } from '../lib/i18n.js';
+import { storage } from '../lib/storage.js';
+
+/** People view suits small groups; the heatmap reads better beyond this many. */
+const PEOPLE_BY_DEFAULT = 8;
 
 /**
  * `state` is owned by the page so choices survive re-renders and refreshes:
@@ -18,6 +22,12 @@ export function resultsSection({ poll, timeZone, selfId = null, onPick = null, o
   if (state.focusId && !responses.some((r) => r.id === state.focusId)) state.focusId = null;
   let focusId = state.focusId || null;
   let showCounts = !!state.showCounts;
+  // The view the viewer last chose (remembered in this browser), else by group size.
+  const canShowPeople = responses.length <= MAX_PEOPLE_LANES;
+  let view = state.view || storage.pref('resultsView', null) || (responses.length <= PEOPLE_BY_DEFAULT ? 'people' : 'heat');
+  if (!canShowPeople) view = 'heat';
+  // Whether to color the times everyone can make; off unless the viewer turns it on (remembered).
+  let markEveryone = state.markEveryone ?? storage.pref('markEveryone', false);
 
   const root = h('section', { class: 'results', 'aria-labelledby': 'results-title' });
   root.highlight = () => {};
@@ -49,6 +59,8 @@ export function resultsSection({ poll, timeZone, selfId = null, onPick = null, o
     describedBy: 'results-help',
     focusId,
     showCounts,
+    view,
+    markEveryone,
     day: state.day,
     onDayChange: (d) => { state.day = d; },
     onPick,
@@ -69,19 +81,25 @@ export function resultsSection({ poll, timeZone, selfId = null, onPick = null, o
         item('sw-pref', t('results.legendPref')), item('sw-yes', t('results.legendYes')), item('sw-maybe', t('results.legendMaybe')),
         item('sw-no', t('results.legendNo')), item('sw-unanswered', t('results.legendUnanswered')),
       );
+    } else if (view === 'people') {
+      legend.append(...[
+        item('sw-people', t('results.legendPeople')),
+        item('sw-lane-yes', t('results.legendYes')), item('sw-lane-pref', t('results.legendPref')), item('sw-lane-maybe', t('results.legendMaybe')),
+        markEveryone ? item('sw-everyone-wash', t('results.legendAll')) : null,
+      ].filter(Boolean));
     } else {
-      legend.append(
+      legend.append(...[
         item('sw-ramp', t('results.legendRamp')),
-        item('sw-all', t('results.legendAll')),
+        markEveryone ? item('sw-all', t('results.legendAll')) : null,
         item('sw-has-maybe', t('results.legendHasMaybe')),
-      );
+      ].filter(Boolean));
     }
   }
 
   const people = h('ul', { class: 'people', role: 'list' });
   function renderPeople() {
     clear(people);
-    for (const r of responses) {
+    responses.forEach((r, index) => {
       const pref = (r.preferred || []).length;
       const yes = r.available.length + pref;
       const maybe = r.ifNeeded.length;
@@ -102,7 +120,9 @@ export function resultsSection({ poll, timeZone, selfId = null, onPick = null, o
             people.querySelector(`[data-id="${r.id}"] .person-btn`)?.focus();
           },
         },
-        h('span', { class: 'person-name' }, r.name, r.id === selfId ? h('span', { class: 'you-tag' }, t('results.you')) : null),
+        h('span', { class: 'person-name' },
+          view === 'people' && !focusId ? h('span', { class: 'person-dot', style: `--pc: ${personColor(index)}`, 'aria-hidden': 'true' }) : null,
+          r.name, r.id === selfId ? h('span', { class: 'you-tag' }, t('results.you')) : null),
         h('span', { class: 'person-meta' }, unseen ? t('results.unseen', { summary, count: unseen }) : summary),
         r.note ? h('span', { class: 'person-note' }, t('results.note', { note: r.note })) : null,
         r.updatedAt ? h('span', { class: 'person-when' }, t('results.answered', { when: f.ago(r.updatedAt) })) : null),
@@ -121,9 +141,49 @@ export function resultsSection({ poll, timeZone, selfId = null, onPick = null, o
           },
         }, '×') : null,
       );
+      // Pointing at or focusing a person brings their lanes forward.
+      const btn = li.querySelector('.person-btn');
+      const show = () => { if (view === 'people' && !focusId) grid.highlightPerson(r.id); };
+      const hide = () => grid.highlightPerson(null);
+      btn.addEventListener('pointerenter', show);
+      btn.addEventListener('pointerleave', hide);
+      btn.addEventListener('focus', show);
+      btn.addEventListener('blur', hide);
       people.append(li);
-    }
+    });
   }
+
+  // People / Heatmap
+  const viewRadio = (value, label) => h('label', { class: 'seg', title: value === 'people' && !canShowPeople ? t('results.peopleTooMany', { max: MAX_PEOPLE_LANES }) : null },
+    h('input', {
+      type: 'radio', name: 'results-view', value, checked: view === value, disabled: value === 'people' && !canShowPeople,
+      onchange: () => {
+        view = value;
+        state.view = view;
+        storage.setPref('resultsView', view);
+        grid.update({ view });
+        countsToggle.hidden = view === 'people';
+        renderLegend();
+        renderPeople();
+      },
+    }),
+    h('span', null, label));
+  const viewToggle = h('div', { class: 'segmented results-view', role: 'radiogroup', 'aria-label': t('results.viewLabel') },
+    viewRadio('people', t('results.viewPeople')), viewRadio('heat', t('results.viewHeat')));
+
+  const everyoneToggle = h('label', { class: 'check' },
+    h('input', {
+      type: 'checkbox',
+      checked: markEveryone,
+      onchange: (e) => {
+        markEveryone = e.target.checked;
+        state.markEveryone = markEveryone;
+        storage.setPref('markEveryone', markEveryone);
+        grid.update({ markEveryone });
+        renderLegend();
+      },
+    }),
+    h('span', null, t('results.markEveryone')));
 
   const countsToggle = h('label', { class: 'check' },
     h('input', {
@@ -133,12 +193,15 @@ export function resultsSection({ poll, timeZone, selfId = null, onPick = null, o
     }),
     h('span', null, t('results.showNumbers')));
 
+  countsToggle.hidden = view === 'people';
   renderLegend();
   renderPeople();
 
   root.append(
     h('p', { class: 'muted small', id: 'results-help' }, t('results.help')),
     h('div', { class: 'legend-row' }, legend, h('div', { class: 'results-tools' },
+      viewToggle,
+      everyoneToggle,
       countsToggle,
       exportable ? h('button', { type: 'button', class: 'btn small ghost', onclick: () => downloadCsv(poll, timeZone) }, icon('download'), t('results.exportCsv')) : null)),
     h('div', { class: 'results-layout' },

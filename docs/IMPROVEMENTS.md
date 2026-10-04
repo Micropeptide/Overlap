@@ -153,3 +153,5 @@ worth the complexity yet), **No** (conflicts with the product's rules).
 | Switch a poll between dates and days of the week | Built | With a warning when people have answered |
 | Date picker "Select a range": first and last day, across months, optional "Skip weekends" (by region) | Built | Long ranges took a click per day |
 | Up to 92 dates per poll (was 60) | Changed | About three months; longer spans suit a weekly poll |
+| Results "People" view: a colored lane per person (stripes = if needed, dots = preferred); phone rows show colored initials; default for up to 8 people, heatmap above | Built | Seeing who, not just how many |
+| "Everyone can make it" emerald highlight is optional, off by default (remembered) | Changed | Not always wanted |

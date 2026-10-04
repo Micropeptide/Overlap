@@ -129,4 +129,5 @@ export default {
   'grid.whoNo': 'Indisponível ({count})',
   'grid.whoUnanswered': 'Ainda não viram este horário ({count})',
   'grid.chooseFinal': 'Escolher um horário definitivo a partir daqui',
+  'grid.moreChips': '+{count}',
 };
