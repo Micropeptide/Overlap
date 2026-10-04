@@ -70,4 +70,10 @@ export default {
   'results.csvNo': 'Non disponibile',
   'results.csvUnanswered': 'Nessuna risposta',
   'results.csvCount': 'Disponibili (numero)',
+  'results.viewLabel': 'Mostra per',
+  'results.viewPeople': 'Persone',
+  'results.viewHeat': 'Mappa di calore',
+  'results.legendPeople': 'Ogni colore è una persona',
+  'results.peopleTooMany': 'Un colore per persona funziona fino a {max} persone',
+  'results.markEveryone': 'Evidenzia gli orari in cui ci sono tutti',
 };

@@ -52,6 +52,10 @@
   --maybe: #ffb020; --maybe-wash: #fff3d6; --maybe-ink: #7a4a00;
   --everyone: #12b76a; --everyone-ink: #04331d;
   --heat-lo: #dcecff; --heat-hi: #2563eb;
+  /* One color per person in the results' People view: distinct hues and lightness, never the only cue (names go with them). */
+  --person-0: #2f6fde; --person-1: #e4572e; --person-2: #12a394; --person-3: #9b5de5;
+  --person-4: #e09b1a; --person-5: #d6336c; --person-6: #3f8f22; --person-7: #8a5a2b;
+  --person-8: #0c9fc2; --person-9: #64748b; --person-10: #b5179e; --person-11: #4c51bf;
   --shadow: 0 1px 2px rgb(23 35 43 / 0.06), 0 8px 24px -12px rgb(23 35 43 / 0.18);
 
   --font-display: 'Bricolage Grotesque', 'Avenir Next', 'Segoe UI', system-ui, sans-serif;
@@ -103,6 +107,9 @@
     --maybe: #ffbe3d; --maybe-wash: #3a2c10; --maybe-ink: #ffd27a;
     --everyone: #34d399; --everyone-ink: #052e1b;
     --heat-lo: #17324d; --heat-hi: #60a5fa;
+    --person-0: #6ea0ff; --person-1: #ff8a65; --person-2: #3fd4c3; --person-3: #b99bff;
+    --person-4: #f5c15a; --person-5: #ff6f9c; --person-6: #7fcf5a; --person-7: #d4a06a;
+    --person-8: #4fd0f0; --person-9: #a3b2c4; --person-10: #f07ad8; --person-11: #9aa2ff;
     --shadow: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -12px rgb(0 0 0 / 0.5);
     color-scheme: dark;
   }
@@ -1001,3 +1008,39 @@ textarea.input { resize: vertical; min-height: 5rem; }
 .dp-day.range-start { outline: 2.5px solid var(--pref); outline-offset: 1px; }
 .dp-day.in-range:not(.on) { background: color-mix(in srgb, var(--pref) 18%, var(--surface)); }
 .dp-day.in-range.on { box-shadow: inset 0 0 0 2px var(--pref); }
+
+/* ---------- results: People view (a colored lane per person) ---------- */
+.grid-results.people-view .cell:where([data-slot]) { --fill: transparent; }
+.grid-results.people-view .cell.all { --fill: color-mix(in srgb, var(--everyone) 22%, transparent); }
+.grid-results.people-view .cell.has-maybe::before { background-image: none; }
+.lanes { position: absolute; inset: 0 6px; display: flex; gap: 2px; pointer-events: none; }
+.lane { flex: 1 1 0; min-width: 0; margin: 3px 0; border-radius: 4px; transition: opacity 120ms ease; }
+.lane.up { margin-top: -1px; border-top-left-radius: 0; border-top-right-radius: 0; }
+.lane.down { margin-bottom: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.lane.ln-yes { background: var(--pc); }
+/* Preferred: the person's color with a light dot in each time. */
+.lane.ln-pref { background: radial-gradient(circle at 50% 50%, rgb(255 255 255 / 0.95) 0 1.6px, transparent 2.2px), var(--pc); }
+/* If needed: the person's color in stripes. */
+.lane.ln-maybe { background: repeating-linear-gradient(135deg, var(--pc) 0 3px, color-mix(in srgb, var(--pc) 22%, var(--surface)) 3px 6px); }
+.grid.lane-hl .lane:not(.keep) { opacity: 0.15; }
+
+/* The color key: a dot beside each name in the responses list. */
+.person-dot { width: 0.8rem; height: 0.8rem; border-radius: 50%; flex: none; background: var(--pc); }
+.sw-lane-yes { background: var(--person-0); }
+.sw-lane-pref { background: radial-gradient(circle at 50% 50%, #fff 0 1.6px, transparent 2.2px), var(--person-0); }
+.sw-lane-maybe { background: repeating-linear-gradient(135deg, var(--person-0) 0 3px, color-mix(in srgb, var(--person-0) 22%, var(--surface)) 3px 6px); }
+.sw-people { background: linear-gradient(90deg, var(--person-0) 0 33%, var(--person-1) 33% 66%, var(--person-2) 66%); }
+.sw-everyone-wash { background: color-mix(in srgb, var(--everyone) 30%, var(--surface)); border: 1px solid var(--everyone); }
+
+/* Phone: who's free, as colored initials. */
+.slot-chips { flex: 1; display: flex; align-items: center; min-width: 0; }
+/* Overlapping, like an avatar stack, so a row of initials fits on one line. */
+.chip-person { box-shadow: 0 0 0 2px var(--surface); }
+.chip-person + .chip-person { margin-inline-start: -4px; }
+.chip-person { display: inline-grid; place-items: center; width: 1.45rem; height: 1.45rem; border-radius: 50%;
+  font-size: 0.72rem; font-weight: 700; color: #fff; background: var(--pc); line-height: 1; }
+.chip-person.ln-maybe { background: repeating-linear-gradient(135deg, var(--pc) 0 3px, color-mix(in srgb, var(--pc) 45%, var(--surface)) 3px 6px); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--pc); }
+.chip-person.ln-pref { box-shadow: 0 0 0 2px var(--surface), 0 0 0 3.5px var(--pc); }
+.chip-more { font-size: var(--step--1); font-weight: 700; color: var(--ink-2); padding-inline-start: 2px; }
+.results-view { margin: 0; }
+.results-view .seg span { padding: 0.3rem 0.85rem; }

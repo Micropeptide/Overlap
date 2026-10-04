@@ -316,6 +316,7 @@ export default {
     "other": "Đã đánh dấu {count} khung giờ là {state}"
   },
   "grid.markedWholeDay": "Đã đánh dấu cả ngày là {state}",
+  "grid.moreChips": "+{count}",
   "grid.nextDay": "Sau: {day}",
   "grid.noResponses": "Chưa có phản hồi nào",
   "grid.noTimes": "Cuộc thăm dò này không có khung giờ nào để chọn.",
@@ -756,12 +757,15 @@ export default {
   "results.legendHasMaybe": "Có cả “nếu cần”",
   "results.legendMaybe": "Nếu cần",
   "results.legendNo": "Không rảnh",
+  "results.legendPeople": "Mỗi màu là một người",
   "results.legendPref": "Ưu tiên",
   "results.legendRamp": "Càng đậm càng nhiều người",
   "results.legendUnanswered": "Chưa xem khung giờ này",
   "results.legendYes": "Rảnh",
+  "results.markEveryone": "Làm nổi bật thời gian mọi người đều rảnh",
   "results.noneWork": "Không khung giờ nào hợp",
   "results.note": "“{note}”",
+  "results.peopleTooMany": "Mỗi người một màu chỉ dùng được khi có tối đa {max} người",
   "results.removeConfirm": "Gỡ phản hồi",
   "results.removeLabel": "Gỡ phản hồi của {name}",
   "results.removeMessage": "Khung giờ của họ sẽ bị xóa vĩnh viễn. Họ có thể phản hồi lại khi cuộc thăm dò còn mở.",
@@ -787,6 +791,9 @@ export default {
   "results.unseen": {
     "other": "{summary}, chưa xem {count} khung giờ mới hơn"
   },
+  "results.viewHeat": "Bản đồ nhiệt",
+  "results.viewLabel": "Hiển thị theo",
+  "results.viewPeople": "Từng người",
   "results.whoResponded": "Ai đã phản hồi",
   "results.you": "Bạn",
   "shared.addToCalendar": "Hoặc thêm vào {google}. Khi mở, công ty đó sẽ nhận được thông tin sự kiện, kể cả liên kết cho khách của cuộc thăm dò này.",

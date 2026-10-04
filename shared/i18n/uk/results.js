@@ -66,4 +66,10 @@ export default {
   'results.csvNo': 'Зайнято',
   'results.csvUnanswered': 'Без відповіді',
   'results.csvCount': 'Вільно (кількість)',
+  'results.viewLabel': 'Вигляд',
+  'results.viewPeople': 'Люди',
+  'results.viewHeat': 'Теплова карта',
+  'results.legendPeople': 'Кожен колір — одна людина',
+  'results.peopleTooMany': 'Окремий колір для кожної людини — якщо людей не більше {max}',
+  'results.markEveryone': 'Виділяти час, коли можуть усі',
 };

@@ -91,4 +91,5 @@ export default {
   'grid.whoNo': 'Tidak tersedia ({count})',
   'grid.whoUnanswered': 'Belum melihat waktu ini ({count})',
   'grid.chooseFinal': 'Pilih waktu final mulai dari sini',
+  'grid.moreChips': '+{count}',
 };

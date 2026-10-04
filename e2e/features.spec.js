@@ -140,6 +140,8 @@ test('organizer exports a CSV, duplicates a poll, and sees counts on the heatmap
   expect(csv).toContain('Preferred');
 
   if (!isPhone(info)) {
+    // Numbers belong to the heatmap; small groups open in the People view.
+    await page.getByRole('radio', { name: 'Heatmap' }).check({ force: true });
     await page.getByLabel('Show numbers').check();
     await expect(page.locator('.grid-results .cell[data-slot]').first()).toHaveText('1');
   }

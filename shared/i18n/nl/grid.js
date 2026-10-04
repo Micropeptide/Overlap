@@ -98,4 +98,5 @@ export default {
   'grid.whoNo': 'Niet beschikbaar ({count})',
   'grid.whoUnanswered': 'Tijdstip nog niet gezien ({count})',
   'grid.chooseFinal': 'Definitief tijdstip kiezen dat hier begint',
+  'grid.moreChips': '+{count}',
 };

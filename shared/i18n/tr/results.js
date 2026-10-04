@@ -49,4 +49,10 @@ export default {
   'results.csvNo': 'Uygun değil',
   'results.csvUnanswered': 'Yanıtlanmadı',
   'results.csvCount': 'Uygun (sayı)',
+  'results.viewLabel': 'Görünüm',
+  'results.viewPeople': 'Kişiler',
+  'results.viewHeat': 'Isı haritası',
+  'results.legendPeople': 'Her renk bir kişi',
+  'results.peopleTooMany': 'Kişi başına bir renk en fazla {max} kişi için kullanılabilir',
+  'results.markEveryone': 'Herkesin uygun olduğu saatleri vurgula',
 };

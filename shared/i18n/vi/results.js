@@ -52,4 +52,10 @@ export default {
   'results.csvNo': 'Không rảnh',
   'results.csvUnanswered': 'Chưa trả lời',
   'results.csvCount': 'Rảnh (số người)',
+  'results.viewLabel': 'Hiển thị theo',
+  'results.viewPeople': 'Từng người',
+  'results.viewHeat': 'Bản đồ nhiệt',
+  'results.legendPeople': 'Mỗi màu là một người',
+  'results.peopleTooMany': 'Mỗi người một màu chỉ dùng được khi có tối đa {max} người',
+  'results.markEveryone': 'Làm nổi bật thời gian mọi người đều rảnh',
 };

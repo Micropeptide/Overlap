@@ -37,6 +37,32 @@ const PERSON_STATES = {
   unanswered: stateText('grid.wordUnanswered', 'grid.labelUnanswered'),
 };
 
+/** Above this many people, one lane each gets too thin to read: the heatmap is used instead. */
+export const MAX_PEOPLE_LANES = 12;
+const PHONE_CHIPS = 7; // initials shown in a phone row; more than this shows 6 and "+N"
+
+/** The color for the i-th person (12 colors, repeating), as a CSS value. */
+export const personColor = (i) => `var(--person-${i % 12})`;
+
+/** A person's answer at one time, for lanes and chips: 'pref', 'yes', 'maybe' or '' (not free). */
+function laneState(tl, id) {
+  if (tl.pref.includes(id)) return 'pref';
+  if (tl.yes.includes(id)) return 'yes';
+  if (tl.maybe.includes(id)) return 'maybe';
+  return '';
+}
+
+/** A name's first letter (or character), for a small chip. */
+export function initial(name) {
+  const text = String(name || '').trim();
+  try {
+    const first = new Intl.Segmenter(undefined, { granularity: 'grapheme' }).segment(text)[Symbol.iterator]().next().value?.segment;
+    return (first || '?').toLocaleUpperCase();
+  } catch {
+    return (text[0] || '?').toUpperCase();
+  }
+}
+
 export function createGrid(options) {
   const s = {
     mode: 'edit', // 'edit' | 'results'
@@ -48,6 +74,8 @@ export function createGrid(options) {
     othersTotal: 0,
     showOthers: false,
     showCounts: false, // results: print the number of people in each cell
+    view: 'heat', // results: 'heat' (darker = more people) or 'people' (a colored lane per person)
+    markEveryone: false, // results: color the times everyone can make (emerald); off unless asked for
     history: null, // edit: { undo: [], redo: [] } kept by the page, so undo survives re-renders
     day: null, // phone: which day to show first
     onDayChange: () => {},
@@ -97,6 +125,9 @@ export function createGrid(options) {
     tally = tallySlots(s.slots, s.responses);
     total = s.responses.length;
   }
+
+  /** People view: one colored lane per person in each cell (not when showing one person). */
+  const peopleView = () => s.mode === 'results' && s.view === 'people' && !s.focusId && s.responses.length <= MAX_PEOPLE_LANES;
 
   function personState(tl, id) {
     if (tl.pref.includes(id)) return 'pref';
@@ -173,7 +204,7 @@ export function createGrid(options) {
     const editing = s.mode === 'edit';
     const rowH = s.slotMinutes === 15 ? 'var(--row-15)' : s.slotMinutes === 60 ? 'var(--row-60)' : 'var(--row-30)';
     const grid = h('div', {
-      class: `grid grid-${s.mode}${s.showOthers && editing ? ' show-others' : ''}${s.showCounts && !editing ? ' show-counts' : ''}`,
+      class: `grid grid-${s.mode}${s.showOthers && editing ? ' show-others' : ''}${s.showCounts && !editing && !peopleView() ? ' show-counts' : ''}${peopleView() ? ' people-view' : ''}`,
       role: 'grid',
       'aria-label': s.label,
       'aria-describedby': s.describedBy || null,
@@ -267,6 +298,24 @@ export function createGrid(options) {
   function refreshCells() {
     for (const [slot, el] of cellBySlot) decorate(el, slot);
     joinRuns();
+    if (peopleView()) joinLanes();
+  }
+
+  /** Each person's lane continues into the cell below when they're free there too, so runs read as bars. */
+  function joinLanes() {
+    for (let r = 0; r < matrix.length; r++) {
+      for (let c = 0; c < matrix[r].length; c++) {
+        const lanes = matrix[r][c]?.querySelector('.lanes')?.children;
+        if (!lanes) continue;
+        const above = r > 0 && !gapBefore[r] ? matrix[r - 1][c]?.querySelector('.lanes')?.children : null;
+        const below = r + 1 < matrix.length && !gapBefore[r + 1] ? matrix[r + 1][c]?.querySelector('.lanes')?.children : null;
+        for (let i = 0; i < lanes.length; i++) {
+          const on = !!lanes[i].dataset.st;
+          lanes[i].classList.toggle('up', on && !!above?.[i]?.dataset.st);
+          lanes[i].classList.toggle('down', on && !!below?.[i]?.dataset.st);
+        }
+      }
+    }
   }
 
   /** Mark cells whose neighbor above/below has the same mark, so runs draw as one block. */
@@ -308,15 +357,25 @@ export function createGrid(options) {
     const avail = tl.yes.length + tl.maybe.length;
     const heat = total ? (tl.yes.length + tl.maybe.length * 0.6) / total : 0;
     el.style.setProperty('--heat', heat);
-    el.classList.toggle('all', total > 0 && avail === total);
+    const everyone = total > 0 && avail === total;
+    el.classList.toggle('all', s.markEveryone && everyone);
     el.classList.toggle('has-maybe', tl.maybe.length > 0);
     el.classList.toggle('empty', avail === 0);
-    el.classList.toggle('dark', heat > 0.55 || (total > 0 && avail === total));
+    el.classList.toggle('dark', heat > 0.55 || (s.markEveryone && everyone));
     el.classList.toggle('hl', highlighted.has(slot));
     for (const st of Object.keys(PERSON_STATES)) el.classList.remove(`st-${st}`);
     el.classList.toggle('focused-person', !!s.focusId);
-    el.replaceChildren(...(s.showCounts && avail && !s.focusId ? [h('span', null, String(avail))] : []));
-    el.dataset.k = s.focusId ? '' : (avail ? 'on' : '');
+    if (peopleView()) {
+      // A lane per person, in response order, colored by person; the pattern shows how they answered.
+      el.replaceChildren(h('span', { class: 'lanes', 'aria-hidden': 'true' }, s.responses.map((r, i) => {
+        const st = laneState(tl, r.id);
+        return h('span', { class: `lane${st ? ` ln-${st}` : ''}`, style: `--pc: ${personColor(i)}`, dataset: { i: String(i), st } });
+      })));
+      el.dataset.k = s.markEveryone && everyone ? 'all' : '';
+    } else {
+      el.replaceChildren(...(s.showCounts && avail && !s.focusId ? [h('span', null, String(avail))] : []));
+      el.dataset.k = s.focusId ? '' : (avail ? 'on' : '');
+    }
     let label;
     if (s.focusId) {
       const st = personState(tl, s.focusId);
@@ -781,12 +840,22 @@ export function createGrid(options) {
       stateClass = ` st-${st}`;
       stateLabel = PERSON_STATES[st].label;
     }
-    const bar = h('span', { class: 'slot-bar', 'aria-hidden': 'true' }, h('span', { class: 'slot-bar-fill' }));
-    bar.style.setProperty('--fill', total ? avail / total : 0);
-    bar.style.setProperty('--maybe', total ? tl.maybe.length / total : 0);
+    let bar;
+    if (peopleView()) {
+      // Who's free, as colored initials (the names are one tap away).
+      const free = s.responses.map((r, i) => ({ r, i, st: laneState(tl, r.id) })).filter((p) => p.st);
+      const shown = free.length > PHONE_CHIPS ? free.slice(0, PHONE_CHIPS - 1) : free;
+      bar = h('span', { class: 'slot-chips', 'aria-hidden': 'true' },
+        shown.map(({ r, i, st }) => h('span', { class: `chip-person ln-${st}`, style: `--pc: ${personColor(i)}` }, initial(r.name))),
+        free.length > shown.length ? h('span', { class: 'chip-more' }, t('grid.moreChips', { count: free.length - shown.length })) : null);
+    } else {
+      bar = h('span', { class: 'slot-bar', 'aria-hidden': 'true' }, h('span', { class: 'slot-bar-fill' }));
+      bar.style.setProperty('--fill', total ? avail / total : 0);
+      bar.style.setProperty('--maybe', total ? tl.maybe.length / total : 0);
+    }
     const btn = h('button', {
       type: 'button',
-      class: `slot-btn result${total && avail === total ? ' all' : ''}${tl.maybe.length ? ' has-maybe' : ''}${stateClass}`,
+      class: `slot-btn result${s.markEveryone && total && avail === total ? ' all' : ''}${tl.maybe.length ? ' has-maybe' : ''}${stateClass}`,
       'aria-expanded': open ? 'true' : 'false',
       dataset: { slot: String(slot) },
       onclick: () => { expandedSlot = open ? null : slot; render(); root.querySelector(`.slot-btn[data-slot="${slot}"]`)?.focus(); },
@@ -844,6 +913,13 @@ export function createGrid(options) {
       s.value = new Map(next);
       commit(before);
       afterExternalChange();
+    },
+    /** People view: bring one person's lanes forward and fade the rest (null: none). */
+    highlightPerson(id) {
+      if (!gridEl) return;
+      const i = id == null ? -1 : s.responses.findIndex((r) => r.id === id);
+      gridEl.classList.toggle('lane-hl', i >= 0);
+      for (const lane of gridEl.querySelectorAll('.lane')) lane.classList.toggle('keep', lane.dataset.i === String(i));
     },
     /** Outline these slots (desktop heatmap), e.g. while a best time is hovered. */
     highlight(slots) {

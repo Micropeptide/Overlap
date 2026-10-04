@@ -136,4 +136,5 @@ export default {
   'grid.whoNo': 'Зайнято ({count})',
   'grid.whoUnanswered': 'Ще не переглянули ({count})',
   'grid.chooseFinal': 'Вибрати остаточний час із початком тут',
+  'grid.moreChips': '+{count}',
 };

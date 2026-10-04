@@ -137,4 +137,5 @@ export default {
   'grid.whoNo': 'Nie pasuje ({count})',
   'grid.whoUnanswered': 'Nowy termin, bez odpowiedzi ({count})',
   'grid.chooseFinal': 'Wybierz ostateczny termin od tej godziny',
+  'grid.moreChips': '+{count}',
 };

@@ -96,4 +96,5 @@ export default {
   'grid.whoNo': 'Không rảnh ({count})',
   'grid.whoUnanswered': 'Chưa xem khung giờ này ({count})',
   'grid.chooseFinal': 'Chốt thời gian bắt đầu từ đây',
+  'grid.moreChips': '+{count}',
 };

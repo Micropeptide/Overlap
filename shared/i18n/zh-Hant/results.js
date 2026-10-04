@@ -48,4 +48,10 @@ export default {
   'results.csvNo': '沒空',
   'results.csvUnanswered': '未回覆',
   'results.csvCount': '有空（人數）',
+  'results.viewLabel': '顯示方式',
+  'results.viewPeople': '按人',
+  'results.viewHeat': '熱度圖',
+  'results.legendPeople': '每種顏色代表一個人',
+  'results.peopleTooMany': '最多 {max} 人時可按人分色顯示',
+  'results.markEveryone': '標示所有人都有空的時間',
 };

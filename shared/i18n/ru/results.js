@@ -76,4 +76,10 @@ export default {
   'results.csvNo': 'Не подходит',
   'results.csvUnanswered': 'Нет ответа',
   'results.csvCount': 'Подходит (кол-во)',
+  'results.viewLabel': 'Вид',
+  'results.viewPeople': 'Люди',
+  'results.viewHeat': 'Тепловая карта',
+  'results.legendPeople': 'Каждый цвет — один человек',
+  'results.peopleTooMany': 'Отдельный цвет для каждого человека — если людей не больше {max}',
+  'results.markEveryone': 'Выделять время, когда могут все',
 };

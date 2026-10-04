@@ -61,6 +61,7 @@ test('organizer refresh keeps focus, the person filter and the numbers toggle', 
   await respond(request, poll.id, { name: 'Ann', available: [poll.slots[0]] });
   await page.goto(managePath);
   const ann = page.getByRole('button', { name: /^Ann/ });
+  if (!isPhone(info)) await page.getByRole('radio', { name: 'Heatmap' }).check({ force: true });
   await ann.click();
   if (!isPhone(info)) await page.getByLabel('Show numbers').check();
   await ann.focus();

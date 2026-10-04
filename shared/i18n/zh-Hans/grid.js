@@ -96,4 +96,5 @@ export default {
   'grid.whoNo': '没空（{count}）',
   'grid.whoUnanswered': '还没看到这个时间（{count}）',
   'grid.chooseFinal': '选定从这里开始的最终时间',
+  'grid.moreChips': '+{count}',
 };

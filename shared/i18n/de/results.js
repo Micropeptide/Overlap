@@ -49,4 +49,10 @@ export default {
   'results.csvNo': 'Nicht verfügbar',
   'results.csvUnanswered': 'Nicht beantwortet',
   'results.csvCount': 'Verfügbar (Anzahl)',
+  'results.viewLabel': 'Anzeigen nach',
+  'results.viewPeople': 'Personen',
+  'results.viewHeat': 'Heatmap',
+  'results.legendPeople': 'Jede Farbe ist eine Person',
+  'results.peopleTooMany': 'Eine Farbe pro Person geht bei bis zu {max} Personen',
+  'results.markEveryone': 'Zeiten hervorheben, zu denen alle können',
 };

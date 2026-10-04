@@ -316,6 +316,7 @@ export default {
     "other": "{count} waktu ditandai sebagai {state}"
   },
   "grid.markedWholeDay": "Sepanjang hari ditandai sebagai {state}",
+  "grid.moreChips": "+{count}",
   "grid.nextDay": "Berikutnya: {day}",
   "grid.noResponses": "Belum ada tanggapan",
   "grid.noTimes": "Polling ini tidak punya waktu untuk dipilih.",
@@ -756,12 +757,15 @@ export default {
   "results.legendHasMaybe": "Termasuk “jika perlu”",
   "results.legendMaybe": "Jika perlu",
   "results.legendNo": "Tidak tersedia",
+  "results.legendPeople": "Setiap warna mewakili satu orang",
   "results.legendPref": "Lebih disukai",
   "results.legendRamp": "Makin gelap, makin banyak orang",
   "results.legendUnanswered": "Belum melihat waktu ini",
   "results.legendYes": "Tersedia",
+  "results.markEveryone": "Sorot waktu yang cocok untuk semua orang",
   "results.noneWork": "Tidak ada waktu yang cocok",
   "results.note": "“{note}”",
+  "results.peopleTooMany": "Satu warna per orang hanya bisa untuk maksimal {max} orang",
   "results.removeConfirm": "Hapus tanggapan",
   "results.removeLabel": "Hapus tanggapan {name}",
   "results.removeMessage": "Waktu yang mereka tandai akan dihapus secara permanen. Mereka bisa menanggapi lagi selama polling masih dibuka.",
@@ -787,6 +791,9 @@ export default {
   "results.unseen": {
     "other": "{summary}, belum melihat {count} waktu yang lebih baru"
   },
+  "results.viewHeat": "Peta panas",
+  "results.viewLabel": "Tampilkan per",
+  "results.viewPeople": "Orang",
   "results.whoResponded": "Siapa yang menanggapi",
   "results.you": "Anda",
   "shared.addToCalendar": "Atau tambahkan ke {google}. Membukanya akan mengirimkan detail acara ke perusahaan tersebut, termasuk tautan tamu polling ini.",

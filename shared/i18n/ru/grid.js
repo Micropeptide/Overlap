@@ -136,4 +136,5 @@ export default {
   'grid.whoNo': 'Не подходит ({count})',
   'grid.whoUnanswered': 'Добавлено после ответа ({count})',
   'grid.chooseFinal': 'Выбрать итоговое время с этого момента',
+  'grid.moreChips': '+{count}',
 };

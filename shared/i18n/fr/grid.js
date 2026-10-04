@@ -124,4 +124,5 @@ export default {
   'grid.whoNo': 'Indisponibles ({count})',
   'grid.whoUnanswered': 'N’ont pas vu ce créneau ({count})',
   'grid.chooseFinal': 'Choisir un horaire définitif commençant ici',
+  'grid.moreChips': '+{count}',
 };

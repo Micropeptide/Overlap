@@ -95,4 +95,5 @@ export default {
   'grid.whoNo': 'ไม่ว่าง ({count})',
   'grid.whoUnanswered': 'ยังไม่เห็นช่วงเวลานี้ ({count})',
   'grid.chooseFinal': 'เลือกเวลาสรุปที่เริ่มตรงนี้',
+  'grid.moreChips': '+{count}',
 };

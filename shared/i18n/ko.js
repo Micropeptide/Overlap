@@ -316,6 +316,7 @@ export default {
     "other": "시간 {count}개 표시함: {state}"
   },
   "grid.markedWholeDay": "하루 전체 표시함: {state}",
+  "grid.moreChips": "+{count}",
   "grid.nextDay": "다음: {day}",
   "grid.noResponses": "아직 응답이 없어요",
   "grid.noTimes": "이 투표에는 고를 수 있는 시간이 없어요.",
@@ -756,12 +757,15 @@ export default {
   "results.legendHasMaybe": "“필요 시 가능” 포함",
   "results.legendMaybe": "필요 시 가능",
   "results.legendNo": "불가",
+  "results.legendPeople": "색 하나가 한 사람",
   "results.legendPref": "선호",
   "results.legendRamp": "진할수록 더 많은 사람",
   "results.legendUnanswered": "이 시간을 아직 못 봄",
   "results.legendYes": "가능",
+  "results.markEveryone": "모두 가능한 시간 강조",
   "results.noneWork": "가능한 시간 없음",
   "results.note": "“{note}”",
+  "results.peopleTooMany": "한 사람당 한 색은 최대 {max}명까지 가능해요",
   "results.removeConfirm": "응답 삭제",
   "results.removeLabel": "{name} 님의 응답 삭제",
   "results.removeMessage": "이 사람이 표시한 시간이 영구적으로 삭제돼요. 투표가 열려 있는 동안에는 다시 응답할 수 있어요.",
@@ -787,6 +791,9 @@ export default {
   "results.unseen": {
     "other": "{summary}, 새로 추가된 시간 {count}개 못 봄"
   },
+  "results.viewHeat": "히트맵",
+  "results.viewLabel": "보기 방식",
+  "results.viewPeople": "사람별",
   "results.whoResponded": "응답한 사람",
   "results.you": "나",
   "shared.addToCalendar": "{google}에 추가할 수도 있어요. 열면 이 투표의 참여 링크를 포함한 일정 정보가 해당 회사로 전송돼요.",

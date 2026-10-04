@@ -316,6 +316,7 @@ export default {
     "other": "已将 {count} 个时间标记为{state}"
   },
   "grid.markedWholeDay": "已将整天标记为{state}",
+  "grid.moreChips": "+{count}",
   "grid.nextDay": "下一天：{day}",
   "grid.noResponses": "还没有回复",
   "grid.noTimes": "此投票没有可选的时间。",
@@ -756,12 +757,15 @@ export default {
   "results.legendHasMaybe": "包括“勉强可以”",
   "results.legendMaybe": "勉强可以",
   "results.legendNo": "没空",
+  "results.legendPeople": "每种颜色代表一个人",
   "results.legendPref": "首选",
   "results.legendRamp": "颜色越深，人数越多",
   "results.legendUnanswered": "还没看到这个时间",
   "results.legendYes": "有空",
+  "results.markEveryone": "突出显示所有人都有空的时间",
   "results.noneWork": "这些时间都不行",
   "results.note": "“{note}”",
+  "results.peopleTooMany": "最多 {max} 人时可按人分色显示",
   "results.removeConfirm": "移除回复",
   "results.removeLabel": "移除{name}的回复",
   "results.removeMessage": "对方的时间将被永久删除。投票开放期间，对方可以重新回复。",
@@ -787,6 +791,9 @@ export default {
   "results.unseen": {
     "other": "{summary}，还有 {count} 个新时间没看到"
   },
+  "results.viewHeat": "热力图",
+  "results.viewLabel": "显示方式",
+  "results.viewPeople": "按人",
   "results.whoResponded": "谁回复了",
   "results.you": "你",
   "shared.addToCalendar": "也可以添加到 {google}。打开它会把活动详情（包括此投票的邀请链接）发送给该公司。",

@@ -51,4 +51,10 @@ export default {
   'results.csvNo': 'ไม่ว่าง',
   'results.csvUnanswered': 'ยังไม่ตอบ',
   'results.csvCount': 'ว่าง (จำนวนคน)',
+  'results.viewLabel': 'แสดงตาม',
+  'results.viewPeople': 'รายคน',
+  'results.viewHeat': 'ฮีตแมป',
+  'results.legendPeople': 'หนึ่งสีคือหนึ่งคน',
+  'results.peopleTooMany': 'แยกสีรายคนได้สูงสุด {max} คน',
+  'results.markEveryone': 'ไฮไลต์เวลาที่ทุกคนว่าง',
 };

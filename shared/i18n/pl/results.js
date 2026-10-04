@@ -79,4 +79,10 @@ export default {
   'results.csvNo': 'Nie pasuje',
   'results.csvUnanswered': 'Bez odpowiedzi',
   'results.csvCount': 'Pasuje (liczba)',
+  'results.viewLabel': 'Pokaż według',
+  'results.viewPeople': 'Osoby',
+  'results.viewHeat': 'Mapa cieplna',
+  'results.legendPeople': 'Każdy kolor to jedna osoba',
+  'results.peopleTooMany': 'Jeden kolor na osobę działa przy maksymalnie {max} osobach',
+  'results.markEveryone': 'Wyróżnij terminy, które pasują wszystkim',
 };
