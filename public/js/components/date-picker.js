@@ -1,9 +1,11 @@
 // Calendar for choosing several dates: one month on narrow screens, two side
 // by side on wide ones, with month and year menus for jumping far ahead.
-// Click or drag across days, Shift+click for a range; on a keyboard, arrows
-// move, Space or Enter toggles, Page Up/Down change month.
+// Click or drag across days, Shift+click for a range, or "Select a range":
+// tap the first day and the last (changing months in between) to fill every
+// day between them. On a keyboard, arrows move, Space or Enter toggles, Page
+// Up/Down change month.
 
-import { h, clear } from '../lib/dom.js';
+import { h, clear, announce } from '../lib/dom.js';
 import { addDays, parseDateKey, toDateKey, weekdayOf } from '/shared/time.js';
 import { t, locale } from '../lib/i18n.js';
 
@@ -22,6 +24,16 @@ function weekLocale() {
   return page;
 }
 
+/** The region's weekend days, 0 = Sunday … 6 = Saturday (Friday and Saturday in some countries). */
+function weekendDays() {
+  try {
+    const loc = weekLocale();
+    const info = loc.getWeekInfo?.() || loc.weekInfo;
+    if (info?.weekend?.length) return new Set(info.weekend.map((d) => d % 7));
+  } catch { /* ignore */ }
+  return new Set([0, 6]);
+}
+
 function firstDayOfWeek() {
   try {
     const loc = weekLocale();
@@ -31,7 +43,7 @@ function firstDayOfWeek() {
   return 0;
 }
 
-export function createDatePicker({ selected = [], today, allowPast = [], onChange = () => {}, labelledBy }) {
+export function createDatePicker({ selected = [], today, allowPast = [], onChange = () => {}, labelledBy, maxDates = 92 }) {
   const chosen = new Set(selected);
   const keepPast = new Set(allowPast);
   const weekStart = firstDayOfWeek();
@@ -41,6 +53,10 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
   let drag = null;
   let pointerHandled = false;
   let anchor = null; // last day clicked, for Shift+click ranges
+  // "Select a range": on, the first day tapped, whether that day was already
+  // picked (then the range removes days), and whether to skip weekends.
+  const range = { on: false, start: null, removing: false, skipWeekends: false };
+  const weekend = weekendDays();
 
   const root = h('div', { class: 'datepicker' });
   const monthFmt = new Intl.DateTimeFormat(locale(), { month: 'long', year: 'numeric', timeZone: 'UTC' });
@@ -154,8 +170,87 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
     const months = h('div', { class: `dp-months${monthsShown() > 1 ? ' two' : ''}` });
     for (let i = 0; i < monthsShown(); i++) months.append(monthTable(monthOf(i), i));
     root.append(months);
-    if (keepFocus) root.querySelector(`[data-date="${focusKey}"]`)?.focus();
+    root.append(rangeBar());
+    markRange();
+    if (keepFocus) root.querySelector(`[data-date="${focusKey}"]`)?.focus({ preventScroll: true });
   }
+
+  // ----- "Select a range" -----
+
+  /** The button, the "skip weekends" option and a hint. The hint keeps its height, so the page never moves. */
+  function rangeBar() {
+    const toggle = h('button', {
+      type: 'button', class: `btn small ghost dp-range-btn${range.on ? ' on' : ''}`, 'aria-pressed': String(range.on),
+      onclick: () => {
+        Object.assign(range, { on: !range.on, start: null });
+        render();
+        root.querySelector('.dp-range-btn')?.focus({ preventScroll: true });
+        announce(range.on ? t('datePicker.rangeStartHint') : t('datePicker.rangeOff'), { silent: range.on });
+      },
+    }, t('datePicker.rangeButton'));
+    const skip = range.on ? h('label', { class: 'check small dp-skip' },
+      h('input', { type: 'checkbox', checked: range.skipWeekends, onchange: (e) => { range.skipWeekends = e.target.checked; markRange(); } }),
+      h('span', null, t('datePicker.skipWeekends'))) : null;
+    const hint = h('div', { class: `dp-range-hint${range.on ? ' on' : ''}` },
+      h('span', null, !range.on ? t('datePicker.rangeTip')
+        : range.start == null ? t('datePicker.rangeStartHint')
+        : t(range.removing ? 'datePicker.rangeFromRemove' : 'datePicker.rangeFromAdd', { date: dayFmt.format(dateMs(range.start)) })),
+      range.on && range.start != null ? h('button', { type: 'button', class: 'link-btn dp-range-cancel', onclick: () => { range.start = null; render(); } }, t('datePicker.rangeCancel')) : null);
+    return h('div', { class: 'dp-range' }, h('div', { class: 'dp-range-tools' }, toggle, skip), hint);
+  }
+
+  const dateMs = (dk) => { const { year, month, day } = parseDateKey(dk); return Date.UTC(year, month - 1, day); };
+
+  /** Outline the range's first day, and (with a mouse) preview the days up to the one pointed at. */
+  function markRange(hovered = null) {
+    for (const b of root.querySelectorAll('.dp-day')) {
+      const dk = b.dataset.date;
+      b.classList.toggle('range-start', range.on && dk === range.start);
+      const inPreview = range.on && range.start != null && hovered != null
+        && dk >= (range.start < hovered ? range.start : hovered) && dk <= (range.start < hovered ? hovered : range.start)
+        && !disabled(dk) && !(range.skipWeekends && weekend.has(weekdayOf(dk)));
+      b.classList.toggle('in-range', inPreview);
+    }
+  }
+
+  /** A tap in range mode: the first picks the start, the second fills (or clears) every day between. */
+  function rangeTap(dk) {
+    if (range.start == null) {
+      range.start = dk;
+      range.removing = chosen.has(dk);
+      focusKey = dk;
+      render({ keepFocus: true });
+      announce(t('datePicker.rangeStarted', { date: dayFmt.format(dateMs(dk)) }), { silent: true });
+      return;
+    }
+    const [a, b] = range.start < dk ? [range.start, dk] : [dk, range.start];
+    const days = [];
+    for (let d = a; d <= b; d = addDays(d, 1)) {
+      if (disabled(d) || (range.skipWeekends && weekend.has(weekdayOf(d)))) continue;
+      days.push(d);
+    }
+    let changed = 0;
+    let capped = false;
+    for (const d of days) {
+      if (range.removing) { if (chosen.delete(d)) changed++; continue; }
+      if (chosen.has(d)) continue;
+      if (chosen.size >= maxDates) { capped = true; break; }
+      chosen.add(d);
+      changed++;
+    }
+    range.start = null;
+    focusKey = dk;
+    render({ keepFocus: true });
+    emit();
+    if (capped) announce(t('datePicker.rangeCapped', { max: maxDates, count: changed }), { tone: 'error' });
+    else announce(t(range.removing ? 'datePicker.rangeRemoved' : 'datePicker.rangeAdded', { count: changed }));
+  }
+
+  root.addEventListener('pointerover', (e) => {
+    if (!range.on || range.start == null || e.pointerType === 'touch') return;
+    const btn = e.target.closest('.dp-day');
+    if (btn && !btn.disabled) markRange(btn.dataset.date);
+  });
   WIDE.addEventListener('change', () => render());
 
   root.addEventListener('pointerdown', (e) => {
@@ -165,10 +260,11 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
     e.preventDefault();
     pointerHandled = true;
     const dk = btn.dataset.date;
+    if (range.on) return rangeTap(dk);
     if (e.shiftKey && anchor) {
       // Shift+click selects every day between the last click and this one.
       const [a, b] = anchor < dk ? [anchor, dk] : [dk, anchor];
-      for (let d = a; d <= b; d = addDays(d, 1)) setDay(d, true);
+      for (let d = a; d <= b && (chosen.size < maxDates || chosen.has(d)); d = addDays(d, 1)) setDay(d, true);
       focusKey = dk;
       render({ keepFocus: true });
       emit();
@@ -205,6 +301,7 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
     const btn = e.target.closest('.dp-day');
     if (!btn || btn.disabled) return;
     const dk = btn.dataset.date;
+    if (range.on) return rangeTap(dk);
     setDay(dk, !chosen.has(dk));
     focusKey = dk;
     render({ keepFocus: true });

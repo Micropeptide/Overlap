@@ -58,6 +58,24 @@ export default {
   "datePicker.month": "月",
   "datePicker.nextMonth": "次の月",
   "datePicker.previousMonth": "前の月",
+  "datePicker.rangeAdded": {
+    "other": "{count}日を追加しました"
+  },
+  "datePicker.rangeButton": "範囲を選択",
+  "datePicker.rangeCancel": "キャンセル",
+  "datePicker.rangeCapped": {
+    "other": "日程調整に設定できる日付は最大{max}日のため、追加できたのはあと{count}日でした。"
+  },
+  "datePicker.rangeFromAdd": "{date}から：最後の日をタップすると、その間の日をすべて追加します。",
+  "datePicker.rangeFromRemove": "{date}から：最後の日をタップすると、その間の日をすべて外します。",
+  "datePicker.rangeOff": "範囲選択オフ：タップごとに1日ずつ選択",
+  "datePicker.rangeRemoved": {
+    "other": "{count}日を外しました"
+  },
+  "datePicker.rangeStarted": "{date}から。次に最後の日をタップしてください。",
+  "datePicker.rangeStartHint": "最初の日をタップし、次に最後の日をタップしてください。途中で月を切り替えてもかまいません。",
+  "datePicker.rangeTip": "ヒント：「範囲を選択」なら、連続した日付も2回のタップで選べます。",
+  "datePicker.skipWeekends": "週末を除く",
   "datePicker.today": "{day}（今日）",
   "datePicker.year": "年",
   "dom.cancel": "キャンセル",

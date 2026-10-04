@@ -70,6 +70,30 @@ export default {
   "datePicker.month": "Mese",
   "datePicker.nextMonth": "Mese successivo",
   "datePicker.previousMonth": "Mese precedente",
+  "datePicker.rangeAdded": {
+    "one": "{count} giorno aggiunto",
+    "many": "{count} giorni aggiunti",
+    "other": "{count} giorni aggiunti"
+  },
+  "datePicker.rangeButton": "Seleziona un intervallo",
+  "datePicker.rangeCancel": "Annulla",
+  "datePicker.rangeCapped": {
+    "one": "Un sondaggio può avere al massimo {max} date, quindi è stato aggiunto solo {count} altro giorno.",
+    "many": "Un sondaggio può avere al massimo {max} date, quindi sono stati aggiunti solo altri {count} giorni.",
+    "other": "Un sondaggio può avere al massimo {max} date, quindi sono stati aggiunti solo altri {count} giorni."
+  },
+  "datePicker.rangeFromAdd": "Dal {date}: tocca l’ultimo giorno per aggiungere tutti i giorni intermedi.",
+  "datePicker.rangeFromRemove": "Dal {date}: tocca l’ultimo giorno per rimuovere tutti i giorni intermedi.",
+  "datePicker.rangeOff": "Intervallo disattivato: ogni tocco sceglie un giorno",
+  "datePicker.rangeRemoved": {
+    "one": "{count} giorno rimosso",
+    "many": "{count} giorni rimossi",
+    "other": "{count} giorni rimossi"
+  },
+  "datePicker.rangeStarted": "Dal {date}. Ora tocca l’ultimo giorno.",
+  "datePicker.rangeStartHint": "Tocca il primo giorno, poi l’ultimo. Nel frattempo puoi cambiare mese.",
+  "datePicker.rangeTip": "Suggerimento: «Seleziona un intervallo» sceglie tanti giorni di fila con due soli tocchi.",
+  "datePicker.skipWeekends": "Salta i fine settimana",
   "datePicker.today": "{day}, oggi",
   "datePicker.year": "Anno",
   "dom.cancel": "Annulla",

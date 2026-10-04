@@ -64,6 +64,27 @@ export default {
   "datePicker.month": "Ay",
   "datePicker.nextMonth": "Sonraki ay",
   "datePicker.previousMonth": "Önceki ay",
+  "datePicker.rangeAdded": {
+    "one": "{count} gün eklendi",
+    "other": "{count} gün eklendi"
+  },
+  "datePicker.rangeButton": "Aralık seç",
+  "datePicker.rangeCancel": "İptal",
+  "datePicker.rangeCapped": {
+    "one": "Bir ankette en fazla {max} tarih olabilir, bu yüzden yalnızca {count} gün daha eklendi.",
+    "other": "Bir ankette en fazla {max} tarih olabilir, bu yüzden yalnızca {count} gün daha eklendi."
+  },
+  "datePicker.rangeFromAdd": "Başlangıç {date}: aradaki tüm günleri eklemek için son güne dokunun.",
+  "datePicker.rangeFromRemove": "Başlangıç {date}: aradaki tüm günleri kaldırmak için son güne dokunun.",
+  "datePicker.rangeOff": "Aralık kapalı: her dokunuş tek bir gün seçer",
+  "datePicker.rangeRemoved": {
+    "one": "{count} gün kaldırıldı",
+    "other": "{count} gün kaldırıldı"
+  },
+  "datePicker.rangeStarted": "Başlangıç {date}. Şimdi son güne dokunun.",
+  "datePicker.rangeStartHint": "Önce ilk güne, sonra son güne dokunun. Arada ay değiştirebilirsiniz.",
+  "datePicker.rangeTip": "İpucu: “Aralık seç” ile art arda birçok günü yalnızca iki dokunuşla seçebilirsiniz.",
+  "datePicker.skipWeekends": "Hafta sonlarını atla",
   "datePicker.today": "{day}, bugün",
   "datePicker.year": "Yıl",
   "dom.cancel": "İptal",

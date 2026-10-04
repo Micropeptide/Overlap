@@ -76,6 +76,33 @@ export default {
   "datePicker.month": "Месяц",
   "datePicker.nextMonth": "Следующий месяц",
   "datePicker.previousMonth": "Предыдущий месяц",
+  "datePicker.rangeAdded": {
+    "one": "Добавлен {count} день",
+    "few": "Добавлено {count} дня",
+    "many": "Добавлено {count} дней",
+    "other": "Добавлено {count} дня"
+  },
+  "datePicker.rangeButton": "Выбрать диапазон",
+  "datePicker.rangeCancel": "Отмена",
+  "datePicker.rangeCapped": {
+    "one": "В опросе может быть не более {max} дат, поэтому добавлен ещё только {count} день.",
+    "few": "В опросе может быть не более {max} дат, поэтому добавлено ещё только {count} дня.",
+    "many": "В опросе может быть не более {max} дат, поэтому добавлено ещё только {count} дней.",
+    "other": "В опросе может быть не более {max} дат, поэтому добавлено ещё только {count} дня."
+  },
+  "datePicker.rangeFromAdd": "Начало: {date}. Нажмите на последний день, чтобы добавить все дни между ними.",
+  "datePicker.rangeFromRemove": "Начало: {date}. Нажмите на последний день, чтобы убрать все дни между ними.",
+  "datePicker.rangeOff": "Диапазон выключен: каждое нажатие выбирает один день",
+  "datePicker.rangeRemoved": {
+    "one": "Убран {count} день",
+    "few": "Убрано {count} дня",
+    "many": "Убрано {count} дней",
+    "other": "Убрано {count} дня"
+  },
+  "datePicker.rangeStarted": "Начало: {date}. Теперь нажмите на последний день.",
+  "datePicker.rangeStartHint": "Нажмите на первый день, затем на последний. Между нажатиями можно сменить месяц.",
+  "datePicker.rangeTip": "Совет: «Выбрать диапазон» выбирает много дней подряд всего двумя нажатиями.",
+  "datePicker.skipWeekends": "Пропускать выходные",
   "datePicker.today": "{day}, сегодня",
   "datePicker.year": "Год",
   "dom.cancel": "Отмена",

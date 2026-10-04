@@ -64,6 +64,27 @@ export default {
   "datePicker.month": "Monat",
   "datePicker.nextMonth": "Nächster Monat",
   "datePicker.previousMonth": "Vorheriger Monat",
+  "datePicker.rangeAdded": {
+    "one": "{count} Tag hinzugefügt",
+    "other": "{count} Tage hinzugefügt"
+  },
+  "datePicker.rangeButton": "Bereich wählen",
+  "datePicker.rangeCancel": "Abbrechen",
+  "datePicker.rangeCapped": {
+    "one": "Eine Umfrage kann höchstens {max} Tage haben, daher wurde nur noch {count} Tag hinzugefügt.",
+    "other": "Eine Umfrage kann höchstens {max} Tage haben, daher wurden nur noch {count} Tage hinzugefügt."
+  },
+  "datePicker.rangeFromAdd": "Ab {date}: Tippe auf den letzten Tag, um alle Tage dazwischen hinzuzufügen.",
+  "datePicker.rangeFromRemove": "Ab {date}: Tippe auf den letzten Tag, um alle Tage dazwischen zu entfernen.",
+  "datePicker.rangeOff": "Bereich aus: Jedes Tippen wählt einen Tag",
+  "datePicker.rangeRemoved": {
+    "one": "{count} Tag entfernt",
+    "other": "{count} Tage entfernt"
+  },
+  "datePicker.rangeStarted": "Ab {date}. Tippe jetzt auf den letzten Tag.",
+  "datePicker.rangeStartHint": "Tippe auf den ersten Tag, dann auf den letzten. Dazwischen kannst du den Monat wechseln.",
+  "datePicker.rangeTip": "Tipp: Mit „Bereich wählen“ wählst du viele Tage am Stück mit nur zweimal Tippen.",
+  "datePicker.skipWeekends": "Wochenenden überspringen",
   "datePicker.today": "{day}, heute",
   "datePicker.year": "Jahr",
   "dom.cancel": "Abbrechen",

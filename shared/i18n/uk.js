@@ -76,6 +76,33 @@ export default {
   "datePicker.month": "Місяць",
   "datePicker.nextMonth": "Наступний місяць",
   "datePicker.previousMonth": "Попередній місяць",
+  "datePicker.rangeAdded": {
+    "one": "Додано {count} день",
+    "few": "Додано {count} дні",
+    "many": "Додано {count} днів",
+    "other": "Додано {count} дня"
+  },
+  "datePicker.rangeButton": "Виділити діапазон",
+  "datePicker.rangeCancel": "Скасувати",
+  "datePicker.rangeCapped": {
+    "one": "В опитуванні може бути не більше {max} дат, тому додано лише ще {count} день.",
+    "few": "В опитуванні може бути не більше {max} дат, тому додано лише ще {count} дні.",
+    "many": "В опитуванні може бути не більше {max} дат, тому додано лише ще {count} днів.",
+    "other": "В опитуванні може бути не більше {max} дат, тому додано лише ще {count} дня."
+  },
+  "datePicker.rangeFromAdd": "Початок: {date}. Торкніться останнього дня, щоб додати всі дні між ними.",
+  "datePicker.rangeFromRemove": "Початок: {date}. Торкніться останнього дня, щоб прибрати всі дні між ними.",
+  "datePicker.rangeOff": "Діапазон вимкнено: кожен дотик вибирає один день",
+  "datePicker.rangeRemoved": {
+    "one": "Прибрано {count} день",
+    "few": "Прибрано {count} дні",
+    "many": "Прибрано {count} днів",
+    "other": "Прибрано {count} дня"
+  },
+  "datePicker.rangeStarted": "Початок: {date}. Тепер торкніться останнього дня.",
+  "datePicker.rangeStartHint": "Торкніться першого дня, а потім останнього. Між дотиками можна змінити місяць.",
+  "datePicker.rangeTip": "Порада: «Виділити діапазон» вибирає багато днів поспіль лише двома дотиками.",
+  "datePicker.skipWeekends": "Пропускати вихідні",
   "datePicker.today": "{day}, сьогодні",
   "datePicker.year": "Рік",
   "dom.cancel": "Скасувати",

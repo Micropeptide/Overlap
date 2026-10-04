@@ -58,6 +58,24 @@ export default {
   "datePicker.month": "Bulan",
   "datePicker.nextMonth": "Bulan berikutnya",
   "datePicker.previousMonth": "Bulan sebelumnya",
+  "datePicker.rangeAdded": {
+    "other": "{count} hari ditambahkan"
+  },
+  "datePicker.rangeButton": "Pilih rentang",
+  "datePicker.rangeCancel": "Batal",
+  "datePicker.rangeCapped": {
+    "other": "Polling bisa berisi maksimal {max} tanggal, jadi hanya {count} hari lagi yang ditambahkan."
+  },
+  "datePicker.rangeFromAdd": "Dari {date}: ketuk hari terakhir untuk menambahkan semua hari di antaranya.",
+  "datePicker.rangeFromRemove": "Dari {date}: ketuk hari terakhir untuk menghapus semua hari di antaranya.",
+  "datePicker.rangeOff": "Rentang nonaktif: setiap ketukan memilih satu hari",
+  "datePicker.rangeRemoved": {
+    "other": "{count} hari dihapus"
+  },
+  "datePicker.rangeStarted": "Dari {date}. Sekarang ketuk hari terakhir.",
+  "datePicker.rangeStartHint": "Ketuk hari pertama, lalu hari terakhir. Anda bisa berganti bulan di antaranya.",
+  "datePicker.rangeTip": "Tips: “Pilih rentang” memilih banyak hari berturut-turut hanya dengan dua ketukan.",
+  "datePicker.skipWeekends": "Lewati akhir pekan",
   "datePicker.today": "{day}, hari ini",
   "datePicker.year": "Tahun",
   "dom.cancel": "Batal",

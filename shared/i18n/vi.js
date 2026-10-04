@@ -58,6 +58,24 @@ export default {
   "datePicker.month": "Tháng",
   "datePicker.nextMonth": "Tháng sau",
   "datePicker.previousMonth": "Tháng trước",
+  "datePicker.rangeAdded": {
+    "other": "Đã thêm {count} ngày"
+  },
+  "datePicker.rangeButton": "Chọn một khoảng",
+  "datePicker.rangeCancel": "Hủy",
+  "datePicker.rangeCapped": {
+    "other": "Một cuộc thăm dò chỉ có tối đa {max} ngày, nên chỉ thêm được {count} ngày nữa."
+  },
+  "datePicker.rangeFromAdd": "Từ {date}: chạm vào ngày cuối cùng để thêm mọi ngày ở giữa.",
+  "datePicker.rangeFromRemove": "Từ {date}: chạm vào ngày cuối cùng để bỏ mọi ngày ở giữa.",
+  "datePicker.rangeOff": "Đã tắt chọn khoảng: mỗi lần chạm chọn một ngày",
+  "datePicker.rangeRemoved": {
+    "other": "Đã bỏ {count} ngày"
+  },
+  "datePicker.rangeStarted": "Từ {date}. Giờ hãy chạm vào ngày cuối cùng.",
+  "datePicker.rangeStartHint": "Chạm vào ngày đầu tiên, rồi ngày cuối cùng. Bạn có thể chuyển tháng giữa hai lần chạm.",
+  "datePicker.rangeTip": "Mẹo: “Chọn một khoảng” giúp chọn nhiều ngày liên tiếp chỉ với hai lần chạm.",
+  "datePicker.skipWeekends": "Bỏ qua cuối tuần",
   "datePicker.today": "{day}, hôm nay",
   "datePicker.year": "Năm",
   "dom.cancel": "Hủy",

@@ -985,3 +985,19 @@ textarea.input { resize: vertical; min-height: 5rem; }
 [dir='rtl'] .pw-section > summary::after { margin-left: 0; margin-right: auto; }
 /* Long single words (German, Russian, …) hyphenate by the page language instead of overflowing. */
 .btn, .tab, .seg, .brush, .chip, .setting-name, .field-label { hyphens: auto; overflow-wrap: break-word; }
+
+/* Date picker: "Select a range" */
+.dp-range { margin-top: 0.75rem; }
+.dp-range-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem; }
+.dp-range-btn.on { border-color: var(--pref); color: var(--pref); background: color-mix(in srgb, var(--pref) 10%, var(--surface)); }
+.dp-range-hint { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.5rem; padding: 0.45rem 0.75rem;
+  border-radius: var(--radius-m); font-size: var(--step--1); line-height: 1.4; color: var(--ink-2);
+  background: var(--surface-2); border: 1px solid var(--line);
+  /* Two lines always, so the page doesn't move as the text changes. */
+  min-height: calc(2 * 1.4em + 0.9rem + 2px); box-sizing: border-box; }
+.dp-range-hint > span { flex: 1; }
+.dp-range-hint.on { color: var(--ink); border-color: transparent; background: color-mix(in srgb, var(--pref) 12%, var(--surface)); }
+.dp-range-cancel { flex: none; font-weight: 700; }
+.dp-day.range-start { outline: 2.5px solid var(--pref); outline-offset: 1px; }
+.dp-day.in-range:not(.on) { background: color-mix(in srgb, var(--pref) 18%, var(--surface)); }
+.dp-day.in-range.on { box-shadow: inset 0 0 0 2px var(--pref); }
