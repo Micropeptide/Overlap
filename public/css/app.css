@@ -1044,3 +1044,19 @@ textarea.input { resize: vertical; min-height: 5rem; }
 .chip-more { font-size: var(--step--1); font-weight: 700; color: var(--ink-2); padding-inline-start: 2px; }
 .results-view { margin: 0; }
 .results-view .seg span { padding: 0.3rem 0.85rem; }
+
+/* People view: the pointer's outline, the best-times highlight and the keyboard
+   focus ring sit above the colored lanes (the heatmap draws them underneath). */
+.grid-results.people-view .cell[data-slot]:hover::before,
+.grid-results.people-view .cell.hl::before { box-shadow: none; }
+.grid-results.people-view .cell[data-slot]:focus-visible { box-shadow: none; }
+.grid-results.people-view .cell[data-slot]::after {
+  content: ''; position: absolute; inset: 1px 2px; border-radius: 6px; pointer-events: none; z-index: 2;
+}
+.grid-results.people-view .cell[data-slot]:hover::after {
+  box-shadow: inset 0 0 0 2px var(--ink), inset 0 0 0 3.5px color-mix(in srgb, var(--surface) 80%, transparent);
+  background: color-mix(in srgb, var(--ink) 7%, transparent);
+}
+.grid-results.people-view .cell.hl::after { box-shadow: inset 0 0 0 2.5px var(--pref), inset 0 0 0 4px color-mix(in srgb, var(--surface) 80%, transparent); }
+.grid-results.people-view .cell[data-slot]:focus-visible::after { box-shadow: inset 0 0 0 2px var(--surface), inset 0 0 0 4px var(--focus); }
+.grid-results.people-view[data-input='pointer'] .cell[data-slot]:focus-visible::after { box-shadow: none; }
