@@ -1011,7 +1011,8 @@ textarea.input { resize: vertical; min-height: 5rem; }
 
 /* ---------- results: People view (a colored lane per person) ---------- */
 .grid-results.people-view .cell:where([data-slot]) { --fill: transparent; }
-.grid-results.people-view .cell.all { --fill: color-mix(in srgb, var(--everyone) 22%, transparent); }
+/* "Everyone can make it" (when turned on) is drawn on top of the lanes; see below. */
+.grid-results.people-view .cell.all { --fill: transparent; }
 .grid-results.people-view .cell.has-maybe::before { background-image: none; }
 .lanes { position: absolute; inset: 0 6px; display: flex; gap: 2px; pointer-events: none; }
 .lane { flex: 1 1 0; min-width: 0; margin: 3px 0; border-radius: 4px; transition: opacity 120ms ease; }
@@ -1030,7 +1031,7 @@ textarea.input { resize: vertical; min-height: 5rem; }
 .sw-lane-pref { background: radial-gradient(circle at 50% 50%, #fff 0 1.6px, transparent 2.2px), var(--person-0); }
 .sw-lane-maybe { background: repeating-linear-gradient(135deg, var(--person-0) 0 3px, color-mix(in srgb, var(--person-0) 22%, var(--surface)) 3px 6px); }
 .sw-people { background: linear-gradient(90deg, var(--person-0) 0 33%, var(--person-1) 33% 66%, var(--person-2) 66%); }
-.sw-everyone-wash { background: color-mix(in srgb, var(--everyone) 30%, var(--surface)); border: 1px solid var(--everyone); }
+.sw-everyone-wash { background: var(--surface); box-shadow: inset 0 0 0 2px var(--everyone); }
 
 /* Phone: who's free, as colored initials. */
 .slot-chips { flex: 1; display: flex; align-items: center; min-width: 0; }
@@ -1060,3 +1061,9 @@ textarea.input { resize: vertical; min-height: 5rem; }
 .grid-results.people-view .cell.hl::after { box-shadow: inset 0 0 0 2.5px var(--pref), inset 0 0 0 4px color-mix(in srgb, var(--surface) 80%, transparent); }
 .grid-results.people-view .cell[data-slot]:focus-visible::after { box-shadow: inset 0 0 0 2px var(--surface), inset 0 0 0 4px var(--focus); }
 .grid-results.people-view[data-input='pointer'] .cell[data-slot]:focus-visible::after { box-shadow: none; }
+/* Times everyone can make, in People view: a green outline over the lanes, one block per run of times. */
+.grid-results.people-view .cell.all::after {
+  inset: 0 1px; border: 2.5px solid var(--everyone); border-radius: 8px;
+}
+.grid-results.people-view .cell.all.join-top::after { top: -1px; border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0; }
+.grid-results.people-view .cell.all.join-bottom::after { border-bottom: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
