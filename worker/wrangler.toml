@@ -22,8 +22,10 @@ migrations_dir = "migrations"
 crons = ["*/5 * * * *"]
 
 [vars]
-ALLOWED_ORIGINS = "https://overlap.runtian.uk"
-PUBLIC_URL = "https://overlap.runtian.uk"
+# The old address only redirects now (scripts/build-moved.mjs); it stays allowed
+# so a tab left open there keeps working.
+ALLOWED_ORIGINS = "https://overlap.runtianwu.com,https://overlap.runtian.uk"
+PUBLIC_URL = "https://overlap.runtianwu.com"
 RETENTION_DAYS = "0"
 D1_RESTORE_DAYS = "7"
 API_URL = "https://overlap-api.micropeptide.workers.dev"

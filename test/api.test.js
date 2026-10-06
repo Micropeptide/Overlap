@@ -477,7 +477,8 @@ test('organizers can stop guests changing answers; guests can still delete their
 });
 
 test('an organizer can switch a poll between dates and days of the week', async () => {
-  const { poll, adminToken } = await newPoll();
+  // Dates well away from this week, which becomes the weekly poll's reference week.
+  const { poll, adminToken } = await newPoll({ dates: ['2028-03-01', '2028-03-02'] });
   const sent = await api('POST', `/api/polls/${poll.id}/responses`, { body: { name: 'Ana', available: [poll.slots[0]], ifNeeded: [] } });
   await api('PATCH', `/api/polls/${poll.id}`, { token: adminToken, body: { final: { start: poll.slots[0], end: poll.slots[0] + 3600e3 } } });
 

@@ -12,6 +12,7 @@ import { renderPrivacy } from './views/privacy.js';
 import { renderAbout } from './views/about.js';
 import { renderNotFound } from './views/not-found.js';
 import { renderEmail } from './views/email.js';
+import { importMovedStorage } from './lib/moved.js';
 
 const routes = [
   [/^\/$/, renderHome],
@@ -24,6 +25,8 @@ const routes = [
 
 const main = document.getElementById('main');
 
+// What this browser remembered at the old address, if it just came from there.
+await importMovedStorage();
 // Language first: every view below reads its text from the chosen language.
 await initI18n();
 translateShell();
