@@ -1,6 +1,6 @@
 # Overlap
 
-**Live at [overlap.runtian.uk](https://overlap.runtian.uk)** · by [Micropeptide](https://github.com/Micropeptide) · MIT License
+**Live at [overlap.runtianwu.com](https://overlap.runtianwu.com)** (moved from overlap.runtian.uk; old links still work) · by [Micropeptide](https://github.com/Micropeptide) · MIT License
 
 Free group scheduling with no accounts. The organizer picks some dates and
 shares one link. Guests type a display name and mark when they're free, and
@@ -92,8 +92,8 @@ rather than silently running without limits.
 
 ## Deploy
 
-**The live copy** runs on GitHub Pages plus a free Cloudflare Worker with a D1
-database. See [docs/DEPLOY-CLOUDFLARE.md](docs/DEPLOY-CLOUDFLARE.md). The same
+**The live copy** runs on Cloudflare: one Worker serves the pages, another the
+API, with a D1 database. See [docs/DEPLOY-CLOUDFLARE.md](docs/DEPLOY-CLOUDFLARE.md). The same
 browser tests run against that setup with `npm run test:e2e:cloudflare`.
 
 To host it yourself on a server instead: Overlap is one Node process and one SQLite file. Any small VPS (1 vCPU, 512 MB) is plenty.
@@ -154,7 +154,7 @@ Copy the new files over the old ones and restart. The schema is created with
 public/            browser app: plain ES modules, no build step
   js/views/        home (create), guest, manage (organizer), privacy, about
   js/components/   grid (the heart), date picker, poll form, best times, results
-  js/config.js     where the API lives ('' = same server; rewritten for GitHub Pages)
+  js/config.js     where the API lives ('' = same server; rewritten by build-pages)
 shared/            used by BOTH browser and server
   time.js          wall clock ↔ UTC with Intl only; slot generation; viewer layout
   overlap.js       per-slot tallies and ranked "best time" windows
@@ -169,7 +169,7 @@ server/            …plus the Node-only parts
   app.js           static files, security headers, Node HTTP adapter
   store.js         node:sqlite driver (secure delete, WAL checkpoints)
 worker/            Cloudflare Workers adapter (D1 driver, CORS, optional cron) + D1 migrations
-scripts/           build-pages (GitHub Pages), serve-pages (local stand-in), backup
+scripts/           build-pages (static build), build-moved (old-address page), serve-pages (local stand-in), backup
 ```
 
 **Time model.** A poll is "these dates, from 9:00 to 17:00, in Europe/London,
