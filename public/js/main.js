@@ -25,6 +25,18 @@ const routes = [
 
 const main = document.getElementById('main');
 
+// Focus rings are for keyboard users. After a click or tap, the page can move
+// focus itself (to a confirmation, a dialog's button), and browsers then show
+// the ring too; this notes how the person is moving so CSS can leave it off.
+const root = document.documentElement;
+root.dataset.input = 'pointer';
+addEventListener('pointerdown', () => { root.dataset.input = 'pointer'; }, true);
+addEventListener('keydown', (e) => {
+  const typing = e.target.matches?.('input:not([type=checkbox]):not([type=radio]), textarea, select, [contenteditable]');
+  if (e.key === 'Tab' || e.key.startsWith('Arrow') || ['Home', 'End', 'PageUp', 'PageDown', 'Escape'].includes(e.key)
+    || ((e.key === 'Enter' || e.key === ' ') && !typing)) root.dataset.input = 'keyboard';
+}, true);
+
 // What this browser remembered at the old address, if it just came from there.
 await importMovedStorage();
 // Language first: every view below reads its text from the chosen language.

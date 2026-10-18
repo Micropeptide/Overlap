@@ -142,6 +142,12 @@ button, input, select, textarea { font: inherit; color: inherit; }
   outline-offset: 2px;
   border-radius: 4px;
 }
+/* After a click or tap, no ring (main.js sets data-input); keyboard users keep it. */
+:root[data-input='pointer'] :focus-visible,
+:root[data-input='pointer'] .brush:has(input:focus-visible),
+:root[data-input='pointer'] .seg input:focus-visible + span { outline: none; }
+:root[data-input='pointer'] .cell:focus-visible,
+:root[data-input='pointer'] .grid-results.people-view .cell[data-slot]:focus-visible::after { box-shadow: none; }
 
 .visually-hidden {
   position: absolute !important;

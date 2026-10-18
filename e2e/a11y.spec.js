@@ -42,3 +42,18 @@ for (const scheme of ['light', 'dark']) {
     });
   });
 }
+
+test('focus rings show for keyboard users, not after a click', async ({ page }, info) => {
+  test.skip(info.project.name !== 'desktop', 'Mouse and keyboard.');
+  await page.goto('/p/example');
+  const ring = () => page.evaluate(() => getComputedStyle(document.activeElement).outlineStyle);
+  // A click that leads the page to move focus (opening a dialog focuses its first button).
+  await page.getByRole('note', { name: 'About this sample poll' }).getByRole('button', { name: 'See an example email' }).click();
+  await expect(page.getByRole('dialog', { name: 'Example email' })).toBeVisible();
+  expect(await ring()).toBe('none');
+  await page.getByRole('dialog').getByRole('button', { name: 'Close' }).click();
+  // The keyboard brings the ring back.
+  await page.keyboard.press('Tab');
+  expect(await page.evaluate(() => document.activeElement.tagName)).not.toBe('BODY');
+  expect(await ring()).toBe('solid');
+});
