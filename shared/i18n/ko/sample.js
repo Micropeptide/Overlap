@@ -9,4 +9,9 @@ export default {
   'sample.organizerNote': "예시 투표의 주최자 화면이에요. 최종 시간을 정하거나, 투표를 수정하거나, QR 코드를 띄워 보세요. 모든 내용은 이 브라우저에만 남고, 투표를 삭제하면 예시가 처음부터 다시 시작돼요.",
   'sample.seeOrganizer': "주최자 화면 보기",
   'sample.seeGuest': "게스트 화면 보기",
+  'sample.emailExample': "이메일 예시 보기",
+  'sample.emailTitle': "이메일 예시",
+  'sample.emailIntro': "예시 투표는 이메일을 보내지 않아요. 알림을 신청하면 실제 이메일은 이렇게 와요:",
+  'sample.emailSubject': "제목: {subject}",
+  'sample.close': "닫기",
 };

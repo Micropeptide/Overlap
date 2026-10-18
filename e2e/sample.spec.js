@@ -77,3 +77,24 @@ test('the sample has an organizer side: pick the time, and the guest side shows 
   await expect(page.locator('.final-card')).toHaveCount(0);
   expect(calls).toEqual([]);
 });
+
+test('both sides of the sample show an example email', async ({ page }, info) => {
+  test.skip(info.project.name !== 'desktop', 'Same in every layout.');
+  await page.goto('/p/example');
+  await page.getByRole('note', { name: 'About this sample poll' }).getByRole('button', { name: 'See an example email' }).click();
+  let dialog = page.getByRole('dialog', { name: 'Example email' });
+  await expect(dialog).toContainText('Subject: Updates to “Team offsite (sample)”');
+  await expect(dialog).toContainText('New responses: Kenji, Priya.');
+  await expect(dialog).toContainText('Open the poll');
+  await dialog.getByRole('button', { name: 'Close' }).click();
+
+  await page.goto('/m/example#k=sample');
+  await page.getByRole('note', { name: 'About this sample poll' }).getByRole('button', { name: 'See an example email' }).click();
+  dialog = page.getByRole('dialog', { name: 'Example email' });
+  await expect(dialog).toContainText('7 people have responded so far.');
+  await expect(dialog).toContainText('Open the organizer view');
+  await dialog.getByRole('button', { name: 'Close' }).click();
+  // The Email section in Manage poll offers the same preview instead of failing.
+  await page.locator('.email-control').getByRole('button', { name: 'See an example email' }).click();
+  await expect(page.getByRole('dialog', { name: 'Example email' })).toBeVisible();
+});

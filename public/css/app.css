@@ -1139,3 +1139,14 @@ textarea.input { resize: vertical; min-height: 5rem; }
 .qr-code:fullscreen { width: 100%; height: 100%; padding: 6vmin; border-radius: 0; display: grid; place-items: center; }
 .qr-code:fullscreen svg { width: auto; height: 100%; max-width: 100%; }
 .qr-url { margin: 0; font-weight: 700; overflow-wrap: anywhere; direction: ltr; }
+
+/* The sample poll's example email: the real email's look, inside a dialog. */
+.email-example-subject { font-weight: 700; margin: 0 0 0.6rem; overflow-wrap: anywhere; }
+.email-example-card { background: #f2f5f7; border-radius: var(--radius-m); padding: 1rem; color: #14202b; }
+.email-example-card > p { background: #fff; margin: 0; padding: 0.35rem 1rem; line-height: 1.5; }
+.email-example-card > p:first-child { border-radius: 12px 12px 0 0; padding-top: 1rem; }
+.email-example-brand { font-weight: 700; font-size: 1.1rem; }
+.email-example-button { display: inline-block; background: #0b7a75; color: #fff; font-weight: 700; padding: 0.6rem 1rem; border-radius: 10px; margin: 0.4rem 0; }
+.email-example-footer { background: #fff; border-radius: 0 0 12px 12px; padding: 0.5rem 1rem 0.9rem; font-size: 0.82rem; color: #4a5866; }
+.email-example-footer p { margin: 0.3rem 0 0; border-top: 0; }
+.email-example-footer p:first-child { border-top: 1px solid #d8dfe4; padding-top: 0.6rem; }

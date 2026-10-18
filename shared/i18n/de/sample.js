@@ -9,4 +9,9 @@ export default {
   'sample.organizerNote': "Das ist die Organisatorseite der Beispielumfrage. Wähl einen finalen Termin, bearbeite die Umfrage oder zeig den QR-Code. Alles bleibt in diesem Browser, und wenn du die Umfrage löschst, beginnt das Beispiel von vorn.",
   'sample.seeOrganizer': "Organisatorseite ansehen",
   'sample.seeGuest': "Gästeseite ansehen",
+  'sample.emailExample': "Beispiel-E-Mail ansehen",
+  'sample.emailTitle': "Beispiel-E-Mail",
+  'sample.emailIntro': "Die Beispielumfrage verschickt keine E-Mails. So sieht ein echtes Update aus, wenn du eins anforderst:",
+  'sample.emailSubject': "Betreff: {subject}",
+  'sample.close': "Schließen",
 };

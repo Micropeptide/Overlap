@@ -9,4 +9,9 @@ export default {
   'sample.organizerNote': "Questa è la parte dell’organizzatore del sondaggio di esempio. Prova a scegliere l’orario finale, modificare il sondaggio o mostrare il codice QR. Tutto resta in questo browser, ed eliminando il sondaggio l’esempio ricomincia da capo.",
   'sample.seeOrganizer': "Vedi la parte dell’organizzatore",
   'sample.seeGuest': "Vedi la parte dell’ospite",
+  'sample.emailExample': "Vedi un’email di esempio",
+  'sample.emailTitle': "Email di esempio",
+  'sample.emailIntro': "Il sondaggio di esempio non invia email. Ecco com’è un aggiornamento vero, se lo chiedi:",
+  'sample.emailSubject': "Oggetto: {subject}",
+  'sample.close': "Chiudi",
 };

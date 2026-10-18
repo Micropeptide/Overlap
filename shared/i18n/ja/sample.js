@@ -9,4 +9,9 @@ export default {
   'sample.organizerNote': "これはサンプルの日程調整の主催者画面です。最終日時の決定、内容の編集、QRコードの表示を試してみてください。すべてこのブラウザー内だけで動き、削除するとサンプルは最初からやり直しになります。",
   'sample.seeOrganizer': "主催者の画面を見る",
   'sample.seeGuest': "ゲストの画面を見る",
+  'sample.emailExample': "メールの例を見る",
+  'sample.emailTitle': "メールの例",
+  'sample.emailIntro': "サンプルではメールは送信されません。お知らせを希望した場合、実際のメールはこのように届きます：",
+  'sample.emailSubject': "件名：{subject}",
+  'sample.close': "閉じる",
 };

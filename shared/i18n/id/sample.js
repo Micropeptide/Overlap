@@ -9,4 +9,9 @@ export default {
   'sample.organizerNote': "Ini sisi penyelenggara dari polling contoh. Coba pilih waktu akhir, ubah polling, atau tampilkan kode QR. Semuanya tetap di browser ini, dan menghapus polling akan memulai contoh dari awal.",
   'sample.seeOrganizer': "Lihat sisi penyelenggara",
   'sample.seeGuest': "Lihat sisi tamu",
+  'sample.emailExample': "Lihat contoh email",
+  'sample.emailTitle': "Contoh email",
+  'sample.emailIntro': "Polling contoh tidak mengirim email. Beginilah tampilan email pembaruan sungguhan, jika kamu memintanya:",
+  'sample.emailSubject': "Subjek: {subject}",
+  'sample.close': "Tutup",
 };

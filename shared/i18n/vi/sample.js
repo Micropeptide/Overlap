@@ -9,4 +9,9 @@ export default {
   'sample.organizerNote': "Đây là phần của người tổ chức trong cuộc thăm dò mẫu. Hãy thử chọn thời gian cuối cùng, sửa cuộc thăm dò hoặc hiện mã QR. Mọi thứ chỉ ở trong trình duyệt này, và xóa cuộc thăm dò sẽ bắt đầu lại bản mẫu.",
   'sample.seeOrganizer': "Xem phần người tổ chức",
   'sample.seeGuest': "Xem phần khách",
+  'sample.emailExample': "Xem email mẫu",
+  'sample.emailTitle': "Email mẫu",
+  'sample.emailIntro': "Cuộc thăm dò mẫu không gửi email. Nếu bạn đăng ký, email cập nhật thật trông như thế này:",
+  'sample.emailSubject': "Tiêu đề: {subject}",
+  'sample.close': "Đóng",
 };

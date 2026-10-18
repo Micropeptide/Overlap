@@ -9,4 +9,9 @@ export default {
   'sample.organizerNote': "這是範例投票的主辦人頁面。試試選定最終時間、編輯投票或顯示 QR 碼。所有內容只留在這個瀏覽器裡，刪除投票後範例會重新開始。",
   'sample.seeOrganizer': "查看主辦人頁面",
   'sample.seeGuest': "查看訪客頁面",
+  'sample.emailExample': "查看範例郵件",
+  'sample.emailTitle': "範例郵件",
+  'sample.emailIntro': "範例投票不會寄送郵件。如果你訂閱了更新，真正的郵件長這樣：",
+  'sample.emailSubject': "主旨：{subject}",
+  'sample.close': "關閉",
 };

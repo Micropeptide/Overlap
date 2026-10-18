@@ -11,7 +11,7 @@ import { renderNotFound } from './not-found.js';
 import { isValidTimeZone } from '/shared/time.js';
 import { passwordKey, passwordProblem, PASSWORD_MIN, PASSWORD_MAX } from '/shared/password.js';
 import { t, tx } from '../lib/i18n.js';
-import { emailControl } from '../components/email-control.js';
+import { emailControl, showExampleEmail } from '../components/email-control.js';
 import { pollFacts, finalCard, statusBanner, locationLine, watchForUpdates, captureFocus } from './shared.js';
 
 // What a guest can mark with: [id, label, shortcut key, what's announced on picking it].
@@ -229,6 +229,7 @@ export async function renderGuest(main, pollId) {
         h('p', null, t('sample.note')),
         h('p', { class: 'sample-actions' },
           h('a', { class: 'btn secondary small', href: SAMPLE_MANAGE }, icon('lock'), t('sample.seeOrganizer')),
+          h('button', { type: 'button', class: 'btn secondary small', onclick: () => showExampleEmail(poll, 'guest') }, icon('mail'), t('sample.emailExample')),
           h('a', { class: 'btn primary small', href: '/' }, t('sample.createOwn')))));
     }
     page.append(h('header', { class: 'poll-head' },

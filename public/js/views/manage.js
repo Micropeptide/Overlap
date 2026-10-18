@@ -9,7 +9,7 @@ import { zoneLine } from '../components/zone-picker.js';
 import { createPollForm } from '../components/poll-form.js';
 import { lengthOptions } from '../components/lengths.js';
 import { renderNotFound } from './not-found.js';
-import { emailControl } from '../components/email-control.js';
+import { emailControl, showExampleEmail } from '../components/email-control.js';
 import { serverConfig } from '../lib/config.js';
 import { pollFacts, finalCard, locationLine, watchForUpdates, captureFocus } from './shared.js';
 import { isValidTimeZone } from '/shared/time.js';
@@ -96,6 +96,7 @@ export async function renderManage(main, pollId) {
         h('p', null, t('sample.organizerNote')),
         h('p', { class: 'sample-actions' },
           h('a', { class: 'btn secondary small', href: `/p/${SAMPLE_ID}` }, icon('people'), t('sample.seeGuest')),
+          h('button', { type: 'button', class: 'btn secondary small', onclick: () => showExampleEmail(poll, 'organizer') }, icon('mail'), t('sample.emailExample')),
           h('a', { class: 'btn primary small', href: '/' }, t('sample.createOwn')))));
     }
     page.append(h('header', { class: 'poll-head' },

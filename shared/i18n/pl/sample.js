@@ -9,4 +9,9 @@ export default {
   'sample.organizerNote': "To widok organizatora przykładowej ankiety. Spróbuj wybrać ostateczny termin, edytować ankietę lub pokazać kod QR. Wszystko zostaje w tej przeglądarce, a usunięcie ankiety zaczyna przykład od nowa.",
   'sample.seeOrganizer': "Zobacz widok organizatora",
   'sample.seeGuest': "Zobacz widok gościa",
+  'sample.emailExample': "Zobacz przykładowy e-mail",
+  'sample.emailTitle': "Przykładowy e-mail",
+  'sample.emailIntro': "Przykładowa ankieta nie wysyła e-maili. Tak wygląda prawdziwa wiadomość z nowościami, jeśli o nią poprosisz:",
+  'sample.emailSubject': "Temat: {subject}",
+  'sample.close': "Zamknij",
 };

@@ -9,4 +9,9 @@ export default {
   'sample.organizerNote': "นี่คือฝั่งผู้จัดของโพลตัวอย่าง ลองเลือกเวลาสุดท้าย แก้ไขโพล หรือแสดงคิวอาร์โค้ด ทุกอย่างอยู่ในเบราว์เซอร์นี้ และการลบโพลจะเริ่มตัวอย่างใหม่",
   'sample.seeOrganizer': "ดูฝั่งผู้จัด",
   'sample.seeGuest': "ดูฝั่งผู้เข้าร่วม",
+  'sample.emailExample': "ดูตัวอย่างอีเมล",
+  'sample.emailTitle': "ตัวอย่างอีเมล",
+  'sample.emailIntro': "โพลตัวอย่างไม่ส่งอีเมล ถ้าคุณขอรับ อีเมลอัปเดตจริงจะหน้าตาแบบนี้:",
+  'sample.emailSubject': "เรื่อง: {subject}",
+  'sample.close': "ปิด",
 };

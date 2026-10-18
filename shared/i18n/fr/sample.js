@@ -9,4 +9,9 @@ export default {
   'sample.organizerNote': "Voici le côté organisateur du sondage d’exemple. Essayez de choisir l’horaire final, de modifier le sondage ou d’afficher le code QR. Tout reste dans ce navigateur, et supprimer le sondage remet l’exemple à zéro.",
   'sample.seeOrganizer': "Voir le côté organisateur",
   'sample.seeGuest': "Voir le côté invité",
+  'sample.emailExample': "Voir un exemple d’e-mail",
+  'sample.emailTitle': "Exemple d’e-mail",
+  'sample.emailIntro': "Le sondage d’exemple n’envoie pas d’e-mail. Voici à quoi ressemble une vraie mise à jour, si vous en demandez :",
+  'sample.emailSubject': "Objet : {subject}",
+  'sample.close': "Fermer",
 };

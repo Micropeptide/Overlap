@@ -9,4 +9,9 @@ export default {
   'sample.organizerNote': "这是示例投票的组织者页面。试试选定最终时间、编辑投票或显示二维码。所有内容只留在这个浏览器里，删除投票后示例会重新开始。",
   'sample.seeOrganizer': "查看组织者页面",
   'sample.seeGuest': "查看参与者页面",
+  'sample.emailExample': "查看示例邮件",
+  'sample.emailTitle': "示例邮件",
+  'sample.emailIntro': "示例投票不会发送邮件。如果你订阅了更新，真实的邮件是这样的：",
+  'sample.emailSubject': "主题：{subject}",
+  'sample.close': "关闭",
 };

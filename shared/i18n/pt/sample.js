@@ -9,4 +9,9 @@ export default {
   'sample.organizerNote': "Este é o lado do organizador da enquete de exemplo. Experimente escolher o horário final, editar a enquete ou mostrar o código QR. Tudo fica neste navegador, e excluir a enquete recomeça o exemplo.",
   'sample.seeOrganizer': "Ver o lado do organizador",
   'sample.seeGuest': "Ver o lado do convidado",
+  'sample.emailExample': "Ver um e-mail de exemplo",
+  'sample.emailTitle': "E-mail de exemplo",
+  'sample.emailIntro': "A enquete de exemplo não envia e-mails. É assim que fica uma atualização de verdade, se você pedir:",
+  'sample.emailSubject': "Assunto: {subject}",
+  'sample.close': "Fechar",
 };

@@ -9,4 +9,9 @@ export default {
   'sample.organizerNote': "Esta es la vista del organizador de la encuesta de ejemplo. Prueba a elegir el horario final, editar la encuesta o mostrar el código QR. Todo se queda en este navegador, y si borras la encuesta, el ejemplo empieza de nuevo.",
   'sample.seeOrganizer': "Ver la vista del organizador",
   'sample.seeGuest': "Ver la vista de invitado",
+  'sample.emailExample': "Ver un correo de ejemplo",
+  'sample.emailTitle': "Correo de ejemplo",
+  'sample.emailIntro': "La encuesta de ejemplo no envía correos. Así se ve una actualización real, si la pides:",
+  'sample.emailSubject': "Asunto: {subject}",
+  'sample.close': "Cerrar",
 };

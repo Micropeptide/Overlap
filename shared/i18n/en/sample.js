@@ -10,4 +10,9 @@ export default {
   'sample.organizerNote': "This is the organizer’s side of the sample poll. Try picking the final time, editing the poll or showing the QR code. It all stays in this browser, and deleting the poll starts the sample over.",
   'sample.seeOrganizer': "See the organizer’s side",
   'sample.seeGuest': "See the guest’s side",
+  'sample.emailExample': "See an example email",
+  'sample.emailTitle': "Example email",
+  'sample.emailIntro': "The sample poll doesn’t send email. This is what a real update looks like, if you ask for one:",
+  'sample.emailSubject': "Subject: {subject}",
+  'sample.close': "Close",
 };

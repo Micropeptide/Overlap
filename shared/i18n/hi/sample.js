@@ -9,4 +9,9 @@ export default {
   'sample.organizerNote': "यह नमूना पोल का आयोजक वाला हिस्सा है। अंतिम समय चुनकर, पोल बदलकर या QR कोड दिखाकर देखें। सब कुछ इसी ब्राउज़र में रहता है, और पोल हटाने पर नमूना फिर से शुरू हो जाता है।",
   'sample.seeOrganizer': "आयोजक वाला हिस्सा देखें",
   'sample.seeGuest': "मेहमान वाला हिस्सा देखें",
+  'sample.emailExample': "उदाहरण ईमेल देखें",
+  'sample.emailTitle': "उदाहरण ईमेल",
+  'sample.emailIntro': "नमूना पोल ईमेल नहीं भेजता। अगर आप माँगें, तो असली अपडेट ईमेल ऐसा दिखता है:",
+  'sample.emailSubject': "विषय: {subject}",
+  'sample.close': "बंद करें",
 };

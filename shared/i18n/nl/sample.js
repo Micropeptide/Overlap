@@ -9,4 +9,9 @@ export default {
   'sample.organizerNote': "Dit is de kant van de organisator van de voorbeeldpeiling. Kies een definitieve tijd, bewerk de peiling of laat de QR-code zien. Alles blijft in deze browser, en als je de peiling verwijdert, begint het voorbeeld opnieuw.",
   'sample.seeOrganizer': "Bekijk de kant van de organisator",
   'sample.seeGuest': "Bekijk de kant van de gast",
+  'sample.emailExample': "Bekijk een voorbeeldmail",
+  'sample.emailTitle': "Voorbeeldmail",
+  'sample.emailIntro': "De voorbeeldpeiling verstuurt geen e-mail. Zo ziet een echte update eruit, als je erom vraagt:",
+  'sample.emailSubject': "Onderwerp: {subject}",
+  'sample.close': "Sluiten",
 };

@@ -9,4 +9,9 @@ export default {
   'sample.organizerNote': "Bu, örnek anketin organizatör tarafı. Son zamanı seçmeyi, anketi düzenlemeyi ya da QR kodunu göstermeyi deneyin. Her şey bu tarayıcıda kalır; anketi silerseniz örnek baştan başlar.",
   'sample.seeOrganizer': "Organizatör tarafını görün",
   'sample.seeGuest': "Misafir tarafını görün",
+  'sample.emailExample': "Örnek e-postayı gör",
+  'sample.emailTitle': "Örnek e-posta",
+  'sample.emailIntro': "Örnek anket e-posta göndermez. İsterseniz gerçek bir güncelleme şöyle görünür:",
+  'sample.emailSubject': "Konu: {subject}",
+  'sample.close': "Kapat",
 };
