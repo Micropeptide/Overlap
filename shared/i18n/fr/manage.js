@@ -128,4 +128,10 @@ export default {
   'manage.passwordFailed': 'Votre sondage est prêt, mais le mot de passe organisateur n’a pas été enregistré. Définissez-le dans « Gérer le sondage ».',
   'manage.inviteFinal': "L’horaire de « {title} » est fixé.",
   'manage.inviteFinalMessage': "L’horaire de « {title} » est fixé. Détails et invitation d’agenda : {url}",
+  'manage.qr': "Code QR",
+  'manage.qrTitle': "Scannez pour répondre",
+  'manage.qrHelp': "Pointez l’appareil photo d’un téléphone vers le code pour ouvrir « {title} ». Aucune appli ni compte nécessaire.",
+  'manage.qrLabel': "Code QR du lien invité pour « {title} »",
+  'manage.qrClose': "Fermer",
+  'manage.qrFullscreen': "Plein écran",
 };

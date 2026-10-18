@@ -140,4 +140,10 @@ export default {
   'manage.passwordFailed': 'استطلاعك جاهز، لكن لم تُحفظ كلمة مرور المنظِّم. عيّنها من «إدارة الاستطلاع».',
   'manage.inviteFinal': "تم تحديد موعد «{title}».",
   'manage.inviteFinalMessage': "تم تحديد موعد «{title}». التفاصيل ودعوة التقويم: {url}",
+  'manage.qr': "رمز QR",
+  'manage.qrTitle': "امسح الرمز للإجابة",
+  'manage.qrHelp': "وجّه كاميرا الهاتف نحو الرمز لفتح «{title}». لا حاجة إلى تطبيق أو حساب.",
+  'manage.qrLabel': "رمز QR لرابط الضيوف الخاص بـ«{title}»",
+  'manage.qrClose': "إغلاق",
+  'manage.qrFullscreen': "ملء الشاشة",
 };

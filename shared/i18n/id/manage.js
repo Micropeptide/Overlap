@@ -120,4 +120,10 @@ export default {
   'manage.passwordFailed': 'Polling Anda sudah siap, tetapi kata sandi penyelenggara tidak tersimpan. Atur di bagian Kelola polling.',
   'manage.inviteFinal': "Waktu untuk “{title}” sudah ditetapkan.",
   'manage.inviteFinalMessage': "Waktu untuk “{title}” sudah ditetapkan. Detail dan undangan kalender: {url}",
+  'manage.qr': "Kode QR",
+  'manage.qrTitle': "Pindai untuk menjawab",
+  'manage.qrHelp': "Arahkan kamera ponsel ke kode untuk membuka “{title}”. Tidak perlu aplikasi atau akun.",
+  'manage.qrLabel': "Kode QR untuk tautan tamu “{title}”",
+  'manage.qrClose': "Tutup",
+  'manage.qrFullscreen': "Layar penuh",
 };

@@ -128,4 +128,10 @@ export default {
   'manage.passwordFailed': 'Tu encuesta está lista, pero la contraseña de organizador no se guardó. Defínela en Administrar encuesta.',
   'manage.inviteFinal': "Ya hay horario para “{title}”.",
   'manage.inviteFinalMessage': "Ya hay horario para “{title}”. Detalles e invitación de calendario: {url}",
+  'manage.qr': "Código QR",
+  'manage.qrTitle': "Escanea para responder",
+  'manage.qrHelp': "Apunta la cámara del móvil al código para abrir “{title}”. No hace falta ninguna app ni cuenta.",
+  'manage.qrLabel': "Código QR del enlace para invitados de “{title}”",
+  'manage.qrClose': "Cerrar",
+  'manage.qrFullscreen': "Pantalla completa",
 };

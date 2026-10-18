@@ -128,4 +128,10 @@ export default {
   'manage.passwordFailed': 'Sua enquete está pronta, mas a senha do organizador não foi salva. Defina-a em “Administrar enquete”.',
   'manage.inviteFinal': "O horário de “{title}” está definido.",
   'manage.inviteFinalMessage': "O horário de “{title}” está definido. Detalhes e convite de calendário: {url}",
+  'manage.qr': "Código QR",
+  'manage.qrTitle': "Escaneie para responder",
+  'manage.qrHelp': "Aponte a câmera do celular para o código para abrir “{title}”. Não precisa de app nem de conta.",
+  'manage.qrLabel': "Código QR do link de convidado de “{title}”",
+  'manage.qrClose': "Fechar",
+  'manage.qrFullscreen': "Tela cheia",
 };

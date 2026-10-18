@@ -15,6 +15,7 @@ import { pollFacts, finalCard, locationLine, watchForUpdates, captureFocus } fro
 import { isValidTimeZone } from '/shared/time.js';
 import { passwordKey, passwordProblem, KEY_PATTERN, PASSWORD_MIN, PASSWORD_MAX } from '/shared/password.js';
 import { t, tx, locale } from '../lib/i18n.js';
+import { qrSvg } from '/shared/qr.js';
 
 export async function renderManage(main, pollId) {
   const params = hashParams();
@@ -184,6 +185,20 @@ export async function renderManage(main, pollId) {
   const inviteMessage = () => (poll.final ? t('manage.inviteFinalMessage', { title: poll.title, url: guestUrl() })
     : t('manage.inviteMessage', { ask: inviteAsk(), url: guestUrl() }));
 
+  /** The guest link as a QR code: the same link, opened with a phone camera instead of typed. */
+  function showQr() {
+    const url = guestUrl();
+    const code = h('div', { class: 'qr-code' });
+    code.innerHTML = qrSvg(url, { label: t('manage.qrLabel', { title: poll.title }) });
+    const actions = [{ label: t('manage.qrClose'), value: 'close', kind: 'primary' }];
+    const body = h('div', { class: 'qr-body' },
+      code,
+      h('p', { class: 'qr-url' }, url.replace(/^https?:\/\//, '')),
+      h('p', { class: 'dialog-text' }, t('manage.qrHelp', { title: poll.title })),
+      document.fullscreenEnabled ? h('button', { type: 'button', class: 'btn ghost small', onclick: () => code.requestFullscreen?.().catch(() => {}) }, t('manage.qrFullscreen')) : null);
+    openDialog({ title: t('manage.qrTitle'), body, actions });
+  }
+
   async function shareGuestLink() {
     try {
       await navigator.share({ title: poll.title, text: inviteAsk(), url: guestUrl() });
@@ -212,6 +227,7 @@ export async function renderManage(main, pollId) {
         actions: [
           h('button', { type: 'button', class: `btn ${noResponses ? 'primary' : 'secondary'}`, onclick: () => copyText(guestUrl(), t('manage.copiedGuestLink')) }, icon('copy'), t('manage.copy')),
           navigator.share ? h('button', { type: 'button', class: 'btn ghost', onclick: shareGuestLink }, icon('share'), t('manage.share')) : null,
+          h('button', { type: 'button', class: 'btn ghost', onclick: showQr }, icon('qr'), t('manage.qr')),
           h('a', { class: 'btn ghost', href: guestUrl(), target: '_blank', rel: 'noopener' }, t('manage.open')),
         ].filter(Boolean),
         extra: h('p', { class: 'link-extra' }, ...tx('manage.inviteHint', {

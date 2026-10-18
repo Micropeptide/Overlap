@@ -23,6 +23,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "^1.63.0",
+    "jsqr": "^1.4.0",
     "wrangler": "^4.147.0"
   },
   "allowScripts": {

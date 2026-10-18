@@ -120,4 +120,10 @@ export default {
   'manage.passwordFailed': 'Cuộc thăm dò đã sẵn sàng, nhưng mật khẩu người tổ chức chưa được lưu. Hãy đặt nó trong mục Quản lý cuộc thăm dò.',
   'manage.inviteFinal': "Đã chốt thời gian cho “{title}”.",
   'manage.inviteFinalMessage': "Đã chốt thời gian cho “{title}”. Chi tiết và lời mời lịch: {url}",
+  'manage.qr': "Mã QR",
+  'manage.qrTitle': "Quét để trả lời",
+  'manage.qrHelp': "Hướng camera điện thoại vào mã để mở “{title}”. Không cần ứng dụng hay tài khoản.",
+  'manage.qrLabel': "Mã QR của liên kết khách cho “{title}”",
+  'manage.qrClose': "Đóng",
+  'manage.qrFullscreen': "Toàn màn hình",
 };

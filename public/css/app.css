@@ -1110,3 +1110,11 @@ textarea.input { resize: vertical; min-height: 5rem; }
 .sample-cta .btn { gap: 0.45rem; }
 .sample-note { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.6rem 1rem; margin-bottom: 1.1rem; }
 .sample-note p { margin: 0; max-width: 62ch; }
+
+/* QR code for the guest link: always dark on white, which every camera reads. */
+.qr-body { display: grid; justify-items: center; gap: 0.6rem; text-align: center; }
+.qr-code { width: min(70vw, 18rem); aspect-ratio: 1; background: #fff; border-radius: var(--radius-m); padding: 0.5rem; box-shadow: 0 0 0 1px var(--line); }
+.qr-code svg { display: block; width: 100%; height: 100%; }
+.qr-code:fullscreen { width: 100%; height: 100%; padding: 6vmin; border-radius: 0; display: grid; place-items: center; }
+.qr-code:fullscreen svg { width: auto; height: 100%; max-width: 100%; }
+.qr-url { margin: 0; font-weight: 700; overflow-wrap: anywhere; direction: ltr; }

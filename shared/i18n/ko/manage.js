@@ -120,4 +120,10 @@ export default {
   'manage.passwordFailed': '투표는 준비됐지만 주최자 비밀번호가 저장되지 않았어요. “투표 관리”에서 설정하세요.',
   'manage.inviteFinal': "“{title}” 일정이 확정됐어요.",
   'manage.inviteFinalMessage': "“{title}” 일정이 확정됐어요. 자세한 내용과 캘린더 초대: {url}",
+  'manage.qr': "QR 코드",
+  'manage.qrTitle': "스캔해서 응답하기",
+  'manage.qrHelp': "휴대폰 카메라를 코드에 비추면 “{title}”이(가) 열려요. 앱이나 계정은 필요 없어요.",
+  'manage.qrLabel': "“{title}” 게스트 링크 QR 코드",
+  'manage.qrClose': "닫기",
+  'manage.qrFullscreen': "전체 화면",
 };

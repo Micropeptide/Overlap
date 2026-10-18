@@ -120,4 +120,10 @@ export default {
   'manage.passwordFailed': '你的投票已准备好，但发起人密码没有保存成功。请在“管理投票”中设置。',
   'manage.inviteFinal': "“{title}”的时间已经定好了。",
   'manage.inviteFinalMessage': "“{title}”的时间已经定好了。详情和日历邀请：{url}",
+  'manage.qr': "二维码",
+  'manage.qrTitle': "扫码回答",
+  'manage.qrHelp': "用手机相机对准二维码即可打开“{title}”。无需应用或账号。",
+  'manage.qrLabel': "“{title}”访客链接的二维码",
+  'manage.qrClose': "关闭",
+  'manage.qrFullscreen': "全屏",
 };

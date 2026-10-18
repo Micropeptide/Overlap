@@ -124,4 +124,10 @@ export default {
   'manage.passwordFailed': 'आपका पोल तैयार है, पर आयोजक पासवर्ड सेव नहीं हुआ। इसे “पोल मैनेज करें” में रखें।',
   'manage.inviteFinal': "“{title}” का समय तय हो गया है।",
   'manage.inviteFinalMessage': "“{title}” का समय तय हो गया है। जानकारी और कैलेंडर आमंत्रण: {url}",
+  'manage.qr': "QR कोड",
+  'manage.qrTitle': "जवाब देने के लिए स्कैन करें",
+  'manage.qrHelp': "“{title}” खोलने के लिए फ़ोन का कैमरा कोड की ओर करें। किसी ऐप या अकाउंट की ज़रूरत नहीं।",
+  'manage.qrLabel': "“{title}” के मेहमान लिंक का QR कोड",
+  'manage.qrClose': "बंद करें",
+  'manage.qrFullscreen': "फ़ुल स्क्रीन",
 };

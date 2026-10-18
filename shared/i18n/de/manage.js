@@ -124,4 +124,10 @@ export default {
   'manage.passwordFailed': 'Deine Umfrage ist bereit, aber das Organisator-Passwort wurde nicht gespeichert. Leg es unter „Umfrage verwalten“ fest.',
   'manage.inviteFinal': "Der Termin für „{title}“ steht fest.",
   'manage.inviteFinalMessage': "Der Termin für „{title}“ steht fest. Details und Kalendereinladung: {url}",
+  'manage.qr': "QR-Code",
+  'manage.qrTitle': "Scannen zum Antworten",
+  'manage.qrHelp': "Halte die Handykamera auf den Code, um „{title}“ zu öffnen. Keine App und kein Konto nötig.",
+  'manage.qrLabel': "QR-Code für den Gastlink zu „{title}“",
+  'manage.qrClose': "Schließen",
+  'manage.qrFullscreen': "Vollbild",
 };

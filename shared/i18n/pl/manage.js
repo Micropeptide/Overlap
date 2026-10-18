@@ -132,4 +132,10 @@ export default {
   'manage.passwordFailed': 'Ankieta jest gotowa, ale hasło organizatora nie zostało zapisane. Ustaw je w sekcji „Zarządzaj ankietą”.',
   'manage.inviteFinal': "Termin „{title}” jest ustalony.",
   'manage.inviteFinalMessage': "Termin „{title}” jest ustalony. Szczegóły i zaproszenie do kalendarza: {url}",
+  'manage.qr': "Kod QR",
+  'manage.qrTitle': "Zeskanuj, aby odpowiedzieć",
+  'manage.qrHelp': "Skieruj aparat telefonu na kod, aby otworzyć „{title}”. Nie potrzeba aplikacji ani konta.",
+  'manage.qrLabel': "Kod QR z linkiem dla gości do „{title}”",
+  'manage.qrClose': "Zamknij",
+  'manage.qrFullscreen': "Pełny ekran",
 };

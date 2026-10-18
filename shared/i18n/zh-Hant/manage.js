@@ -120,4 +120,10 @@ export default {
   'manage.passwordFailed': '投票已建立，但發起人密碼沒有儲存成功。請到「管理投票」中設定。',
   'manage.inviteFinal': "「{title}」的時間已經定好了。",
   'manage.inviteFinalMessage': "「{title}」的時間已經定好了。詳情和行事曆邀請：{url}",
+  'manage.qr': "QR 碼",
+  'manage.qrTitle': "掃描即可回覆",
+  'manage.qrHelp': "用手機相機對準 QR 碼就能開啟「{title}」。不需要 App 或帳號。",
+  'manage.qrLabel': "「{title}」訪客連結的 QR 碼",
+  'manage.qrClose': "關閉",
+  'manage.qrFullscreen': "全螢幕",
 };

@@ -132,4 +132,10 @@ export default {
   'manage.passwordFailed': 'Ваш опрос готов, но пароль организатора не сохранился. Задайте его в разделе «Управление опросом».',
   'manage.inviteFinal': "Время для «{title}» выбрано.",
   'manage.inviteFinalMessage': "Время для «{title}» выбрано. Подробности и приглашение в календарь: {url}",
+  'manage.qr': "QR-код",
+  'manage.qrTitle': "Отсканируйте, чтобы ответить",
+  'manage.qrHelp': "Наведите камеру телефона на код, чтобы открыть «{title}». Не нужны ни приложение, ни аккаунт.",
+  'manage.qrLabel': "QR-код гостевой ссылки на «{title}»",
+  'manage.qrClose': "Закрыть",
+  'manage.qrFullscreen': "Во весь экран",
 };

@@ -120,4 +120,10 @@ export default {
   'manage.passwordFailed': '日程調整はできましたが、主催者パスワードは保存されませんでした。「日程調整の管理」で設定してください。',
   'manage.inviteFinal': "「{title}」の日時が決まりました。",
   'manage.inviteFinalMessage': "「{title}」の日時が決まりました。詳細とカレンダー招待：{url}",
+  'manage.qr': "QRコード",
+  'manage.qrTitle': "スキャンして回答",
+  'manage.qrHelp': "スマートフォンのカメラをコードに向けると「{title}」が開きます。アプリもアカウントも不要です。",
+  'manage.qrLabel': "「{title}」のゲスト用リンクのQRコード",
+  'manage.qrClose': "閉じる",
+  'manage.qrFullscreen': "全画面表示",
 };

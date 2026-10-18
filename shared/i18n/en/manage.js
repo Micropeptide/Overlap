@@ -125,4 +125,11 @@ export default {
   // Once the final time is set, the invitation tells people the time is decided instead of asking them to answer.
   'manage.inviteFinal': "The time for “{title}” is set.",
   'manage.inviteFinalMessage': "The time for “{title}” is set. Details and a calendar invite: {url}",
+  // "QR code" on the guest link: the same guest link, opened by pointing a phone camera at it.
+  'manage.qr': "QR code",
+  'manage.qrTitle': "Scan to answer",
+  'manage.qrHelp': "Point a phone’s camera at the code to open “{title}”. No app or account needed.",
+  'manage.qrLabel': "QR code for the guest link to “{title}”",
+  'manage.qrClose': "Close",
+  'manage.qrFullscreen': "Full screen",
 };

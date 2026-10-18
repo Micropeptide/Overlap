@@ -128,4 +128,10 @@ export default {
   'manage.passwordFailed': 'Il tuo sondaggio è pronto, ma la password dell’organizzatore non è stata salvata. Impostala in Gestisci sondaggio.',
   'manage.inviteFinal': "L’orario di «{title}» è stato fissato.",
   'manage.inviteFinalMessage': "L’orario di «{title}» è stato fissato. Dettagli e invito per il calendario: {url}",
+  'manage.qr': "Codice QR",
+  'manage.qrTitle': "Scansiona per rispondere",
+  'manage.qrHelp': "Inquadra il codice con la fotocamera del telefono per aprire «{title}». Non servono app né account.",
+  'manage.qrLabel': "Codice QR del link per gli ospiti di «{title}»",
+  'manage.qrClose': "Chiudi",
+  'manage.qrFullscreen': "Schermo intero",
 };

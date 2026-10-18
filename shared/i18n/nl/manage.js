@@ -124,4 +124,10 @@ export default {
   'manage.passwordFailed': 'Je peiling staat klaar, maar het organisatorwachtwoord is niet opgeslagen. Stel het in onder Peiling beheren.',
   'manage.inviteFinal': "De tijd voor “{title}” staat vast.",
   'manage.inviteFinalMessage': "De tijd voor “{title}” staat vast. Details en een agenda-uitnodiging: {url}",
+  'manage.qr': "QR-code",
+  'manage.qrTitle': "Scan om te antwoorden",
+  'manage.qrHelp': "Richt de camera van een telefoon op de code om “{title}” te openen. Geen app of account nodig.",
+  'manage.qrLabel': "QR-code voor de gastlink van “{title}”",
+  'manage.qrClose': "Sluiten",
+  'manage.qrFullscreen': "Volledig scherm",
 };

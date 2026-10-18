@@ -120,4 +120,10 @@ export default {
   'manage.passwordFailed': 'โพลของคุณพร้อมแล้ว แต่ยังไม่ได้บันทึกรหัสผ่านผู้จัด ตั้งรหัสผ่านได้ที่ “จัดการโพล”',
   'manage.inviteFinal': "กำหนดเวลาของ “{title}” แล้ว",
   'manage.inviteFinalMessage': "กำหนดเวลาของ “{title}” แล้ว ดูรายละเอียดและคำเชิญในปฏิทิน: {url}",
+  'manage.qr': "คิวอาร์โค้ด",
+  'manage.qrTitle': "สแกนเพื่อตอบ",
+  'manage.qrHelp': "หันกล้องโทรศัพท์ไปที่โค้ดเพื่อเปิด “{title}” ไม่ต้องใช้แอปหรือบัญชี",
+  'manage.qrLabel': "คิวอาร์โค้ดของลิงก์สำหรับผู้เข้าร่วม “{title}”",
+  'manage.qrClose': "ปิด",
+  'manage.qrFullscreen': "เต็มหน้าจอ",
 };

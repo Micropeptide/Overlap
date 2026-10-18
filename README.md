@@ -10,6 +10,7 @@ everyone sees where the times overlap.
 
 - Nobody needs an account, not even the organizer. Email is optional.
 - One guest link to share, plus a private link or optional password to manage the poll.
+- A QR code of the guest link, so people can open it with a phone camera (from a screen, a slide or paper). It's made in the browser.
 - Specific dates or days of the week, in each person's own time zone.
 - Optional email: your private link sent to you, or a note when people respond.
 - Best times first: everyone, then the closest matches.

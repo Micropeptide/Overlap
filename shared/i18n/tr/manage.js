@@ -124,4 +124,10 @@ export default {
   'manage.passwordFailed': 'Anketiniz hazır, ancak organizatör şifresi kaydedilmedi. “Anketi yönet” bölümünden belirleyin.',
   'manage.inviteFinal': "“{title}” için zaman belli oldu.",
   'manage.inviteFinalMessage': "“{title}” için zaman belli oldu. Ayrıntılar ve takvim daveti: {url}",
+  'manage.qr': "QR kodu",
+  'manage.qrTitle': "Yanıtlamak için tarayın",
+  'manage.qrHelp': "“{title}” anketini açmak için telefon kamerasını koda tutun. Uygulama ya da hesap gerekmez.",
+  'manage.qrLabel': "“{title}” için misafir bağlantısının QR kodu",
+  'manage.qrClose': "Kapat",
+  'manage.qrFullscreen': "Tam ekran",
 };

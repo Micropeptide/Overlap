@@ -132,4 +132,10 @@ export default {
   'manage.passwordFailed': 'Ваше опитування готове, але пароль організатора не збережено. Встановіть його в розділі «Керування опитуванням».',
   'manage.inviteFinal': "Час для «{title}» вибрано.",
   'manage.inviteFinalMessage': "Час для «{title}» вибрано. Подробиці й запрошення в календар: {url}",
+  'manage.qr': "QR-код",
+  'manage.qrTitle': "Скануйте, щоб відповісти",
+  'manage.qrHelp': "Наведіть камеру телефона на код, щоб відкрити «{title}». Не потрібні ні застосунок, ні акаунт.",
+  'manage.qrLabel': "QR-код гостьового посилання на «{title}»",
+  'manage.qrClose': "Закрити",
+  'manage.qrFullscreen': "На весь екран",
 };
