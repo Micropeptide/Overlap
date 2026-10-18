@@ -71,8 +71,8 @@ export default {
   'manage.removePasswordConfirm': 'Passwort entfernen',
   'manage.passwordRemoved': 'Organisator-Passwort entfernt',
   'manage.startOption': '{time}, {day}',
-  'manage.preview': '{time} ({zone})',
-  'manage.previewWeekly': 'Wöchentlich: {time} ({zone})',
+  'manage.preview': '{time} · {zone}',
+  'manage.previewWeekly': 'Wöchentlich: {time} · {zone}',
   'manage.finalTitle': 'Termin festlegen',
   'manage.starts': 'Beginn',
   'manage.lasts': 'Dauer',
@@ -122,4 +122,6 @@ export default {
   'manage.createNew': 'Neue Umfrage erstellen',
   'manage.resultsUpdated': 'Ergebnisse aktualisiert',
   'manage.passwordFailed': 'Deine Umfrage ist bereit, aber das Organisator-Passwort wurde nicht gespeichert. Leg es unter „Umfrage verwalten“ fest.',
+  'manage.inviteFinal': "Der Termin für „{title}“ steht fest.",
+  'manage.inviteFinalMessage': "Der Termin für „{title}“ steht fest. Details und Kalendereinladung: {url}",
 };

@@ -14,5 +14,4 @@ export default {
   'about.moreLink': 'Інші програми від Micropeptide',
   'about.sourceHeading': 'Відкритий код',
   'about.sourceCode': 'Код Overlap відкрито опубліковано на {link} за ліцензією MIT. Повідомлення про помилки та ідеї там вітаються.',
-  'about.inspired': 'Його надихнув планувальник із відкритим кодом {timeful}, але спільного коду з ним немає. Шрифти: Bricolage Grotesque і Atkinson Hyperlegible Next, обидва за ліцензією SIL Open Font License.',
 };

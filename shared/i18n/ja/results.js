@@ -1,7 +1,7 @@
 export default {
   'results.title': '全員の都合',
   'results.emptyTitle': 'まだ比べるものがありません',
-  'results.emptyBody': '回答が集まると、参加できる人が多い時間ほどマスの色が濃くなります。',
+  'results.emptyBody': "回答が集まると、各時間に誰が参加できるか、全員がそろう時間がどこかがわかります。",
   'results.help': '名前を選ぶと、その人の回答だけを表示します。',
   'results.idle': '時間帯にポインタを合わせるか、Tabキーで移動すると、参加できる人がわかります。',
   'results.idlePick': '時間帯にポインタを合わせるか、Tabキーで移動すると、参加できる人がわかります。クリックするとその時間を確定日時にできます。',
@@ -18,7 +18,7 @@ export default {
   'results.legendMaybe': '必要なら可',
   'results.legendNo': '参加不可',
   'results.legendUnanswered': 'この時間を未確認',
-  'results.legendRamp': '色が濃いほど人数が多い',
+  'results.legendRamp': "色が強いほど人数が多い",
   'results.legendAll': '全員',
   'results.legendHasMaybe': '「必要なら可」を含む',
 

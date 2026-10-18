@@ -2,6 +2,7 @@
 
 import { API_BASE } from '../config.js';
 import { t } from './i18n.js';
+import { SAMPLE_ID, sampleApi } from './sample.js';
 
 export class ApiError extends Error {
   constructor(status, message, field) {
@@ -22,6 +23,14 @@ function serverMessage(data, status) {
 }
 
 export async function api(method, path, { body, token } = {}) {
+  // The sample poll lives in this browser only (lib/sample.js).
+  if (path.startsWith(`/api/polls/${SAMPLE_ID}/`) || path === `/api/polls/${SAMPLE_ID}`) {
+    try {
+      return await sampleApi(method, path, { body: body === undefined ? undefined : JSON.parse(JSON.stringify(body)), token });
+    } catch (err) {
+      throw new ApiError(err.status || 400, err.message, err.field);
+    }
+  }
   const headers = { Accept: 'application/json' };
   if (body !== undefined) headers['Content-Type'] = 'application/json';
   // A guest signed in with a password holds "<response id>:<key>"; link keys never contain ":".

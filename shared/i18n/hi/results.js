@@ -1,7 +1,7 @@
 export default {
   'results.title': 'सबकी उपलब्धता',
   'results.emptyTitle': 'अभी तुलना के लिए कुछ नहीं है',
-  'results.emptyBody': 'लोगों के जवाब देने पर, गहरे रंग के खाने वे समय दिखाएँगे जिनमें ज़्यादा लोग आ सकते हैं।',
+  'results.emptyBody': "जवाब आने पर आप देखेंगे कि हर समय पर कौन आ सकता है और सबका समय कहाँ मिलता है।",
   'results.help': 'किसी एक व्यक्ति के जवाब देखने के लिए उसका नाम चुनें।',
   'results.idle': 'कौन आ सकता है, यह देखने के लिए किसी समय पर पॉइंटर ले जाएँ या Tab से जाएँ।',
   'results.idlePick': 'कौन आ सकता है, यह देखने के लिए किसी समय पर पॉइंटर ले जाएँ या Tab से जाएँ। किसी समय को तय करने के लिए उस पर क्लिक करें।',
@@ -17,7 +17,7 @@ export default {
   'results.legendMaybe': 'ज़रूरत हो तो',
   'results.legendNo': 'उपलब्ध नहीं',
   'results.legendUnanswered': 'यह समय नहीं देखा',
-  'results.legendRamp': 'जितना गहरा, उतने ज़्यादा लोग',
+  'results.legendRamp': "जितना तेज़ रंग, उतने ज़्यादा लोग",
   'results.legendAll': 'सभी',
   'results.legendHasMaybe': '“ज़रूरत हो तो” शामिल है',
 

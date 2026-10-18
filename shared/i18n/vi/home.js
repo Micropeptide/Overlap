@@ -20,4 +20,6 @@ export default {
   'home.statusClosed': 'Đã đóng',
   'home.statusFinalized': 'Đã chốt thời gian',
   'home.statusDeleted': 'Đã xóa',
+  'home.trySample': "Thử một cuộc thăm dò mẫu",
+  'home.trySampleNote': "Đã có bảy người trả lời. Thêm thời gian của bạn và xem kết quả thay đổi.",
 };

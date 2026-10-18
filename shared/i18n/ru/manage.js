@@ -77,8 +77,8 @@ export default {
   'manage.removePasswordConfirm': 'Удалить пароль',
   'manage.passwordRemoved': 'Пароль организатора удалён',
   'manage.startOption': '{time}, {day}',
-  'manage.preview': '{time} ({zone})',
-  'manage.previewWeekly': 'Каждую неделю: {time} ({zone})',
+  'manage.preview': '{time} · {zone}',
+  'manage.previewWeekly': 'Каждую неделю: {time} · {zone}',
   'manage.finalTitle': 'Выберите итоговое время',
   'manage.starts': 'Начало',
   'manage.lasts': 'Длительность',
@@ -130,4 +130,6 @@ export default {
   'manage.createNew': 'Создать новый опрос',
   'manage.resultsUpdated': 'Результаты обновлены',
   'manage.passwordFailed': 'Ваш опрос готов, но пароль организатора не сохранился. Задайте его в разделе «Управление опросом».',
+  'manage.inviteFinal': "Время для «{title}» выбрано.",
+  'manage.inviteFinalMessage': "Время для «{title}» выбрано. Подробности и приглашение в календарь: {url}",
 };

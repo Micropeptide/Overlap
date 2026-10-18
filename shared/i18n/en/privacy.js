@@ -63,5 +63,5 @@ export default {
 
   'privacy.sourceHeading': 'Source',
   // {link} is the repository address, github.com/Micropeptide/Overlap.
-  'privacy.source': 'Overlap is a small, independent, open-source app (MIT License) by Micropeptide: {link}. It was inspired by the open-source scheduler Timeful, but shares no code with it.',
+  'privacy.source': 'Overlap is a small, independent, open-source app (MIT License) by Micropeptide: {link}.',
 };

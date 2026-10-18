@@ -68,8 +68,8 @@ export default {
   'manage.removePasswordConfirm': '移除密碼',
   'manage.passwordRemoved': '已移除發起人密碼',
   'manage.startOption': '{day} {time}',
-  'manage.preview': '{time}（{zone}）',
-  'manage.previewWeekly': '每{time}（{zone}）',
+  'manage.preview': '{time} · {zone}',
+  'manage.previewWeekly': '每{time} · {zone}',
   'manage.finalTitle': '選定最終時間',
   'manage.starts': '開始',
   'manage.lasts': '時長',
@@ -118,4 +118,6 @@ export default {
   'manage.createNew': '建立新投票',
   'manage.resultsUpdated': '結果已更新',
   'manage.passwordFailed': '投票已建立，但發起人密碼沒有儲存成功。請到「管理投票」中設定。',
+  'manage.inviteFinal': "「{title}」的時間已經定好了。",
+  'manage.inviteFinalMessage': "「{title}」的時間已經定好了。詳情和行事曆邀請：{url}",
 };

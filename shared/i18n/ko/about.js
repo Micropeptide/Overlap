@@ -14,5 +14,4 @@ export default {
   'about.moreLink': 'Micropeptide의 다른 소프트웨어',
   'about.sourceHeading': '오픈 소스',
   'about.sourceCode': 'Overlap의 코드는 MIT License로 {link}에 공개되어 있어요. 버그 제보와 아이디어를 환영해요.',
-  'about.inspired': '오픈 소스 일정 조율 도구 {timeful}에서 영감을 받았지만, 코드를 공유하지는 않아요. 서체: Bricolage Grotesque, Atkinson Hyperlegible Next(둘 다 SIL Open Font License).',
 };

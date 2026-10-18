@@ -1,7 +1,7 @@
 export default {
   'results.title': '大家的空闲时间',
   'results.emptyTitle': '暂时还没有可比较的内容',
-  'results.emptyBody': '有人回复后，格子颜色越深，表示能参加的人越多。',
+  'results.emptyBody': "有人回答后，你会看到每个时间谁有空，以及大家在哪些时间重合。",
   'results.help': '选择一个名字，只看这个人的回复。',
   'results.idle': '指向某个时间，或用 Tab 键移到它，就能看到谁能参加。',
   'results.idlePick': '指向某个时间，或用 Tab 键移到它，就能看到谁能参加。点击某个时间可将其设为最终时间。',
@@ -18,7 +18,7 @@ export default {
   'results.legendMaybe': '勉强可以',
   'results.legendNo': '没空',
   'results.legendUnanswered': '还没看到这个时间',
-  'results.legendRamp': '颜色越深，人数越多',
+  'results.legendRamp': "颜色越浓，人数越多",
   'results.legendAll': '所有人',
   'results.legendHasMaybe': '包括“勉强可以”',
 

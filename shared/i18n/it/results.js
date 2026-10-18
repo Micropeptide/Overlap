@@ -1,7 +1,7 @@
 export default {
   'results.title': 'La disponibilità di tutti',
   'results.emptyTitle': 'Ancora niente da confrontare',
-  'results.emptyBody': 'Quando le persone risponderanno, i quadrati più scuri indicheranno gli orari in cui possono esserci più persone.',
+  'results.emptyBody': "Quando le persone rispondono, vedrai chi può a ogni orario e dove tutti coincidono.",
   'results.help': 'Seleziona un nome per vedere solo le risposte di quella persona.',
   'results.idle': 'Punta o raggiungi con Tab un orario per vedere chi può esserci.',
   'results.idlePick': 'Punta o raggiungi con Tab un orario per vedere chi può esserci. Fai clic su un orario per renderlo l’orario definitivo.',
@@ -17,7 +17,7 @@ export default {
   'results.legendMaybe': 'Se serve',
   'results.legendNo': 'Non disponibile',
   'results.legendUnanswered': 'Non ha visto questo orario',
-  'results.legendRamp': 'Più scuro significa più persone',
+  'results.legendRamp': "Colore più intenso significa più persone",
   'results.legendAll': 'Tutti',
   'results.legendHasMaybe': 'Include «se serve»',
 

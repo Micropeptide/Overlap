@@ -63,5 +63,5 @@ export default {
 
   'privacy.sourceHeading': 'Broncode',
   // {link} is the repository address, github.com/Micropeptide/Overlap.
-  'privacy.source': 'Overlap is een kleine, onafhankelijke opensource-app (MIT-licentie) van Micropeptide: {link}. Het is geïnspireerd door de opensource-planner Timeful, maar deelt er geen code mee.',
+  'privacy.source': 'Overlap is een kleine, onafhankelijke opensource-app (MIT-licentie) van Micropeptide: {link}.',
 };

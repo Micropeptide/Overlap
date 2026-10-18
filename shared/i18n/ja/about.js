@@ -16,6 +16,4 @@ export default {
   'about.sourceHeading': 'オープンソース',
   // {link} is the repository address, github.com/Micropeptide/Overlap.
   'about.sourceCode': 'Overlapのコードは、MIT Licenseのもと{link}で公開しています。バグ報告やアイデアはそちらへお寄せください。',
-  // {timeful} is a link whose text is the name "Timeful". Keep the typeface names as they are.
-  'about.inspired': 'オープンソースのスケジューラー{timeful}に着想を得ていますが、コードは共有していません。書体：Bricolage GrotesqueとAtkinson Hyperlegible Next（いずれもSIL Open Font License）。',
 };

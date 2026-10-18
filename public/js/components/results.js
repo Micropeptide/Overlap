@@ -122,7 +122,7 @@ export function resultsSection({ poll, timeZone, selfId = null, onPick = null, o
         },
         h('span', { class: 'person-name' },
           view === 'people' && !focusId ? h('span', { class: 'person-dot', style: `--pc: ${personColor(index)}`, 'aria-hidden': 'true' }) : null,
-          r.name, r.id === selfId ? h('span', { class: 'you-tag' }, t('results.you')) : null),
+          h('bdi', null, r.name), r.id === selfId ? h('span', { class: 'you-tag' }, t('results.you')) : null),
         h('span', { class: 'person-meta' }, unseen ? t('results.unseen', { summary, count: unseen }) : summary),
         r.note ? h('span', { class: 'person-note' }, t('results.note', { note: r.note })) : null,
         r.updatedAt ? h('span', { class: 'person-when' }, t('results.answered', { when: f.ago(r.updatedAt) })) : null),

@@ -1,7 +1,7 @@
 export default {
   'results.title': 'Lịch rảnh của mọi người',
   'results.emptyTitle': 'Chưa có gì để so sánh',
-  'results.emptyBody': 'Khi mọi người phản hồi, ô càng đậm là khung giờ càng nhiều người tham gia được.',
+  'results.emptyBody': "Khi mọi người trả lời, bạn sẽ thấy ai rảnh vào từng khung giờ và lúc nào mọi người trùng nhau.",
   'results.help': 'Chọn một tên để chỉ xem câu trả lời của người đó.',
   'results.idle': 'Trỏ chuột hoặc dùng Tab đến một khung giờ để xem ai tham gia được.',
   'results.idlePick': 'Trỏ chuột hoặc dùng Tab đến một khung giờ để xem ai tham gia được. Nhấp vào một khung giờ để chốt thời gian.',
@@ -18,7 +18,7 @@ export default {
   'results.legendMaybe': 'Nếu cần',
   'results.legendNo': 'Không rảnh',
   'results.legendUnanswered': 'Chưa xem khung giờ này',
-  'results.legendRamp': 'Càng đậm càng nhiều người',
+  'results.legendRamp': "Màu càng đậm càng nhiều người",
   'results.legendAll': 'Mọi người',
   'results.legendHasMaybe': 'Có cả “nếu cần”',
 

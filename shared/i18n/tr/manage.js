@@ -71,8 +71,8 @@ export default {
   'manage.removePasswordConfirm': 'Şifreyi kaldır',
   'manage.passwordRemoved': 'Organizatör şifresi kaldırıldı',
   'manage.startOption': '{time}, {day}',
-  'manage.preview': '{time} ({zone})',
-  'manage.previewWeekly': 'Her {time} ({zone})',
+  'manage.preview': '{time} · {zone}',
+  'manage.previewWeekly': 'Her {time} · {zone}',
   'manage.finalTitle': 'Kesin saati seçin',
   'manage.starts': 'Başlangıç',
   'manage.lasts': 'Süre',
@@ -122,4 +122,6 @@ export default {
   'manage.createNew': 'Yeni anket oluştur',
   'manage.resultsUpdated': 'Sonuçlar güncellendi',
   'manage.passwordFailed': 'Anketiniz hazır, ancak organizatör şifresi kaydedilmedi. “Anketi yönet” bölümünden belirleyin.',
+  'manage.inviteFinal': "“{title}” için zaman belli oldu.",
+  'manage.inviteFinalMessage': "“{title}” için zaman belli oldu. Ayrıntılar ve takvim daveti: {url}",
 };

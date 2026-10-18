@@ -20,4 +20,6 @@ export default {
   'home.statusClosed': 'Geschlossen',
   'home.statusFinalized': 'Termin festgelegt',
   'home.statusDeleted': 'Gelöscht',
+  'home.trySample': "Beispielumfrage ausprobieren",
+  'home.trySampleNote': "Sieben Leute haben schon geantwortet. Trag deine Zeiten ein und sieh, wie sich das Ergebnis ändert.",
 };

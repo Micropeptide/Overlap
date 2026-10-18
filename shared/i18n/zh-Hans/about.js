@@ -16,6 +16,4 @@ export default {
   'about.sourceHeading': '开源',
   // {link} is the repository address, github.com/Micropeptide/Overlap.
   'about.sourceCode': 'Overlap 的代码以 MIT 许可证公开在 {link}。欢迎在那里报告问题和提出想法。',
-  // {timeful} is a link whose text is the name "Timeful". Keep the typeface names as they are.
-  'about.inspired': '它受到开源日程工具 {timeful} 的启发，但没有共用任何代码。字体：Bricolage Grotesque 和 Atkinson Hyperlegible Next，均采用 SIL Open Font License 授权。',
 };

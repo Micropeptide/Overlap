@@ -135,6 +135,9 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
   }
 
   function render({ keepFocus = false } = {}) {
+    // Hold the height while rebuilding, so the page can't shrink for a moment
+    // and pull the scroll position up.
+    root.style.minHeight = `${root.offsetHeight}px`;
     clear(root);
     const canGoBack = `${String(view.year).padStart(4, '0')}-${String(view.month).padStart(2, '0')}` > today.slice(0, 7)
       || [...chosen].some((d) => d < toDateKey(view.year, view.month, 1));
@@ -173,6 +176,7 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
     root.append(rangeBar());
     markRange();
     if (keepFocus) root.querySelector(`[data-date="${focusKey}"]`)?.focus({ preventScroll: true });
+    root.style.minHeight = '';
   }
 
   // ----- "Select a range" -----

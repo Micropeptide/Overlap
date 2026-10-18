@@ -71,8 +71,8 @@ export default {
   'manage.removePasswordConfirm': 'पासवर्ड हटाएँ',
   'manage.passwordRemoved': 'आयोजक पासवर्ड हटा दिया गया',
   'manage.startOption': '{time}, {day}',
-  'manage.preview': '{time} ({zone})',
-  'manage.previewWeekly': 'हर {time} ({zone})',
+  'manage.preview': '{time} · {zone}',
+  'manage.previewWeekly': 'हर {time} · {zone}',
   'manage.finalTitle': 'समय तय करें',
   'manage.starts': 'शुरुआत',
   'manage.lasts': 'अवधि',
@@ -122,4 +122,6 @@ export default {
   'manage.createNew': 'नया पोल बनाएँ',
   'manage.resultsUpdated': 'नतीजे अपडेट हो गए',
   'manage.passwordFailed': 'आपका पोल तैयार है, पर आयोजक पासवर्ड सेव नहीं हुआ। इसे “पोल मैनेज करें” में रखें।',
+  'manage.inviteFinal': "“{title}” का समय तय हो गया है।",
+  'manage.inviteFinalMessage': "“{title}” का समय तय हो गया है। जानकारी और कैलेंडर आमंत्रण: {url}",
 };

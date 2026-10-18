@@ -129,7 +129,7 @@ body {
   display: flex;
   flex-direction: column;
 }
-main { flex: 1; outline: none; }
+main { flex: 1; outline: none; min-height: 100dvh; }
 img, svg { display: block; max-width: 100%; }
 a { color: var(--lagoon); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
 a:hover { text-decoration-thickness: 2px; }
@@ -221,6 +221,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .btn.danger { background: var(--danger); color: #fff; }
 @media (prefers-color-scheme: dark) { .btn.danger { color: #2a0d0a; } }
 .btn.danger:hover { filter: brightness(0.92); }
+.btn.danger-soft { background: transparent; color: var(--danger); border-color: color-mix(in srgb, var(--danger) 55%, transparent); }
+.btn.danger-soft:hover { background: color-mix(in srgb, var(--danger) 8%, transparent); border-color: var(--danger); }
 .btn.large { min-height: 3.1rem; padding: 0.7rem 1.5rem; font-size: 1.0625rem; }
 .btn.small { min-height: 2.25rem; padding: 0.35rem 0.8rem; font-size: var(--step--1); }
 .btn:disabled { opacity: 0.55; cursor: not-allowed; }
@@ -299,6 +301,17 @@ textarea.input { resize: vertical; min-height: 5rem; }
 .overlap-col { fill: color-mix(in srgb, var(--everyone) 14%, transparent); stroke: var(--everyone); stroke-width: 2.5; stroke-dasharray: 5 5; }
 .band-name { font-family: var(--font-display); font-size: 15px; font-weight: 600; fill: var(--ink); }
 @media (prefers-color-scheme: dark) { .band { mix-blend-mode: screen; } }
+/* One entrance on load: three people's free times slide in, then their overlap appears. */
+@media (prefers-reduced-motion: no-preference) {
+  .band, .band-name { animation: band-in 650ms cubic-bezier(0.2, 0.7, 0.2, 1) both; transform-box: fill-box; }
+  .b2, .band-name:nth-of-type(2) { animation-delay: 120ms; }
+  .b3, .band-name:nth-of-type(3) { animation-delay: 240ms; }
+  .overlap-col { animation: overlap-in 450ms 620ms cubic-bezier(0.2, 0.7, 0.2, 1) both; transform-box: fill-box; transform-origin: center; }
+  .hero-art figcaption { animation: fade-in 400ms 900ms both; }
+}
+@keyframes band-in { from { opacity: 0; transform: translateX(-32px); } }
+@keyframes overlap-in { from { opacity: 0; transform: scaleY(0.7); } }
+@keyframes fade-in { from { opacity: 0; } }
 
 .create {
   background: var(--surface); border-radius: var(--radius-l); box-shadow: var(--shadow);
@@ -308,9 +321,9 @@ textarea.input { resize: vertical; min-height: 5rem; }
 .title-input { font-family: var(--font-display); font-size: var(--step-2); font-weight: 600; min-height: 3.6rem; }
 .time-range { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
 .time-range select { width: auto; min-width: 9.5rem; }
-.zone-current { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; margin: 0.8rem 0 0; color: var(--ink-2); font-size: var(--step--1); }
+.zone-current { display: block; margin: 0.8rem 0 0; color: var(--ink-2); font-size: var(--step--1); }
 .zone-current strong { color: var(--ink); font-weight: 600; }
-.zone-current .icon { width: 1rem; height: 1rem; }
+.zone-current .icon { width: 1rem; height: 1rem; display: inline-block; vertical-align: -0.15em; margin-inline-end: 0.35rem; }
 .zone-field { margin: 0.8rem 0 0; max-width: 24rem; }
 .more { border-top: 1px solid var(--line); padding-top: 1rem; margin-bottom: 1.5rem; }
 .more summary { cursor: pointer; font-weight: 700; color: var(--lagoon); padding: 0.3rem 0; width: fit-content; }
@@ -348,7 +361,8 @@ textarea.input { resize: vertical; min-height: 5rem; }
 
 /* ---------- poll page ---------- */
 
-.poll-head { padding: 1rem 0 1.5rem; max-width: 60rem; }
+.poll-head { padding: 1rem 0 1.5rem; }
+.poll-head .page-title { max-width: 60rem; }
 .poll-title { font-size: var(--step-4); letter-spacing: -0.03em; font-weight: 750; overflow-wrap: anywhere; }
 .poll-desc { margin-top: 0.75rem; max-width: 62ch; white-space: pre-line; color: var(--ink); overflow-wrap: anywhere; }
 .facts { list-style: none; padding: 0; margin: 1rem 0 0; display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; color: var(--ink-2); font-size: var(--step--1); }
@@ -636,6 +650,7 @@ textarea.input { resize: vertical; min-height: 5rem; }
 
 /* ---------- phone layout ---------- */
 
+.results-grid { min-width: 0; max-width: 100%; }
 .day-strip {
   display: flex; gap: 0.4rem; overflow-x: auto; padding: 0.25rem 0.1rem 0.6rem;
   scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch;
@@ -682,9 +697,16 @@ textarea.input { resize: vertical; min-height: 5rem; }
   :root { --step-0: 1rem; }
   .hero { grid-template-columns: 1fr; padding: 0.5rem 0 1.5rem; gap: 1rem; }
   .hero-art { display: none; }
+  .results-tools .segmented { flex-basis: 100%; }
+  .dp-jump { min-width: 0; }
+  .dp-head { gap: 0.3rem; }
+  .dp-head .icon-btn { width: 2rem; flex: none; }
+  .dp-select { padding: 0.35rem 1.55rem 0.35rem 0.55rem; background-position: right 0.8rem center, right 0.5rem center; }
   .site-header { padding-top: 0.75rem; padding-bottom: 0.75rem; }
   .create { border-radius: var(--radius-m); }
   .panel { border-radius: var(--radius-m); padding: 1rem; }
+  /* Above the sticky submit bar, so it never covers its buttons. */
+  .toast { bottom: calc(5.75rem + env(safe-area-inset-bottom)); }
   .action-bar { margin: 1.25rem -1rem -1rem; padding: 0.8rem 1rem calc(0.8rem + env(safe-area-inset-bottom)); border-radius: 0; }
   .action-buttons { width: 100%; }
   .action-buttons .btn.primary { flex: 1; }
@@ -702,6 +724,14 @@ textarea.input { resize: vertical; min-height: 5rem; }
   .action-status { width: 100%; }
 }
 
+/* Small phones: the month and year menus keep their full names; "Today" gives way. */
+@media (max-width: 420px) {
+  .dp-today { display: none; }
+}
+@media (max-width: 360px) {
+  .dp-select { font-size: 0.9rem; padding-inline: 0.45rem 1.4rem; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }
@@ -709,6 +739,10 @@ textarea.input { resize: vertical; min-height: 5rem; }
 @media (forced-colors: active) {
   .grid-edit .cell.is-yes::before, .grid-results .cell.all::before, .grid-results .cell.st-yes::before, .dp-day.on, .slot-btn.is-yes { background: Highlight; forced-color-adjust: none; }
   .grid-edit .cell.is-maybe, .grid-results .cell.st-maybe, .slot-btn.is-maybe { background: Mark; forced-color-adjust: none; }
+  .grid-edit .cell.is-pref::before { background: Highlight; forced-color-adjust: none; }
+  .tab[aria-selected='true'] { border-top: 3px solid Highlight; }
+  .brush:has(input:checked), .seg input:checked + span { forced-color-adjust: none; background: Highlight; color: HighlightText; }
+  .swatch, .lanes > *, .person-dot, .chip-person { forced-color-adjust: none; }
 }
 
 /* ---------- weekly polls ---------- */
@@ -761,7 +795,7 @@ textarea.input { resize: vertical; min-height: 5rem; }
 
 .legend-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.5rem 1rem; margin: 0.5rem 0 1rem; }
 .legend-row .legend { margin: 0; }
-.results-tools { display: flex; align-items: center; gap: 0.75rem; }
+.results-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; min-width: 0; }
 .check { display: inline-flex; align-items: center; gap: 0.45rem; font-size: var(--step--1); cursor: pointer; padding: 0.25rem 0; }
 .check input { width: 1.1rem; height: 1.1rem; flex: none; accent-color: var(--lagoon); }
 .dialog .check { align-items: flex-start; margin-bottom: 0.4rem; }
@@ -822,7 +856,9 @@ textarea.input { resize: vertical; min-height: 5rem; }
 
 /* Focus ring for keyboard users only; a mouse click or tap shows no box. */
 .cell:focus { outline: none; }
-.cell:focus-visible { z-index: 1; box-shadow: inset 0 0 0 2px var(--surface), inset 0 0 0 4px var(--focus); border-radius: 4px; }
+.cell:focus-visible { z-index: 1; box-shadow: inset 0 0 0 2px var(--surface), inset 0 0 0 4px var(--focus); border-radius: 4px; outline: 2px solid transparent; outline-offset: -4px; }
+/* Keep the focused cell clear of the sticky submit bar (WCAG 2.4.11). */
+.grid-edit .cell, .slot-btn { scroll-margin-bottom: 6.5rem; scroll-margin-top: 4rem; }
 .grid[data-input='pointer'] .cell:focus-visible { box-shadow: none; }
 
 /* editing */
@@ -936,7 +972,7 @@ textarea.input { resize: vertical; min-height: 5rem; }
 .best-body { padding-top: 0.25rem; }
 
 /* ---------- date picker: month/year menus, two months on wide screens ---------- */
-.datepicker { max-width: none; }
+.datepicker { max-width: none; overflow-anchor: none; }
 .dp-head { display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.5rem; }
 .dp-jump { display: flex; gap: 0.35rem; flex: 1; }
 .dp-select {
@@ -1027,9 +1063,9 @@ textarea.input { resize: vertical; min-height: 5rem; }
 
 /* The color key: a dot beside each name in the responses list. */
 .person-dot { width: 0.8rem; height: 0.8rem; border-radius: 50%; flex: none; background: var(--pc); }
-.sw-lane-yes { background: var(--person-0); }
-.sw-lane-pref { background: radial-gradient(circle at 50% 50%, #fff 0 1.6px, transparent 2.2px), var(--person-0); }
-.sw-lane-maybe { background: repeating-linear-gradient(135deg, var(--person-0) 0 3px, color-mix(in srgb, var(--person-0) 22%, var(--surface)) 3px 6px); }
+.sw-lane-yes { background: var(--ink-2); }
+.sw-lane-pref { background: radial-gradient(circle at 50% 50%, #fff 0 1.6px, transparent 2.2px), var(--ink-2); }
+.sw-lane-maybe { background: repeating-linear-gradient(135deg, var(--ink-2) 0 3px, color-mix(in srgb, var(--ink-2) 22%, var(--surface)) 3px 6px); }
 .sw-people { background: linear-gradient(90deg, var(--person-0) 0 33%, var(--person-1) 33% 66%, var(--person-2) 66%); }
 .sw-everyone-wash { background: var(--surface); box-shadow: inset 0 0 0 2px var(--everyone); }
 
@@ -1059,7 +1095,7 @@ textarea.input { resize: vertical; min-height: 5rem; }
   background: color-mix(in srgb, var(--ink) 7%, transparent);
 }
 .grid-results.people-view .cell.hl::after { box-shadow: inset 0 0 0 2.5px var(--pref), inset 0 0 0 4px color-mix(in srgb, var(--surface) 80%, transparent); }
-.grid-results.people-view .cell[data-slot]:focus-visible::after { box-shadow: inset 0 0 0 2px var(--surface), inset 0 0 0 4px var(--focus); }
+.grid-results.people-view .cell[data-slot]:focus-visible::after { box-shadow: inset 0 0 0 2px var(--surface), inset 0 0 0 4px var(--focus); outline: 2px solid transparent; outline-offset: -4px; }
 .grid-results.people-view[data-input='pointer'] .cell[data-slot]:focus-visible::after { box-shadow: none; }
 /* Times everyone can make, in People view: a green outline over the lanes, one block per run of times. */
 .grid-results.people-view .cell.all::after {
@@ -1067,3 +1103,10 @@ textarea.input { resize: vertical; min-height: 5rem; }
 }
 .grid-results.people-view .cell.all.join-top::after { top: -1px; border-top: 0; border-top-left-radius: 0; border-top-right-radius: 0; }
 .grid-results.people-view .cell.all.join-bottom::after { border-bottom: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+
+/* Sample poll: the way in from the home page, and the note on the poll itself. */
+.sample-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.9rem; margin-top: 1.2rem; }
+.sample-cta .muted { max-width: 34ch; }
+.sample-cta .btn { gap: 0.45rem; }
+.sample-note { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.6rem 1rem; margin-bottom: 1.1rem; }
+.sample-note p { margin: 0; max-width: 62ch; }

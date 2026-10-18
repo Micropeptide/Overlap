@@ -61,5 +61,5 @@ export default {
 
   'privacy.sourceHeading': 'Kode sumber',
   // {link} is the repository address, github.com/Micropeptide/Overlap.
-  'privacy.source': 'Overlap adalah aplikasi open source yang kecil dan independen (Lisensi MIT) buatan Micropeptide: {link}. Aplikasi ini terinspirasi oleh penjadwal open source Timeful, tetapi tidak berbagi kode dengannya.',
+  'privacy.source': 'Overlap adalah aplikasi open source yang kecil dan independen (Lisensi MIT) buatan Micropeptide: {link}.',
 };

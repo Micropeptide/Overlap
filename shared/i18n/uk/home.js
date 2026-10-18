@@ -20,4 +20,6 @@ export default {
   'home.statusClosed': 'Закрите',
   'home.statusFinalized': 'Остаточний час вибрано',
   'home.statusDeleted': 'Видалене',
+  'home.trySample': "Спробувати приклад опитування",
+  'home.trySampleNote': "Сім людей уже відповіли. Додайте свій час і подивіться, як змінюються результати.",
 };

@@ -68,8 +68,8 @@ export default {
   'manage.removePasswordConfirm': 'Hapus kata sandi',
   'manage.passwordRemoved': 'Kata sandi penyelenggara dihapus',
   'manage.startOption': '{time}, {day}',
-  'manage.preview': '{time} ({zone})',
-  'manage.previewWeekly': 'Setiap {time} ({zone})',
+  'manage.preview': '{time} · {zone}',
+  'manage.previewWeekly': 'Setiap {time} · {zone}',
   'manage.finalTitle': 'Pilih waktu final',
   'manage.starts': 'Mulai',
   'manage.lasts': 'Durasi',
@@ -118,4 +118,6 @@ export default {
   'manage.createNew': 'Buat polling baru',
   'manage.resultsUpdated': 'Hasil diperbarui',
   'manage.passwordFailed': 'Polling Anda sudah siap, tetapi kata sandi penyelenggara tidak tersimpan. Atur di bagian Kelola polling.',
+  'manage.inviteFinal': "Waktu untuk “{title}” sudah ditetapkan.",
+  'manage.inviteFinalMessage': "Waktu untuk “{title}” sudah ditetapkan. Detail dan undangan kalender: {url}",
 };

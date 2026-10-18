@@ -56,5 +56,5 @@ export default {
   'privacy.httpsOther': '只有在這個 Overlap 站台透過 HTTPS 提供服務時，連線才會加密。',
 
   'privacy.sourceHeading': '原始碼',
-  'privacy.source': 'Overlap 是 Micropeptide 開發的小型獨立開放原始碼應用程式（MIT 授權條款）：{link}。它的靈感來自開放原始碼排程工具 Timeful，但沒有共用任何程式碼。',
+  'privacy.source': 'Overlap 是 Micropeptide 開發的小型獨立開放原始碼應用程式（MIT 授權條款）：{link}。',
 };

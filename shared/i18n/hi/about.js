@@ -14,5 +14,4 @@ export default {
   'about.moreLink': 'Micropeptide के और सॉफ़्टवेयर',
   'about.sourceHeading': 'ओपन सोर्स',
   'about.sourceCode': 'Overlap का कोड MIT License के तहत {link} पर सार्वजनिक है। बग रिपोर्ट और सुझावों का वहाँ स्वागत है।',
-  'about.inspired': 'यह ओपन-सोर्स शेड्यूलर {timeful} से प्रेरित है, पर इसके साथ कोई कोड साझा नहीं करता। टाइपफ़ेस: Bricolage Grotesque और Atkinson Hyperlegible Next, दोनों SIL Open Font License के तहत।',
 };

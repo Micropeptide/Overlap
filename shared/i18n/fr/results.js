@@ -1,7 +1,7 @@
 export default {
   'results.title': 'Les disponibilités de chacun',
   'results.emptyTitle': 'Rien à comparer pour l’instant',
-  'results.emptyBody': 'Dès que des personnes répondent, les cases plus foncées indiquent les créneaux où davantage d’entre elles peuvent venir.',
+  'results.emptyBody': "Dès que des personnes répondent, vous verrez qui est disponible à chaque horaire et où tout le monde se retrouve.",
   'results.help': 'Sélectionnez un nom pour ne voir que les réponses de cette personne.',
   'results.idle': 'Survolez un créneau ou atteignez-le avec Tab pour voir qui peut venir.',
   'results.idlePick': 'Survolez un créneau ou atteignez-le avec Tab pour voir qui peut venir. Cliquez sur un créneau pour en faire l’horaire définitif.',
@@ -17,7 +17,7 @@ export default {
   'results.legendMaybe': 'Si besoin',
   'results.legendNo': 'Indisponible',
   'results.legendUnanswered': 'N’a pas vu ce créneau',
-  'results.legendRamp': 'Plus c’est foncé, plus il y a de monde',
+  'results.legendRamp': "Plus la couleur est intense, plus il y a de monde",
   'results.legendAll': 'Tout le monde',
   'results.legendHasMaybe': 'Inclut « si besoin »',
 

@@ -63,7 +63,9 @@ export async function renderGuest(main, pollId) {
   const locked = () => !!mine && poll.allowEdits === false;
   const canEdit = () => isOpen() && !locked();
   const canSeeResults = () => poll.responses !== null;
-  let tab = isOpen() ? 'mine' : 'group';
+  // The sample poll opens on the group's answers (that's what it's there to
+  // show) until the visitor has added their own.
+  let tab = isOpen() && !(poll.isSample && !mine) ? 'mine' : 'group';
   let justSaved = false;
   let grid = null;
   let results = null;
@@ -221,8 +223,13 @@ export async function renderGuest(main, pollId) {
     if (!isOpen() && tab === 'mine' && !mine) tab = 'group';
 
     const page = h('div', { class: 'page poll-page' });
+    if (poll.isSample) {
+      page.append(h('div', { class: 'notice sample-note', role: 'note', 'aria-label': t('sample.noteLabel') },
+        h('p', null, t('sample.note')),
+        h('a', { class: 'btn primary small', href: '/' }, t('sample.createOwn'))));
+    }
     page.append(h('header', { class: 'poll-head' },
-      h('h1', { class: 'page-title poll-title', tabindex: '-1' }, poll.title),
+      h('h1', { class: 'page-title poll-title', tabindex: '-1' }, h('bdi', null, poll.title)),
       poll.description ? h('p', { class: 'poll-desc' }, linkify(poll.description)) : null,
       locationLine(poll),
       pollFacts(poll, { audience: 'guest' }),
@@ -286,7 +293,7 @@ export async function renderGuest(main, pollId) {
     } else if (locked()) {
       panel.append(h('p', { class: 'notice' }, t('guest.lockedNotice')));
     }
-    if (!mine && open) {
+    if (!mine && open && !poll.isSample) {
       panel.append(h('p', { class: 'sign-in-line small' },
         ...tx('guest.signInLine', {
           link: h('button', { type: 'button', class: 'link-btn', onclick: signInAsGuest }, t('guest.signInLink')),
@@ -657,7 +664,8 @@ export async function renderGuest(main, pollId) {
       return panel;
     }
     results = resultsSection({ poll, timeZone: viewZone, selfId: mine?.id, state: resultsState });
-    panel.append(zone, results, bestTimes({ poll, timeZone: viewZone, onHighlight: (slots) => results.highlight(slots) }));
+    // The answer first, then the data it comes from.
+    panel.append(...[zone, poll.responseCount ? bestTimes({ poll, timeZone: viewZone, onHighlight: (slots) => results?.highlight(slots) }) : null, results].filter(Boolean));
     return panel;
   }
 

@@ -14,5 +14,4 @@ export default {
   'about.moreLink': 'Mais softwares de Micropeptide',
   'about.sourceHeading': 'Código aberto',
   'about.sourceCode': 'O código do Overlap é público em {link}, sob a Licença MIT. Relatos de bugs e ideias são bem-vindos por lá.',
-  'about.inspired': 'Ele foi inspirado no agendador de código aberto {timeful}, mas não compartilha nenhum código com ele. Fontes: Bricolage Grotesque e Atkinson Hyperlegible Next, ambas sob a SIL Open Font License.',
 };

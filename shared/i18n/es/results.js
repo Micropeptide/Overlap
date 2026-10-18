@@ -1,7 +1,7 @@
 export default {
   'results.title': 'Disponibilidad de todos',
   'results.emptyTitle': 'Aún no hay nada que comparar',
-  'results.emptyBody': 'Cuando la gente responda, los cuadros más oscuros mostrarán los horarios que les vienen bien a más personas.',
+  'results.emptyBody': "Cuando la gente responda, verás quién puede en cada horario y dónde coinciden todos.",
   'results.help': 'Selecciona un nombre para ver solo las respuestas de esa persona.',
   'results.idle': 'Señala un horario o llega a él con Tab para ver quién puede asistir.',
   'results.idlePick': 'Señala un horario o llega a él con Tab para ver quién puede asistir. Haz clic en un horario para convertirlo en el horario definitivo.',
@@ -18,7 +18,7 @@ export default {
   'results.legendMaybe': 'Si es necesario',
   'results.legendNo': 'No disponible',
   'results.legendUnanswered': 'No ha visto este horario',
-  'results.legendRamp': 'Más oscuro, más personas',
+  'results.legendRamp': "Color más intenso, más personas",
   'results.legendAll': 'Todos',
   'results.legendHasMaybe': 'Incluye “si es necesario”',
 

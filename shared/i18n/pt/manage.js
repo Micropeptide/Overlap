@@ -74,8 +74,8 @@ export default {
   'manage.removePasswordConfirm': 'Remover senha',
   'manage.passwordRemoved': 'Senha do organizador removida',
   'manage.startOption': '{time}, {day}',
-  'manage.preview': '{time} ({zone})',
-  'manage.previewWeekly': 'Todas as semanas, {time} ({zone})',
+  'manage.preview': '{time} · {zone}',
+  'manage.previewWeekly': 'Todas as semanas, {time} · {zone}',
   'manage.finalTitle': 'Escolher o horário definitivo',
   'manage.starts': 'Começa',
   'manage.lasts': 'Duração',
@@ -126,4 +126,6 @@ export default {
   'manage.createNew': 'Criar uma nova enquete',
   'manage.resultsUpdated': 'Resultados atualizados',
   'manage.passwordFailed': 'Sua enquete está pronta, mas a senha do organizador não foi salva. Defina-a em “Administrar enquete”.',
+  'manage.inviteFinal': "O horário de “{title}” está definido.",
+  'manage.inviteFinalMessage': "O horário de “{title}” está definido. Detalhes e convite de calendário: {url}",
 };

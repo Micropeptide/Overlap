@@ -16,6 +16,4 @@ export default {
   'about.sourceHeading': 'Mã nguồn mở',
   // {link} is the repository address, github.com/Micropeptide/Overlap.
   'about.sourceCode': 'Mã nguồn của Overlap được công khai tại {link} theo Giấy phép MIT. Rất hoan nghênh báo lỗi và ý tưởng tại đó.',
-  // {timeful} is a link whose text is the name "Timeful". Keep the typeface names as they are.
-  'about.inspired': 'Overlap lấy cảm hứng từ công cụ lên lịch mã nguồn mở {timeful} nhưng không dùng chung mã nào với nó. Phông chữ: Bricolage Grotesque và Atkinson Hyperlegible Next, đều theo SIL Open Font License.',
 };

@@ -68,8 +68,8 @@ export default {
   'manage.removePasswordConfirm': '비밀번호 삭제',
   'manage.passwordRemoved': '주최자 비밀번호를 삭제했어요',
   'manage.startOption': '{time}, {day}',
-  'manage.preview': '{time} ({zone})',
-  'manage.previewWeekly': '매주 {time} ({zone})',
+  'manage.preview': '{time} · {zone}',
+  'manage.previewWeekly': '매주 {time} · {zone}',
   'manage.finalTitle': '확정 시간 선택',
   'manage.starts': '시작',
   'manage.lasts': '길이',
@@ -118,4 +118,6 @@ export default {
   'manage.createNew': '새 투표 만들기',
   'manage.resultsUpdated': '결과가 업데이트됐어요',
   'manage.passwordFailed': '투표는 준비됐지만 주최자 비밀번호가 저장되지 않았어요. “투표 관리”에서 설정하세요.',
+  'manage.inviteFinal': "“{title}” 일정이 확정됐어요.",
+  'manage.inviteFinalMessage': "“{title}” 일정이 확정됐어요. 자세한 내용과 캘린더 초대: {url}",
 };

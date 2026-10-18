@@ -606,7 +606,10 @@ export function createGrid(options) {
 
   function renderPhone() {
     const cols = layout.columns;
-    if (!cols.includes(mobileDay)) mobileDay = cols[0];
+    if (!cols.includes(mobileDay)) {
+      // Results open on the day the most people can make; marking starts on the first day.
+      mobileDay = s.mode === 'results' ? cols.reduce((best, dk) => (dayCount(dk) > dayCount(best) ? dk : best), cols[0]) : cols[0];
+    }
     const daySlots = layout.cells.filter((c) => c.dateKey === mobileDay).sort((a, b) => a.slot - b.slot);
 
     const strip = h('div', { class: 'day-strip', role: 'group', 'aria-label': t('grid.chooseDay') },

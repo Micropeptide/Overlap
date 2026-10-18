@@ -74,8 +74,8 @@ export default {
   'manage.removePasswordConfirm': 'Quitar contraseña',
   'manage.passwordRemoved': 'Contraseña de organizador quitada',
   'manage.startOption': '{time}, {day}',
-  'manage.preview': '{time} ({zone})',
-  'manage.previewWeekly': 'Cada {time} ({zone})',
+  'manage.preview': '{time} · {zone}',
+  'manage.previewWeekly': 'Cada {time} · {zone}',
   'manage.finalTitle': 'Elige el horario definitivo',
   'manage.starts': 'Empieza',
   'manage.lasts': 'Dura',
@@ -126,4 +126,6 @@ export default {
   'manage.createNew': 'Crear una encuesta nueva',
   'manage.resultsUpdated': 'Resultados actualizados',
   'manage.passwordFailed': 'Tu encuesta está lista, pero la contraseña de organizador no se guardó. Defínela en Administrar encuesta.',
+  'manage.inviteFinal': "Ya hay horario para “{title}”.",
+  'manage.inviteFinalMessage': "Ya hay horario para “{title}”. Detalles e invitación de calendario: {url}",
 };

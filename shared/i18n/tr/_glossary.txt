@@ -42,4 +42,4 @@ closing date                 kapanış tarihi
 calendar invite              takvim daveti
 Google Calendar              Google Takvim
 Stop taking responses        Yanıt toplamayı durdur
-Quotes: “…” ; apostrophe for suffixes on names: ’ (Cloudflare’in, GitHub’da, Timeful’dan)
+Quotes: “…” ; apostrophe for suffixes on names: ’ (Cloudflare’in, GitHub’da)

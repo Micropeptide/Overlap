@@ -1,7 +1,7 @@
 export default {
   'results.title': 'เวลาว่างของทุกคน',
   'results.emptyTitle': 'ยังไม่มีอะไรให้เปรียบเทียบ',
-  'results.emptyBody': 'เมื่อมีคนตอบ ช่องที่สีเข้มกว่าคือช่วงเวลาที่มีคนมาได้มากกว่า',
+  'results.emptyBody': "เมื่อมีคนตอบ คุณจะเห็นว่าใครว่างในแต่ละช่วงเวลา และช่วงไหนที่ทุกคนว่างตรงกัน",
   'results.help': 'เลือกชื่อเพื่อดูเฉพาะคำตอบของคนนั้น',
   'results.idle': 'ชี้หรือกด Tab ไปที่ช่วงเวลาเพื่อดูว่าใครมาได้บ้าง',
   'results.idlePick': 'ชี้หรือกด Tab ไปที่ช่วงเวลาเพื่อดูว่าใครมาได้บ้าง คลิกช่วงเวลาเพื่อตั้งเป็นเวลาสรุป',
@@ -18,7 +18,7 @@ export default {
   'results.legendMaybe': 'ได้ถ้าจำเป็น',
   'results.legendNo': 'ไม่ว่าง',
   'results.legendUnanswered': 'ยังไม่เห็นช่วงเวลานี้',
-  'results.legendRamp': 'สีเข้มขึ้น = คนมากขึ้น',
+  'results.legendRamp': "สีเข้มข้นขึ้น = คนมากขึ้น",
   'results.legendAll': 'ทุกคน',
   'results.legendHasMaybe': 'รวม “ได้ถ้าจำเป็น”',
 

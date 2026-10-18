@@ -20,4 +20,6 @@ export default {
   'home.statusClosed': 'Closed',
   'home.statusFinalized': 'Final time chosen',
   'home.statusDeleted': 'Deleted',
+  'home.trySample': "Try a sample poll",
+  'home.trySampleNote': "Seven people have already answered. Add yours and watch the results change.",
 };

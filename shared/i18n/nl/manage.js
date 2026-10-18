@@ -71,8 +71,8 @@ export default {
   'manage.removePasswordConfirm': 'Wachtwoord verwijderen',
   'manage.passwordRemoved': 'Organisatorwachtwoord verwijderd',
   'manage.startOption': '{time}, {day}',
-  'manage.preview': '{time} ({zone})',
-  'manage.previewWeekly': 'Elke {time} ({zone})',
+  'manage.preview': '{time} · {zone}',
+  'manage.previewWeekly': 'Elke {time} · {zone}',
   'manage.finalTitle': 'Definitief tijdstip kiezen',
   'manage.starts': 'Begint',
   'manage.lasts': 'Duurt',
@@ -122,4 +122,6 @@ export default {
   'manage.createNew': 'Nieuwe peiling maken',
   'manage.resultsUpdated': 'Resultaten bijgewerkt',
   'manage.passwordFailed': 'Je peiling staat klaar, maar het organisatorwachtwoord is niet opgeslagen. Stel het in onder Peiling beheren.',
+  'manage.inviteFinal': "De tijd voor “{title}” staat vast.",
+  'manage.inviteFinalMessage': "De tijd voor “{title}” staat vast. Details en een agenda-uitnodiging: {url}",
 };

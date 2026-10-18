@@ -62,5 +62,5 @@ export default {
   'privacy.httpsOther': 'Соединения шифруются, только если эта копия Overlap работает по HTTPS.',
 
   'privacy.sourceHeading': 'Исходный код',
-  'privacy.source': 'Overlap — небольшое независимое приложение с открытым исходным кодом (лицензия MIT) от Micropeptide: {link}. Оно вдохновлено планировщиком с открытым кодом Timeful, но общего кода с ним нет.',
+  'privacy.source': 'Overlap — небольшое независимое приложение с открытым исходным кодом (лицензия MIT) от Micropeptide: {link}.',
 };

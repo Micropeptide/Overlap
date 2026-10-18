@@ -60,5 +60,5 @@ export default {
   'privacy.httpsOther': 'Le connessioni sono cifrate solo quando questa copia di Overlap è servita tramite HTTPS.',
 
   'privacy.sourceHeading': 'Codice sorgente',
-  'privacy.source': 'Overlap è una piccola app indipendente e open source (licenza MIT) di Micropeptide: {link}. È ispirata allo strumento di pianificazione open source Timeful, ma non condivide alcun codice con esso.',
+  'privacy.source': 'Overlap è una piccola app indipendente e open source (licenza MIT) di Micropeptide: {link}.',
 };

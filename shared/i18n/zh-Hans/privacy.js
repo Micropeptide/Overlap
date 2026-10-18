@@ -61,5 +61,5 @@ export default {
 
   'privacy.sourceHeading': '源代码',
   // {link} is the repository address, github.com/Micropeptide/Overlap.
-  'privacy.source': 'Overlap 是由 Micropeptide 开发的一款小型独立开源应用（MIT 许可证）：{link}。它受到开源日程工具 Timeful 的启发，但没有共用任何代码。',
+  'privacy.source': 'Overlap 是由 Micropeptide 开发的一款小型独立开源应用（MIT 许可证）：{link}。',
 };

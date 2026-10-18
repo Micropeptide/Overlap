@@ -20,4 +20,6 @@ export default {
   'home.statusClosed': 'Ditutup',
   'home.statusFinalized': 'Waktu final dipilih',
   'home.statusDeleted': 'Dihapus',
+  'home.trySample': "Coba polling contoh",
+  'home.trySampleNote': "Tujuh orang sudah menjawab. Tambahkan waktumu dan lihat hasilnya berubah.",
 };

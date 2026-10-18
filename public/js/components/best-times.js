@@ -13,7 +13,7 @@ export function bestTimes({ poll, timeZone, onChoose, emptyAction, onHighlight =
   const responses = poll.responses || [];
   const summaryLine = h('span', { class: 'best-summary' });
   const root = h('div', { class: 'best-body' });
-  const details = h('details', { class: 'best', open: storage.pref('showBest', false) ? true : null },
+  const details = h('details', { class: 'best', open: storage.pref('showBest', true) ? true : null },
     h('summary', null, h('span', { class: 'best-heading' }, t('best.heading')), summaryLine),
     root);
   details.addEventListener('toggle', () => storage.setPref('showBest', details.open));

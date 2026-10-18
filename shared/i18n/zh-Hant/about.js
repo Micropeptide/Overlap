@@ -14,5 +14,4 @@ export default {
   'about.moreLink': 'Micropeptide 的其他軟體',
   'about.sourceHeading': '開放原始碼',
   'about.sourceCode': 'Overlap 的程式碼以 MIT 授權條款公開在 {link}。歡迎到那裡回報錯誤或提出想法。',
-  'about.inspired': '本專案的靈感來自開放原始碼排程工具 {timeful}，但沒有共用任何程式碼。字型：Bricolage Grotesque 與 Atkinson Hyperlegible Next，皆採用 SIL Open Font License。',
 };

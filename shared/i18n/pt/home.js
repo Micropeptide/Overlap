@@ -20,4 +20,6 @@ export default {
   'home.statusClosed': 'Encerrada',
   'home.statusFinalized': 'Horário definitivo escolhido',
   'home.statusDeleted': 'Excluída',
+  'home.trySample': "Experimente uma enquete de exemplo",
+  'home.trySampleNote': "Sete pessoas já responderam. Adicione seus horários e veja os resultados mudarem.",
 };

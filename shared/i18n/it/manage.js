@@ -74,8 +74,8 @@ export default {
   'manage.removePasswordConfirm': 'Rimuovi password',
   'manage.passwordRemoved': 'Password dell’organizzatore rimossa',
   'manage.startOption': '{time}, {day}',
-  'manage.preview': '{time} ({zone})',
-  'manage.previewWeekly': 'Ogni {time} ({zone})',
+  'manage.preview': '{time} · {zone}',
+  'manage.previewWeekly': 'Ogni {time} · {zone}',
   'manage.finalTitle': 'Scegli l’orario definitivo',
   'manage.starts': 'Inizio',
   'manage.lasts': 'Durata',
@@ -126,4 +126,6 @@ export default {
   'manage.createNew': 'Crea un nuovo sondaggio',
   'manage.resultsUpdated': 'Risultati aggiornati',
   'manage.passwordFailed': 'Il tuo sondaggio è pronto, ma la password dell’organizzatore non è stata salvata. Impostala in Gestisci sondaggio.',
+  'manage.inviteFinal': "L’orario di «{title}» è stato fissato.",
+  'manage.inviteFinalMessage': "L’orario di «{title}» è stato fissato. Dettagli e invito per il calendario: {url}",
 };

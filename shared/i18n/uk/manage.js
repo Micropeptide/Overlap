@@ -77,8 +77,8 @@ export default {
   'manage.removePasswordConfirm': 'Видалити пароль',
   'manage.passwordRemoved': 'Пароль організатора видалено',
   'manage.startOption': '{time}, {day}',
-  'manage.preview': '{time} ({zone})',
-  'manage.previewWeekly': 'Щотижня, {time} ({zone})',
+  'manage.preview': '{time} · {zone}',
+  'manage.previewWeekly': 'Щотижня, {time} · {zone}',
   'manage.finalTitle': 'Виберіть остаточний час',
   'manage.starts': 'Початок',
   'manage.lasts': 'Тривалість',
@@ -130,4 +130,6 @@ export default {
   'manage.createNew': 'Створити нове опитування',
   'manage.resultsUpdated': 'Результати оновлено',
   'manage.passwordFailed': 'Ваше опитування готове, але пароль організатора не збережено. Встановіть його в розділі «Керування опитуванням».',
+  'manage.inviteFinal': "Час для «{title}» вибрано.",
+  'manage.inviteFinalMessage': "Час для «{title}» вибрано. Подробиці й запрошення в календар: {url}",
 };

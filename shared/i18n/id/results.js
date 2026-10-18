@@ -1,7 +1,7 @@
 export default {
   'results.title': 'Ketersediaan semua orang',
   'results.emptyTitle': 'Belum ada yang bisa dibandingkan',
-  'results.emptyBody': 'Setelah orang-orang menanggapi, kotak yang lebih gelap menunjukkan waktu yang bisa dihadiri lebih banyak orang.',
+  'results.emptyBody': "Setelah orang menjawab, kamu akan melihat siapa yang bisa di setiap waktu dan kapan semua orang cocok.",
   'results.help': 'Pilih sebuah nama untuk melihat jawaban orang itu saja.',
   'results.idle': 'Arahkan kursor atau tekan Tab ke sebuah waktu untuk melihat siapa yang bisa hadir.',
   'results.idlePick': 'Arahkan kursor atau tekan Tab ke sebuah waktu untuk melihat siapa yang bisa hadir. Klik sebuah waktu untuk menjadikannya waktu final.',
@@ -18,7 +18,7 @@ export default {
   'results.legendMaybe': 'Jika perlu',
   'results.legendNo': 'Tidak tersedia',
   'results.legendUnanswered': 'Belum melihat waktu ini',
-  'results.legendRamp': 'Makin gelap, makin banyak orang',
+  'results.legendRamp': "Makin pekat warnanya, makin banyak orang",
   'results.legendAll': 'Semua orang',
   'results.legendHasMaybe': 'Termasuk “jika perlu”',
 

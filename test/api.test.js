@@ -33,7 +33,7 @@ async function api(method, path, { body, token } = {}) {
 
 const POLL = {
   title: 'Book club',
-  dates: ['2026-10-07', '2026-10-08'],
+  dates: ['2027-10-06', '2027-10-07'],
   startMinute: 9 * 60,
   endMinute: 12 * 60,
   timezone: 'America/New_York',
@@ -52,7 +52,7 @@ test('creating a poll returns a guest id, a private key and the slots', async ()
   assert.equal(poll.slotMinutes, 30); // sensible default
   assert.equal(poll.resultsVisibility, 'everyone'); // default
   assert.equal(poll.slots.length, 12); // 6 half hours × 2 days
-  assert.equal(new Date(poll.slots[0]).toISOString(), '2026-10-07T13:00:00.000Z');
+  assert.equal(new Date(poll.slots[0]).toISOString(), '2027-10-06T13:00:00.000Z');
   assert.equal(poll.status, 'open');
   // The key is stored only as a hash.
   const row = store.db.prepare('SELECT admin_hash FROM polls WHERE id = ?').get(poll.id);
@@ -195,8 +195,8 @@ test('closing, finalizing and reopening a poll', async () => {
   const ics = await api('GET', `/api/polls/${poll.id}/invite.ics`);
   assert.equal(ics.status, 200);
   assert.match(ics.headers.get('content-type'), /text\/calendar/);
-  assert.match(ics.text, /DTSTART:20261007T130000Z\r\n/);
-  assert.match(ics.text, /DTEND:20261007T140000Z\r\n/);
+  assert.match(ics.text, /DTSTART:20271006T130000Z\r\n/);
+  assert.match(ics.text, /DTEND:20271006T140000Z\r\n/);
   assert.match(ics.text, /SUMMARY:Book club\r\n/);
 
   const reopened = await api('PATCH', `/api/polls/${poll.id}`, { token: adminToken, body: { status: 'open' } });
@@ -208,7 +208,7 @@ test('closing, finalizing and reopening a poll', async () => {
 test('editing the dates marks new times as unanswered for earlier guests', async () => {
   const { poll, adminToken } = await newPoll();
   await api('POST', `/api/polls/${poll.id}/responses`, { body: { name: 'Lee', available: [poll.slots[0]] } });
-  const edited = await api('PATCH', `/api/polls/${poll.id}`, { token: adminToken, body: { dates: [...POLL.dates, '2026-10-09'] } });
+  const edited = await api('PATCH', `/api/polls/${poll.id}`, { token: adminToken, body: { dates: [...POLL.dates, '2027-10-08'] } });
   assert.equal(edited.status, 200, edited.text);
   assert.equal(edited.json.poll.slots.length, 18);
   const lee = edited.json.poll.responses[0];
@@ -231,7 +231,7 @@ test('guests delete their own response; organizers can remove any response; dele
 test('expired polls are deleted with their responses', async () => {
   const { poll } = await newPoll();
   await api('POST', `/api/polls/${poll.id}/responses`, { body: { name: 'Old', available: [] } });
-  assert.ok(await store.deleteExpired(Date.parse('2027-12-01')) >= 1); // well past 8 October 2026 + 30 days
+  assert.ok(await store.deleteExpired(Date.parse('2027-12-01')) >= 1); // well past 7 October 2027 + 30 days
   assert.equal((await api('GET', `/api/polls/${poll.id}`)).status, 404);
 });
 
@@ -361,7 +361,7 @@ test('review fixes: dates window, time zone names, final time on a slot, nulls i
 
   // A final time whose date is removed by an edit is cleared.
   await api('PATCH', `/api/polls/${poll.id}`, { token: adminToken, body: { final: { start: poll.slots[0], end: poll.slots[0] + 3600e3 } } });
-  const moved = await api('PATCH', `/api/polls/${poll.id}`, { token: adminToken, body: { dates: ['2026-10-08'] } });
+  const moved = await api('PATCH', `/api/polls/${poll.id}`, { token: adminToken, body: { dates: ['2027-10-07'] } });
   assert.equal(moved.json.poll.final, null);
   assert.equal(moved.json.poll.status, 'closed');
 
@@ -403,7 +403,7 @@ test('a deleted poll is overwritten in the database file', async () => {
   const { tmpdir } = await import('node:os');
   const file = join(mkdtempSync(join(tmpdir(), 'overlap-')), 'del.db');
   const s = openStore(file);
-  const { poll } = await s.createPoll({ kind: 'dates', title: 'SECRET_TITLE_QQ', description: '', location: '', closesOn: null, timezone: 'UTC', dates: ['2026-12-01'], startMinute: 540, endMinute: 600, slotMinutes: 30, durationMinutes: null, resultsVisibility: 'everyone' });
+  const { poll } = await s.createPoll({ kind: 'dates', title: 'SECRET_TITLE_QQ', description: '', location: '', closesOn: null, timezone: 'UTC', dates: ['2027-11-30'], startMinute: 540, endMinute: 600, slotMinutes: 30, durationMinutes: null, resultsVisibility: 'everyone' });
   await s.createResponse(poll, { name: 'SECRET_NAME_QQ', available: [], ifNeeded: [], note: 'SECRET_NOTE_QQ' });
   await s.deletePoll(poll.id);
   s.close();
@@ -442,7 +442,7 @@ test('closing dates in the past are refused, and invisible names too', async () 
 
 test('by default nothing is deleted automatically', async () => {
   const keep = openStore(':memory:'); // no retentionDays: polls stay until deleted
-  const { poll } = await keep.createPoll({ kind: 'dates', title: 'Kept', description: '', location: '', closesOn: null, timezone: 'UTC', dates: ['2026-10-10'], startMinute: 540, endMinute: 600, slotMinutes: 30, durationMinutes: null, resultsVisibility: 'everyone' });
+  const { poll } = await keep.createPoll({ kind: 'dates', title: 'Kept', description: '', location: '', closesOn: null, timezone: 'UTC', dates: ['2027-10-09'], startMinute: 540, endMinute: 600, slotMinutes: 30, durationMinutes: null, resultsVisibility: 'everyone' });
   assert.equal(await keep.deleteExpired(Date.parse('2099-01-01')), 0);
   assert.ok(await keep.getPoll(poll.id));
   const app = createServer(createApp({ store: keep }));
@@ -495,10 +495,10 @@ test('an organizer can switch a poll between dates and days of the week', async 
   assert.equal(weekly.json.poll.responses.length, 1);
 
   // And back again.
-  const back = await api('PATCH', `/api/polls/${poll.id}`, { token: adminToken, body: { kind: 'dates', dates: ['2026-11-02'] } });
+  const back = await api('PATCH', `/api/polls/${poll.id}`, { token: adminToken, body: { kind: 'dates', dates: ['2027-11-01'] } });
   assert.equal(back.status, 200, back.text);
   assert.equal(back.json.poll.kind, 'dates');
-  assert.deepEqual(back.json.poll.dates, ['2026-11-02']);
+  assert.deepEqual(back.json.poll.dates, ['2027-11-01']);
   assert.equal(back.json.poll.weekdays, undefined);
   // Ana can answer again.
   assert.equal((await api('PUT', `/api/polls/${poll.id}/responses/${sent.json.response.id}`, { token: sent.json.editToken, body: { name: 'Ana', available: [back.json.poll.slots[0]], ifNeeded: [] } })).status, 200);

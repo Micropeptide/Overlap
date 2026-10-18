@@ -20,4 +20,6 @@ export default {
   'home.statusClosed': '締め切り',
   'home.statusFinalized': '日時確定',
   'home.statusDeleted': '削除済み',
+  'home.trySample': "サンプルの日程調整を試す",
+  'home.trySampleNote': "7人がすでに回答しています。自分の都合を追加して、結果が変わる様子を見てみましょう。",
 };

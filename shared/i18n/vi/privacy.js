@@ -61,5 +61,5 @@ export default {
 
   'privacy.sourceHeading': 'Mã nguồn',
   // {link} is the repository address, github.com/Micropeptide/Overlap.
-  'privacy.source': 'Overlap là một ứng dụng nhỏ, độc lập, mã nguồn mở (Giấy phép MIT) do Micropeptide làm: {link}. Ứng dụng lấy cảm hứng từ công cụ lên lịch mã nguồn mở Timeful, nhưng không dùng chung mã nào với nó.',
+  'privacy.source': 'Overlap là một ứng dụng nhỏ, độc lập, mã nguồn mở (Giấy phép MIT) do Micropeptide làm: {link}.',
 };

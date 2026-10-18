@@ -1,7 +1,7 @@
 export default {
   'results.title': 'توفّر الجميع',
   'results.emptyTitle': 'لا شيء للمقارنة بعد',
-  'results.emptyBody': 'عندما يردّ الناس، تُظهر المربعات الأغمق الأوقات التي يستطيع حضورها عدد أكبر منهم.',
+  'results.emptyBody': "عندما يجيب الناس، سترى من يستطيع في كل وقت وأين تلتقي أوقات الجميع.",
   'results.help': 'اختر اسمًا لعرض إجابات ذلك الشخص فقط.',
   'results.idle': 'أشِر إلى وقت أو انتقل إليه بمفتاح Tab لترى من يستطيع الحضور.',
   'results.idlePick': 'أشِر إلى وقت أو انتقل إليه بمفتاح Tab لترى من يستطيع الحضور. انقر على وقت لجعله الموعد المعتمد.',
@@ -17,7 +17,7 @@ export default {
   'results.legendMaybe': 'عند الحاجة',
   'results.legendNo': 'غير متاح',
   'results.legendUnanswered': 'لم يرَ هذا الوقت',
-  'results.legendRamp': 'الأغمق يعني عددًا أكبر',
+  'results.legendRamp': "اللون الأقوى يعني عددًا أكبر",
   'results.legendAll': 'الجميع',
   'results.legendHasMaybe': 'يشمل «عند الحاجة»',
 

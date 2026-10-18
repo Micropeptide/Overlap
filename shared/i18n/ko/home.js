@@ -20,4 +20,6 @@ export default {
   'home.statusClosed': '마감됨',
   'home.statusFinalized': '시간 확정됨',
   'home.statusDeleted': '삭제됨',
+  'home.trySample': "예시 투표 체험하기",
+  'home.trySampleNote': "이미 7명이 응답했어요. 내 시간을 추가하고 결과가 바뀌는 걸 확인해 보세요.",
 };

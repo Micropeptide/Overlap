@@ -1,7 +1,7 @@
 export default {
   'results.title': 'Dostępność wszystkich',
   'results.emptyTitle': 'Na razie nie ma czego porównać',
-  'results.emptyBody': 'Gdy pojawią się odpowiedzi, ciemniejsze pola pokażą terminy, które pasują większej liczbie osób.',
+  'results.emptyBody': "Gdy ludzie odpowiedzą, zobaczysz, kto może w danym terminie i gdzie wszystkim pasuje.",
   'results.help': 'Wybierz imię, aby zobaczyć odpowiedzi tylko tej osoby.',
   'results.idle': 'Wskaż termin kursorem lub przejdź do niego klawiszem Tab, aby zobaczyć, kto może.',
   'results.idlePick': 'Wskaż termin kursorem lub przejdź do niego klawiszem Tab, aby zobaczyć, kto może. Kliknij termin, aby ustawić go jako ostateczny.',
@@ -18,7 +18,7 @@ export default {
   'results.legendMaybe': 'Ewentualnie',
   'results.legendNo': 'Nie pasuje',
   'results.legendUnanswered': 'Nowy termin, bez odpowiedzi',
-  'results.legendRamp': 'Ciemniej znaczy więcej osób',
+  'results.legendRamp': "Mocniejszy kolor znaczy więcej osób",
   'results.legendAll': 'Wszyscy',
   'results.legendHasMaybe': 'Wliczając „ewentualnie”',
 

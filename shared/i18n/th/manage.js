@@ -68,8 +68,8 @@ export default {
   'manage.removePasswordConfirm': 'ลบรหัสผ่าน',
   'manage.passwordRemoved': 'ลบรหัสผ่านผู้จัดแล้ว',
   'manage.startOption': '{time} {day}',
-  'manage.preview': '{time} ({zone})',
-  'manage.previewWeekly': 'ทุก {time} ({zone})',
+  'manage.preview': '{time} · {zone}',
+  'manage.previewWeekly': 'ทุก {time} · {zone}',
   'manage.finalTitle': 'เลือกเวลาสรุป',
   'manage.starts': 'เริ่ม',
   'manage.lasts': 'นาน',
@@ -118,4 +118,6 @@ export default {
   'manage.createNew': 'สร้างโพลใหม่',
   'manage.resultsUpdated': 'อัปเดตผลแล้ว',
   'manage.passwordFailed': 'โพลของคุณพร้อมแล้ว แต่ยังไม่ได้บันทึกรหัสผ่านผู้จัด ตั้งรหัสผ่านได้ที่ “จัดการโพล”',
+  'manage.inviteFinal': "กำหนดเวลาของ “{title}” แล้ว",
+  'manage.inviteFinalMessage': "กำหนดเวลาของ “{title}” แล้ว ดูรายละเอียดและคำเชิญในปฏิทิน: {url}",
 };

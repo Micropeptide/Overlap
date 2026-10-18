@@ -58,5 +58,5 @@ export default {
   'privacy.httpsOther': 'Bağlantılar yalnızca bu Overlap kopyası HTTPS üzerinden sunuluyorsa şifrelenir.',
 
   'privacy.sourceHeading': 'Kaynak kodu',
-  'privacy.source': 'Overlap, Micropeptide tarafından geliştirilen küçük, bağımsız, açık kaynaklı bir uygulamadır (MIT Lisansı): {link}. Açık kaynaklı planlama aracı Timeful’dan esinlenmiştir ama onunla hiçbir kodu paylaşmaz.',
+  'privacy.source': 'Overlap, Micropeptide tarafından geliştirilen küçük, bağımsız, açık kaynaklı bir uygulamadır (MIT Lisansı): {link}.',
 };

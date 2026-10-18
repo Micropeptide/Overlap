@@ -1,7 +1,7 @@
 export default {
   'results.title': 'Verfügbarkeit aller',
   'results.emptyTitle': 'Noch nichts zu vergleichen',
-  'results.emptyBody': 'Sobald Leute antworten, zeigen dunklere Felder Zeiten, zu denen mehr von ihnen können.',
+  'results.emptyBody': "Sobald Leute antworten, siehst du, wer wann kann und wo sich alle überschneiden.",
   'results.help': 'Wähl einen Namen, um nur die Antworten dieser Person zu sehen.',
   'results.idle': 'Zeig auf eine Zeit (oder wähl sie mit Tab), um zu sehen, wer kann.',
   'results.idlePick': 'Zeig auf eine Zeit (oder wähl sie mit Tab), um zu sehen, wer kann. Klick auf eine Zeit, um sie als Termin festzulegen.',
@@ -17,7 +17,7 @@ export default {
   'results.legendMaybe': 'Wenn nötig',
   'results.legendNo': 'Nicht verfügbar',
   'results.legendUnanswered': 'Zeit noch nicht gesehen',
-  'results.legendRamp': 'Dunkler heißt: mehr Leute',
+  'results.legendRamp': "Kräftigere Farbe heißt: mehr Leute",
   'results.legendAll': 'Alle',
   'results.legendHasMaybe': 'Inklusive „wenn nötig“',
 

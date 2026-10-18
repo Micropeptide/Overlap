@@ -68,8 +68,8 @@ export default {
   'manage.removePasswordConfirm': 'パスワードを削除',
   'manage.passwordRemoved': '主催者パスワードを削除しました',
   'manage.startOption': '{day} {time}',
-  'manage.preview': '{time}（{zone}）',
-  'manage.previewWeekly': '毎週{time}（{zone}）',
+  'manage.preview': '{time} · {zone}',
+  'manage.previewWeekly': '毎週{time} · {zone}',
   'manage.finalTitle': '日時を確定',
   'manage.starts': '開始',
   'manage.lasts': '所要時間',
@@ -118,4 +118,6 @@ export default {
   'manage.createNew': '新しい日程調整を作成',
   'manage.resultsUpdated': '結果を更新しました',
   'manage.passwordFailed': '日程調整はできましたが、主催者パスワードは保存されませんでした。「日程調整の管理」で設定してください。',
+  'manage.inviteFinal': "「{title}」の日時が決まりました。",
+  'manage.inviteFinalMessage': "「{title}」の日時が決まりました。詳細とカレンダー招待：{url}",
 };

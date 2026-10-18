@@ -1,7 +1,7 @@
 export default {
   'results.title': '大家的空檔',
   'results.emptyTitle': '還沒有可以比較的資料',
-  'results.emptyBody': '有人回覆後，顏色越深的格子代表越多人可以參加。',
+  'results.emptyBody': "有人回覆後，你會看到每個時間誰有空，以及大家在哪些時間重疊。",
   'results.help': '選擇一個名字，只看那個人的回覆。',
   'results.idle': '將游標移到某個時間，或用 Tab 鍵移過去，就能看到誰可以參加。',
   'results.idlePick': '將游標移到某個時間，或用 Tab 鍵移過去，就能看到誰可以參加。點選某個時間，即可設為最終時間。',
@@ -17,7 +17,7 @@ export default {
   'results.legendMaybe': '必要時可以',
   'results.legendNo': '沒空',
   'results.legendUnanswered': '還沒看到這個時段',
-  'results.legendRamp': '顏色越深，人數越多',
+  'results.legendRamp': "顏色越濃，人數越多",
   'results.legendAll': '所有人',
   'results.legendHasMaybe': '包含「必要時可以」',
 

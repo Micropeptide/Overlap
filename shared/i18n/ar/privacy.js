@@ -66,5 +66,5 @@ export default {
   'privacy.httpsOther': 'لا تكون الاتصالات مشفّرة إلا عندما تُقدَّم هذه النسخة من Overlap عبر HTTPS.',
 
   'privacy.sourceHeading': 'المصدر',
-  'privacy.source': 'Overlap تطبيق صغير ومستقل ومفتوح المصدر (ترخيص MIT) من Micropeptide: {link}. استُلهم من أداة الجدولة مفتوحة المصدر Timeful، لكنه لا يشاركها أي شيفرة.',
+  'privacy.source': 'Overlap تطبيق صغير ومستقل ومفتوح المصدر (ترخيص MIT) من Micropeptide: {link}.',
 };

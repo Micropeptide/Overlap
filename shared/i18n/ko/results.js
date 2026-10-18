@@ -1,7 +1,7 @@
 export default {
   'results.title': '모두의 가능 시간',
   'results.emptyTitle': '아직 비교할 응답이 없어요',
-  'results.emptyBody': '응답이 들어오면 더 많은 사람이 가능한 시간일수록 칸이 진하게 표시돼요.',
+  'results.emptyBody': "응답이 모이면 시간마다 누가 가능한지, 모두가 겹치는 시간이 언제인지 볼 수 있어요.",
   'results.help': '이름을 선택하면 그 사람의 응답만 볼 수 있어요.',
   'results.idle': '시간에 마우스를 올리거나 Tab 키로 이동하면 누가 가능한지 볼 수 있어요.',
   'results.idlePick': '시간에 마우스를 올리거나 Tab 키로 이동하면 누가 가능한지 볼 수 있어요. 시간을 클릭하면 확정 시간으로 정할 수 있어요.',
@@ -18,7 +18,7 @@ export default {
   'results.legendMaybe': '필요 시 가능',
   'results.legendNo': '불가',
   'results.legendUnanswered': '이 시간을 아직 못 봄',
-  'results.legendRamp': '진할수록 더 많은 사람',
+  'results.legendRamp': "색이 진할수록 더 많은 사람",
   'results.legendAll': '모두',
   'results.legendHasMaybe': '“필요 시 가능” 포함',
 

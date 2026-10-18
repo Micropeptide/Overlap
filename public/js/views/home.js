@@ -1,4 +1,4 @@
-import { h, clear } from '../lib/dom.js';
+import { h, clear, icon } from '../lib/dom.js';
 import { api } from '../lib/api.js';
 import { storage } from '../lib/storage.js';
 import { createPollForm } from '../components/poll-form.js';
@@ -109,6 +109,9 @@ export async function renderHome(main) {
       h('div', { class: 'hero-text' },
         h('h1', { class: 'hero-title' }, t('home.headline')),
         h('p', { class: 'lede' }, t('home.lede')),
+        h('p', { class: 'sample-cta' },
+          h('a', { class: 'btn secondary', href: '/p/example' }, icon('people'), t('home.trySample')),
+          h('span', { class: 'muted small' }, t('home.trySampleNote'))),
       ),
       overlapIllustration(),
     ),

@@ -68,8 +68,8 @@ export default {
   'manage.removePasswordConfirm': 'Gỡ mật khẩu',
   'manage.passwordRemoved': 'Đã gỡ mật khẩu người tổ chức',
   'manage.startOption': '{time}, {day}',
-  'manage.preview': '{time} ({zone})',
-  'manage.previewWeekly': 'Hằng tuần {time} ({zone})',
+  'manage.preview': '{time} · {zone}',
+  'manage.previewWeekly': 'Hằng tuần {time} · {zone}',
   'manage.finalTitle': 'Chọn thời gian chốt',
   'manage.starts': 'Bắt đầu',
   'manage.lasts': 'Kéo dài',
@@ -118,4 +118,6 @@ export default {
   'manage.createNew': 'Tạo cuộc thăm dò mới',
   'manage.resultsUpdated': 'Đã cập nhật kết quả',
   'manage.passwordFailed': 'Cuộc thăm dò đã sẵn sàng, nhưng mật khẩu người tổ chức chưa được lưu. Hãy đặt nó trong mục Quản lý cuộc thăm dò.',
+  'manage.inviteFinal': "Đã chốt thời gian cho “{title}”.",
+  'manage.inviteFinalMessage': "Đã chốt thời gian cho “{title}”. Chi tiết và lời mời lịch: {url}",
 };

@@ -58,5 +58,5 @@ export default {
   'privacy.httpsOther': 'कनेक्शन तभी एन्क्रिप्टेड होते हैं जब Overlap की यह कॉपी HTTPS पर चलाई जाती है।',
 
   'privacy.sourceHeading': 'सोर्स',
-  'privacy.source': 'Overlap, Micropeptide का बनाया एक छोटा, स्वतंत्र, ओपन-सोर्स ऐप (MIT License) है: {link}। यह ओपन-सोर्स शेड्यूलर Timeful से प्रेरित है, पर इसके साथ कोई कोड साझा नहीं करता।',
+  'privacy.source': 'Overlap, Micropeptide का बनाया एक छोटा, स्वतंत्र, ओपन-सोर्स ऐप (MIT License) है: {link}।',
 };

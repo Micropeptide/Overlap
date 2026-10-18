@@ -28,9 +28,6 @@ The full list of ideas considered, built and rejected is in
 [docs/IMPROVEMENTS.md](docs/IMPROVEMENTS.md). Nothing is deleted automatically
 unless you set `RETENTION_DAYS` (see Configuration).
 
-Overlap is inspired by [Timeful](https://github.com/schej-it/timeful.app)
-(AGPL-3.0) but shares **no code** with it. See [Why not fork Timeful?](#why-not-fork-timeful).
-
 ---
 
 ## Run it locally
@@ -279,18 +276,6 @@ is the user-facing statement. Every claim on it matches the code above:
   (Windows High Contrast) mode is handled.
 - `prefers-reduced-motion` and `prefers-color-scheme: dark` are respected.
 - An axe-core scan runs in the e2e suite.
-
-## Why not fork Timeful?
-
-Timeful's core idea is the drag-to-paint availability grid with a group heatmap
-and "if needed" times. Overlap keeps that idea. Most of Timeful's code serves
-other things: Google, Outlook and Apple calendar sync, accounts, sign-up forms,
-groups, Stripe and Polar payments, PostHog and GTM analytics, email reminders and
-a Discord bot, built on Vue 2 and Vuetify 2 (both end-of-life) with Go and MongoDB.
-Its guest responses are also keyed by guest name, which is the overwrite-by-name
-problem Overlap avoids. A smaller implementation was simpler than removing all
-of that. No Timeful code, text or assets are included, so its AGPL-3.0 terms
-don't apply to Overlap.
 
 ## License and author
 

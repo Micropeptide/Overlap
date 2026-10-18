@@ -34,7 +34,7 @@ test('small groups show a colored lane per person; the heatmap is one click away
 
   // The choice is remembered.
   await view.getByRole('radio', { name: 'Heatmap' }).check({ force: true });
-  await expect(page.locator('.legend')).toContainText('Darker means more people');
+  await expect(page.locator('.legend')).toContainText('Stronger color means more people');
   await page.reload();
   await expect(page.getByRole('radio', { name: 'Heatmap' })).toBeChecked();
 });

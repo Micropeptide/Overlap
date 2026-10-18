@@ -68,8 +68,8 @@ export default {
   'manage.removePasswordConfirm': '移除密码',
   'manage.passwordRemoved': '发起人密码已移除',
   'manage.startOption': '{time}，{day}',
-  'manage.preview': '{time}（{zone}）',
-  'manage.previewWeekly': '每{time}（{zone}）',
+  'manage.preview': '{time} · {zone}',
+  'manage.previewWeekly': '每{time} · {zone}',
   'manage.finalTitle': '选择最终时间',
   'manage.starts': '开始',
   'manage.lasts': '时长',
@@ -118,4 +118,6 @@ export default {
   'manage.createNew': '创建新投票',
   'manage.resultsUpdated': '结果已更新',
   'manage.passwordFailed': '你的投票已准备好，但发起人密码没有保存成功。请在“管理投票”中设置。',
+  'manage.inviteFinal': "“{title}”的时间已经定好了。",
+  'manage.inviteFinalMessage': "“{title}”的时间已经定好了。详情和日历邀请：{url}",
 };

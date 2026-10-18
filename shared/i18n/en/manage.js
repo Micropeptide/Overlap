@@ -71,8 +71,8 @@ export default {
   'manage.removePasswordConfirm': 'Remove password',
   'manage.passwordRemoved': 'Organizer password removed',
   'manage.startOption': '{time}, {day}',
-  'manage.preview': '{time} ({zone})',
-  'manage.previewWeekly': 'Every {time} ({zone})',
+  'manage.preview': '{time} · {zone}',
+  'manage.previewWeekly': 'Every {time} · {zone}',
   'manage.finalTitle': 'Choose the final time',
   'manage.starts': 'Starts',
   'manage.lasts': 'Lasts',
@@ -122,4 +122,7 @@ export default {
   'manage.createNew': 'Create a new poll',
   'manage.resultsUpdated': 'Results updated',
   'manage.passwordFailed': 'Your poll is ready, but the organizer password wasn’t saved. Set it under Manage poll.',
+  // Once the final time is set, the invitation tells people the time is decided instead of asking them to answer.
+  'manage.inviteFinal': "The time for “{title}” is set.",
+  'manage.inviteFinalMessage': "The time for “{title}” is set. Details and a calendar invite: {url}",
 };

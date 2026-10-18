@@ -58,5 +58,5 @@ export default {
   'privacy.httpsOther': '이 Overlap 사이트가 HTTPS로 제공될 때만 연결이 암호화돼요.',
 
   'privacy.sourceHeading': '소스',
-  'privacy.source': 'Overlap은 Micropeptide가 만든 작은 독립 오픈 소스 앱(MIT License)이에요: {link}. 오픈 소스 일정 조율 도구 Timeful에서 영감을 받았지만, 코드를 공유하지는 않아요.',
+  'privacy.source': 'Overlap은 Micropeptide가 만든 작은 독립 오픈 소스 앱(MIT License)이에요: {link}.',
 };

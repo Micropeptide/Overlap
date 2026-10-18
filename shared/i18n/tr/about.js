@@ -14,5 +14,4 @@ export default {
   'about.moreLink': 'Micropeptide tarafından diğer yazılımlar',
   'about.sourceHeading': 'Açık kaynak',
   'about.sourceCode': 'Overlap kodu, MIT Lisansı ile {link} adresinde herkese açıktır. Hata bildirimlerinizi ve fikirlerinizi orada bekliyoruz.',
-  'about.inspired': '{timeful} adlı açık kaynaklı planlama aracından esinlenmiştir ama onunla hiçbir kodu paylaşmaz. Yazı tipleri: Bricolage Grotesque ve Atkinson Hyperlegible Next; ikisi de SIL Open Font License kapsamındadır.',
 };

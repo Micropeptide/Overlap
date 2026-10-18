@@ -77,8 +77,8 @@ export default {
   'manage.removePasswordConfirm': 'Usuń hasło',
   'manage.passwordRemoved': 'Usunięto hasło organizatora',
   'manage.startOption': '{time}, {day}',
-  'manage.preview': '{time} ({zone})',
-  'manage.previewWeekly': 'Co tydzień: {time} ({zone})',
+  'manage.preview': '{time} · {zone}',
+  'manage.previewWeekly': 'Co tydzień: {time} · {zone}',
   'manage.finalTitle': 'Wybierz ostateczny termin',
   'manage.starts': 'Początek',
   'manage.lasts': 'Czas trwania',
@@ -130,4 +130,6 @@ export default {
   'manage.createNew': 'Utwórz nową ankietę',
   'manage.resultsUpdated': 'Wyniki zaktualizowane',
   'manage.passwordFailed': 'Ankieta jest gotowa, ale hasło organizatora nie zostało zapisane. Ustaw je w sekcji „Zarządzaj ankietą”.',
+  'manage.inviteFinal': "Termin „{title}” jest ustalony.",
+  'manage.inviteFinalMessage': "Termin „{title}” jest ustalony. Szczegóły i zaproszenie do kalendarza: {url}",
 };

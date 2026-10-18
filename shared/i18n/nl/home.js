@@ -20,4 +20,6 @@ export default {
   'home.statusClosed': 'Gesloten',
   'home.statusFinalized': 'Tijdstip gekozen',
   'home.statusDeleted': 'Verwijderd',
+  'home.trySample': "Probeer een voorbeeldpeiling",
+  'home.trySampleNote': "Zeven mensen hebben al geantwoord. Voeg je eigen tijden toe en zie de uitslag veranderen.",
 };

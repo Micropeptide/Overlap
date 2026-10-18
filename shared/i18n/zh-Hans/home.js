@@ -20,4 +20,6 @@ export default {
   'home.statusClosed': '已关闭',
   'home.statusFinalized': '已选定最终时间',
   'home.statusDeleted': '已删除',
+  'home.trySample': "试试示例投票",
+  'home.trySampleNote': "已经有七个人回答了。添加你的时间，看看结果如何变化。",
 };

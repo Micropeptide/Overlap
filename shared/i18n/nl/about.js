@@ -16,6 +16,4 @@ export default {
   'about.sourceHeading': 'Open source',
   // {link} is the repository address, github.com/Micropeptide/Overlap.
   'about.sourceCode': 'De code van Overlap is openbaar op {link} onder de MIT-licentie. Bugmeldingen en ideeën zijn daar welkom.',
-  // {timeful} is a link whose text is the name "Timeful".
-  'about.inspired': 'Overlap is geïnspireerd door de opensource-planner {timeful}, maar deelt er geen code mee. Lettertypen: Bricolage Grotesque en Atkinson Hyperlegible Next, allebei onder de SIL Open Font License.',
 };

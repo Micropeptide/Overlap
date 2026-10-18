@@ -1,7 +1,7 @@
 export default {
   'results.title': 'Herkesin uygunluğu',
   'results.emptyTitle': 'Henüz karşılaştırılacak bir şey yok',
-  'results.emptyBody': 'Kişiler yanıt verdikçe, daha koyu kareler daha fazla kişinin katılabileceği saatleri gösterir.',
+  'results.emptyBody': "Yanıtlar geldikçe kimin hangi saatte uygun olduğunu ve herkesin nerede kesiştiğini göreceksiniz.",
   'results.help': 'Yalnızca o kişinin yanıtlarını görmek için bir ad seçin.',
   'results.idle': 'Kimlerin katılabileceğini görmek için bir saatin üzerine gelin ya da Tab tuşuyla ona gidin.',
   'results.idlePick': 'Kimlerin katılabileceğini görmek için bir saatin üzerine gelin ya da Tab tuşuyla ona gidin. Kesin saat yapmak için bir saate tıklayın.',
@@ -17,7 +17,7 @@ export default {
   'results.legendMaybe': 'Gerekirse',
   'results.legendNo': 'Uygun değil',
   'results.legendUnanswered': 'Bu saati görmedi',
-  'results.legendRamp': 'Koyu renk, daha çok kişi demek',
+  'results.legendRamp': "Renk ne kadar yoğunsa o kadar çok kişi",
   'results.legendAll': 'Herkes',
   'results.legendHasMaybe': '“Gerekirse” dahil',
 

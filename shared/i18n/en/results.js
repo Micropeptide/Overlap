@@ -1,7 +1,7 @@
 export default {
   'results.title': 'Everyone’s availability',
   'results.emptyTitle': 'Nothing to compare yet',
-  'results.emptyBody': 'Once people respond, darker squares show times more of them can make.',
+  'results.emptyBody': "Once people respond, you’ll see who can make each time and where everyone overlaps.",
   'results.help': 'Select a name to see just that person’s answers.',
   'results.idle': 'Point at or tab to a time to see who can make it.',
   'results.idlePick': 'Point at or tab to a time to see who can make it. Click a time to make it the final time.',
@@ -18,7 +18,7 @@ export default {
   'results.legendMaybe': 'If needed',
   'results.legendNo': 'Not available',
   'results.legendUnanswered': 'Hasn’t seen this time',
-  'results.legendRamp': 'Darker means more people',
+  'results.legendRamp': "Stronger color means more people",
   'results.legendAll': 'Everyone',
   'results.legendHasMaybe': 'Includes “if needed”',
 

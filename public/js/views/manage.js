@@ -92,7 +92,7 @@ export async function renderManage(main, pollId) {
     page.append(h('header', { class: 'poll-head' },
       h('p', { class: 'role-tag' }, icon('lock'), t('manage.roleTag')),
       h('div', { class: 'title-row' },
-        h('h1', { class: 'page-title poll-title', tabindex: '-1' }, poll.title),
+        h('h1', { class: 'page-title poll-title', tabindex: '-1' }, h('bdi', null, poll.title)),
         h('span', { class: `status-chip status-${poll.status}`, tabindex: '-1' }, { open: t('manage.statusOpen'), closed: t('manage.statusClosed'), finalized: t('manage.statusFinalized') }[poll.status]),
         editing ? null : h('button', { type: 'button', class: 'btn small secondary edit-top', dataset: { action: 'edit-top' }, onclick: () => startEditing() }, icon('edit'), t('manage.editPoll'))),
       poll.description ? h('p', { class: 'poll-desc' }, linkify(poll.description)) : null,
@@ -116,8 +116,6 @@ export async function renderManage(main, pollId) {
         h('p', null, t('manage.readyText'))));
     }
 
-    page.append(linksSection());
-
     if (poll.final) {
       page.append(finalCard(poll, viewZone, {
         organizer: true,
@@ -127,6 +125,8 @@ export async function renderManage(main, pollId) {
         ],
       }));
     }
+    // Once a time is set, the decision comes first and the links follow.
+    page.append(linksSection());
 
     const zone = zoneLine({
       timeZone: viewZone,
@@ -155,17 +155,19 @@ export async function renderManage(main, pollId) {
         }
       },
     });
-    page.append(h('div', { class: 'panel' }, zone, results,
-      h('p', { class: 'add-own' }, ...tx('manage.addOwn', { link: h('a', { href: `/p/${pollId}`, target: '_blank', rel: 'noopener' }, t('manage.addOwnLink')) }))));
-    page.append(h('div', { class: 'panel best-panel' },
+    const resultsPanel = h('div', { class: 'panel' }, zone, results,
+      h('p', { class: 'add-own' }, ...tx('manage.addOwn', { link: h('a', { href: `/p/${pollId}`, target: '_blank', rel: 'noopener' }, t('manage.addOwnLink')) })));
+    // The answer ("which time?") comes before the data it's drawn from.
+    if (poll.responseCount) page.append(h('div', { class: 'panel best-panel' },
       bestTimes({
         poll,
         timeZone: viewZone,
         onChoose: (w) => chooseFinal(w.start, Math.min(w.minutes, poll.durationMinutes || w.minutes)),
-        onHighlight: (slots) => results.highlight(slots),
+        onHighlight: (slots) => results?.highlight(slots),
         emptyAction: h('button', { type: 'button', class: 'btn primary', onclick: () => copyText(guestUrl(), t('manage.copiedGuestLink')) }, icon('copy'), t('manage.copyGuestLink')),
       }),
     ));
+    page.append(resultsPanel);
 
 
     page.append(settingsSection());
@@ -176,9 +178,11 @@ export async function renderManage(main, pollId) {
     }
   }
 
-  /** "Hi! Please mark when you're free for …", without the link. */
-  const inviteAsk = () => t(poll.kind === 'weekly' ? 'manage.inviteAskWeekly' : 'manage.inviteAsk', { title: poll.title });
-  const inviteMessage = () => t('manage.inviteMessage', { ask: inviteAsk(), url: guestUrl() });
+  /** "Hi! Please mark when you're free for …" (or, once set, "The time is set …"), without the link. */
+  const inviteAsk = () => (poll.final ? t('manage.inviteFinal', { title: poll.title })
+    : t(poll.kind === 'weekly' ? 'manage.inviteAskWeekly' : 'manage.inviteAsk', { title: poll.title }));
+  const inviteMessage = () => (poll.final ? t('manage.inviteFinalMessage', { title: poll.title, url: guestUrl() })
+    : t('manage.inviteMessage', { ask: inviteAsk(), url: guestUrl() }));
 
   async function shareGuestLink() {
     try {
@@ -435,7 +439,7 @@ export async function renderManage(main, pollId) {
           h('p', { class: 'muted small' }, ...(expires
             ? tx('manage.dataExpires', { date: expires.toLocaleDateString(locale(), { year: 'numeric', month: 'long', day: 'numeric' }), link: privacyLink() })
             : tx('manage.dataKept', { link: privacyLink() })))),
-        h('button', { type: 'button', class: 'btn danger', onclick: deletePoll }, icon('trash'), t('manage.deleteNow'))),
+        h('button', { type: 'button', class: 'btn danger-soft', onclick: deletePoll }, icon('trash'), t('manage.deleteNow'))),
     );
   }
 

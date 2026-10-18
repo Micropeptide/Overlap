@@ -32,7 +32,6 @@ export function renderAbout(main) {
             ext(MORE, t('about.moreLink')))))),
 
     section(t('about.sourceHeading'),
-      h('p', null, ...tx('about.sourceCode', { link: ext(SOURCE, 'github.com/Micropeptide/Overlap') })),
-      h('p', null, ...tx('about.inspired', { timeful: ext('https://github.com/schej-it/timeful.app', 'Timeful') }))),
+      h('p', null, ...tx('about.sourceCode', { link: ext(SOURCE, 'github.com/Micropeptide/Overlap') }))),
   ));
 }

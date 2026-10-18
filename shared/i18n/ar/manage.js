@@ -83,8 +83,8 @@ export default {
   'manage.removePasswordConfirm': 'إزالة كلمة المرور',
   'manage.passwordRemoved': 'تمت إزالة كلمة مرور المنظِّم',
   'manage.startOption': '{time}، {day}',
-  'manage.preview': '{time} ({zone})',
-  'manage.previewWeekly': 'كل {time} ({zone})',
+  'manage.preview': '{time} · {zone}',
+  'manage.previewWeekly': 'كل {time} · {zone}',
   'manage.finalTitle': 'اختر الموعد المعتمد',
   'manage.starts': 'يبدأ',
   'manage.lasts': 'المدة',
@@ -138,4 +138,6 @@ export default {
   'manage.createNew': 'إنشاء استطلاع جديد',
   'manage.resultsUpdated': 'تم تحديث النتائج',
   'manage.passwordFailed': 'استطلاعك جاهز، لكن لم تُحفظ كلمة مرور المنظِّم. عيّنها من «إدارة الاستطلاع».',
+  'manage.inviteFinal': "تم تحديد موعد «{title}».",
+  'manage.inviteFinalMessage': "تم تحديد موعد «{title}». التفاصيل ودعوة التقويم: {url}",
 };

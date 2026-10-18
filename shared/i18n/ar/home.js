@@ -20,4 +20,6 @@ export default {
   'home.statusClosed': 'مغلق',
   'home.statusFinalized': 'تم اعتماد الموعد',
   'home.statusDeleted': 'محذوف',
+  'home.trySample': "جرّب استطلاعًا تجريبيًا",
+  'home.trySampleNote': "أجاب سبعة أشخاص بالفعل. أضف أوقاتك وشاهد النتائج تتغير.",
 };

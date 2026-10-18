@@ -1,7 +1,7 @@
 export default {
   'results.title': 'Beschikbaarheid van iedereen',
   'results.emptyTitle': 'Nog niets te vergelijken',
-  'results.emptyBody': 'Zodra mensen reageren, tonen donkerdere vakjes de tijden waarop meer van hen kunnen.',
+  'results.emptyBody': "Zodra mensen antwoorden, zie je wie wanneer kan en waar iedereen overlapt.",
   'results.help': 'Kies een naam om alleen de antwoorden van die persoon te zien.',
   'results.idle': 'Wijs een tijdstip aan of ga er met Tab naartoe om te zien wie er kan.',
   'results.idlePick': 'Wijs een tijdstip aan of ga er met Tab naartoe om te zien wie er kan. Klik op een tijdstip om het definitief te maken.',
@@ -17,7 +17,7 @@ export default {
   'results.legendMaybe': 'Indien nodig',
   'results.legendNo': 'Niet beschikbaar',
   'results.legendUnanswered': 'Tijdstip nog niet gezien',
-  'results.legendRamp': 'Donkerder betekent meer mensen',
+  'results.legendRamp': "Sterkere kleur betekent meer mensen",
   'results.legendAll': 'Iedereen',
   'results.legendHasMaybe': 'Inclusief “indien nodig”',
 

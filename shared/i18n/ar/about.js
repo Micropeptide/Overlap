@@ -14,5 +14,4 @@ export default {
   'about.moreLink': 'المزيد من برامج Micropeptide',
   'about.sourceHeading': 'مفتوح المصدر',
   'about.sourceCode': 'شيفرة Overlap متاحة للعموم على {link} بموجب ترخيص MIT. ونرحّب هناك ببلاغات الأخطاء والأفكار.',
-  'about.inspired': 'استُلهم من أداة الجدولة مفتوحة المصدر {timeful}، لكنه لا يشاركها أي شيفرة. الخطوط: Bricolage Grotesque وAtkinson Hyperlegible Next، وكلاهما بموجب SIL Open Font License.',
 };

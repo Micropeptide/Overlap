@@ -1,7 +1,7 @@
 export default {
   'results.title': 'Disponibilidade de todos',
   'results.emptyTitle': 'Nada para comparar ainda',
-  'results.emptyBody': 'Quando as pessoas responderem, os quadrados mais escuros mostram os horários em que mais gente pode.',
+  'results.emptyBody': "Quando as pessoas responderem, você verá quem pode em cada horário e onde todos coincidem.",
   'results.help': 'Selecione um nome para ver só as respostas dessa pessoa.',
   'results.idle': 'Aponte para um horário (ou chegue até ele com Tab) para ver quem pode.',
   'results.idlePick': 'Aponte para um horário (ou chegue até ele com Tab) para ver quem pode. Clique em um horário para torná-lo o horário definitivo.',
@@ -18,7 +18,7 @@ export default {
   'results.legendMaybe': 'Se necessário',
   'results.legendNo': 'Indisponível',
   'results.legendUnanswered': 'Ainda não viu este horário',
-  'results.legendRamp': 'Mais escuro significa mais pessoas',
+  'results.legendRamp': "Cor mais intensa significa mais pessoas",
   'results.legendAll': 'Todos',
   'results.legendHasMaybe': 'Inclui “se necessário”',
 
