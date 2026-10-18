@@ -140,7 +140,7 @@ test('guests hear about the final time, not about their own changes', async () =
   const final = { start: poll.slots[0], end: poll.slots[0] + 3600e3 };
   await api('PATCH', `/api/polls/${poll.id}`, { auth: `Bearer ${adminToken}`, body: { final } });
   assert.equal(await sendDueDigests({ store, mailer, publicUrl: 'https://o.test', apiUrl: 'https://api.o.test', now: later() + 3600e3 }), 1);
-  assert.match(outbox[0].text, /The organizer picked a time: Wednesday, Mar 3, 9:00 AM – 10:00 AM \(America\/New York time\)\./);
+  assert.match(outbox[0].text, /The organizer picked a time: Wednesday, Mar 3, 9:00 AM – 10:00 AM \(New York time\)\./);
   assert.ok(outbox[0].text.includes(`https://o.test/p/${poll.id}`));
 
   // Deleting the response deletes the subscription with it.

@@ -108,7 +108,7 @@ function timeRange(start, end, timeZone, weekly, lang = 'en') {
   const locale = dateLocale(lang);
   const day = new Intl.DateTimeFormat(locale, { timeZone, weekday: 'long', ...(weekly ? {} : { month: 'short', day: 'numeric' }) }).format(start);
   const time = (ms) => new Intl.DateTimeFormat(locale, { timeZone, hour: 'numeric', minute: '2-digit' }).format(ms);
-  return translator(lang)(weekly ? 'email.timeRangeWeekly' : 'email.timeRange', { day, start: time(start), end: time(end), zone: timeZone.replace(/_/g, ' ') });
+  return translator(lang)(weekly ? 'email.timeRangeWeekly' : 'email.timeRange', { day, start: time(start), end: time(end), zone: timeZone.split('/').pop().replace(/_/g, ' ') });
 }
 
 /** Turn a subscriber's events into lines; empty when nothing is worth an email. */
