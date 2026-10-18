@@ -113,7 +113,7 @@ export async function renderHome(main) {
         h('div', { class: 'sample-cta' },
           h('p', { class: 'sample-buttons' },
             h('a', { class: 'btn secondary', href: '/p/example' }, icon('people'), t('home.trySample')),
-            h('a', { class: 'btn ghost', href: SAMPLE_MANAGE }, icon('lock'), t('home.trySampleOrganizer'))),
+            h('a', { class: 'btn secondary', href: SAMPLE_MANAGE }, icon('lock'), t('home.trySampleOrganizer'))),
           h('p', { class: 'muted small' }, t('home.trySampleNote'))),
       ),
       overlapIllustration(),
