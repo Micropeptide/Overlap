@@ -400,8 +400,9 @@ textarea.input { resize: vertical; min-height: 5rem; }
 .callout-title .icon { color: var(--lagoon); width: 1.4rem; height: 1.4rem; }
 .callout > p:last-child { margin-bottom: 0; }
 .notice { background: var(--ochre-wash); color: var(--ink); padding: 0.7rem 0.9rem; border-radius: var(--radius-m); }
-.link-row { display: flex; gap: 0.5rem; align-items: center; margin-top: 0.5rem; }
-.link-row .input { flex: 1; min-width: 0; }
+/* The link gets a full line of its own, and its buttons sit underneath, so it never shrinks to "https…". */
+.link-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin-top: 0.5rem; }
+.link-row .input { flex: 1 1 100%; min-width: 0; }
 
 .name-field { max-width: 26rem; }
 
@@ -795,7 +796,9 @@ textarea.input { resize: vertical; min-height: 5rem; }
 /* Heatmap extras: numbers in cells, outline for a hovered best time. */
 .grid-scroll { max-height: min(75vh, 46rem); }
 
-.legend-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.5rem 1rem; margin: 0.5rem 0 1rem; }
+/* The view switch and its checkboxes come first, on their own line, so switching views never moves them. */
+.legend-row { display: flex; flex-direction: column; align-items: flex-start; gap: 0.6rem; margin: 0.5rem 0 1rem; }
+.legend-row .results-tools { order: -1; }
 .legend-row .legend { margin: 0; }
 .results-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; min-width: 0; }
 .check { display: inline-flex; align-items: center; gap: 0.45rem; font-size: var(--step--1); cursor: pointer; padding: 0.25rem 0; }
