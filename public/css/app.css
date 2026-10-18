@@ -481,6 +481,8 @@ textarea.input { resize: vertical; min-height: 5rem; }
 
 .results-layout { display: grid; grid-template-columns: minmax(0, 1fr) 17rem; gap: 1.75rem; align-items: start; }
 .results-side { position: sticky; top: 1rem; }
+/* A long list scrolls by itself, so the "who can come" panel below it stays in view. */
+.results-side .people { max-height: min(22rem, 45vh); overflow-y: auto; overscroll-behavior: contain; padding-inline-end: 0.25rem; }
 .side-title { font-size: var(--step-0); font-family: var(--font-body); font-weight: 700; margin-bottom: 0.5rem; }
 .people { list-style: none; padding: 0; margin: 0 0 1rem; }
 .person { display: flex; align-items: center; gap: 0.25rem; border-radius: var(--radius-m); }
