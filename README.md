@@ -1,8 +1,8 @@
 # Overlap
 
-**Live at [overlap.runtianwu.com](https://overlap.runtianwu.com)** (moved from overlap.runtian.uk; old links still work)
+**Live at [overlap.runtianwu.com](https://overlap.runtianwu.com)** (moved from overlap.runtian.uk; old links still work) · by [Micropeptide](https://github.com/Micropeptide) · MIT License
 
-**Try it without inviting anyone:** [the sample poll](https://overlap.runtianwu.com/p/example) has seven answers already and runs entirely in your browser. · by [Micropeptide](https://github.com/Micropeptide) · MIT License
+**Try it without inviting anyone:** [the sample poll](https://overlap.runtianwu.com/p/example) has seven answers already and runs entirely in your browser.
 
 Free group scheduling with no accounts. The organizer picks some dates and
 shares one link. Guests type a display name and mark when they're free, and
