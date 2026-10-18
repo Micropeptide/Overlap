@@ -491,7 +491,9 @@ export async function renderManage(main, pollId) {
       h('div', null,
         h('p', { class: 'setting-name' }, t('manage.email')),
         emailControl({ poll, role: 'organizer', token, linkKey: viaPassword() ? null : token })));
-    serverConfig().then((cfg) => { row.hidden = !cfg.emails; });
+    // The sample always shows it: there it opens an example email, sending nothing.
+    if (poll.isSample) row.hidden = false;
+    else serverConfig().then((cfg) => { row.hidden = !cfg.emails; });
     return row;
   }
 
