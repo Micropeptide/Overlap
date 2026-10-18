@@ -1,7 +1,7 @@
 // A minimal RFC 5545 calendar file for the final time: a single event in UTC for
 // date polls, or an event repeating every week for weekly polls.
 
-import { wallClock, weekdayOf, addDays, offsetMinutes } from '../shared/time.js';
+import { wallClock, weekdayOf, addDays, offsetMinutes } from './time.js';
 
 const stamp = (ms) => new Date(ms).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
 

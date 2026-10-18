@@ -22,4 +22,5 @@ export default {
   'home.statusDeleted': 'Gelöscht',
   'home.trySample': "Beispielumfrage ausprobieren",
   'home.trySampleNote': "Sieben Leute haben schon geantwortet. Trag deine Zeiten ein und sieh, wie sich das Ergebnis ändert.",
+  'home.trySampleOrganizer': "Als Organisator ausprobieren",
 };

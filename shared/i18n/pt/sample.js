@@ -6,4 +6,7 @@ export default {
   'sample.createOwn': "Criar sua própria enquete",
   'sample.unavailable': "Isso não faz parte da enquete de exemplo. Crie sua própria enquete para experimentar.",
   'sample.notFound': "Essa resposta não está mais na enquete de exemplo.",
+  'sample.organizerNote': "Este é o lado do organizador da enquete de exemplo. Experimente escolher o horário final, editar a enquete ou mostrar o código QR. Tudo fica neste navegador, e excluir a enquete recomeça o exemplo.",
+  'sample.seeOrganizer': "Ver o lado do organizador",
+  'sample.seeGuest': "Ver o lado do convidado",
 };

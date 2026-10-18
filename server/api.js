@@ -9,7 +9,7 @@
 
 import { HttpError, LIMITS, validateFinal, validatePollFields, validateResponse } from './validate.js';
 import { secretMatches, slotsFor, hashText } from './store-core.js';
-import { buildInvite } from './ics.js';
+import { buildInvite } from '../shared/ics.js';
 import { KEY_PATTERN } from '../shared/password.js';
 import { cleanEmail, welcomeEmail } from './email.js';
 import { isLanguage } from '../shared/i18n/languages.js';

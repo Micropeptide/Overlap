@@ -22,4 +22,5 @@ export default {
   'home.statusDeleted': 'Dihapus',
   'home.trySample': "Coba polling contoh",
   'home.trySampleNote': "Tujuh orang sudah menjawab. Tambahkan waktumu dan lihat hasilnya berubah.",
+  'home.trySampleOrganizer': "Coba sebagai penyelenggara",
 };

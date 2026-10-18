@@ -6,4 +6,7 @@ export default {
   'sample.createOwn': "Créer votre propre sondage",
   'sample.unavailable': "Cela ne fait pas partie du sondage d’exemple. Créez votre propre sondage pour l’essayer.",
   'sample.notFound': "Cette réponse n’est plus dans le sondage d’exemple.",
+  'sample.organizerNote': "Voici le côté organisateur du sondage d’exemple. Essayez de choisir l’horaire final, de modifier le sondage ou d’afficher le code QR. Tout reste dans ce navigateur, et supprimer le sondage remet l’exemple à zéro.",
+  'sample.seeOrganizer': "Voir le côté organisateur",
+  'sample.seeGuest': "Voir le côté invité",
 };

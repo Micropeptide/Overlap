@@ -22,4 +22,5 @@ export default {
   'home.statusDeleted': 'Supprimé',
   'home.trySample': "Essayer un sondage d’exemple",
   'home.trySampleNote': "Sept personnes ont déjà répondu. Ajoutez vos disponibilités et regardez les résultats changer.",
+  'home.trySampleOrganizer': "Essayer en tant qu’organisateur",
 };

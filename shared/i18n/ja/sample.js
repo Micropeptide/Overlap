@@ -6,4 +6,7 @@ export default {
   'sample.createOwn': "自分の日程調整を作成",
   'sample.unavailable': "これはサンプルでは使えません。自分の日程調整を作成して試してください。",
   'sample.notFound': "この回答はもうサンプルにありません。",
+  'sample.organizerNote': "これはサンプルの日程調整の主催者画面です。最終日時の決定、内容の編集、QRコードの表示を試してみてください。すべてこのブラウザー内だけで動き、削除するとサンプルは最初からやり直しになります。",
+  'sample.seeOrganizer': "主催者の画面を見る",
+  'sample.seeGuest': "ゲストの画面を見る",
 };

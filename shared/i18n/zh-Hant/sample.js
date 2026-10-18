@@ -6,4 +6,7 @@ export default {
   'sample.createOwn': "建立你自己的投票",
   'sample.unavailable': "範例投票不包含這項功能。建立你自己的投票來試試看。",
   'sample.notFound': "這則回覆已不在範例投票中。",
+  'sample.organizerNote': "這是範例投票的主辦人頁面。試試選定最終時間、編輯投票或顯示 QR 碼。所有內容只留在這個瀏覽器裡，刪除投票後範例會重新開始。",
+  'sample.seeOrganizer': "查看主辦人頁面",
+  'sample.seeGuest': "查看訪客頁面",
 };

@@ -6,4 +6,7 @@ export default {
   'sample.createOwn': "Crea il tuo sondaggio",
   'sample.unavailable': "Questo non fa parte del sondaggio di esempio. Crea il tuo sondaggio per provarlo.",
   'sample.notFound': "Questa risposta non è più nel sondaggio di esempio.",
+  'sample.organizerNote': "Questa è la parte dell’organizzatore del sondaggio di esempio. Prova a scegliere l’orario finale, modificare il sondaggio o mostrare il codice QR. Tutto resta in questo browser, ed eliminando il sondaggio l’esempio ricomincia da capo.",
+  'sample.seeOrganizer': "Vedi la parte dell’organizzatore",
+  'sample.seeGuest': "Vedi la parte dell’ospite",
 };

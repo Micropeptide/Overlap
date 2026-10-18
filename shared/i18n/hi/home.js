@@ -22,4 +22,5 @@ export default {
   'home.statusDeleted': 'डिलीट हो गया',
   'home.trySample': "एक नमूना पोल आज़माएँ",
   'home.trySampleNote': "सात लोग पहले ही जवाब दे चुके हैं। अपना समय जोड़ें और देखें कि नतीजे कैसे बदलते हैं।",
+  'home.trySampleOrganizer': "आयोजक के रूप में आज़माएँ",
 };

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildInvite, escapeText, fold } from '../server/ics.js';
+import { buildInvite, escapeText, fold } from '../shared/ics.js';
 
 test('escapes special characters in calendar text', () => {
   assert.equal(escapeText('Lunch; bring snacks, maybe\\drinks\nRoom 2'), 'Lunch\\; bring snacks\\, maybe\\\\drinks\\nRoom 2');

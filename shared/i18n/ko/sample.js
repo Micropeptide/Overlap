@@ -6,4 +6,7 @@ export default {
   'sample.createOwn': "내 투표 만들기",
   'sample.unavailable': "예시 투표에서는 사용할 수 없어요. 직접 투표를 만들어 사용해 보세요.",
   'sample.notFound': "이 응답은 더 이상 예시 투표에 없어요.",
+  'sample.organizerNote': "예시 투표의 주최자 화면이에요. 최종 시간을 정하거나, 투표를 수정하거나, QR 코드를 띄워 보세요. 모든 내용은 이 브라우저에만 남고, 투표를 삭제하면 예시가 처음부터 다시 시작돼요.",
+  'sample.seeOrganizer': "주최자 화면 보기",
+  'sample.seeGuest': "게스트 화면 보기",
 };

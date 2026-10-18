@@ -7,4 +7,7 @@ export default {
   'sample.createOwn': "Create your own poll",
   'sample.unavailable': "That isn’t part of the sample poll. Create your own poll to try it.",
   'sample.notFound': "That answer is no longer in the sample poll.",
+  'sample.organizerNote': "This is the organizer’s side of the sample poll. Try picking the final time, editing the poll or showing the QR code. It all stays in this browser, and deleting the poll starts the sample over.",
+  'sample.seeOrganizer': "See the organizer’s side",
+  'sample.seeGuest': "See the guest’s side",
 };

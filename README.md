@@ -155,14 +155,16 @@ public/            browser app: plain ES modules, no build step
   js/views/        home (create), guest, manage (organizer), privacy, about
   js/components/   grid (the heart), date picker, poll form, best times, results
   js/config.js     where the API lives ('' = same server; rewritten by build-pages)
+  js/lib/sample.js the sample poll (/p/example, /m/example), answered entirely in the browser
 shared/            used by BOTH browser and server
   time.js          wall clock ↔ UTC with Intl only; slot generation; viewer layout
   overlap.js       per-slot tallies and ranked "best time" windows
+  ics.js           calendar invites (with VTIMEZONE for weekly repeats)
+  qr.js            QR codes for the guest link
 server/            runs anywhere (Node or Cloudflare Workers)…
   api.js           every API route, independent of the platform
   store-core.js    storage logic over a tiny async SQL driver; hashed keys
   validate.js      input checks with human error messages
-  ics.js           calendar invites (with VTIMEZONE for weekly repeats)
   ratelimit.js     in-memory request limits
 server/            …plus the Node-only parts
   index.js         config, startup, optional hourly expiry sweep

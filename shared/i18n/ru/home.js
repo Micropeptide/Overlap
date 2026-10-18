@@ -22,4 +22,5 @@ export default {
   'home.statusDeleted': 'Удалён',
   'home.trySample': "Попробовать пример опроса",
   'home.trySampleNote': "Семь человек уже ответили. Добавьте своё время и посмотрите, как меняются результаты.",
+  'home.trySampleOrganizer': "Попробовать как организатор",
 };

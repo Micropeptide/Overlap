@@ -22,4 +22,5 @@ export default {
   'home.statusDeleted': 'Deleted',
   'home.trySample': "Try a sample poll",
   'home.trySampleNote': "Seven people have already answered. Add yours and watch the results change.",
+  'home.trySampleOrganizer': "Try it as the organizer",
 };

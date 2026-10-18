@@ -1105,8 +1105,9 @@ textarea.input { resize: vertical; min-height: 5rem; }
 .grid-results.people-view .cell.all.join-bottom::after { border-bottom: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
 
 /* Sample poll: the way in from the home page, and the note on the poll itself. */
-.sample-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.9rem; margin-top: 1.2rem; }
-.sample-cta .muted { max-width: 34ch; }
+.sample-cta { margin-top: 1.2rem; }
+.sample-cta .muted { max-width: 46ch; margin: 0.5rem 0 0; }
+.sample-buttons, .sample-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin: 0; }
 .sample-cta .btn { gap: 0.45rem; }
 .sample-note { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.6rem 1rem; margin-bottom: 1.1rem; }
 .sample-note p { margin: 0; max-width: 62ch; }

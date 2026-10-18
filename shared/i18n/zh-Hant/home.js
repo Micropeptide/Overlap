@@ -22,4 +22,5 @@ export default {
   'home.statusDeleted': '已刪除',
   'home.trySample': "試試範例投票",
   'home.trySampleNote': "已經有七個人回覆了。加入你的時間，看看結果怎麼變化。",
+  'home.trySampleOrganizer': "以主辦人身分試試",
 };

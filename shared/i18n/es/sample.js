@@ -6,4 +6,7 @@ export default {
   'sample.createOwn': "Crea tu propia encuesta",
   'sample.unavailable': "Eso no forma parte de la encuesta de ejemplo. Crea tu propia encuesta para probarlo.",
   'sample.notFound': "Esa respuesta ya no está en la encuesta de ejemplo.",
+  'sample.organizerNote': "Esta es la vista del organizador de la encuesta de ejemplo. Prueba a elegir el horario final, editar la encuesta o mostrar el código QR. Todo se queda en este navegador, y si borras la encuesta, el ejemplo empieza de nuevo.",
+  'sample.seeOrganizer': "Ver la vista del organizador",
+  'sample.seeGuest': "Ver la vista de invitado",
 };

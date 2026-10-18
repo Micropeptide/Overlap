@@ -22,4 +22,5 @@ export default {
   'home.statusDeleted': 'Verwijderd',
   'home.trySample': "Probeer een voorbeeldpeiling",
   'home.trySampleNote': "Zeven mensen hebben al geantwoord. Voeg je eigen tijden toe en zie de uitslag veranderen.",
+  'home.trySampleOrganizer': "Probeer het als organisator",
 };

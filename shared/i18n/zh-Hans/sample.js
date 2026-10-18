@@ -6,4 +6,7 @@ export default {
   'sample.createOwn': "创建你自己的投票",
   'sample.unavailable': "示例投票不包含这项功能。创建你自己的投票来试试吧。",
   'sample.notFound': "这个回答已不在示例投票中。",
+  'sample.organizerNote': "这是示例投票的组织者页面。试试选定最终时间、编辑投票或显示二维码。所有内容只留在这个浏览器里，删除投票后示例会重新开始。",
+  'sample.seeOrganizer': "查看组织者页面",
+  'sample.seeGuest': "查看参与者页面",
 };

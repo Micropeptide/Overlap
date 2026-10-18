@@ -22,4 +22,5 @@ export default {
   'home.statusDeleted': 'Excluída',
   'home.trySample': "Experimente uma enquete de exemplo",
   'home.trySampleNote': "Sete pessoas já responderam. Adicione seus horários e veja os resultados mudarem.",
+  'home.trySampleOrganizer': "Experimente como organizador",
 };

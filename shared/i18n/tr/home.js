@@ -22,4 +22,5 @@ export default {
   'home.statusDeleted': 'Silindi',
   'home.trySample': "Örnek bir anketi deneyin",
   'home.trySampleNote': "Yedi kişi zaten yanıt verdi. Kendi saatlerinizi ekleyin ve sonuçların nasıl değiştiğini görün.",
+  'home.trySampleOrganizer': "Organizatör olarak deneyin",
 };

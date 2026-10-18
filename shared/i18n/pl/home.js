@@ -22,4 +22,5 @@ export default {
   'home.statusDeleted': 'Usunięta',
   'home.trySample': "Wypróbuj przykładową ankietę",
   'home.trySampleNote': "Siedem osób już odpowiedziało. Dodaj swoje godziny i zobacz, jak zmieniają się wyniki.",
+  'home.trySampleOrganizer': "Wypróbuj jako organizator",
 };

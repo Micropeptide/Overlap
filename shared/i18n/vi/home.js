@@ -22,4 +22,5 @@ export default {
   'home.statusDeleted': 'Đã xóa',
   'home.trySample': "Thử một cuộc thăm dò mẫu",
   'home.trySampleNote': "Đã có bảy người trả lời. Thêm thời gian của bạn và xem kết quả thay đổi.",
+  'home.trySampleOrganizer': "Thử với vai trò người tổ chức",
 };

@@ -6,4 +6,7 @@ export default {
   'sample.createOwn': "Tạo cuộc thăm dò của riêng bạn",
   'sample.unavailable': "Phần này không có trong cuộc thăm dò mẫu. Hãy tạo cuộc thăm dò của riêng bạn để thử.",
   'sample.notFound': "Câu trả lời đó không còn trong cuộc thăm dò mẫu.",
+  'sample.organizerNote': "Đây là phần của người tổ chức trong cuộc thăm dò mẫu. Hãy thử chọn thời gian cuối cùng, sửa cuộc thăm dò hoặc hiện mã QR. Mọi thứ chỉ ở trong trình duyệt này, và xóa cuộc thăm dò sẽ bắt đầu lại bản mẫu.",
+  'sample.seeOrganizer': "Xem phần người tổ chức",
+  'sample.seeGuest': "Xem phần khách",
 };

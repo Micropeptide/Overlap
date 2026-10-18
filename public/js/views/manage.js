@@ -16,6 +16,7 @@ import { isValidTimeZone } from '/shared/time.js';
 import { passwordKey, passwordProblem, KEY_PATTERN, PASSWORD_MIN, PASSWORD_MAX } from '/shared/password.js';
 import { t, tx, locale } from '../lib/i18n.js';
 import { qrSvg } from '/shared/qr.js';
+import { SAMPLE_ID } from '../lib/sample.js';
 
 export async function renderManage(main, pollId) {
   const params = hashParams();
@@ -45,7 +46,7 @@ export async function renderManage(main, pollId) {
     throw err;
   }
 
-  storage.saveManaged(pollId, { token, title: poll.title });
+  if (!poll.isSample) storage.saveManaged(pollId, { token, title: poll.title });
   // Keep the key in the address bar so the page can be bookmarked; drop the "new" flag.
   history.replaceState(null, '', `/m/${pollId}#k=${encodeURIComponent(token)}`);
 
@@ -90,6 +91,13 @@ export async function renderManage(main, pollId) {
     document.title = t('manage.pageTitle', { title: poll.title });
     const page = h('div', { class: 'page poll-page manage-page' });
 
+    if (poll.isSample) {
+      page.append(h('div', { class: 'notice sample-note', role: 'note', 'aria-label': t('sample.noteLabel') },
+        h('p', null, t('sample.organizerNote')),
+        h('p', { class: 'sample-actions' },
+          h('a', { class: 'btn secondary small', href: `/p/${SAMPLE_ID}` }, icon('people'), t('sample.seeGuest')),
+          h('a', { class: 'btn primary small', href: '/' }, t('sample.createOwn')))));
+    }
     page.append(h('header', { class: 'poll-head' },
       h('p', { class: 'role-tag' }, icon('lock'), t('manage.roleTag')),
       h('div', { class: 'title-row' },
@@ -371,7 +379,7 @@ export async function renderManage(main, pollId) {
       onSubmit: async (value) => {
         watcher.bump();
         ({ poll } = await api('PATCH', `/api/polls/${pollId}`, { token, body: value }));
-        storage.saveManaged(pollId, { token, title: poll.title });
+        if (!poll.isSample) storage.saveManaged(pollId, { token, title: poll.title });
         editing = false;
         render();
         afterEditFocus();

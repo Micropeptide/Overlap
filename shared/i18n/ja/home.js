@@ -22,4 +22,5 @@ export default {
   'home.statusDeleted': '削除済み',
   'home.trySample': "サンプルの日程調整を試す",
   'home.trySampleNote': "7人がすでに回答しています。自分の都合を追加して、結果が変わる様子を見てみましょう。",
+  'home.trySampleOrganizer': "主催者として試す",
 };

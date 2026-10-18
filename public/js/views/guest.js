@@ -1,6 +1,7 @@
 import { h, clear, icon, announce, copyText, confirmDialog, formDialog, passwordField, linkify } from '../lib/dom.js';
 import { api, ApiError } from '../lib/api.js';
 import { storage, hashParams } from '../lib/storage.js';
+import { SAMPLE_MANAGE } from '../lib/sample.js';
 import * as f from '../lib/format.js';
 import { createGrid, MARKS } from '../components/grid.js';
 import { zoneLine } from '../components/zone-picker.js';
@@ -226,7 +227,9 @@ export async function renderGuest(main, pollId) {
     if (poll.isSample) {
       page.append(h('div', { class: 'notice sample-note', role: 'note', 'aria-label': t('sample.noteLabel') },
         h('p', null, t('sample.note')),
-        h('a', { class: 'btn primary small', href: '/' }, t('sample.createOwn'))));
+        h('p', { class: 'sample-actions' },
+          h('a', { class: 'btn secondary small', href: SAMPLE_MANAGE }, icon('lock'), t('sample.seeOrganizer')),
+          h('a', { class: 'btn primary small', href: '/' }, t('sample.createOwn')))));
     }
     page.append(h('header', { class: 'poll-head' },
       h('h1', { class: 'page-title poll-title', tabindex: '-1' }, h('bdi', null, poll.title)),

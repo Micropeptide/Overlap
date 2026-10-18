@@ -22,4 +22,5 @@ export default {
   'home.statusDeleted': 'محذوف',
   'home.trySample': "جرّب استطلاعًا تجريبيًا",
   'home.trySampleNote': "أجاب سبعة أشخاص بالفعل. أضف أوقاتك وشاهد النتائج تتغير.",
+  'home.trySampleOrganizer': "جرّبه بصفتك المنظِّم",
 };

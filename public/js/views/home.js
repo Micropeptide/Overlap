@@ -5,6 +5,7 @@ import { createPollForm } from '../components/poll-form.js';
 import * as f from '../lib/format.js';
 import { passwordKey } from '/shared/password.js';
 import { t } from '../lib/i18n.js';
+import { SAMPLE_MANAGE } from '../lib/sample.js';
 
 // Three people's free time drawn as translucent bands; where all three stack
 // up is the overlap. Purely illustrative.
@@ -109,9 +110,11 @@ export async function renderHome(main) {
       h('div', { class: 'hero-text' },
         h('h1', { class: 'hero-title' }, t('home.headline')),
         h('p', { class: 'lede' }, t('home.lede')),
-        h('p', { class: 'sample-cta' },
-          h('a', { class: 'btn secondary', href: '/p/example' }, icon('people'), t('home.trySample')),
-          h('span', { class: 'muted small' }, t('home.trySampleNote'))),
+        h('div', { class: 'sample-cta' },
+          h('p', { class: 'sample-buttons' },
+            h('a', { class: 'btn secondary', href: '/p/example' }, icon('people'), t('home.trySample')),
+            h('a', { class: 'btn ghost', href: SAMPLE_MANAGE }, icon('lock'), t('home.trySampleOrganizer'))),
+          h('p', { class: 'muted small' }, t('home.trySampleNote'))),
       ),
       overlapIllustration(),
     ),

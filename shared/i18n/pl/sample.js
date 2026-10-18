@@ -6,4 +6,7 @@ export default {
   'sample.createOwn': "Utwórz własną ankietę",
   'sample.unavailable': "To nie jest częścią przykładowej ankiety. Utwórz własną ankietę, aby to wypróbować.",
   'sample.notFound': "Tej odpowiedzi nie ma już w przykładowej ankiecie.",
+  'sample.organizerNote': "To widok organizatora przykładowej ankiety. Spróbuj wybrać ostateczny termin, edytować ankietę lub pokazać kod QR. Wszystko zostaje w tej przeglądarce, a usunięcie ankiety zaczyna przykład od nowa.",
+  'sample.seeOrganizer': "Zobacz widok organizatora",
+  'sample.seeGuest': "Zobacz widok gościa",
 };

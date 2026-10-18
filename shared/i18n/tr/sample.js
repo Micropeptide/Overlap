@@ -6,4 +6,7 @@ export default {
   'sample.createOwn': "Kendi anketinizi oluşturun",
   'sample.unavailable': "Bu, örnek anketin bir parçası değil. Denemek için kendi anketinizi oluşturun.",
   'sample.notFound': "Bu yanıt artık örnek ankette yok.",
+  'sample.organizerNote': "Bu, örnek anketin organizatör tarafı. Son zamanı seçmeyi, anketi düzenlemeyi ya da QR kodunu göstermeyi deneyin. Her şey bu tarayıcıda kalır; anketi silerseniz örnek baştan başlar.",
+  'sample.seeOrganizer': "Organizatör tarafını görün",
+  'sample.seeGuest': "Misafir tarafını görün",
 };

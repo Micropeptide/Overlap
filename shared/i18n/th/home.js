@@ -22,4 +22,5 @@ export default {
   'home.statusDeleted': 'ถูกลบแล้ว',
   'home.trySample': "ลองโพลตัวอย่าง",
   'home.trySampleNote': "มีคนตอบแล้วเจ็ดคน เพิ่มเวลาของคุณแล้วดูผลลัพธ์เปลี่ยนไป",
+  'home.trySampleOrganizer': "ลองในฐานะผู้จัด",
 };

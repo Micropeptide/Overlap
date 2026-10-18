@@ -4,6 +4,7 @@ import { h, icon, copyText, linkify } from '../lib/dom.js';
 import * as f from '../lib/format.js';
 import { API_BASE } from '../config.js';
 import { t, tx, locale } from '../lib/i18n.js';
+import { sampleInvite } from '../lib/sample.js';
 
 const cityOf = (timeZone) => timeZone.split('/').pop().replace(/_/g, ' ');
 
@@ -153,6 +154,16 @@ function finalLinks(poll, guestUrl) {
     : tx('shared.addToCalendar', { google: googleLink }));
 }
 
+/** The sample poll's invite, made in the browser (the server doesn't know the sample). */
+async function downloadSampleInvite(poll) {
+  const url = URL.createObjectURL(new Blob([await sampleInvite(poll)], { type: 'text/calendar' }));
+  const a = h('a', { href: url, download: 'overlap-sample.ics' });
+  document.body.append(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 export function finalCard(poll, viewZone, { organizer = false, extra = [] } = {}) {
   const { start, end } = poll.final;
   const guestUrl = `${location.origin}/p/${poll.id}`;
@@ -166,7 +177,9 @@ export function finalCard(poll, viewZone, { organizer = false, extra = [] } = {}
       ? t('shared.finalZoneOrganizer', { zone: f.zoneLabel(viewZone, start), time: f.slotRange(start, end, poll.timezone, poll.kind === 'weekly'), city: cityOf(poll.timezone) })
       : f.zoneLabel(viewZone, start)),
     h('div', { class: 'final-actions' },
-      h('a', { class: 'btn primary', href: `${API_BASE}/api/polls/${poll.id}/invite.ics`, download: '' }, icon('download'), poll.kind === 'weekly' ? t('shared.downloadWeeklyInvite') : t('shared.downloadInvite')),
+      poll.isSample
+        ? h('button', { type: 'button', class: 'btn primary', onclick: () => downloadSampleInvite(poll) }, icon('download'), t('shared.downloadInvite'))
+        : h('a', { class: 'btn primary', href: `${API_BASE}/api/polls/${poll.id}/invite.ics`, download: '' }, icon('download'), poll.kind === 'weekly' ? t('shared.downloadWeeklyInvite') : t('shared.downloadInvite')),
       h('button', { type: 'button', class: 'btn secondary', onclick: () => copyText(finalDetailsText(poll, guestUrl), t('shared.copiedDetails')) }, icon('copy'), t('shared.copyDetails')),
       ...extra,
     ),
