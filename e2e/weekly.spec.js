@@ -49,7 +49,8 @@ test('guests answer a weekly poll by weekday, and the final time repeats weekly'
   const best = page.locator('.best-item').first();
   await expect(best).toContainText('Every Monday');
   await best.getByRole('button', { name: /^Choose/ }).click();
-  await page.getByRole('dialog').getByLabel('Lasts').selectOption({ label: '1 hour' });
+  const ends = page.getByRole('dialog').getByLabel('Ends');
+  await ends.selectOption(await ends.locator('option', { hasText: /^10:00\s*AM/ }).first().getAttribute('value'));
   await page.getByRole('dialog').getByRole('button', { name: 'Set final time' }).click();
   const card = page.locator('.final-card');
   await expect(card).toContainText('Every Monday');

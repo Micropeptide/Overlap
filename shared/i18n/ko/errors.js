@@ -42,7 +42,7 @@ export default {
   // Final time
   'errors.final_required': '시작 시간과 종료 시간을 골라 주세요.',
   'errors.final_end_before_start': '확정 시간은 시작보다 늦게 끝나야 해요.',
-  'errors.final_too_long': '확정 시간은 최대 24시간까지 정할 수 있어요.',
+  'errors.final_too_long': "확정 시간은 최대 {count}일까지 정할 수 있어요.",
   'errors.final_bad_length': '확정 시간의 길이는 5분 단위여야 해요.',
   'errors.final_not_a_time': '확정 시간은 투표의 시간 중 하나에서 시작해야 해요.',
 
@@ -90,4 +90,6 @@ export default {
   'errors.email_daily_limit': 'Overlap이 오늘 해당 주소(또는 이 투표)로 보낼 수 있는 이메일을 모두 보냈어요. 내일 다시 시도해 주세요.',
   'errors.email_send_failed': '지금은 이메일을 보낼 수 없었어요. 1분 뒤에 다시 시도해 주세요.',
   'errors.confirm_link_expired': '이 확인 링크는 만료됐거나 이미 새 링크로 바뀌었어요. 투표 페이지에서 이메일을 다시 요청하세요.',
+  'errors.final_overlap': "겹치는 시간이 있어요. 겹치지 않게 골라 주세요.",
+  'errors.final_too_many': "확정 시간은 최대 {count}개까지 정할 수 있어요.",
 };

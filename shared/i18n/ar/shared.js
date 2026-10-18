@@ -45,4 +45,6 @@ export default {
   'shared.copiedDetails': 'تم نسخ تفاصيل الحدث',
   'shared.copyDetails': 'نسخ التفاصيل',
   'shared.closedNoChanges': 'هذا الاستطلاع مغلق، لذا لا يمكن تغيير الردود.',
+  'shared.inviteHasAll': "تتضمن دعوة التقويم كل هذه الأوقات.",
+  'shared.calendarLinksNote': "فتح رابط تقويم Google أو Outlook.com يرسل إلى تلك الشركة تفاصيل الحدث، بما في ذلك رابط الضيوف لهذا الاستطلاع.",
 };

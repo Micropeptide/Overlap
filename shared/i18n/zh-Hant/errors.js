@@ -39,7 +39,7 @@ export default {
 
   'errors.final_required': '請選擇開始和結束時間。',
   'errors.final_end_before_start': '最終時間的結束必須晚於開始。',
-  'errors.final_too_long': '最終時間最長只能 24 小時。',
+  'errors.final_too_long': "最終時間最長只能 {count} 天。",
   'errors.final_bad_length': '最終時間的長度必須是 5 分鐘的整數倍。',
   'errors.final_not_a_time': '最終時間必須從投票中的某個時間開始。',
 
@@ -82,4 +82,6 @@ export default {
   'errors.email_daily_limit': 'Overlap 今天寄給這個地址（或這個投票）的電子郵件已經夠多了。請明天再試。',
   'errors.email_send_failed': '目前無法寄出電子郵件。請過一分鐘再試。',
   'errors.confirm_link_expired': '這個確認連結已過期或已被取代。請回到投票頁面重新申請電子郵件。',
+  'errors.final_overlap': "其中有些時間重疊了。請選擇不重疊的時間。",
+  'errors.final_too_many': "最終時間最多可以有 {count} 次。",
 };

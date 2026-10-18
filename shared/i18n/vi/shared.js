@@ -35,4 +35,6 @@ export default {
   'shared.copiedDetails': 'Đã sao chép thông tin sự kiện',
   'shared.copyDetails': 'Sao chép thông tin',
   'shared.closedNoChanges': 'Cuộc thăm dò này đã đóng nên không thể đổi phản hồi.',
+  'shared.inviteHasAll': "Lời mời lịch có tất cả các thời gian này.",
+  'shared.calendarLinksNote': "Mở liên kết Google Lịch hoặc Outlook.com sẽ gửi chi tiết sự kiện cho công ty đó, kể cả liên kết khách của cuộc thăm dò này.",
 };

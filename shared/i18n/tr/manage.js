@@ -130,4 +130,9 @@ export default {
   'manage.qrLabel': "“{title}” için misafir bağlantısının QR kodu",
   'manage.qrClose': "Kapat",
   'manage.qrFullscreen': "Tam ekran",
+  'manage.ends': "Bitiş",
+  'manage.addSession': "Başka bir zaman ekle",
+  'manage.removeSession': "Bu zamanı kaldır",
+  'manage.sessionLabel': "Zaman {count}",
+  'manage.finalHint': "Birkaç gün süren bir şey için bitişi daha sonraki bir günde seçin. İki öğleden sonra gibi ayrı oturumlar için başka bir zaman ekleyin.",
 };

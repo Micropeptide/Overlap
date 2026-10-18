@@ -78,7 +78,7 @@ export default {
   // Final time
   'errors.final_required': 'Wybierz godzinę początku i końca.',
   'errors.final_end_before_start': 'Ostateczny termin musi kończyć się po swoim początku.',
-  'errors.final_too_long': 'Ostateczny termin może trwać najwyżej 24 godziny.',
+  'errors.final_too_long': "Ostateczny termin może trwać najwyżej {count} dni.",
   'errors.final_bad_length': 'Długość ostatecznego terminu musi być wielokrotnością 5 minut.',
   'errors.final_not_a_time': 'Ostateczny termin musi zaczynać się o jednej z godzin w ankiecie.',
 
@@ -131,4 +131,6 @@ export default {
   'errors.email_daily_limit': 'Overlap wysłał już dziś wystarczająco dużo e-maili na ten adres (lub dla tej ankiety). Spróbuj jutro.',
   'errors.email_send_failed': 'Nie udało się teraz wysłać e-maila. Spróbuj ponownie za minutę.',
   'errors.confirm_link_expired': 'Ten link potwierdzający wygasł albo został już zastąpiony. Poproś ponownie o e-maile na stronie ankiety.',
+  'errors.final_overlap': "Niektóre z tych terminów się nakładają. Wybierz terminy, które się nie nakładają.",
+  'errors.final_too_many': "Ostateczny termin może mieć najwyżej {count} spotkań.",
 };

@@ -39,4 +39,6 @@ export default {
   'shared.copiedDetails': 'Detalles del evento copiados',
   'shared.copyDetails': 'Copiar detalles',
   'shared.closedNoChanges': 'Esta encuesta está cerrada, así que las respuestas no se pueden cambiar.',
+  'shared.inviteHasAll': "La invitación de calendario incluye todos estos horarios.",
+  'shared.calendarLinksNote': "Al abrir un enlace de Google Calendar u Outlook.com, esa empresa recibe los detalles del evento, incluido el enlace para invitados de esta encuesta.",
 };

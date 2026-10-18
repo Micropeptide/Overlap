@@ -41,4 +41,6 @@ export default {
   'shared.copiedDetails': 'Деталі події скопійовано',
   'shared.copyDetails': 'Копіювати деталі',
   'shared.closedNoChanges': 'Це опитування закрите, тож відповіді не можна змінити.',
+  'shared.inviteHasAll': "Запрошення в календар містить увесь цей час.",
+  'shared.calendarLinksNote': "Якщо відкрити посилання Google Календаря або Outlook.com, ця компанія отримає дані події, зокрема гостьове посилання на це опитування.",
 };

@@ -37,4 +37,6 @@ export default {
   'shared.copiedDetails': 'Etkinlik ayrıntıları kopyalandı',
   'shared.copyDetails': 'Ayrıntıları kopyala',
   'shared.closedNoChanges': 'Bu anket kapandı, bu yüzden yanıtlar değiştirilemez.',
+  'shared.inviteHasAll': "Takvim daveti bu zamanların hepsini içerir.",
+  'shared.calendarLinksNote': "Bir Google Takvim veya Outlook.com bağlantısını açmak, etkinlik ayrıntılarını bu anketin misafir bağlantısıyla birlikte o şirkete gönderir.",
 };

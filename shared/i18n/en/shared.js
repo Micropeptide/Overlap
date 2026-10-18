@@ -37,4 +37,6 @@ export default {
   'shared.copiedDetails': 'Copied the event details',
   'shared.copyDetails': 'Copy details',
   'shared.closedNoChanges': 'This poll is closed, so responses can’t be changed.',
+  'shared.inviteHasAll': "The calendar invite has all of these times.",
+  'shared.calendarLinksNote': "Opening a Google Calendar or Outlook.com link sends that company the event details, including this poll’s guest link.",
 };

@@ -122,11 +122,19 @@ function applyPatch(s, body = {}) {
   if ('final' in body && 'status' in body) throw new SampleError(400, t('errors.reopen_with_final'), 'status');
   if ('final' in body) {
     if (body.final === null) { s.final = null; s.status = 'open'; return; }
-    const { start, end } = body.final || {};
-    if (!Number.isFinite(start) || !Number.isFinite(end)) throw new SampleError(400, t('errors.final_required'), 'final');
-    if (end <= start) throw new SampleError(400, t('errors.final_end_before_start'), 'final');
-    if (!current.slots.includes(start)) throw new SampleError(400, t('errors.final_not_a_time'), 'final');
-    s.final = { start, end };
+    // One session ({start, end}) or several ({sessions}), as the real API takes them.
+    const list = Array.isArray(body.final?.sessions) ? body.final.sessions : [body.final || {}];
+    if (!list.length) throw new SampleError(400, t('errors.final_required'), 'final');
+    if (list.length > 10) throw new SampleError(400, t('errors.final_too_many', { count: 10 }), 'final');
+    const sessions = list.map(({ start, end } = {}) => {
+      if (!Number.isFinite(start) || !Number.isFinite(end)) throw new SampleError(400, t('errors.final_required'), 'final');
+      if (end <= start) throw new SampleError(400, t('errors.final_end_before_start'), 'final');
+      if (end - start > 14 * 86400e3) throw new SampleError(400, t('errors.final_too_long', { count: 14 }), 'final');
+      if (!current.slots.includes(start)) throw new SampleError(400, t('errors.final_not_a_time'), 'final');
+      return { start, end };
+    }).sort((x, y) => x.start - y.start);
+    if (sessions.some((x, i) => i && x.start < sessions[i - 1].end)) throw new SampleError(400, t('errors.final_overlap'), 'final');
+    s.final = { start: sessions[0].start, end: sessions[0].end, sessions };
     s.status = 'finalized';
     return;
   }

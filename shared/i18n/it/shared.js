@@ -39,4 +39,6 @@ export default {
   'shared.copiedDetails': 'Dettagli dell’evento copiati',
   'shared.copyDetails': 'Copia i dettagli',
   'shared.closedNoChanges': 'Questo sondaggio è chiuso, quindi le risposte non si possono cambiare.',
+  'shared.inviteHasAll': "L’invito per il calendario contiene tutti questi orari.",
+  'shared.calendarLinksNote': "Aprire un link di Google Calendar o Outlook.com invia a quell’azienda i dettagli dell’evento, compreso il link per gli ospiti di questo sondaggio.",
 };

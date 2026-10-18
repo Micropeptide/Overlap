@@ -93,8 +93,7 @@ const localStamp = (dateKey, minuteOfDay) =>
  * occurrence. The zone is named by its IANA id, which Google, Apple and Outlook
  * calendars all understand.
  */
-function timing(poll, now) {
-  const { start, end } = poll.final;
+function timing(poll, { start, end }, now) {
   if (poll.kind !== 'weekly') return [`DTSTART:${stamp(start)}`, `DTEND:${stamp(end)}`];
   const tz = poll.timezone;
   const first = wallClock(start, tz);
@@ -120,15 +119,18 @@ export function buildInvite({ poll, guestUrl, now = Date.now() }) {
     'CALSCALE:GREGORIAN',
     'METHOD:PUBLISH',
     ...(poll.kind === 'weekly' ? vtimezone(poll.timezone, poll.final.start) : []),
-    'BEGIN:VEVENT',
-    `UID:${poll.id}-${poll.final.start}@overlap`,
-    `DTSTAMP:${stamp(now)}`,
-    ...timing(poll, now),
-    `SUMMARY:${escapeText(poll.title)}`,
-    description ? `DESCRIPTION:${escapeText(description)}` : null,
-    poll.location ? `LOCATION:${escapeText(poll.location)}` : null,
-    guestUrl ? `URL:${guestUrl}` : null,
-    'END:VEVENT',
+    // One event per session (a final time can be, say, Monday and Wednesday afternoons).
+    ...(poll.final.sessions || [poll.final]).flatMap((session) => [
+      'BEGIN:VEVENT',
+      `UID:${poll.id}-${session.start}@overlap`,
+      `DTSTAMP:${stamp(now)}`,
+      ...timing(poll, session, now),
+      `SUMMARY:${escapeText(poll.title)}`,
+      description ? `DESCRIPTION:${escapeText(description)}` : null,
+      poll.location ? `LOCATION:${escapeText(poll.location)}` : null,
+      guestUrl ? `URL:${guestUrl}` : null,
+      'END:VEVENT',
+    ]),
     'END:VCALENDAR',
   ].filter(Boolean);
   return lines.map(fold).join('\r\n') + '\r\n';

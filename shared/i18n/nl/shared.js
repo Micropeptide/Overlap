@@ -37,4 +37,6 @@ export default {
   'shared.copiedDetails': 'Details van de afspraak gekopieerd',
   'shared.copyDetails': 'Details kopiëren',
   'shared.closedNoChanges': 'Deze peiling is gesloten, dus reacties kunnen niet meer worden gewijzigd.',
+  'shared.inviteHasAll': "De agenda-uitnodiging bevat al deze tijden.",
+  'shared.calendarLinksNote': "Als je een Google Agenda- of Outlook.com-link opent, krijgt dat bedrijf de details van de afspraak, inclusief de gastlink van deze peiling.",
 };

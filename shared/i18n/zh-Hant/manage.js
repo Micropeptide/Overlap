@@ -126,4 +126,9 @@ export default {
   'manage.qrLabel': "「{title}」訪客連結的 QR 碼",
   'manage.qrClose': "關閉",
   'manage.qrFullscreen': "全螢幕",
+  'manage.ends': "結束",
+  'manage.addSession': "新增另一個時間",
+  'manage.removeSession': "移除這個時間",
+  'manage.sessionLabel': "時間 {count}",
+  'manage.finalHint': "如果活動持續好幾天，請把結束時間選在之後的某一天。如果是分開的幾次，例如兩個下午，請新增另一個時間。",
 };

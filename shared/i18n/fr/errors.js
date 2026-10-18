@@ -67,7 +67,7 @@ export default {
 
   'errors.final_required': 'Choisissez une heure de début et une heure de fin.',
   'errors.final_end_before_start': 'L’horaire définitif doit se terminer après son début.',
-  'errors.final_too_long': 'L’horaire définitif ne peut pas dépasser 24 heures.',
+  'errors.final_too_long': "L’horaire définitif ne peut pas dépasser {count} jours.",
   'errors.final_bad_length': 'La durée de l’horaire définitif doit être un multiple de 5 minutes.',
   'errors.final_not_a_time': 'L’horaire définitif doit commencer sur l’un des créneaux du sondage.',
 
@@ -114,4 +114,6 @@ export default {
   'errors.email_daily_limit': 'Overlap a déjà envoyé assez d’e-mails à cette adresse (ou pour ce sondage) aujourd’hui. Réessayez demain.',
   'errors.email_send_failed': 'L’e-mail n’a pas pu être envoyé pour le moment. Réessayez dans une minute.',
   'errors.confirm_link_expired': 'Ce lien de confirmation a expiré ou a déjà été remplacé. Redemandez les e-mails depuis le sondage.',
+  'errors.final_overlap': "Certains de ces horaires se chevauchent. Choisissez des horaires qui ne se chevauchent pas.",
+  'errors.final_too_many': "Un horaire définitif peut compter au plus {count} séances.",
 };

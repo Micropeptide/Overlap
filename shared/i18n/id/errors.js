@@ -44,7 +44,7 @@ export default {
   // Final time
   'errors.final_required': 'Pilih waktu mulai dan selesai.',
   'errors.final_end_before_start': 'Waktu final harus berakhir setelah dimulai.',
-  'errors.final_too_long': 'Waktu final paling lama 24 jam.',
+  'errors.final_too_long': "Waktu final paling lama {count} hari.",
   'errors.final_bad_length': 'Durasi waktu final harus kelipatan 5 menit.',
   'errors.final_not_a_time': 'Waktu final harus dimulai pada salah satu waktu di polling.',
 
@@ -92,4 +92,6 @@ export default {
   'errors.email_daily_limit': 'Overlap sudah mengirim cukup banyak email ke alamat itu (atau untuk polling ini) hari ini. Coba lagi besok.',
   'errors.email_send_failed': 'Email tidak dapat dikirim saat ini. Coba lagi dalam satu menit.',
   'errors.confirm_link_expired': 'Tautan konfirmasi ini sudah kedaluwarsa atau sudah diganti. Minta email lagi dari polling.',
+  'errors.final_overlap': "Beberapa waktu ini bertumpang tindih. Pilih waktu yang tidak bertumpang tindih.",
+  'errors.final_too_many': "Waktu final paling banyak {count} sesi.",
 };

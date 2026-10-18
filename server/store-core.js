@@ -90,6 +90,7 @@ CREATE TABLE IF NOT EXISTS polls (
   closed INTEGER NOT NULL DEFAULT 0,
   final_start INTEGER,
   final_end INTEGER,
+  final_more TEXT,
   created_at INTEGER NOT NULL,
   updated_at INTEGER NOT NULL,
   expires_at INTEGER NOT NULL,
@@ -161,7 +162,18 @@ export const MIGRATIONS = [
   ['polls', 'allow_edits', 'INTEGER NOT NULL DEFAULT 1'],
   // The language emails are written in (null for older subscriptions: English).
   ['email_subs', 'lang', 'TEXT'],
+  // A final time can be several sessions: the first is final_start/final_end,
+  // the rest are here as JSON [{start, end}, …].
+  ['polls', 'final_more', 'TEXT'],
 ];
+
+/** The final time: its first session (start, end) and the full list of sessions. */
+function finalOf(row) {
+  let more = [];
+  try { more = row.final_more ? JSON.parse(row.final_more) : []; } catch { more = []; }
+  const sessions = [{ start: row.final_start, end: row.final_end }, ...more.filter((x) => Number.isInteger(x?.start) && Number.isInteger(x?.end))];
+  return { start: row.final_start, end: row.final_end, sessions };
+}
 
 /** Stored as the expiry of polls that are kept until someone deletes them. */
 export const NEVER = Number.MAX_SAFE_INTEGER;
@@ -202,7 +214,7 @@ export function createStore(driver, { retentionDays = 0 } = {}) {
       location: row.location || '',
       closesOn: row.closes_on || null,
       manualClosed: !!row.closed,
-      final: row.final_start != null ? { start: row.final_start, end: row.final_end } : null,
+      final: row.final_start != null ? finalOf(row) : null,
       createdAt: row.created_at,
       updatedAt: row.updated_at,
       expiresAt: row.expires_at,
@@ -273,11 +285,12 @@ export function createStore(driver, { retentionDays = 0 } = {}) {
       if (!current) return null;
       const next = { ...current, ...changes };
       await run(`UPDATE polls SET kind = ?, title = ?, description = ?, location = ?, closes_on = ?, timezone = ?, dates = ?, start_minute = ?,
-        end_minute = ?, slot_minutes = ?, duration_minutes = ?, results_visibility = ?, closed = ?, final_start = ?, final_end = ?,
+        end_minute = ?, slot_minutes = ?, duration_minutes = ?, results_visibility = ?, closed = ?, final_start = ?, final_end = ?, final_more = ?,
         updated_at = ?, expires_at = ?, allow_edits = ? WHERE id = ?`, [
         next.kind || 'dates', next.title, next.description, next.location || '', next.closesOn || null, next.timezone, JSON.stringify(next.dates),
         next.startMinute, next.endMinute, next.slotMinutes, next.durationMinutes ?? null, next.resultsVisibility, next.manualClosed ? 1 : 0,
         next.final ? next.final.start : null, next.final ? next.final.end : null,
+        next.final?.sessions?.length > 1 ? JSON.stringify(next.final.sessions.slice(1)) : null,
         Date.now(), expiryFor(next), next.allowEdits === false ? 0 : 1, id]);
       return this.getPoll(id);
     },

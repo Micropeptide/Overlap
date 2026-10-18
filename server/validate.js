@@ -201,14 +201,31 @@ export function validateResponse(body, poll) {
   return { name, available, ifNeeded, preferred, note };
 }
 
-/** A final time must start on one of the poll's times and last 5 minutes to 24 hours. */
+export const FINAL_MAX_SESSIONS = 10;
+export const FINAL_MAX_DAYS = 14;
+
+/**
+ * A final time is one session ({start, end}) or several ({sessions: [{start, end}, …]}),
+ * e.g. Monday and Wednesday afternoons. Each starts on one of the poll's times
+ * and lasts 5 minutes to 14 days (so it can run over several days); sessions
+ * don't overlap. Returns {start, end, sessions} with the sessions in order.
+ */
 export function validateFinal(body, slots) {
   if (body === null) return null;
   if (!body || typeof body !== 'object') throw bad('Choose a start and end time.', 'final', 'final_required');
-  const { start, end } = body;
-  if (!Number.isInteger(start) || !Number.isInteger(end) || end <= start) throw bad('The final time must end after it starts.', 'final', 'final_end_before_start');
-  if (end - start > 24 * 3600e3) throw bad('The final time can be at most 24 hours long.', 'final', 'final_too_long');
-  if ((end - start) % 300e3) throw bad('The final time’s length must be a whole number of 5-minute steps.', 'final', 'final_bad_length');
-  if (!slots.includes(start)) throw bad('The final time must start at one of the poll’s times.', 'final', 'final_not_a_time');
-  return { start, end };
+  const list = Array.isArray(body.sessions) ? body.sessions : [body];
+  if (!list.length) throw bad('Choose a start and end time.', 'final', 'final_required');
+  if (list.length > FINAL_MAX_SESSIONS) throw bad(`A final time can have at most ${FINAL_MAX_SESSIONS} sessions.`, 'final', 'final_too_many', { count: FINAL_MAX_SESSIONS });
+  const sessions = list.map((x) => {
+    const { start, end } = x || {};
+    if (!Number.isInteger(start) || !Number.isInteger(end) || end <= start) throw bad('The final time must end after it starts.', 'final', 'final_end_before_start');
+    if (end - start > FINAL_MAX_DAYS * 86400e3) throw bad(`The final time can be at most ${FINAL_MAX_DAYS} days long.`, 'final', 'final_too_long', { count: FINAL_MAX_DAYS });
+    if ((end - start) % 300e3) throw bad('The final time’s length must be a whole number of 5-minute steps.', 'final', 'final_bad_length');
+    if (!slots.includes(start)) throw bad('The final time must start at one of the poll’s times.', 'final', 'final_not_a_time');
+    return { start, end };
+  }).sort((a, b) => a.start - b.start);
+  for (let i = 1; i < sessions.length; i++) {
+    if (sessions[i].start < sessions[i - 1].end) throw bad('The final times overlap. Pick times that don’t.', 'final', 'final_overlap');
+  }
+  return { start: sessions[0].start, end: sessions[0].end, sessions };
 }

@@ -130,4 +130,9 @@ export default {
   'manage.qrLabel': "QR-Code für den Gastlink zu „{title}“",
   'manage.qrClose': "Schließen",
   'manage.qrFullscreen': "Vollbild",
+  'manage.ends': "Ende",
+  'manage.addSession': "Weiteren Termin hinzufügen",
+  'manage.removeSession': "Diesen Termin entfernen",
+  'manage.sessionLabel': "Termin {count}",
+  'manage.finalHint': "Für etwas, das mehrere Tage dauert, wähl ein Ende an einem späteren Tag. Für getrennte Termine, etwa zwei Nachmittage, füg einen weiteren hinzu.",
 };

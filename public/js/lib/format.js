@@ -43,7 +43,7 @@ export function range(start, end, timeZone, { withZone = false, year = false } =
   return f.formatRange ? f.formatRange(start, end) : `${f.format(start)} – ${f.format(end)}`;
 }
 
-const dayKey = (ms, timeZone) => fmt({ year: 'numeric', month: '2-digit', day: '2-digit', timeZone }).format(ms);
+export const dayKey = (ms, timeZone) => fmt({ year: 'numeric', month: '2-digit', day: '2-digit', timeZone }).format(ms);
 
 /**
  * "9:00 – 10:30 AM". A range ending exactly at midnight stays on one line

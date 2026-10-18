@@ -35,4 +35,6 @@ export default {
   'shared.copiedDetails': 'คัดลอกรายละเอียดกิจกรรมแล้ว',
   'shared.copyDetails': 'คัดลอกรายละเอียด',
   'shared.closedNoChanges': 'โพลนี้ปิดแล้ว จึงแก้ไขคำตอบไม่ได้',
+  'shared.inviteHasAll': "คำเชิญในปฏิทินมีทุกช่วงเวลาเหล่านี้",
+  'shared.calendarLinksNote': "การเปิดลิงก์ Google ปฏิทิน หรือ Outlook.com จะส่งรายละเอียดกิจกรรมไปให้บริษัทนั้น รวมถึงลิงก์สำหรับผู้เข้าร่วมของโพลนี้",
 };

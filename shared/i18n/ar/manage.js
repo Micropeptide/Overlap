@@ -146,4 +146,9 @@ export default {
   'manage.qrLabel': "رمز QR لرابط الضيوف الخاص بـ«{title}»",
   'manage.qrClose': "إغلاق",
   'manage.qrFullscreen': "ملء الشاشة",
+  'manage.ends': "ينتهي",
+  'manage.addSession': "إضافة وقت آخر",
+  'manage.removeSession': "إزالة هذا الوقت",
+  'manage.sessionLabel': "الوقت {count}",
+  'manage.finalHint': "لشيء يستمر عدة أيام، اختر نهاية في يوم لاحق. ولجلسات منفصلة، مثل فترتي ما بعد الظهر، أضف وقتًا آخر.",
 };

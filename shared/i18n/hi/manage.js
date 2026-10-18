@@ -130,4 +130,9 @@ export default {
   'manage.qrLabel': "“{title}” के मेहमान लिंक का QR कोड",
   'manage.qrClose': "बंद करें",
   'manage.qrFullscreen': "फ़ुल स्क्रीन",
+  'manage.ends': "समाप्ति",
+  'manage.addSession': "एक और समय जोड़ें",
+  'manage.removeSession': "यह समय हटाएँ",
+  'manage.sessionLabel': "समय {count}",
+  'manage.finalHint': "कई दिनों तक चलने वाली चीज़ के लिए बाद के किसी दिन का अंत चुनें। अलग-अलग सत्रों के लिए, जैसे दो दोपहर, एक और समय जोड़ें।",
 };

@@ -39,4 +39,6 @@ export default {
   'shared.copiedDetails': 'Detalhes do evento copiados',
   'shared.copyDetails': 'Copiar detalhes',
   'shared.closedNoChanges': 'Esta enquete está encerrada, então as respostas não podem ser alteradas.',
+  'shared.inviteHasAll': "O convite de calendário inclui todos esses horários.",
+  'shared.calendarLinksNote': "Abrir um link do Google Agenda ou do Outlook.com envia a essa empresa os detalhes do evento, incluindo o link de convidado desta enquete.",
 };

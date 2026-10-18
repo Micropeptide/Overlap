@@ -37,4 +37,6 @@ export default {
   'shared.copiedDetails': 'इवेंट की जानकारी कॉपी हो गई',
   'shared.copyDetails': 'जानकारी कॉपी करें',
   'shared.closedNoChanges': 'यह पोल बंद है, इसलिए जवाब बदले नहीं जा सकते।',
+  'shared.inviteHasAll': "कैलेंडर आमंत्रण में ये सभी समय हैं।",
+  'shared.calendarLinksNote': "Google Calendar या Outlook.com का लिंक खोलने पर उस कंपनी को इवेंट की जानकारी जाती है, जिसमें इस पोल का मेहमान लिंक भी शामिल है।",
 };

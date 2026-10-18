@@ -39,7 +39,7 @@ export default {
 
   'errors.final_required': 'Wähl Beginn und Ende.',
   'errors.final_end_before_start': 'Der Termin muss nach seinem Beginn enden.',
-  'errors.final_too_long': 'Der Termin darf höchstens 24 Stunden dauern.',
+  'errors.final_too_long': "Der Termin darf höchstens {count} Tage dauern.",
   'errors.final_bad_length': 'Die Dauer des Termins muss ein Vielfaches von 5 Minuten sein.',
   'errors.final_not_a_time': 'Der Termin muss zu einer der Zeiten der Umfrage beginnen.',
 
@@ -82,4 +82,6 @@ export default {
   'errors.email_daily_limit': 'Overlap hat heute schon genug E-Mails an diese Adresse (oder für diese Umfrage) gesendet. Versuch es morgen noch mal.',
   'errors.email_send_failed': 'Die E-Mail konnte gerade nicht gesendet werden. Versuch es in einer Minute noch mal.',
   'errors.confirm_link_expired': 'Dieser Bestätigungslink ist abgelaufen oder wurde schon ersetzt. Fordere die E-Mails in der Umfrage erneut an.',
+  'errors.final_overlap': "Einige dieser Termine überschneiden sich. Wähl Termine, die sich nicht überschneiden.",
+  'errors.final_too_many': "Ein finaler Termin kann höchstens {count} Einheiten haben.",
 };

@@ -134,4 +134,9 @@ export default {
   'manage.qrLabel': "Código QR do link de convidado de “{title}”",
   'manage.qrClose': "Fechar",
   'manage.qrFullscreen': "Tela cheia",
+  'manage.ends': "Termina",
+  'manage.addSession': "Adicionar outro horário",
+  'manage.removeSession': "Remover este horário",
+  'manage.sessionLabel': "Horário {count}",
+  'manage.finalHint': "Para algo que dura vários dias, escolha um fim em um dia posterior. Para sessões separadas, como duas tardes, adicione outro horário.",
 };

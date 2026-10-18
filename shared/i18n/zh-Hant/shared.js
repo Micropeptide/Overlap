@@ -35,4 +35,6 @@ export default {
   'shared.copiedDetails': '已複製活動詳細資訊',
   'shared.copyDetails': '複製詳細資訊',
   'shared.closedNoChanges': '這個投票已關閉，無法再修改回覆。',
+  'shared.inviteHasAll': "行事曆邀請包含所有這些時間。",
+  'shared.calendarLinksNote': "開啟 Google 日曆或 Outlook.com 連結，會把活動詳情（包括這個投票的訪客連結）傳送給該公司。",
 };

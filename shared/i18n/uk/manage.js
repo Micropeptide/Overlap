@@ -138,4 +138,9 @@ export default {
   'manage.qrLabel': "QR-код гостьового посилання на «{title}»",
   'manage.qrClose': "Закрити",
   'manage.qrFullscreen': "На весь екран",
+  'manage.ends': "Кінець",
+  'manage.addSession': "Додати ще час",
+  'manage.removeSession': "Прибрати цей час",
+  'manage.sessionLabel': "Час {count}",
+  'manage.finalHint': "Якщо подія триває кілька днів, виберіть кінець в один із наступних днів. Для окремих зустрічей, наприклад двох вечорів, додайте ще час.",
 };

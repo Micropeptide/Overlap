@@ -45,7 +45,7 @@ export default {
   // Final time
   'errors.final_required': 'Choose a start and end time.',
   'errors.final_end_before_start': 'The final time must end after it starts.',
-  'errors.final_too_long': 'The final time can be at most 24 hours long.',
+  'errors.final_too_long': "The final time can be at most {count} days long.",
   'errors.final_bad_length': 'The final time’s length must be a whole number of 5-minute steps.',
   'errors.final_not_a_time': 'The final time must start at one of the poll’s times.',
 
@@ -93,4 +93,6 @@ export default {
   'errors.email_daily_limit': 'Overlap has sent enough emails to that address (or for this poll) today. Try again tomorrow.',
   'errors.email_send_failed': 'The email couldn’t be sent just now. Try again in a minute.',
   'errors.confirm_link_expired': 'This confirmation link has expired or was already replaced. Ask for emails again from the poll.',
+  'errors.final_overlap': "Some of these times overlap. Pick times that don’t.",
+  'errors.final_too_many': "A final time can have at most {count} sessions.",
 };

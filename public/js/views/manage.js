@@ -129,7 +129,7 @@ export async function renderManage(main, pollId) {
       page.append(finalCard(poll, viewZone, {
         organizer: true,
         extra: [
-          h('button', { type: 'button', class: 'btn ghost', onclick: () => chooseFinal(poll.final.start, (poll.final.end - poll.final.start) / 60000) }, t('manage.changeTime')),
+          h('button', { type: 'button', class: 'btn ghost', onclick: () => chooseFinal(poll.final.start, (poll.final.end - poll.final.start) / 60000, poll.final.sessions) }, t('manage.changeTime')),
           h('button', { type: 'button', class: 'btn ghost', onclick: () => patch({ status: 'open' }, t('manage.reopenedCleared')) }, t('manage.reopen')),
         ],
       }));
@@ -323,42 +323,123 @@ export async function renderManage(main, pollId) {
     await patch({ organizerPassword: null }, t('manage.passwordRemoved'), '[data-action="password"]');
   }
 
-  async function chooseFinal(startSlot, minutes) {
+  /**
+   * Choose the final time: one or more sessions, each a start (one of the
+   * poll's times) and an end, which can be later the same day or on a later
+   * day (for something that runs over several days). "Add another time" adds
+   * a separate session, e.g. Monday and Wednesday afternoons.
+   */
+  async function chooseFinal(startSlot, minutes, existing = null) {
     const weekly = poll.kind === 'weekly';
     const layout = layoutSlots(poll.slots, viewZone);
-    const startSel = h('select', { id: 'fin-start', class: 'input' },
-      layout.columns.map((dk) => h('optgroup', { label: f.dayName(dk, weekly, 'long') },
-        layout.cells.filter((c) => c.dateKey === dk).sort((a, b) => a.slot - b.slot)
-          .map((c) => h('option', { value: String(c.slot), selected: c.slot === startSlot }, t('manage.startOption', { time: f.time(c.slot, viewZone), day: f.dayName(dk, weekly) }))))));
-    const lengths = lengthOptions().filter(([m]) => m > 0);
-    if (minutes && !lengths.some(([m]) => m === minutes)) lengths.push([minutes, f.duration(minutes)]);
-    lengths.sort((a, b) => a[0] - b[0]);
-    const lenSel = h('select', { id: 'fin-len', class: 'input' },
-      lengths.map(([m, label]) => h('option', { value: String(m), selected: m === (minutes || 60) }, label)));
+    const slotMs = poll.slotMinutes * 60000;
+    const DAY = 86400e3;
+    const cellsOf = (dk) => layout.cells.filter((c) => c.dateKey === dk).sort((a, b) => a.slot - b.slot);
+    const dayOfSlot = (slot) => layout.cells.find((c) => c.slot === slot)?.dateKey;
+
+    function startSelect(value) {
+      return h('select', { class: 'input fin-start' },
+        layout.columns.map((dk) => h('optgroup', { label: f.dayName(dk, weekly, 'long') },
+          cellsOf(dk).map((c) => h('option', { value: String(c.slot), selected: c.slot === value }, t('manage.startOption', { time: f.time(c.slot, viewZone), day: f.dayName(dk, weekly) }))))));
+    }
+    /** End times: every 15 minutes for the rest of the start's day, then the poll's later days (up to 14 days on). */
+    function endOptions(start) {
+      const startDay = dayOfSlot(start);
+      const groups = [];
+      const sameDay = [];
+      for (let e = start + 15 * 60000; e <= start + DAY; e += 15 * 60000) {
+        if (f.dayKey(e - 1, viewZone) !== f.dayKey(start, viewZone)) break;
+        sameDay.push(e);
+      }
+      groups.push([startDay, sameDay]);
+      for (const dk of layout.columns) {
+        if (dk <= startDay) continue;
+        const ends = cellsOf(dk).map((c) => c.slot + slotMs).filter((e) => e - start <= 14 * DAY);
+        if (ends.length) groups.push([dk, ends]);
+      }
+      return groups;
+    }
+    function fillEnds(sel, start, wanted) {
+      const groups = endOptions(start);
+      const all = groups.flatMap(([, ends]) => ends);
+      const pick = all.includes(wanted) ? wanted : all.find((e) => e >= wanted) ?? all[0];
+      sel.replaceChildren(...groups.map(([dk, ends]) => h('optgroup', { label: f.dayName(dk, weekly, 'long') },
+        ends.map((e) => h('option', { value: String(e), selected: e === pick }, t('manage.startOption', { time: f.time(e, viewZone), day: f.dayName(dk, weekly) }))))));
+    }
+
+    const rows = [];
+    const list = h('div', { class: 'final-sessions-edit' });
     const preview = h('p', { class: 'final-preview', 'aria-live': 'polite' });
-    const update = () => {
-      const s = Number(startSel.value);
-      const e = s + Number(lenSel.value) * 60000;
-      preview.textContent = t(weekly ? 'manage.previewWeekly' : 'manage.preview', { time: f.slotRange(s, e, viewZone, weekly), zone: f.zoneLabel(viewZone, s) });
-    };
-    startSel.addEventListener('change', update);
-    lenSel.addEventListener('change', update);
+    const error = h('p', { class: 'form-error', role: 'alert', hidden: true });
+    const sessions = () => rows.map((r) => ({ start: Number(r.start.value), end: Number(r.end.value) })).sort((a, b) => a.start - b.start);
+    function update() {
+      rows.forEach((r, i) => {
+        r.legend.textContent = t('manage.sessionLabel', { count: i + 1 });
+        r.remove.hidden = rows.length === 1;
+      });
+      add.hidden = rows.length >= 10;
+      preview.textContent = sessions().map(({ start, end }) => t(weekly ? 'manage.previewWeekly' : 'manage.preview', { time: f.slotRange(start, end, viewZone, weekly), zone: f.zoneLabel(viewZone, start) })).join('\n');
+      error.hidden = true;
+    }
+    function addRow(start, end) {
+      const startSel = startSelect(start);
+      const endSel = h('select', { class: 'input fin-end' });
+      fillEnds(endSel, start, end);
+      const row = { start: startSel, end: endSel };
+      startSel.addEventListener('change', () => {
+        const length = Number(endSel.value) - start;
+        start = Number(startSel.value);
+        fillEnds(endSel, start, start + Math.max(length, 15 * 60000));
+        update();
+      });
+      endSel.addEventListener('change', update);
+      const id = `fin-${rows.length}-${Math.random().toString(36).slice(2, 7)}`;
+      startSel.id = `${id}-s`; endSel.id = `${id}-e`;
+      row.legend = h('legend', { class: 'session-legend' });
+      row.remove = h('button', { type: 'button', class: 'btn ghost small', onclick: () => {
+        rows.splice(rows.indexOf(row), 1); row.el.remove(); update(); rows.at(-1)?.start.focus();
+      } }, t('manage.removeSession'));
+      row.el = h('fieldset', { class: 'final-session' }, row.legend,
+        h('div', { class: 'final-session-fields' },
+          h('div', { class: 'field' }, h('label', { for: startSel.id }, t('manage.starts')), startSel),
+          h('div', { class: 'field' }, h('label', { for: endSel.id }, t('manage.ends')), endSel)),
+        row.remove);
+      rows.push(row);
+      list.append(row.el);
+    }
+    const add = h('button', { type: 'button', class: 'btn secondary small', onclick: () => {
+      const last = sessions().at(-1);
+      const length = last.end - last.start;
+      // Same time the next day if the poll has it, otherwise the first time after the last session.
+      const next = poll.slots.includes(last.start + DAY) ? last.start + DAY : poll.slots.find((x) => x >= last.end) ?? poll.slots[0];
+      addRow(next, next + length);
+      update();
+      rows.at(-1).start.focus();
+    } }, icon('plus'), t('manage.addSession'));
+
+    const initial = existing?.length ? existing : [{ start: startSlot, end: startSlot + (minutes || 60) * 60000 }];
+    for (const x of initial) addRow(x.start, x.end);
     update();
+
     const result = await openDialog({
       title: t('manage.finalTitle'),
       body: h('div', { class: 'dialog-body' },
-        h('div', { class: 'field' }, h('label', { for: 'fin-start' }, t('manage.starts')), startSel),
-        h('div', { class: 'field' }, h('label', { for: 'fin-len' }, t('manage.lasts')), lenSel),
-        preview,
+        list, add, preview, error,
+        h('p', { class: 'muted small' }, t('manage.finalHint')),
         h('p', { class: 'muted small' }, t('manage.finalNote'))),
       actions: [
         { label: t('manage.cancel'), value: 'cancel' },
-        { label: t('manage.setFinal'), value: 'ok', kind: 'primary', submit: true },
+        { label: t('manage.setFinal'), value: 'ok', kind: 'primary', submit: true, validate: () => {
+          const list = sessions();
+          const overlap = list.some((x, i) => i && x.start < list[i - 1].end);
+          if (overlap) { error.textContent = t('errors.final_overlap'); error.hidden = false; return false; }
+          return true;
+        } },
       ],
     });
     if (result !== 'ok') return;
-    const start = Number(startSel.value);
-    const ok = await patch({ final: { start, end: start + Number(lenSel.value) * 60000 } }, t('manage.finalSet'), '.final-card');
+    const chosen = sessions();
+    const ok = await patch({ final: { sessions: chosen } }, t('manage.finalSet'), '.final-card');
     if (ok) main.querySelector('.final-card')?.scrollIntoView({ block: 'start' });
   }
 

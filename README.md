@@ -18,7 +18,7 @@ everyone sees where the times overlap.
 - Private edit links, copyable any time: nobody can overwrite your answer by typing your name.
   Guests can add an optional password to get back in from another device.
 - The organizer can lock answers once sent (guests can still delete theirs).
-- Close, finalize, export to CSV, and download a calendar invite.
+- Close, finalize, export to CSV, and download a calendar invite. The final time can be one time, something that runs over several days, or several separate sessions.
 - In 20 languages, chosen from the browser's settings or the footer (and remembered):
   English, Español, Français, Deutsch, Italiano, Português, Nederlands, Polski,
   Русский, Українська, Türkçe, العربية, हिन्दी, 简体中文, 繁體中文, 日本語, 한국어,

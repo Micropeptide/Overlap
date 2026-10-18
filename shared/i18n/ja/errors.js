@@ -44,7 +44,7 @@ export default {
   // Final time
   'errors.final_required': '開始時刻と終了時刻を選んでください。',
   'errors.final_end_before_start': '確定日時の終了は開始より後にしてください。',
-  'errors.final_too_long': '確定日時の長さは最大24時間です。',
+  'errors.final_too_long': "確定日時の長さは最大{count}日です。",
   'errors.final_bad_length': '確定日時の長さは5分単位にしてください。',
   'errors.final_not_a_time': '確定日時は、日程調整のいずれかの時間帯から始めてください。',
 
@@ -92,4 +92,6 @@ export default {
   'errors.email_daily_limit': '本日、Overlapはそのアドレス（またはこの日程調整）に送れるメールの上限に達しました。明日もう一度お試しください。',
   'errors.email_send_failed': '現在メールを送信できませんでした。1分ほどしてから、もう一度お試しください。',
   'errors.confirm_link_expired': 'この確認リンクは期限切れか、すでに新しいものに置き換えられています。日程調整のページからもう一度メールを申し込んでください。',
+  'errors.final_overlap': "重なっている時間があります。重ならないように選んでください。",
+  'errors.final_too_many': "確定日時は最大{count}回までです。",
 };

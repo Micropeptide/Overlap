@@ -71,7 +71,7 @@ export default {
   // Final time
   'errors.final_required': 'Elige una hora de inicio y una de fin.',
   'errors.final_end_before_start': 'El horario definitivo debe terminar después de empezar.',
-  'errors.final_too_long': 'El horario definitivo puede durar 24 horas como máximo.',
+  'errors.final_too_long': "El horario definitivo puede durar {count} días como máximo.",
   'errors.final_bad_length': 'La duración del horario definitivo debe ser un múltiplo de 5 minutos.',
   'errors.final_not_a_time': 'El horario definitivo debe empezar en uno de los horarios de la encuesta.',
 
@@ -123,4 +123,6 @@ export default {
   'errors.email_daily_limit': 'Overlap ya ha enviado suficientes correos a esa dirección (o para esta encuesta) hoy. Vuelve a intentarlo mañana.',
   'errors.email_send_failed': 'No se pudo enviar el correo en este momento. Vuelve a intentarlo en un minuto.',
   'errors.confirm_link_expired': 'Este enlace de confirmación caducó o ya se reemplazó. Vuelve a pedir los correos desde la encuesta.',
+  'errors.final_overlap': "Algunos de estos horarios se solapan. Elige horarios que no se solapen.",
+  'errors.final_too_many': "Un horario definitivo puede tener como máximo {count} sesiones.",
 };

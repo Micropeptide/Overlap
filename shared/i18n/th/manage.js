@@ -126,4 +126,9 @@ export default {
   'manage.qrLabel': "คิวอาร์โค้ดของลิงก์สำหรับผู้เข้าร่วม “{title}”",
   'manage.qrClose': "ปิด",
   'manage.qrFullscreen': "เต็มหน้าจอ",
+  'manage.ends': "สิ้นสุด",
+  'manage.addSession': "เพิ่มอีกช่วงเวลา",
+  'manage.removeSession': "ลบช่วงเวลานี้",
+  'manage.sessionLabel': "ช่วงเวลา {count}",
+  'manage.finalHint': "ถ้ากิจกรรมยาวหลายวัน ให้เลือกเวลาสิ้นสุดในวันถัดไป ถ้าเป็นหลายรอบแยกกัน เช่น สองช่วงบ่าย ให้เพิ่มอีกช่วงเวลา",
 };

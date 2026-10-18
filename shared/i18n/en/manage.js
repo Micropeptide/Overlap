@@ -132,4 +132,9 @@ export default {
   'manage.qrLabel': "QR code for the guest link to “{title}”",
   'manage.qrClose': "Close",
   'manage.qrFullscreen': "Full screen",
+  'manage.ends': "Ends",
+  'manage.addSession': "Add another time",
+  'manage.removeSession': "Remove this time",
+  'manage.sessionLabel': "Time {count}",
+  'manage.finalHint': "For something that runs over several days, pick an end on a later day. For separate sessions, such as two afternoons, add another time.",
 };

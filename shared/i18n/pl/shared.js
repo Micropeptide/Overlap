@@ -41,4 +41,6 @@ export default {
   'shared.copiedDetails': 'Skopiowano szczegóły wydarzenia',
   'shared.copyDetails': 'Kopiuj szczegóły',
   'shared.closedNoChanges': 'Ta ankieta jest zamknięta, więc nie można zmieniać odpowiedzi.',
+  'shared.inviteHasAll': "Zaproszenie do kalendarza zawiera wszystkie te terminy.",
+  'shared.calendarLinksNote': "Otwarcie linku do Kalendarza Google lub Outlook.com wysyła tej firmie szczegóły wydarzenia, w tym link dla gości do tej ankiety.",
 };

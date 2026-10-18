@@ -547,6 +547,20 @@ textarea.input { resize: vertical; min-height: 5rem; }
 .final-when { margin: 0 0 0.35rem; display: flex; flex-direction: column; }
 .final-day { font-family: var(--font-display); font-size: var(--step-2); font-weight: 600; }
 .final-time { font-family: var(--font-display); font-size: var(--step-4); font-weight: 750; letter-spacing: -0.03em; line-height: 1.05; }
+.final-sessions { list-style: none; padding: 0; margin: 0.25rem 0 0.5rem; display: grid; gap: 0.6rem; }
+.final-sessions li { display: grid; gap: 0.1rem; padding-bottom: 0.6rem; border-bottom: 1px solid color-mix(in srgb, var(--mist) 18%, transparent); }
+.final-session-day { font-family: var(--font-display); font-size: var(--step-1); font-weight: 600; }
+.final-session-time { font-family: var(--font-display); font-size: var(--step-2); font-weight: 750; letter-spacing: -0.02em; }
+.final-sessions .final-links { margin: 0.15rem 0 0; font-size: var(--step--1); }
+/* Choosing the final time: one box per session. */
+.final-sessions-edit { display: grid; gap: 0.75rem; margin-bottom: 0.75rem; }
+.final-session { border: 1.5px solid var(--line); border-radius: var(--radius-m); padding: 0.6rem 0.8rem 0.7rem; margin: 0; min-width: 0; }
+.session-legend { font-weight: 700; font-size: var(--step--1); padding: 0 0.25rem; }
+.final-session-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+.final-session-fields .field { margin: 0; min-width: 0; }
+.final-session-fields select { width: 100%; }
+@media (max-width: 520px) { .final-session-fields { grid-template-columns: 1fr; } }
+.final-preview { white-space: pre-line; }
 .final-zone { color: color-mix(in srgb, var(--mist) 80%, transparent); font-size: var(--step--1); }
 .final-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0 0.5rem; }
 .final-card .btn.primary { background: var(--mist); color: var(--ink); }
@@ -624,6 +638,7 @@ textarea.input { resize: vertical; min-height: 5rem; }
   background: var(--surface); color: var(--ink); box-shadow: 0 24px 60px -20px rgb(0 0 0 / 0.45);
 }
 .dialog::backdrop { background: rgb(15 27 31 / 0.45); }
+.dialog:has(.final-sessions-edit) { width: min(40rem, calc(100vw - 2rem)); }
 .dialog-inner { padding: 1.5rem; }
 .dialog-title { font-size: var(--step-2); margin-bottom: 0.75rem; }
 .dialog-text { color: var(--ink-2); }

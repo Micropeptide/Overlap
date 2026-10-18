@@ -126,4 +126,9 @@ export default {
   'manage.qrLabel': "Kode QR untuk tautan tamu “{title}”",
   'manage.qrClose': "Tutup",
   'manage.qrFullscreen': "Layar penuh",
+  'manage.ends': "Selesai",
+  'manage.addSession': "Tambah waktu lain",
+  'manage.removeSession': "Hapus waktu ini",
+  'manage.sessionLabel': "Waktu {count}",
+  'manage.finalHint': "Untuk acara yang berlangsung beberapa hari, pilih waktu selesai di hari berikutnya. Untuk sesi terpisah, misalnya dua sore, tambah waktu lain.",
 };

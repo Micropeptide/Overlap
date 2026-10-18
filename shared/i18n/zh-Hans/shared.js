@@ -35,4 +35,6 @@ export default {
   'shared.copiedDetails': '已复制活动详情',
   'shared.copyDetails': '复制详情',
   'shared.closedNoChanges': '此投票已关闭，回复无法再修改。',
+  'shared.inviteHasAll': "日历邀请包含所有这些时间。",
+  'shared.calendarLinksNote': "打开 Google 日历或 Outlook.com 链接，会把活动详情（包括这个投票的访客链接）发送给该公司。",
 };

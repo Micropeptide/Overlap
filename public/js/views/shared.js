@@ -110,8 +110,7 @@ const utcStamp = (ms) => {
 };
 
 /** Links that open a prefilled event in Google Calendar or Outlook (only if the person clicks them). */
-export function calendarLinks(poll, guestUrl) {
-  const { start, end } = poll.final;
+export function calendarLinks(poll, guestUrl, { start, end } = poll.final) {
   const weekly = poll.kind === 'weekly';
   const details = [poll.description, t('shared.scheduledWith', { url: guestUrl })].filter(Boolean).join('\n\n');
   const google = new URL('https://calendar.google.com/calendar/render');
@@ -135,23 +134,32 @@ export function calendarLinks(poll, guestUrl) {
   return { google: google.toString(), outlook: weekly ? null : outlook.toString() };
 }
 
+const sessionsOf = (poll) => poll.final.sessions || [poll.final];
+
 export function finalDetailsText(poll, guestUrl) {
-  const { start, end } = poll.final;
   return [
     poll.title,
-    t('shared.detailsWhen', { day: f.finalDay(start, poll.timezone, poll.kind === 'weekly'), time: f.timeRange(start, end, poll.timezone), zone: f.zoneLabel(poll.timezone, start) }),
+    ...sessionsOf(poll).map(({ start, end }) => t('shared.detailsWhen', { day: f.finalDay(start, poll.timezone, poll.kind === 'weekly'), time: f.timeRange(start, end, poll.timezone), zone: f.zoneLabel(poll.timezone, start) })),
     poll.location ? t('shared.detailsWhere', { place: poll.location }) : null,
     poll.description || null,
     t('shared.detailsLink', { url: guestUrl }),
   ].filter(Boolean).join('\n');
 }
 
-function finalLinks(poll, guestUrl) {
-  const { google, outlook } = calendarLinks(poll, guestUrl);
+function finalLinks(poll, guestUrl, session = poll.final) {
+  const { google, outlook } = calendarLinks(poll, guestUrl, session);
   const googleLink = h('a', { href: google, target: '_blank', rel: 'noopener noreferrer' }, t('shared.googleCalendar'));
   return h('p', { class: 'final-links' }, outlook
     ? tx('shared.addToCalendars', { google: googleLink, outlook: h('a', { href: outlook, target: '_blank', rel: 'noopener noreferrer' }, 'Outlook.com') })
     : tx('shared.addToCalendar', { google: googleLink }));
+}
+
+/** Just the two calendar links, for one of several sessions. */
+function shortLinks(poll, guestUrl, session) {
+  const { google, outlook } = calendarLinks(poll, guestUrl, session);
+  return h('p', { class: 'final-links' },
+    h('a', { href: google, target: '_blank', rel: 'noopener noreferrer' }, t('shared.googleCalendar')),
+    ...(outlook ? [' · ', h('a', { href: outlook, target: '_blank', rel: 'noopener noreferrer' }, 'Outlook.com')] : []));
 }
 
 /** The sample poll's invite, made in the browser (the server doesn't know the sample). */
@@ -166,15 +174,24 @@ async function downloadSampleInvite(poll) {
 
 export function finalCard(poll, viewZone, { organizer = false, extra = [] } = {}) {
   const { start, end } = poll.final;
+  const sessions = sessionsOf(poll);
+  const weekly = poll.kind === 'weekly';
   const guestUrl = `${location.origin}/p/${poll.id}`;
   const different = viewZone !== poll.timezone;
+  // Several sessions are listed one per line, each with its own calendar links.
+  const when = sessions.length === 1
+    ? h('p', { class: 'final-when' },
+      h('span', { class: 'final-day' }, f.finalDay(start, viewZone, weekly)),
+      h('span', { class: 'final-time' }, f.timeRange(start, end, viewZone)))
+    : h('ul', { class: 'final-sessions', role: 'list' }, sessions.map((x) => h('li', null,
+      h('span', { class: 'final-session-day' }, f.finalDay(x.start, viewZone, weekly)),
+      h('span', { class: 'final-session-time' }, f.timeRange(x.start, x.end, viewZone)),
+      shortLinks(poll, guestUrl, x))));
   return h('section', { class: 'final-card', 'aria-labelledby': 'final-title', tabindex: '-1' },
     h('p', { class: 'final-kicker', id: 'final-title' }, organizer ? t('shared.finalTime') : t('shared.finalChosen')),
-    h('p', { class: 'final-when' },
-      h('span', { class: 'final-day' }, f.finalDay(start, viewZone, poll.kind === 'weekly')),
-      h('span', { class: 'final-time' }, f.timeRange(start, end, viewZone))),
-    h('p', { class: 'final-zone' }, different
-      ? t('shared.finalZoneOrganizer', { zone: f.zoneLabel(viewZone, start), time: f.slotRange(start, end, poll.timezone, poll.kind === 'weekly'), city: cityOf(poll.timezone) })
+    when,
+    h('p', { class: 'final-zone' }, different && sessions.length === 1
+      ? t('shared.finalZoneOrganizer', { zone: f.zoneLabel(viewZone, start), time: f.slotRange(start, end, poll.timezone, weekly), city: cityOf(poll.timezone) })
       : f.zoneLabel(viewZone, start)),
     h('div', { class: 'final-actions' },
       poll.isSample
@@ -183,7 +200,8 @@ export function finalCard(poll, viewZone, { organizer = false, extra = [] } = {}
       h('button', { type: 'button', class: 'btn secondary', onclick: () => copyText(finalDetailsText(poll, guestUrl), t('shared.copiedDetails')) }, icon('copy'), t('shared.copyDetails')),
       ...extra,
     ),
-    finalLinks(poll, guestUrl),
+    sessions.length === 1 ? finalLinks(poll, guestUrl)
+      : h('p', { class: 'final-links' }, t('shared.inviteHasAll'), ' ', t('shared.calendarLinksNote')),
     organizer ? null : h('p', { class: 'muted small' }, t('shared.closedNoChanges')),
   );
 }

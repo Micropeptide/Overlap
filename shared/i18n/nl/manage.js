@@ -130,4 +130,9 @@ export default {
   'manage.qrLabel': "QR-code voor de gastlink van “{title}”",
   'manage.qrClose': "Sluiten",
   'manage.qrFullscreen': "Volledig scherm",
+  'manage.ends': "Eindigt",
+  'manage.addSession': "Nog een tijd toevoegen",
+  'manage.removeSession': "Deze tijd verwijderen",
+  'manage.sessionLabel': "Tijd {count}",
+  'manage.finalHint': "Voor iets dat meerdere dagen duurt, kies je een einde op een latere dag. Voor losse sessies, zoals twee middagen, voeg je nog een tijd toe.",
 };

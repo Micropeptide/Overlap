@@ -141,7 +141,8 @@ export function digestLines({ poll, sub, events, responses }) {
   const lines = [];
   const last = pollNews.at(-1);
   if (pollNews.includes('final') && poll.final) {
-    lines.push(t('email.finalPicked', { time: timeRange(poll.final.start, poll.final.end, poll.timezone, poll.kind === 'weekly', lang) }));
+    const sessions = poll.final.sessions || [poll.final];
+    lines.push(t('email.finalPicked', { time: sessions.map((x) => timeRange(x.start, x.end, poll.timezone, poll.kind === 'weekly', lang)).join(t('email.nameSeparator')) }));
   } else if (last === 'closed' && poll.closed) lines.push(t('email.closed'));
   else if (last === 'reopened' && !poll.closed) lines.push(t('email.reopened'));
   if (pollNews.includes('edited')) lines.push(t('email.edited'));

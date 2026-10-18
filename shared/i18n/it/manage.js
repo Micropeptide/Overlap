@@ -134,4 +134,9 @@ export default {
   'manage.qrLabel': "Codice QR del link per gli ospiti di «{title}»",
   'manage.qrClose': "Chiudi",
   'manage.qrFullscreen': "Schermo intero",
+  'manage.ends': "Fine",
+  'manage.addSession': "Aggiungi un altro orario",
+  'manage.removeSession': "Rimuovi questo orario",
+  'manage.sessionLabel': "Orario {count}",
+  'manage.finalHint': "Per qualcosa che dura più giorni, scegli una fine in un giorno successivo. Per sessioni separate, come due pomeriggi, aggiungi un altro orario.",
 };

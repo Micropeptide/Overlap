@@ -45,7 +45,7 @@ export default {
   // Final time
   'errors.final_required': '请选择开始和结束时间。',
   'errors.final_end_before_start': '最终时间的结束必须晚于开始。',
-  'errors.final_too_long': '最终时间最长为 24 小时。',
+  'errors.final_too_long': "最终时间最长为 {count} 天。",
   'errors.final_bad_length': '最终时间的时长必须是 5 分钟的整数倍。',
   'errors.final_not_a_time': '最终时间必须从此投票的某个时间开始。',
 
@@ -93,4 +93,6 @@ export default {
   'errors.email_daily_limit': 'Overlap 今天已向该地址（或为此投票）发送了足够多的邮件。请明天再试。',
   'errors.email_send_failed': '邮件暂时无法发送。请过一分钟再试。',
   'errors.confirm_link_expired': '此确认链接已过期或已被替换。请在投票页面重新申请邮件。',
+  'errors.final_overlap': "其中有些时间重叠了。请选择不重叠的时间。",
+  'errors.final_too_many': "最终时间最多可以有 {count} 次。",
 };

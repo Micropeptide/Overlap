@@ -41,4 +41,6 @@ export default {
   'shared.copiedDetails': 'Данные о встрече скопированы',
   'shared.copyDetails': 'Копировать данные',
   'shared.closedNoChanges': 'Опрос закрыт, поэтому ответы изменить нельзя.',
+  'shared.inviteHasAll': "Приглашение в календарь включает всё это время.",
+  'shared.calendarLinksNote': "Если открыть ссылку Google Календаря или Outlook.com, эта компания получит данные события, включая гостевую ссылку на этот опрос.",
 };

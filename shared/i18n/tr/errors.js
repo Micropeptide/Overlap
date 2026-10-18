@@ -39,7 +39,7 @@ export default {
 
   'errors.final_required': 'Bir başlangıç ve bitiş saati seçin.',
   'errors.final_end_before_start': 'Kesin saatin bitişi başlangıcından sonra olmalı.',
-  'errors.final_too_long': 'Kesin saat en fazla 24 saat sürebilir.',
+  'errors.final_too_long': "Kesin saat en fazla {count} gün sürebilir.",
   'errors.final_bad_length': 'Kesin saatin süresi 5 dakikalık adımların tam katı olmalı.',
   'errors.final_not_a_time': 'Kesin saat, anketteki saatlerden birinde başlamalı.',
 
@@ -82,4 +82,6 @@ export default {
   'errors.email_daily_limit': 'Overlap bugün bu adrese (ya da bu anket için) yeterince e-posta gönderdi. Yarın tekrar deneyin.',
   'errors.email_send_failed': 'E-posta şu anda gönderilemedi. Bir dakika sonra tekrar deneyin.',
   'errors.confirm_link_expired': 'Bu onay bağlantısının süresi dolmuş ya da yerine yenisi gönderilmiş. Ankete dönüp e-postaları yeniden isteyin.',
+  'errors.final_overlap': "Bu zamanların bazıları çakışıyor. Çakışmayan zamanlar seçin.",
+  'errors.final_too_many': "Kesin saat en fazla {count} oturumdan oluşabilir.",
 };

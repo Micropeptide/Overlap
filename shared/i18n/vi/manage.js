@@ -126,4 +126,9 @@ export default {
   'manage.qrLabel': "Mã QR của liên kết khách cho “{title}”",
   'manage.qrClose': "Đóng",
   'manage.qrFullscreen': "Toàn màn hình",
+  'manage.ends': "Kết thúc",
+  'manage.addSession': "Thêm thời gian khác",
+  'manage.removeSession': "Xóa thời gian này",
+  'manage.sessionLabel': "Thời gian {count}",
+  'manage.finalHint': "Với sự kiện kéo dài nhiều ngày, hãy chọn giờ kết thúc vào một ngày sau. Với các buổi riêng, như hai buổi chiều, hãy thêm thời gian khác.",
 };

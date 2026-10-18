@@ -93,3 +93,25 @@ test('on a phone, range taps work and the page stays still', async ({ page }, in
   expect(await position(page)).toEqual(before);
   await expect(picked(page)).toContainText('16 dates picked');
 });
+
+test('dragging over dates and back again un-picks the days you pulled back from', async ({ page }, info) => {
+  test.skip(info.project.name !== 'desktop', 'Mouse drag.');
+  const year = new Date().getFullYear() + 1;
+  await page.goto('/');
+  await showMonth(page, year, 3);
+  await page.locator('.datepicker').evaluate((el) => el.scrollIntoView({ block: 'start' }));
+  const at = async (dk) => { const b = await day(page, dk).boundingBox(); return [b.x + b.width / 2, b.y + b.height / 2]; };
+  // Something already picked stays picked.
+  await day(page, `${year}-03-20`).click();
+  await expect(picked(page)).toContainText('1 date picked');
+  await page.mouse.move(...await at(`${year}-03-02`));
+  await page.mouse.down();
+  await page.mouse.move(...await at(`${year}-03-25`), { steps: 5 });
+  await expect(page.locator('.dp-day.on')).toHaveCount(24);
+  // Back to the 5th: the 6th to the 25th go back to how they were (the 20th stays).
+  await page.mouse.move(...await at(`${year}-03-05`), { steps: 5 });
+  await page.mouse.up();
+  await expect(picked(page)).toContainText('5 dates picked');
+  for (const d of ['02', '03', '04', '05', '20']) await expect(day(page, `${year}-03-${d}`)).toHaveClass(/\bon\b/);
+  await expect(day(page, `${year}-03-06`)).not.toHaveClass(/\bon\b/);
+});

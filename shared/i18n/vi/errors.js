@@ -45,7 +45,7 @@ export default {
   // Final time
   'errors.final_required': 'Hãy chọn giờ bắt đầu và giờ kết thúc.',
   'errors.final_end_before_start': 'Thời gian chốt phải kết thúc sau khi bắt đầu.',
-  'errors.final_too_long': 'Thời gian chốt chỉ được dài tối đa 24 giờ.',
+  'errors.final_too_long': "Thời gian chốt chỉ được dài tối đa {count} ngày.",
   'errors.final_bad_length': 'Độ dài của thời gian chốt phải là bội số của 5 phút.',
   'errors.final_not_a_time': 'Thời gian chốt phải bắt đầu tại một trong các khung giờ của cuộc thăm dò.',
 
@@ -93,4 +93,6 @@ export default {
   'errors.email_daily_limit': 'Hôm nay Overlap đã gửi đủ số email đến địa chỉ đó (hoặc cho cuộc thăm dò này). Hãy thử lại vào ngày mai.',
   'errors.email_send_failed': 'Hiện chưa gửi được email. Hãy thử lại sau một phút.',
   'errors.confirm_link_expired': 'Liên kết xác nhận này đã hết hạn hoặc đã được thay. Hãy yêu cầu nhận email lại từ cuộc thăm dò.',
+  'errors.final_overlap': "Một số thời gian bị chồng lên nhau. Hãy chọn các thời gian không chồng nhau.",
+  'errors.final_too_many': "Thời gian chốt có tối đa {count} buổi.",
 };

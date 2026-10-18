@@ -126,4 +126,9 @@ export default {
   'manage.qrLabel': "「{title}」のゲスト用リンクのQRコード",
   'manage.qrClose': "閉じる",
   'manage.qrFullscreen': "全画面表示",
+  'manage.ends': "終了",
+  'manage.addSession': "時間を追加",
+  'manage.removeSession': "この時間を削除",
+  'manage.sessionLabel': "時間 {count}",
+  'manage.finalHint': "複数日にわたる予定は、後の日を終了に選んでください。午後2回のように別々の回にする場合は、時間を追加します。",
 };

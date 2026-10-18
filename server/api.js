@@ -217,8 +217,8 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
       if (final !== undefined) {
         changes.final = validateFinal(final, mergedSlots);
         if (changes.final) changes.manualClosed = true;
-      } else if (poll.final && !mergedSlots.includes(poll.final.start)) {
-        // The edit removed the final time's slot, so the final time no longer applies.
+      } else if (poll.final && poll.final.sessions.some((x) => !mergedSlots.includes(x.start))) {
+        // The edit removed a final session's slot, so the final time no longer applies.
         changes.final = null;
       }
       if (nextStatus !== undefined) {
@@ -233,7 +233,7 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
       }
       if (passwordKey !== undefined) await store.setAdminPassword(id, passwordKey);
       const updated = await store.updatePoll(id, changes);
-      if (changes.final && changes.final.start !== poll.final?.start) await record(updated, 'final');
+      if (changes.final && JSON.stringify(changes.final.sessions) !== JSON.stringify(poll.final?.sessions)) await record(updated, 'final');
       else if (nextStatus === 'closed' && !poll.closed) await record(updated, 'closed');
       else if (nextStatus === 'open' && poll.closed) await record(updated, 'reopened');
       const EDITS = ['kind', 'title', 'location', 'description', 'dates', 'startMinute', 'endMinute', 'slotMinutes', 'timezone', 'durationMinutes'];

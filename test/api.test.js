@@ -190,7 +190,7 @@ test('closing, finalizing and reopening a poll', async () => {
   const fin = await api('PATCH', `/api/polls/${poll.id}`, { token: adminToken, body: { final } });
   assert.equal(fin.json.poll.status, 'finalized');
   const guestView = await api('GET', `/api/polls/${poll.id}`);
-  assert.deepEqual(guestView.json.poll.final, final);
+  assert.deepEqual(guestView.json.poll.final, { ...final, sessions: [final] });
 
   const ics = await api('GET', `/api/polls/${poll.id}/invite.ics`);
   assert.equal(ics.status, 200);
@@ -517,4 +517,29 @@ test('errors carry a code (and vars when the message needs them) for translation
   assert.equal(gone.status, 404);
   assert.equal(gone.json.code, 'poll_not_found');
   assert.equal((await api('GET', '/api/nowhere')).json.code, 'not_found');
+});
+
+test('a final time can be several sessions, or run over several days', async () => {
+  const { poll, adminToken } = await newPoll();
+  const [a, b] = [poll.slots[0], poll.slots.find((x) => x >= poll.slots[0] + 86400e3)];
+  const patch = (final) => api('PATCH', `/api/polls/${poll.id}`, { token: adminToken, body: { final } });
+
+  // Two afternoons, sent out of order: stored in order, the first one also as start/end.
+  const two = await patch({ sessions: [{ start: b, end: b + 2 * 3600e3 }, { start: a, end: a + 3600e3 }] });
+  assert.equal(two.status, 200, two.text);
+  assert.deepEqual(two.json.poll.final, { start: a, end: a + 3600e3, sessions: [{ start: a, end: a + 3600e3 }, { start: b, end: b + 2 * 3600e3 }] });
+  const ics = await api('GET', `/api/polls/${poll.id}/invite.ics`);
+  assert.equal(ics.text.match(/BEGIN:VEVENT/g).length, 2);
+
+  // One time over three days.
+  const long = await patch({ start: a, end: a + 3 * 86400e3 });
+  assert.equal(long.status, 200, long.text);
+  assert.deepEqual(long.json.poll.final.sessions, [{ start: a, end: a + 3 * 86400e3 }]);
+
+  // Refused: overlapping sessions, more than 14 days, more than 10 sessions.
+  assert.equal((await patch({ sessions: [{ start: a, end: a + 7200e3 }, { start: a, end: a + 3600e3 }] })).json.code, 'final_overlap');
+  assert.equal((await patch({ start: a, end: a + 15 * 86400e3 })).json.code, 'final_too_long');
+  const many = Array.from({ length: 11 }, () => ({ start: a, end: a + 300e3 }));
+  assert.equal((await patch({ sessions: many })).json.code, 'final_too_many');
+  assert.equal((await patch({ sessions: [] })).json.code, 'final_required');
 });

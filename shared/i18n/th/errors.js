@@ -42,7 +42,7 @@ export default {
   // Final time
   'errors.final_required': 'เลือกเวลาเริ่มและเวลาสิ้นสุด',
   'errors.final_end_before_start': 'เวลาสรุปต้องสิ้นสุดหลังเวลาเริ่ม',
-  'errors.final_too_long': 'เวลาสรุปยาวได้ไม่เกิน 24 ชั่วโมง',
+  'errors.final_too_long': "เวลาสรุปยาวได้ไม่เกิน {count} วัน",
   'errors.final_bad_length': 'ความยาวของเวลาสรุปต้องเป็นทวีคูณของ 5 นาที',
   'errors.final_not_a_time': 'เวลาสรุปต้องเริ่มที่ช่วงเวลาใดช่วงเวลาหนึ่งของโพล',
 
@@ -90,4 +90,6 @@ export default {
   'errors.email_daily_limit': 'วันนี้ Overlap ส่งอีเมลถึงที่อยู่นั้น (หรือสำหรับโพลนี้) ครบจำนวนแล้ว ลองอีกครั้งพรุ่งนี้',
   'errors.email_send_failed': 'ส่งอีเมลไม่ได้ในตอนนี้ ลองอีกครั้งในอีกสักนาที',
   'errors.confirm_link_expired': 'ลิงก์ยืนยันนี้หมดอายุหรือถูกแทนที่แล้ว ขอรับอีเมลอีกครั้งจากหน้าโพล',
+  'errors.final_overlap': "บางช่วงเวลาซ้อนทับกัน เลือกช่วงเวลาที่ไม่ซ้อนกัน",
+  'errors.final_too_many': "เวลาสรุปมีได้ไม่เกิน {count} ช่วง",
 };

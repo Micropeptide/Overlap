@@ -37,4 +37,6 @@ export default {
   'shared.copiedDetails': 'Termindetails kopiert',
   'shared.copyDetails': 'Details kopieren',
   'shared.closedNoChanges': 'Diese Umfrage ist geschlossen. Antworten lassen sich nicht mehr ändern.',
+  'shared.inviteHasAll': "Die Kalendereinladung enthält alle diese Termine.",
+  'shared.calendarLinksNote': "Wenn du einen Google-Kalender- oder Outlook.com-Link öffnest, bekommt diese Firma die Termindetails, auch den Gastlink dieser Umfrage.",
 };

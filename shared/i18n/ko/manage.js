@@ -126,4 +126,9 @@ export default {
   'manage.qrLabel': "“{title}” 게스트 링크 QR 코드",
   'manage.qrClose': "닫기",
   'manage.qrFullscreen': "전체 화면",
+  'manage.ends': "종료",
+  'manage.addSession': "시간 추가",
+  'manage.removeSession': "이 시간 삭제",
+  'manage.sessionLabel': "시간 {count}",
+  'manage.finalHint': "여러 날에 걸친 일정이라면 나중 날짜를 종료로 고르세요. 오후 두 번처럼 따로 하는 경우에는 시간을 추가하세요.",
 };

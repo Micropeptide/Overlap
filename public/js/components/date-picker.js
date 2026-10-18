@@ -275,7 +275,9 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
       return;
     }
     anchor = dk;
-    drag = { on: !chosen.has(dk), id: e.pointerId };
+    // A drag covers every day from where it started to where the pointer is
+    // now. Going back un-covers days, and those return to how they were.
+    drag = { on: !chosen.has(dk), id: e.pointerId, from: dk, to: dk, before: new Set(chosen) };
     root.setPointerCapture(e.pointerId);
     focusKey = dk;
     setDay(dk, drag.on);
@@ -286,10 +288,21 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
     const btn = document.elementFromPoint(e.clientX, e.clientY)?.closest?.('.dp-day');
     if (!btn || btn.disabled || !root.contains(btn)) return;
     const dk = btn.dataset.date;
-    if (chosen.has(dk) === drag.on) return;
-    setDay(dk, drag.on);
-    btn.classList.toggle('on', drag.on);
-    btn.setAttribute('aria-pressed', String(drag.on));
+    if (dk === drag.to) return;
+    drag.to = dk;
+    const [a, b] = drag.from < dk ? [drag.from, dk] : [dk, drag.from];
+    chosen.clear();
+    for (const d of drag.before) chosen.add(d);
+    for (let d = a; d <= b; d = addDays(d, 1)) {
+      if (d < today) continue;
+      if (drag.on && !chosen.has(d) && chosen.size >= maxDates) break;
+      setDay(d, drag.on);
+    }
+    for (const day of root.querySelectorAll('.dp-day[data-date]')) {
+      const on = chosen.has(day.dataset.date);
+      day.classList.toggle('on', on);
+      day.setAttribute('aria-pressed', String(on));
+    }
   });
   const end = (e) => {
     if (!drag || e.pointerId !== drag.id) return;

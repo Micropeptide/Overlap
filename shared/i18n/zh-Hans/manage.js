@@ -126,4 +126,9 @@ export default {
   'manage.qrLabel': "“{title}”访客链接的二维码",
   'manage.qrClose': "关闭",
   'manage.qrFullscreen': "全屏",
+  'manage.ends': "结束",
+  'manage.addSession': "添加另一个时间",
+  'manage.removeSession': "删除这个时间",
+  'manage.sessionLabel': "时间 {count}",
+  'manage.finalHint': "如果活动持续好几天，请把结束时间选在之后的某一天。如果是分开的几次，比如两个下午，请添加另一个时间。",
 };

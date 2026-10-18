@@ -134,4 +134,9 @@ export default {
   'manage.qrLabel': "Code QR du lien invité pour « {title} »",
   'manage.qrClose': "Fermer",
   'manage.qrFullscreen': "Plein écran",
+  'manage.ends': "Fin",
+  'manage.addSession': "Ajouter un autre horaire",
+  'manage.removeSession': "Retirer cet horaire",
+  'manage.sessionLabel': "Horaire {count}",
+  'manage.finalHint': "Pour un événement sur plusieurs jours, choisissez une fin un jour suivant. Pour des séances séparées, comme deux après-midi, ajoutez un autre horaire.",
 };

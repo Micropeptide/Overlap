@@ -35,4 +35,6 @@ export default {
   'shared.copiedDetails': '일정 정보를 복사했어요',
   'shared.copyDetails': '정보 복사',
   'shared.closedNoChanges': '마감된 투표라서 응답을 수정할 수 없어요.',
+  'shared.inviteHasAll': "캘린더 초대에 이 시간이 모두 들어 있어요.",
+  'shared.calendarLinksNote': "Google 캘린더나 Outlook.com 링크를 열면 이 투표의 게스트 링크를 포함한 일정 정보가 해당 회사로 전송돼요.",
 };

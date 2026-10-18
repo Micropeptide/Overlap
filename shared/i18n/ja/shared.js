@@ -35,4 +35,6 @@ export default {
   'shared.copiedDetails': '予定の詳細をコピーしました',
   'shared.copyDetails': '詳細をコピー',
   'shared.closedNoChanges': 'この日程調整は締め切られたため、回答は変更できません。',
+  'shared.inviteHasAll': "カレンダー招待にはこれらすべての時間が含まれます。",
+  'shared.calendarLinksNote': "Google カレンダーや Outlook.com のリンクを開くと、その会社に予定の詳細（この日程調整のゲスト用リンクを含む）が送られます。",
 };

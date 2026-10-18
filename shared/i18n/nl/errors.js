@@ -40,7 +40,7 @@ export default {
 
   'errors.final_required': 'Kies een begin- en eindtijd.',
   'errors.final_end_before_start': 'Het definitieve tijdstip moet eindigen na het begin.',
-  'errors.final_too_long': 'Het definitieve tijdstip mag maximaal 24 uur duren.',
+  'errors.final_too_long': "Het definitieve tijdstip mag maximaal {count} dagen duren.",
   'errors.final_bad_length': 'De duur van het definitieve tijdstip moet een veelvoud van 5 minuten zijn.',
   'errors.final_not_a_time': 'Het definitieve tijdstip moet beginnen op een van de tijden van de peiling.',
 
@@ -83,4 +83,6 @@ export default {
   'errors.email_daily_limit': 'Overlap heeft vandaag genoeg e-mails naar dat adres (of voor deze peiling) gestuurd. Probeer het morgen opnieuw.',
   'errors.email_send_failed': 'De e-mail kon nu niet worden verstuurd. Probeer het over een minuut opnieuw.',
   'errors.confirm_link_expired': 'Deze bevestigingslink is verlopen of al vervangen. Vraag vanuit de peiling opnieuw e-mails aan.',
+  'errors.final_overlap': "Sommige van deze tijden overlappen. Kies tijden die niet overlappen.",
+  'errors.final_too_many': "Een definitief tijdstip kan hoogstens {count} sessies hebben.",
 };

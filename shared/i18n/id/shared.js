@@ -35,4 +35,6 @@ export default {
   'shared.copiedDetails': 'Detail acara disalin',
   'shared.copyDetails': 'Salin detail',
   'shared.closedNoChanges': 'Polling ini sudah ditutup, jadi tanggapan tidak bisa diubah.',
+  'shared.inviteHasAll': "Undangan kalender berisi semua waktu ini.",
+  'shared.calendarLinksNote': "Membuka tautan Google Kalender atau Outlook.com mengirim detail acara ke perusahaan itu, termasuk tautan tamu polling ini.",
 };

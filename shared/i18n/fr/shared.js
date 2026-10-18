@@ -39,4 +39,6 @@ export default {
   'shared.copiedDetails': 'Détails de l’événement copiés',
   'shared.copyDetails': 'Copier les détails',
   'shared.closedNoChanges': 'Ce sondage est clos : les réponses ne peuvent plus être modifiées.',
+  'shared.inviteHasAll': "L’invitation d’agenda contient tous ces horaires.",
+  'shared.calendarLinksNote': "Ouvrir un lien Google Agenda ou Outlook.com envoie à cette entreprise les détails de l’événement, y compris le lien invité de ce sondage.",
 };

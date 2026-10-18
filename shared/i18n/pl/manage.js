@@ -138,4 +138,9 @@ export default {
   'manage.qrLabel': "Kod QR z linkiem dla gości do „{title}”",
   'manage.qrClose': "Zamknij",
   'manage.qrFullscreen': "Pełny ekran",
+  'manage.ends': "Koniec",
+  'manage.addSession': "Dodaj kolejny termin",
+  'manage.removeSession': "Usuń ten termin",
+  'manage.sessionLabel': "Termin {count}",
+  'manage.finalHint': "Jeśli coś trwa kilka dni, wybierz koniec w późniejszym dniu. Dla osobnych spotkań, na przykład dwóch popołudni, dodaj kolejny termin.",
 };
