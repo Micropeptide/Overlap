@@ -2,30 +2,68 @@
 
 **Live at [overlap.runtianwu.com](https://overlap.runtianwu.com)** (moved from overlap.runtian.uk; old links still work) · by [Micropeptide](https://github.com/Micropeptide) · MIT License
 
-**Try it without inviting anyone:** [the sample poll](https://overlap.runtianwu.com/p/example) has seven answers already and runs entirely in your browser.
+**Try it without inviting anyone:** [the sample poll](https://overlap.runtianwu.com/p/example) has seven answers already and runs entirely in your browser. Open it [as a guest](https://overlap.runtianwu.com/p/example) or [as the organizer](https://overlap.runtianwu.com/m/example#k=sample).
 
-Free group scheduling with no accounts. The organizer picks some dates and
-shares one link. Guests type a display name and mark when they're free, and
-everyone sees where the times overlap.
+**Watch the demo:** [Overlap: Find a Time That Works for Everyone](https://youtu.be/JaGf1Ai5awg) (12 minutes, on YouTube), made for [Hyperbloom October 2026](https://hyperbloom-october.devpost.com/).
+
+[![Overlap: pick some dates, share one link, see where everyone overlaps](docs/screenshots/01-home.jpg)](https://youtu.be/JaGf1Ai5awg)
+
+See exactly who can make it. One link, no accounts: everyone marks their free
+times, each person gets their own color, and Overlap ranks the best times for
+you. Then the organizer sets the final time, and everyone's page becomes the
+plan, with a calendar invite.
+
+### How it's different
+
+- **You see who, not just how many.** Each person gets their own colored lane, so you can read the group's week at a glance. For big groups, a heatmap is one click away.
+- **It finds the answer for you.** Best times ranks the options above the grid, starting with the times everyone can make, then the closest matches, with names on each one.
+- **Answers have shades.** Besides Available, people can mark times as Preferred or If needed, and the ranking uses both.
+- **It finishes the job.** The final time can be one slot, something that runs over several days, or several separate sessions, and every guest gets one calendar invite (.ics, Google Calendar or Outlook) for all of them.
+- **The organizer stays in control.** Change the dates, times, note for guests, place or call link, meeting length and closing date after publishing; choose whether guests see each other's answers and whether answers can change; remove an answer, export to CSV, close and reopen, duplicate, or delete.
+- **Private by default.** No accounts, ads, cookies or tracking. Passwords are optional and never leave the browser, and email is opt-in.
+
+### Features
 
 - Nobody needs an account, not even the organizer. Email is optional.
-- One guest link to share, plus a private link or optional password to manage the poll.
-- A QR code of the guest link, so people can open it with a phone camera (from a screen, a slide or paper). It's made in the browser.
-- Specific dates or days of the week, in each person's own time zone.
-- Optional email: your private link sent to you, or a note when people respond.
-- Best times first: everyone, then the closest matches.
-- Mark times as available, preferred or if needed, by drag, keyboard or tap.
+- One guest link to share, plus a private link or optional organizer password to manage the poll from any device. Replace issues a new private link if it leaks.
+- Share the guest link by copying it, from the phone's share sheet, as a ready-made invitation message, or as a QR code (made in the browser) for a screen, slide or paper.
+- Specific dates or days of the week, in each person's own time zone, with the organizer's zone shown alongside. Select a range picks a long stretch of dates in two clicks and can skip weekends.
+- Mark times by dragging, Shift-clicking a range, the keyboard (arrows, Space, Shift), or two taps on a phone. There's an eraser and undo, and you can show everyone else's times faintly behind yours.
 - Private edit links, copyable any time: nobody can overwrite your answer by typing your name.
   Guests can add an optional password to get back in from another device.
-- The organizer can lock answers once sent (guests can still delete theirs).
-- Close, finalize, export to CSV, and download a calendar invite. The final time can be one time, something that runs over several days, or several separate sessions.
+- Optional email, confirmed first and at most once every 30 minutes, with one-click unsubscribe: organizers get their private link and a note when people respond; guests get their edit link and hear when the time is set.
 - In 20 languages, chosen from the browser's settings or the footer (and remembered):
   English, Español, Français, Deutsch, Italiano, Português, Nederlands, Polski,
   Русский, Українська, Türkçe, العربية, हिन्दी, 简体中文, 繁體中文, 日本語, 한국어,
   Tiếng Việt, Bahasa Indonesia, ไทย. Emails come in the language they were asked in.
   See [docs/I18N.md](docs/I18N.md).
+- Works with a keyboard and screen readers, never relies on color alone, and follows light/dark mode and reduced motion. See [Accessibility](#accessibility).
 - Polls stay until the organizer deletes them; guests can delete their own answers any time.
-- Passwords never leave the browser; email updates need confirming and have one-click unsubscribe.
+
+### Screenshots
+
+<table>
+<tr>
+<td width="50%" valign="top"><img src="docs/screenshots/02-people.jpg" alt="See who, not just how many: Each person gets their own color. A green outline marks the times everyone can make."><br><b>See who, not just how many.</b> Each person gets their own color. A green outline marks the times everyone can make.</td>
+<td width="50%" valign="top"><img src="docs/screenshots/03-best.jpg" alt="The answer comes first: Best times are ranked for you, showing who prefers each one and who could only make it if needed."><br><b>The answer comes first.</b> Best times are ranked for you, showing who prefers each one and who could only make it if needed.</td>
+</tr>
+<tr>
+<td width="50%" valign="top"><img src="docs/screenshots/04-phone.jpg" alt="Built for thumbs: Two taps mark a whole afternoon. Each day shows who is free, and the final plan comes with a calendar invite."><br><b>Built for thumbs.</b> Two taps mark a whole afternoon. Each day shows who is free, and the final plan comes with a calendar invite.</td>
+<td width="50%" valign="top"><img src="docs/screenshots/05-organizer.jpg" alt="Two links, plain rules: Share the guest link; keep the private one to manage the poll. Each says what it can and can’t do."><br><b>Two links, plain rules.</b> Share the guest link; keep the private one to manage the poll. Each says what it can and can’t do.</td>
+</tr>
+<tr>
+<td width="50%" valign="top"><img src="docs/screenshots/06-final.jpg" alt="Pick the time your way: One slot, something that runs over several days, or several sessions, all in one calendar invite."><br><b>Pick the time your way.</b> One slot, something that runs over several days, or several sessions, all in one calendar invite.</td>
+<td width="50%" valign="top"><img src="docs/screenshots/07-email.jpg" alt="Email only if you ask: The emails Overlap sends when people respond and when the time is set. Confirmed first, easy to stop."><br><b>Email only if you ask.</b> The emails Overlap sends when people respond and when the time is set. Confirmed first, easy to stop.</td>
+</tr>
+<tr>
+<td width="50%" valign="top"><img src="docs/screenshots/08-qr.jpg" alt="Open it with a camera: Show the guest link as a QR code on a screen or paper. Scan this one to open the sample poll."><br><b>Open it with a camera.</b> Show the guest link as a QR code on a screen or paper. Scan this one to open the sample poll.</td>
+<td width="50%" valign="top"><img src="docs/screenshots/09-sample.jpg" alt="Try both views first: A sample poll with seven answers. Set the time in the organizer view, and the guest view becomes the plan."><br><b>Try both views first.</b> A sample poll with seven answers. Set the time in the organizer view, and the guest view becomes the plan.</td>
+</tr>
+<tr>
+<td width="50%" valign="top"><img src="docs/screenshots/10-access.jpg" alt="Made for everyone: A real keyboard grid with screen reader labels. Patterns and outlines, not color alone. Light and dark mode."><br><b>Made for everyone.</b> A real keyboard grid with screen reader labels. Patterns and outlines, not color alone. Light and dark mode.</td>
+<td width="50%" valign="top"><img src="docs/screenshots/11-languages.jpg" alt="Speaks 20 languages: Picked from your browser and remembered, with local dates, plural rules and right-to-left Arabic."><br><b>Speaks 20 languages.</b> Picked from your browser and remembered, with local dates, plural rules and right-to-left Arabic.</td>
+</tr>
+</table>
 
 The full list of ideas considered, built and rejected is in
 [docs/IMPROVEMENTS.md](docs/IMPROVEMENTS.md). Nothing is deleted automatically
