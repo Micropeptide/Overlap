@@ -63,7 +63,7 @@ export default {
   'guest.yourTimes': '你的時間',
   'guest.hintPointer': '拖曳選出你有空的時間。點選日期或時間標題，可以整列填滿。',
   'guest.hintTouch': '點選每個你有空的時段。',
-  'guest.hintKeys': '使用鍵盤：方向鍵移動，空白鍵標記，按住 Shift 再按方向鍵可以邊移動邊標記，1–4 切換標記類型，Ctrl+Z 復原。',
+  'guest.hintKeys': "使用鍵盤：方向鍵移動，空白鍵標記，按住 Shift 再按方向鍵可以標記一整塊，1–4 切換標記類型，Ctrl+Z 復原。",
   'guest.weeklyHint': '這是每週投票。請標出在一般的一週裡，你通常方便的時間。',
   'guest.unseen': {
     other: '你上次回覆後，發起人新增了 {count} 個時段。請看一下，再重新儲存。',

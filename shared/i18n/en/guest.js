@@ -68,7 +68,7 @@ export default {
   'guest.yourTimes': 'Your times',
   'guest.hintPointer': 'Drag across the times you’re free. Click a day or time heading to fill it.',
   'guest.hintTouch': 'Tap each time you’re free.',
-  'guest.hintKeys': 'With a keyboard: arrows move, Space marks, Shift with an arrow marks as you go, 1–4 switch what you’re marking, Ctrl+Z undoes.',
+  'guest.hintKeys': "With a keyboard: arrows move, Space marks, hold Shift and use the arrows to mark a block, 1–4 switch what you’re marking, Ctrl+Z undoes.",
   'guest.weeklyHint': 'This is a weekly poll. Mark the times that usually work for you in a typical week.',
   'guest.unseen': {
     one: 'The organizer added {count} time since you last answered. Take a look and save again.',

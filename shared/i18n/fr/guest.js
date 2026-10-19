@@ -73,7 +73,7 @@ export default {
   'guest.yourTimes': 'Vos créneaux',
   'guest.hintPointer': 'Faites glisser sur les créneaux où vous êtes libre. Cliquez sur l’en-tête d’un jour ou d’une heure pour le remplir.',
   'guest.hintTouch': 'Touchez chaque créneau où vous êtes libre.',
-  'guest.hintKeys': 'Au clavier : les flèches déplacent, Espace marque, Maj + flèche marque au fil du déplacement, 1–4 changent le type de marque, Ctrl+Z annule.',
+  'guest.hintKeys': "Au clavier : les flèches déplacent, Espace marque, maintenez Maj et utilisez les flèches pour marquer un bloc, 1–4 changent le type de marque, Ctrl+Z annule.",
   'guest.weeklyHint': 'C’est un sondage hebdomadaire. Marquez les créneaux qui vous conviennent habituellement au cours d’une semaine type.',
   'guest.unseen': {
     one: 'L’organisateur a ajouté {count} créneau depuis votre dernière réponse. Jetez-y un œil et enregistrez à nouveau.',

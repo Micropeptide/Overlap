@@ -68,7 +68,7 @@ export default {
   'guest.yourTimes': 'Deine Zeiten',
   'guest.hintPointer': 'Zieh über die Zeiten, zu denen du frei bist. Klick auf eine Tages- oder Zeitüberschrift, um sie ganz zu füllen.',
   'guest.hintTouch': 'Tippe auf jede Zeit, zu der du frei bist.',
-  'guest.hintKeys': 'Mit Tastatur: Pfeiltasten bewegen, Leertaste markiert, Umschalt plus Pfeiltaste markiert fortlaufend, 1–4 wechseln die Markierung, Strg+Z macht rückgängig.',
+  'guest.hintKeys': "Mit Tastatur: Pfeiltasten bewegen, Leertaste markiert, Umschalt gedrückt halten und Pfeiltasten markieren einen Block, 1–4 wechseln die Markierung, Strg+Z macht rückgängig.",
   'guest.weeklyHint': 'Das ist eine wöchentliche Umfrage. Markiere die Zeiten, die dir in einer normalen Woche meistens passen.',
   'guest.unseen': {
     one: 'Der Organisator hat {count} Zeit hinzugefügt, seit du zuletzt geantwortet hast. Sieh sie dir an und speichere noch einmal.',

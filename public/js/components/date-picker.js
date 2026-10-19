@@ -2,8 +2,8 @@
 // by side on wide ones, with month and year menus for jumping far ahead.
 // Click or drag across days, Shift+click for a range, or "Select a range":
 // tap the first day and the last (changing months in between) to fill every
-// day between them. On a keyboard, arrows move, Space or Enter toggles, Page
-// Up/Down change month.
+// day between them. On a keyboard, arrows move, Space or Enter toggles,
+// holding Shift with the arrows picks a run of days, Page Up/Down change month.
 
 import { h, clear, announce } from '../lib/dom.js';
 import { addDays, parseDateKey, toDateKey, weekdayOf } from '/shared/time.js';
@@ -285,6 +285,17 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
     setDay(dk, drag.on);
     render({ keepFocus: true });
   });
+  /** Days from..to take `on`; every other day goes back to how it was in `before`. */
+  function cover(from, to, on, before) {
+    const [a, b] = from < to ? [from, to] : [to, from];
+    chosen.clear();
+    for (const d of before) chosen.add(d);
+    for (let d = a; d <= b; d = addDays(d, 1)) {
+      if (d < today) continue;
+      if (on && !chosen.has(d) && chosen.size >= maxDates) break;
+      setDay(d, on);
+    }
+  }
   root.addEventListener('pointermove', (e) => {
     if (!drag || e.pointerId !== drag.id) return;
     const btn = document.elementFromPoint(e.clientX, e.clientY)?.closest?.('.dp-day');
@@ -292,14 +303,7 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
     const dk = btn.dataset.date;
     if (dk === drag.to) return;
     drag.to = dk;
-    const [a, b] = drag.from < dk ? [drag.from, dk] : [dk, drag.from];
-    chosen.clear();
-    for (const d of drag.before) chosen.add(d);
-    for (let d = a; d <= b; d = addDays(d, 1)) {
-      if (d < today) continue;
-      if (drag.on && !chosen.has(d) && chosen.size >= maxDates) break;
-      setDay(d, drag.on);
-    }
+    cover(drag.from, dk, drag.on, drag.before);
     for (const day of root.querySelectorAll('.dp-day[data-date]')) {
       const on = chosen.has(day.dataset.date);
       day.classList.toggle('on', on);
@@ -322,14 +326,26 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
     const dk = btn.dataset.date;
     if (range.on) return rangeTap(dk);
     setDay(dk, !chosen.has(dk));
+    lastPick = { dk, on: chosen.has(dk) };
     focusKey = dk;
     render({ keepFocus: true });
     emit();
   });
 
+  // Holding Shift with the arrows picks every day from where Shift went down
+  // to the focused day, that day included; going back un-picks, and those
+  // days return to how they were. Space on a picked day first, then Shift,
+  // un-picks a run instead.
+  let keyRange = null;
+  let lastPick = null;
+  root.addEventListener('keyup', (e) => { if (e.key === 'Shift') keyRange = null; });
+  // Re-rendering replaces the focused day's button, so check where focus ends up.
+  root.addEventListener('focusout', () => setTimeout(() => { if (!root.contains(document.activeElement)) keyRange = null; }));
   root.addEventListener('keydown', (e) => {
     const btn = e.target.closest('.dp-day');
     if (!btn) return;
+    if (e.key === 'Shift') return;
+    if (!e.shiftKey) keyRange = null;
     const deltas = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 };
     let next = null;
     if (deltas[e.key]) next = addDays(btn.dataset.date, deltas[e.key]);
@@ -340,11 +356,11 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
       next = toDateKey(view.year, view.month, Math.min(day, last));
     } else return;
     e.preventDefault();
-    // Shift with an arrow picks (or un-picks) as you go: the day you move to
-    // takes the state of the day you're on.
-    if (e.shiftKey && deltas[e.key] && !disabled(next)) {
-      const on = chosen.has(btn.dataset.date);
-      if (!on || chosen.has(next) || chosen.size < maxDates) setDay(next, on);
+    if (e.shiftKey && deltas[e.key] && !range.on) {
+      const from = btn.dataset.date;
+      keyRange ??= { from, on: lastPick?.dk === from ? lastPick.on : true, before: new Set(chosen) };
+      cover(keyRange.from, next, keyRange.on, keyRange.before);
+      anchor = keyRange.from;
       emit();
     }
     if (!visible(next)) {

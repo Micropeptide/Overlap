@@ -34,5 +34,5 @@ export default {
     many: 'Limit dat w ankiecie wynosi {max}, więc dodano jeszcze tylko {count} dni.',
     other: 'Limit dat w ankiecie wynosi {max}, więc dodano jeszcze tylko {count} dnia.',
   },
-  'datePicker.keysTip': "Albo kliknij z Shiftem dwa dni, aby wybrać wszystkie dni pomiędzy. Z klawiatury: strzałki przesuwają, Spacja lub Enter wybiera dzień, a Shift ze strzałką wybiera po drodze.",
+  'datePicker.keysTip': "Albo kliknij z Shiftem dwa dni, aby wybrać wszystkie dni pomiędzy. Z klawiatury: strzałki przesuwają, Spacja lub Enter wybiera dzień, a przytrzymany Shift ze strzałkami wybiera kilka dni z rzędu.",
 };

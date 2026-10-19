@@ -19,5 +19,5 @@ export default {
   'datePicker.rangeRemoved': { other: 'Đã bỏ {count} ngày' },
   // {max} is the most dates a poll can have (92); {count} is how many were added.
   'datePicker.rangeCapped': { other: 'Một cuộc thăm dò chỉ có tối đa {max} ngày, nên chỉ thêm được {count} ngày nữa.' },
-  'datePicker.keysTip': "Hoặc Shift-nhấp vào hai ngày để chọn mọi ngày ở giữa. Với bàn phím: phím mũi tên để di chuyển, Space hoặc Enter để chọn ngày, và Shift kèm mũi tên để chọn khi di chuyển.",
+  'datePicker.keysTip': "Hoặc Shift-nhấp vào hai ngày để chọn mọi ngày ở giữa. Với bàn phím: phím mũi tên để di chuyển, Space hoặc Enter để chọn ngày, và giữ Shift kèm mũi tên để chọn nhiều ngày liền nhau.",
 };

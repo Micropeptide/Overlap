@@ -19,5 +19,5 @@ export default {
   'datePicker.rangeRemoved': { other: 'เอาออก {count} วันแล้ว' },
   // {max} is the most dates a poll can have (92); {count} is how many were added.
   'datePicker.rangeCapped': { other: 'โพลหนึ่งมีได้สูงสุด {max} วันที่ จึงเพิ่มได้อีกแค่ {count} วัน' },
-  'datePicker.keysTip': "หรือ Shift-คลิกสองวันเพื่อเลือกทุกวันระหว่างนั้น ใช้คีย์บอร์ด: ลูกศรเพื่อเลื่อน, Space หรือ Enter เพื่อเลือกวัน และ Shift กับลูกศรเพื่อเลือกไปพร้อมกัน",
+  'datePicker.keysTip': "หรือ Shift-คลิกสองวันเพื่อเลือกทุกวันระหว่างนั้น ใช้คีย์บอร์ด: ลูกศรเพื่อเลื่อน, Space หรือ Enter เพื่อเลือกวัน และกด Shift ค้างไว้พร้อมลูกศรเพื่อเลือกหลายวันติดกัน",
 };

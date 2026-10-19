@@ -31,5 +31,5 @@ export default {
     many: 'Un sondaggio può avere al massimo {max} date, quindi sono stati aggiunti solo altri {count} giorni.',
     other: 'Un sondaggio può avere al massimo {max} date, quindi sono stati aggiunti solo altri {count} giorni.',
   },
-  'datePicker.keysTip': "Oppure fai Maiusc-clic su due giorni per sceglierli tutti in mezzo. Con la tastiera: le frecce spostano, Spazio o Invio sceglie un giorno, e Maiusc con una freccia sceglie mentre ti sposti.",
+  'datePicker.keysTip': "Oppure fai Maiusc-clic su due giorni per sceglierli tutti in mezzo. Con la tastiera: le frecce spostano, Spazio o Invio sceglie un giorno, e tenendo premuto Maiusc con le frecce scegli più giorni di fila.",
 };

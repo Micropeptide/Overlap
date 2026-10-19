@@ -19,5 +19,5 @@ export default {
   'datePicker.rangeRemoved': { other: '已移除 {count} 天' },
   // {max} is the most dates a poll can have (92); {count} is how many were added.
   'datePicker.rangeCapped': { other: '一个投票最多只能有 {max} 个日期，所以只再添加了 {count} 天。' },
-  'datePicker.keysTip': "也可以按住 Shift 点击两天，选中中间的每一天。用键盘：方向键移动，空格或回车选择一天，Shift 加方向键边移动边选择。",
+  'datePicker.keysTip': "也可以按住 Shift 点击两天，选中中间的每一天。用键盘：方向键移动，空格或回车选择一天，按住 Shift 再按方向键可连续选择多天。",
 };

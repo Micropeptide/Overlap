@@ -31,5 +31,5 @@ export default {
     many: 'Uma enquete pode ter até {max} datas, então só foram adicionados mais {count} dias.',
     other: 'Uma enquete pode ter até {max} datas, então só foram adicionados mais {count} dias.',
   },
-  'datePicker.keysTip': "Ou dê Shift-clique em dois dias para escolher todos os dias entre eles. No teclado: as setas movem, Espaço ou Enter escolhe um dia, e Shift com uma seta escolhe enquanto você se move.",
+  'datePicker.keysTip': "Ou dê Shift-clique em dois dias para escolher todos os dias entre eles. No teclado: as setas movem, Espaço ou Enter escolhe um dia, e segurar Shift com as setas escolhe vários dias seguidos.",
 };

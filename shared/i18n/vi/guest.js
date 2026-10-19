@@ -63,7 +63,7 @@ export default {
   'guest.yourTimes': 'Khung giờ của bạn',
   'guest.hintPointer': 'Kéo qua các khung giờ bạn rảnh. Nhấp vào tiêu đề ngày hoặc giờ để đánh dấu toàn bộ.',
   'guest.hintTouch': 'Chạm vào từng khung giờ bạn rảnh.',
-  'guest.hintKeys': 'Với bàn phím: phím mũi tên để di chuyển, Space để đánh dấu, Shift kèm phím mũi tên để đánh dấu liên tục, 1–4 để đổi kiểu đánh dấu, Ctrl+Z để hoàn tác.',
+  'guest.hintKeys': "Với bàn phím: phím mũi tên để di chuyển, Space để đánh dấu, giữ Shift và dùng phím mũi tên để đánh dấu cả một khối, 1–4 để đổi kiểu đánh dấu, Ctrl+Z để hoàn tác.",
   'guest.weeklyHint': 'Đây là cuộc thăm dò hằng tuần. Hãy đánh dấu những khung giờ thường hợp với bạn trong một tuần bình thường.',
   'guest.unseen': {
     other: 'Người tổ chức đã thêm {count} khung giờ kể từ lần cuối bạn trả lời. Hãy xem lại và lưu lần nữa.',

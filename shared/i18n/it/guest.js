@@ -73,7 +73,7 @@ export default {
   'guest.yourTimes': 'I tuoi orari',
   'guest.hintPointer': 'Trascina sugli orari in cui sei disponibile. Fai clic sull’intestazione di un giorno o di un orario per riempirla.',
   'guest.hintTouch': 'Tocca ogni orario in cui sei disponibile.',
-  'guest.hintKeys': 'Con la tastiera: le frecce spostano, Spazio segna, Maiusc con una freccia segna mentre ti sposti, 1–4 cambiano cosa stai segnando, Ctrl+Z annulla.',
+  'guest.hintKeys': "Con la tastiera: le frecce spostano, Spazio segna, tieni premuto Maiusc e usa le frecce per segnare un blocco, 1–4 cambiano cosa stai segnando, Ctrl+Z annulla.",
   'guest.weeklyHint': 'Questo è un sondaggio settimanale. Segna gli orari che di solito ti vanno bene in una settimana tipo.',
   'guest.unseen': {
     one: 'Dalla tua ultima risposta l’organizzatore ha aggiunto {count} orario. Dai un’occhiata e salva di nuovo.',

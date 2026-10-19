@@ -64,16 +64,35 @@ test('keyboard users can mark times on the grid', async ({ page, request }, info
   await expect(cells.first()).toHaveAttribute('aria-selected', 'true');
   await expect(cells.first()).toHaveAttribute('aria-label', /9:00\s*AM, available/);
   await page.keyboard.press('ArrowDown');
-  await page.keyboard.press('Shift+ArrowDown');
-  await expect(cells.nth(4)).toHaveAttribute('aria-selected', 'true'); // two columns: index 4 is row 3, column 1
-  await expect(page.getByText('2 times available')).toBeVisible();
+  await page.keyboard.press('Shift+ArrowDown'); // marks the block from row 2 to row 3, row 2 included
+  await expect(cells.nth(2)).toHaveAttribute('aria-selected', 'true'); // two columns: index 2 is row 2, column 1
+  await expect(cells.nth(4)).toHaveAttribute('aria-selected', 'true');
+  await expect(page.getByText('3 times available')).toBeVisible();
   await page.keyboard.press('ArrowRight');
   await expect(cells.nth(5)).toBeFocused();
   await page.getByLabel('Your name').fill('Kim');
   await page.getByRole('button', { name: 'Submit availability' }).click();
   await expect(page.locator('.saved-notice').getByText('Thanks, Kim. Your times are in.')).toBeVisible();
   const data = await (await request.get(`/api/polls/${poll.id}`)).json();
-  expect(data.poll.responses[0].available).toEqual([poll.slots[0], poll.slots[2]]);
+  expect(data.poll.responses[0].available).toEqual([poll.slots[0], poll.slots[1], poll.slots[2]]);
+});
+
+test('holding Shift with the arrows marks a block from where it started, and going back un-marks', async ({ page, request }, info) => {
+  test.skip(isPhone(info), 'The keyboard grid is the desktop layout.');
+  const { guestPath } = await createPoll(request);
+  await page.goto(guestPath);
+  const cells = page.locator('.grid-edit .cell[data-slot]');
+  await cells.first().focus();
+  await page.keyboard.down('Shift');
+  for (const key of ['ArrowRight', 'ArrowDown', 'ArrowDown', 'ArrowUp']) await page.keyboard.press(key);
+  await page.keyboard.up('Shift');
+  // rows 1–2 of both columns: the starting cell is in, row 3 was passed and given back
+  for (const i of [0, 1, 2, 3]) await expect(cells.nth(i)).toHaveAttribute('aria-selected', 'true');
+  for (const i of [4, 5]) await expect(cells.nth(i)).toHaveAttribute('aria-selected', 'false');
+  await expect(page.getByText('4 times available')).toBeVisible();
+  await page.keyboard.press('ControlOrMeta+z'); // the whole block is one undo step
+  await expect(cells.first()).toHaveAttribute('aria-selected', 'false');
+  await expect(cells.nth(3)).toHaveAttribute('aria-selected', 'false');
 });
 
 test('a second guest using the same name cannot overwrite the first', async ({ page, request }, info) => {

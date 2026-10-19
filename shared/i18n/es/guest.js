@@ -73,7 +73,7 @@ export default {
   'guest.yourTimes': 'Tus horarios',
   'guest.hintPointer': 'Arrastra sobre los horarios en que estás libre. Haz clic en el encabezado de un día o una hora para rellenarlo.',
   'guest.hintTouch': 'Toca cada horario en que estés libre.',
-  'guest.hintKeys': 'Con el teclado: las flechas te mueven, Espacio marca, Mayús con una flecha marca a medida que avanzas, 1–4 cambian lo que marcas y Ctrl+Z deshace.',
+  'guest.hintKeys': "Con el teclado: las flechas te mueven, Espacio marca, mantén Mayús y usa las flechas para marcar un bloque, 1–4 cambian lo que marcas y Ctrl+Z deshace.",
   'guest.weeklyHint': 'Es una encuesta semanal. Marca los horarios que normalmente te vienen bien en una semana típica.',
   'guest.unseen': {
     one: 'El organizador añadió {count} horario desde tu última respuesta. Échale un vistazo y vuelve a guardar.',

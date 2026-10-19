@@ -31,5 +31,5 @@ export default {
     many: 'Una encuesta puede tener hasta {max} fechas, así que solo se añadieron {count} días más.',
     other: 'Una encuesta puede tener hasta {max} fechas, así que solo se añadieron {count} días más.',
   },
-  'datePicker.keysTip': "O haz Mayús-clic en dos días para elegir todos los días intermedios. Con el teclado: las flechas mueven, Espacio o Intro elige un día, y Mayús con una flecha elige sobre la marcha.",
+  'datePicker.keysTip': "O haz Mayús-clic en dos días para elegir todos los días intermedios. Con el teclado: las flechas mueven, Espacio o Intro elige un día, y mantener Mayús con las flechas elige varios días seguidos.",
 };

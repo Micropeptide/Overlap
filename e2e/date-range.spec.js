@@ -116,18 +116,23 @@ test('dragging over dates and back again un-picks the days you pulled back from'
   await expect(day(page, `${year}-03-06`)).not.toHaveClass(/\bon\b/);
 });
 
-test('the date picker explains its shortcuts, and Shift with an arrow picks as you go', async ({ page }, info) => {
+test('the date picker explains its shortcuts, and holding Shift with the arrows picks a run of days', async ({ page }, info) => {
   test.skip(info.project.name !== 'desktop', 'Keyboard.');
   const year = new Date().getFullYear() + 1;
   await page.goto('/');
-  await expect(page.locator('.dp-keys-tip')).toContainText('Shift with an arrow picks as you go');
+  await expect(page.locator('.dp-keys-tip')).toContainText('holding Shift with the arrows picks a run of days');
   await showMonth(page, year, 3);
-  await day(page, `${year}-03-10`).click();
-  await expect(picked(page)).toContainText('1 date picked');
-  await page.keyboard.press('Tab');
-  await page.keyboard.press('Shift+Tab');
+  // starting on a day that isn't picked yet: it's picked too, no Space needed
   await day(page, `${year}-03-10`).focus();
-  for (let i = 0; i < 3; i++) await page.keyboard.press('Shift+ArrowRight');
+  await page.keyboard.down('Shift');
+  for (let i = 0; i < 4; i++) await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('ArrowLeft'); // going back gives the 14th back
+  await page.keyboard.up('Shift');
   await expect(picked(page)).toContainText('4 dates picked');
   for (const d of ['10', '11', '12', '13']) await expect(day(page, `${year}-03-${d}`)).toHaveClass(/\bon\b/);
+  await expect(day(page, `${year}-03-14`)).not.toHaveClass(/\bon\b/);
+  // Space on a picked day first, then Shift: un-picks a run
+  await page.keyboard.press('Space');
+  await page.keyboard.press('Shift+ArrowLeft');
+  await expect(picked(page)).toContainText('2 dates picked');
 });

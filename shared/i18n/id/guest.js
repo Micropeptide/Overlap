@@ -63,7 +63,7 @@ export default {
   'guest.yourTimes': 'Waktu Anda',
   'guest.hintPointer': 'Seret di waktu-waktu Anda bisa. Klik judul hari atau jam untuk mengisi semuanya.',
   'guest.hintTouch': 'Ketuk setiap waktu Anda bisa.',
-  'guest.hintKeys': 'Dengan keyboard: tombol panah untuk berpindah, Spasi untuk menandai, Shift + panah untuk menandai sambil berpindah, 1–4 untuk mengganti jenis tanda, Ctrl+Z untuk mengurungkan.',
+  'guest.hintKeys': "Dengan keyboard: tombol panah untuk berpindah, Spasi untuk menandai, tahan Shift dan gunakan panah untuk menandai satu blok, 1–4 untuk mengganti jenis tanda, Ctrl+Z untuk mengurungkan.",
   'guest.weeklyHint': 'Ini polling mingguan. Tandai waktu yang biasanya cocok bagi Anda dalam seminggu.',
   'guest.unseen': {
     other: 'Penyelenggara menambahkan {count} waktu sejak terakhir kali Anda menjawab. Periksa, lalu simpan lagi.',

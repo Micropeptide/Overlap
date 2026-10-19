@@ -19,5 +19,5 @@ export default {
   'datePicker.rangeRemoved': { other: '{count}일 제외됨' },
   // {max} is the most dates a poll can have (92); {count} is how many were added.
   'datePicker.rangeCapped': { other: '투표에는 날짜를 최대 {max}개까지 넣을 수 있어서 {count}일만 더 추가됐어요.' },
-  'datePicker.keysTip': "또는 Shift를 누른 채 두 날짜를 클릭하면 그 사이 날짜가 모두 선택돼요. 키보드: 화살표로 이동, Space나 Enter로 날짜 선택, Shift+화살표로 이동하면서 선택해요.",
+  'datePicker.keysTip': "또는 Shift를 누른 채 두 날짜를 클릭하면 그 사이 날짜가 모두 선택돼요. 키보드: 화살표로 이동, Space나 Enter로 날짜 선택, Shift를 누른 채 화살표를 누르면 연속된 날짜를 한 번에 선택해요.",
 };

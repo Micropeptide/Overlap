@@ -78,7 +78,7 @@ export default {
   'guest.yourTimes': 'Twoje terminy',
   'guest.hintPointer': 'Przeciągnij po godzinach, w których masz czas. Kliknij nagłówek dnia lub godziny, aby zaznaczyć całość.',
   'guest.hintTouch': 'Dotknij każdej godziny, w której masz czas.',
-  'guest.hintKeys': 'Z klawiatury: strzałki przesuwają, spacja zaznacza, Shift ze strzałką zaznacza po drodze, 1–4 zmieniają rodzaj zaznaczenia, Ctrl+Z cofa.',
+  'guest.hintKeys': "Z klawiatury: strzałki przesuwają, spacja zaznacza, przytrzymaj Shift i użyj strzałek, by zaznaczyć cały blok, 1–4 zmieniają rodzaj zaznaczenia, Ctrl+Z cofa.",
   'guest.weeklyHint': 'To ankieta cotygodniowa. Zaznacz godziny, które zwykle pasują ci w typowym tygodniu.',
   'guest.unseen': {
     one: 'Od twojej ostatniej odpowiedzi organizator dodał {count} termin. Sprawdź go i zapisz ponownie.',

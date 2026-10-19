@@ -63,7 +63,7 @@ export default {
   'guest.yourTimes': '내 시간',
   'guest.hintPointer': '가능한 시간을 드래그해서 표시하세요. 날짜나 시간 제목을 클릭하면 한 줄 전체를 채울 수 있어요.',
   'guest.hintTouch': '가능한 시간을 하나씩 탭하세요.',
-  'guest.hintKeys': '키보드 사용 시: 화살표 키로 이동, Space 키로 표시, Shift+화살표 키로 이동하며 표시, 1–4로 표시할 상태 전환, Ctrl+Z로 실행 취소.',
+  'guest.hintKeys': "키보드 사용 시: 화살표 키로 이동, Space 키로 표시, Shift를 누른 채 화살표 키로 범위를 한 번에 표시, 1–4로 표시할 상태 전환, Ctrl+Z로 실행 취소.",
   'guest.weeklyHint': '매주 반복되는 투표예요. 평소 한 주 동안 보통 가능한 시간을 표시하세요.',
   'guest.unseen': {
     other: '마지막으로 응답한 뒤 주최자가 시간을 {count}개 추가했어요. 확인한 뒤 다시 저장하세요.',

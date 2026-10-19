@@ -31,5 +31,5 @@ export default {
     many: 'Un sondage peut compter jusqu’à {max} dates : seuls {count} jours de plus ont été ajoutés.',
     other: 'Un sondage peut compter jusqu’à {max} dates : seuls {count} jours de plus ont été ajoutés.',
   },
-  'datePicker.keysTip': "Ou Maj-cliquez sur deux jours pour choisir tous les jours entre les deux. Au clavier : les flèches déplacent, Espace ou Entrée choisit un jour, et Maj avec une flèche choisit au passage.",
+  'datePicker.keysTip': "Ou Maj-cliquez sur deux jours pour choisir tous les jours entre les deux. Au clavier : les flèches déplacent, Espace ou Entrée choisit un jour, et maintenir Maj avec les flèches choisit plusieurs jours d’affilée.",
 };

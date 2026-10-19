@@ -68,7 +68,7 @@ export default {
   'guest.yourTimes': 'Jouw tijden',
   'guest.hintPointer': 'Sleep over de tijden waarop je kunt. Klik op een dag- of tijdkop om die helemaal te vullen.',
   'guest.hintTouch': 'Tik op elk tijdstip waarop je kunt.',
-  'guest.hintKeys': 'Met een toetsenbord: pijltjestoetsen verplaatsen, spatiebalk markeert, Shift met een pijltje markeert onderweg, 1–4 wisselen wat je markeert, Ctrl+Z maakt ongedaan.',
+  'guest.hintKeys': "Met een toetsenbord: pijltjestoetsen verplaatsen, spatiebalk markeert, houd Shift ingedrukt en gebruik de pijltjes om een blok te markeren, 1–4 wisselen wat je markeert, Ctrl+Z maakt ongedaan.",
   'guest.weeklyHint': 'Dit is een wekelijkse peiling. Markeer de tijden die je in een gewone week meestal uitkomen.',
   'guest.unseen': {
     one: 'De organisator heeft {count} tijdstip toegevoegd sinds je laatste reactie. Kijk even en sla opnieuw op.',

@@ -73,7 +73,7 @@ export default {
   'guest.yourTimes': 'Seus horários',
   'guest.hintPointer': 'Arraste sobre os horários em que você está livre. Clique no cabeçalho de um dia ou horário para preenchê-lo.',
   'guest.hintTouch': 'Toque em cada horário em que você está livre.',
-  'guest.hintKeys': 'Com o teclado: as setas movem, Espaço marca, Shift com uma seta marca pelo caminho, 1–4 trocam o tipo de marcação, Ctrl+Z desfaz.',
+  'guest.hintKeys': "Com o teclado: as setas movem, Espaço marca, segure Shift e use as setas para marcar um bloco, 1–4 trocam o tipo de marcação, Ctrl+Z desfaz.",
   'guest.weeklyHint': 'Esta é uma enquete semanal. Marque os horários que costumam funcionar para você em uma semana normal.',
   'guest.unseen': {
     one: 'O organizador adicionou {count} horário desde a sua última resposta. Dê uma olhada e salve de novo.',

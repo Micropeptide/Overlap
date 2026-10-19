@@ -312,8 +312,10 @@ is the user-facing statement. Every claim on it matches the code above:
 - Visible focus on everything (3px outline, or an inset ring on grid cells).
 - The grid is an ARIA `grid` with a roving tab stop. Each cell is labelled with
   its day, time and state.
-- Keyboard: arrows move, Space or Enter marks, Shift with an arrow marks as you go,
-  Home and End jump within a row.
+- Keyboard: arrows move, Space or Enter marks, holding Shift with the arrows marks
+  a block (the starting cell included; going back un-marks, and letting go of Shift
+  makes it one undo step), Home and End jump within a row. The date picker works the
+  same way for a run of days.
 - State is never shown by color alone: "if needed" is striped, "hasn't seen this
   time" is crosshatched, and "everyone" carries a check mark. Forced-colors
   (Windows High Contrast) mode is handled.

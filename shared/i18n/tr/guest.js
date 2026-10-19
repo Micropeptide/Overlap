@@ -68,7 +68,7 @@ export default {
   'guest.yourTimes': 'Saatleriniz',
   'guest.hintPointer': 'Müsait olduğunuz saatlerin üzerinde sürükleyin. Doldurmak için bir gün ya da saat başlığına tıklayın.',
   'guest.hintTouch': 'Müsait olduğunuz her saate dokunun.',
-  'guest.hintKeys': 'Klavyeyle: ok tuşları hareket ettirir, Boşluk işaretler, Shift ile ok tuşu ilerlerken işaretler, 1–4 neyi işaretlediğinizi değiştirir, Ctrl+Z geri alır.',
+  'guest.hintKeys': "Klavyeyle: ok tuşları hareket ettirir, Boşluk işaretler, Shift’i basılı tutup ok tuşlarıyla bir bloğu işaretlersiniz, 1–4 neyi işaretlediğinizi değiştirir, Ctrl+Z geri alır.",
   'guest.weeklyHint': 'Bu haftalık bir anket. Tipik bir haftada genellikle size uyan saatleri işaretleyin.',
   'guest.unseen': {
     one: 'Son yanıtınızdan bu yana organizatör {count} yeni zaman aralığı ekledi. Göz atıp yeniden kaydedin.',

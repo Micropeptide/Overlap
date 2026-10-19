@@ -63,7 +63,7 @@ export default {
   'guest.yourTimes': '你的时间',
   'guest.hintPointer': '拖过你有空的时间。点击日期或时间的标题可以一次填满整列或整行。',
   'guest.hintTouch': '点选每个你有空的时间。',
-  'guest.hintKeys': '使用键盘：方向键移动，空格键标记，按住 Shift 再按方向键可边移动边标记，1–4 切换标记类型，Ctrl+Z 撤销。',
+  'guest.hintKeys': "使用键盘：方向键移动，空格键标记，按住 Shift 再按方向键可标记一整块，1–4 切换标记类型，Ctrl+Z 撤销。",
   'guest.weeklyHint': '这是一个每周投票。请标记出在一般的一周里，你通常方便的时间。',
   'guest.unseen': {
     other: '自你上次回复后，发起人新增了 {count} 个时间。请看一下，然后再保存一次。',

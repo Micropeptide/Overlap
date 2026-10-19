@@ -1,7 +1,7 @@
 // The availability grid, in two forms:
 //   - desktop: a days × times grid. Drag to paint a rectangle, click a day or
 //     time heading to fill it, or use the keyboard (arrows move, Space marks,
-//     Shift+arrows paint as you go, Ctrl/Cmd+Z undoes).
+//     holding Shift with the arrows marks a block, Ctrl/Cmd+Z undoes).
 //   - phones (≤ 640px): one day at a time, a list of large time buttons.
 // The same component shows a guest's own availability ("edit") and the group
 // heatmap ("results"). Slots are UTC instants; layout is in the viewer's zone.
@@ -442,8 +442,25 @@ export function createGrid(options) {
     // Shift-click fills the rectangle from the last cell you marked to this one,
     // with that same mark (like Shift-click selecting a range elsewhere).
     let shiftFrom = null;
+    // Holding Shift with the arrows marks the block from the cell where Shift
+    // went down to the focused one, that cell included; moving back un-marks,
+    // and those times return to how they were. Letting go of Shift finishes it
+    // as one undo step.
+    let keyRange = null;
+    function endKeyRange() {
+      if (!keyRange) return;
+      const { value, base } = keyRange;
+      keyRange = null;
+      s.lastPaint = value;
+      shiftFrom = { at: { ...focus }, value };
+      const n = commit(base);
+      if (n) announce(value ? t('grid.markedTimes', { count: n, state: MARKS[value].word }) : t('grid.clearedTimes', { count: n }));
+    }
+    grid.addEventListener('keyup', (e) => { if (e.key === 'Shift') endKeyRange(); });
+    grid.addEventListener('focusout', (e) => { if (!grid.contains(e.relatedTarget)) endKeyRange(); });
     grid.addEventListener('pointerdown', (e) => {
       grid.dataset.input = 'pointer';
+      endKeyRange();
       const el = e.target.closest('.cell[data-slot]');
       if (!el || e.button !== 0) return;
       setFocus(coords(el), { scroll: false });
@@ -552,15 +569,20 @@ export function createGrid(options) {
       if (!e.target.classList.contains('cell')) return;
       grid.dataset.input = 'keyboard';
       const moves = { ArrowUp: [-1, 0], ArrowDown: [1, 0], ArrowLeft: [0, -1], ArrowRight: [0, 1] };
+      if (e.key === 'Shift') return;
+      if (!(e.shiftKey && moves[e.key])) endKeyRange();
       if (moves[e.key]) {
         e.preventDefault();
+        const from = { ...focus };
         const moved = step(focus, ...moves[e.key]);
         if (!moved) return;
         setFocus(moved);
         if (e.shiftKey && canEdit()) {
-          const slot = Number(matrix[moved.r][moved.c].dataset.slot);
-          setMany([slot], s.lastPaint ?? (s.brush === 'erase' ? '' : s.brush));
-          refreshCells();
+          // The block takes the brush, or carries on what Space or a drag just
+          // did on this cell (so Space on a marked time, then Shift, clears a block).
+          const carry = shiftFrom && shiftFrom.at.r === from.r && shiftFrom.at.c === from.c;
+          keyRange ??= { anchor: from, value: carry ? shiftFrom.value : s.brush === 'erase' ? '' : s.brush, base: new Map(s.value) };
+          applyRect(keyRange.anchor, moved, keyRange.value, keyRange.base);
         }
         return;
       }
