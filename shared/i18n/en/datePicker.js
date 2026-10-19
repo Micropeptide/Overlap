@@ -22,4 +22,5 @@ export default {
     one: 'A poll can have up to {max} dates, so only {count} more day was added.',
     other: 'A poll can have up to {max} dates, so only {count} more days were added.',
   },
+  'datePicker.keysTip': "Or Shift-click two days to pick every day between. With a keyboard: arrows move, Space or Enter picks a day, and Shift with an arrow picks as you go.",
 };

@@ -111,4 +111,5 @@ export default {
   'guest.respondedSoFar': {
     other: '지금까지 {count}명이 응답했어요.',
   },
+  'guest.hintShift': "Shift를 누른 채 클릭하면 마지막으로 표시한 시간부터 클릭한 시간까지 한 번에 채워져요.",
 };

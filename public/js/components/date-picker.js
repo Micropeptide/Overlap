@@ -200,7 +200,9 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
         : range.start == null ? t('datePicker.rangeStartHint')
         : t(range.removing ? 'datePicker.rangeFromRemove' : 'datePicker.rangeFromAdd', { date: dayFmt.format(dateMs(range.start)) })),
       range.on && range.start != null ? h('button', { type: 'button', class: 'link-btn dp-range-cancel', onclick: () => { range.start = null; render(); } }, t('datePicker.rangeCancel')) : null);
-    return h('div', { class: 'dp-range' }, h('div', { class: 'dp-range-tools' }, toggle, skip), hint);
+    // Mouse and keyboard shortcuts; hidden on touch screens (CSS .hint-keys).
+    const keys = h('p', { class: 'dp-keys-tip hint-keys' }, t('datePicker.keysTip'));
+    return h('div', { class: 'dp-range' }, h('div', { class: 'dp-range-tools' }, toggle, skip), hint, keys);
   }
 
   const dateMs = (dk) => { const { year, month, day } = parseDateKey(dk); return Date.UTC(year, month - 1, day); };
@@ -338,6 +340,13 @@ export function createDatePicker({ selected = [], today, allowPast = [], onChang
       next = toDateKey(view.year, view.month, Math.min(day, last));
     } else return;
     e.preventDefault();
+    // Shift with an arrow picks (or un-picks) as you go: the day you move to
+    // takes the state of the day you're on.
+    if (e.shiftKey && deltas[e.key] && !disabled(next)) {
+      const on = chosen.has(btn.dataset.date);
+      if (!on || chosen.has(next) || chosen.size < maxDates) setDay(next, on);
+      emit();
+    }
     if (!visible(next)) {
       const { year, month } = parseDateKey(next);
       // Moving past the last visible month scrolls by one; before the first, jumps to it.

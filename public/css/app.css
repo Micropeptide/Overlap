@@ -1156,3 +1156,5 @@ textarea.input { resize: vertical; min-height: 5rem; }
 .email-example-footer { background: #fff; border-radius: 0 0 12px 12px; padding: 0.5rem 1rem 0.9rem; font-size: 0.82rem; color: #4a5866; }
 .email-example-footer p { margin: 0.3rem 0 0; border-top: 0; }
 .email-example-footer p:first-child { border-top: 1px solid #d8dfe4; padding-top: 0.6rem; }
+
+.dp-keys-tip { margin: 0.4rem 0 0; padding-inline: 0.75rem; font-size: var(--step--1); color: var(--ink-2); max-width: 70ch; }

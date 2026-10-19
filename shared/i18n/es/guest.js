@@ -125,4 +125,5 @@ export default {
     many: 'Hasta ahora han respondido {count} personas.',
     other: 'Hasta ahora han respondido {count} personas.',
   },
+  'guest.hintShift': "Mayús-clic rellena todo lo que hay entre la última hora que marcaste y la que pulsas.",
 };

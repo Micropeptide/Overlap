@@ -22,4 +22,5 @@ export default {
     one: 'Een peiling kan maximaal {max} datums hebben, dus er is nog maar {count} dag toegevoegd.',
     other: 'Een peiling kan maximaal {max} datums hebben, dus er zijn nog maar {count} dagen toegevoegd.',
   },
+  'datePicker.keysTip': "Of Shift-klik op twee dagen om alle dagen ertussen te kiezen. Met het toetsenbord: pijltjes verplaatsen, Spatie of Enter kiest een dag, en Shift met een pijltje kiest onderweg.",
 };

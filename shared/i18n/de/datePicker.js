@@ -22,4 +22,5 @@ export default {
     one: 'Eine Umfrage kann höchstens {max} Tage haben, daher wurde nur noch {count} Tag hinzugefügt.',
     other: 'Eine Umfrage kann höchstens {max} Tage haben, daher wurden nur noch {count} Tage hinzugefügt.',
   },
+  'datePicker.keysTip': "Oder klick mit gedrückter Shift-Taste auf zwei Tage, um alle Tage dazwischen zu wählen. Mit der Tastatur: Pfeile bewegen, Leertaste oder Enter wählt einen Tag, Shift mit einem Pfeil wählt beim Bewegen.",
 };

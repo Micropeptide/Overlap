@@ -19,4 +19,5 @@ export default {
   'datePicker.rangeRemoved': { other: '{count}日を外しました' },
   // {max} is the most dates a poll can have (92); {count} is how many were added.
   'datePicker.rangeCapped': { other: '日程調整に設定できる日付は最大{max}日のため、追加できたのはあと{count}日でした。' },
+  'datePicker.keysTip': "または、Shiftを押しながら2日をクリックすると、その間の日がすべて選ばれます。キーボードでは、矢印キーで移動、SpaceかEnterで日を選択、Shift+矢印キーで移動しながら選択できます。",
 };

@@ -439,6 +439,9 @@ export function createGrid(options) {
       if (el && s.mode === 'results' && s.onPick) s.onPick(Number(el.dataset.slot));
     });
 
+    // Shift-click fills the rectangle from the last cell you marked to this one,
+    // with that same mark (like Shift-click selecting a range elsewhere).
+    let shiftFrom = null;
     grid.addEventListener('pointerdown', (e) => {
       grid.dataset.input = 'pointer';
       const el = e.target.closest('.cell[data-slot]');
@@ -446,6 +449,14 @@ export function createGrid(options) {
       setFocus(coords(el), { scroll: false });
       if (!canEdit()) return;
       e.preventDefault();
+      if (e.shiftKey && shiftFrom) {
+        const base = new Map(s.value);
+        applyRect(shiftFrom.at, coords(el), shiftFrom.value, base);
+        const n = commit(base);
+        shiftFrom = { at: coords(el), value: shiftFrom.value };
+        if (n) announce(shiftFrom.value ? t('grid.markedTimes', { count: n, state: MARKS[shiftFrom.value].word }) : t('grid.clearedTimes', { count: n }));
+        return;
+      }
       const value = paintValue(Number(el.dataset.slot));
       drag = { anchor: coords(el), last: coords(el), value, base: new Map(s.value), id: e.pointerId, pointer: { x: e.clientX, y: e.clientY } };
       grid.setPointerCapture(e.pointerId);
@@ -507,6 +518,7 @@ export function createGrid(options) {
       grid.classList.remove('painting');
       stopScroll();
       const { value, base } = drag;
+      shiftFrom = { at: drag.last || drag.anchor, value };
       drag = null;
       s.lastPaint = value;
       const n = commit(base);
@@ -569,6 +581,7 @@ export function createGrid(options) {
         if (!canEdit()) return;
         const value = paintValue(slot);
         s.lastPaint = value;
+        shiftFrom = { at: { ...focus }, value };
         setMany([slot], value);
         refreshCells();
         const time = f.time(slot, s.timeZone);

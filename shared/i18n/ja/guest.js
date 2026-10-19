@@ -111,4 +111,5 @@ export default {
   'guest.respondedSoFar': {
     other: 'これまでに{count}人が回答しています。',
   },
+  'guest.hintShift': "Shiftを押しながらクリックすると、最後に入力した時間からクリックした時間までがまとめて入ります。",
 };

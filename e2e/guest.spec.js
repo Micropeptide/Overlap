@@ -133,3 +133,21 @@ test('when the organizer hides responses, guests only see their own', async ({ p
   await expect(page.getByText('Hidden Hana')).toHaveCount(0);
   await expect(page.getByRole('tab', { name: /Group results/ })).toHaveCount(0);
 });
+
+test('Shift-click fills from the last marked time to the clicked one', async ({ page, request }, info) => {
+  test.skip(isPhone(info), 'Mouse.');
+  const { guestPath } = await createPoll(request);
+  await page.goto(guestPath);
+  await expect(page.getByText('Shift-click fills everything between the last time you marked and the one you click.')).toBeVisible();
+  const cols = await page.locator('.grid-edit .col-head').count();
+  const cells = page.locator('.grid-edit .cell[data-slot]');
+  await cells.nth(0).scrollIntoViewIfNeeded();
+  await cells.nth(0).click();
+  await expect(page.getByText('1 time available')).toBeVisible();
+  // Four rows down in the second day: a 5 × 2 rectangle.
+  await cells.nth(4 * cols + 1).click({ modifiers: ['Shift'] });
+  await expect(page.getByText('10 times available')).toBeVisible();
+  // Undo takes the whole Shift-click back.
+  await page.keyboard.press('Control+z');
+  await expect(page.getByText('1 time available')).toBeVisible();
+});

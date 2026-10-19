@@ -22,4 +22,5 @@ export default {
     one: 'Bir ankette en fazla {max} tarih olabilir, bu yüzden yalnızca {count} gün daha eklendi.',
     other: 'Bir ankette en fazla {max} tarih olabilir, bu yüzden yalnızca {count} gün daha eklendi.',
   },
+  'datePicker.keysTip': "Ya da aradaki tüm günleri seçmek için iki güne Shift ile tıklayın. Klavyeyle: oklar hareket ettirir, Boşluk veya Enter bir gün seçer, Shift ile ok ilerlerken seçer.",
 };

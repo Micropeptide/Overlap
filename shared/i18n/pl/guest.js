@@ -132,4 +132,5 @@ export default {
     many: 'Na razie odpowiedziało {count} osób.',
     other: 'Na razie odpowiedziało {count} osoby.',
   },
+  'guest.hintShift': "Shift-klik wypełnia wszystko między ostatnio zaznaczoną godziną a klikniętą.",
 };

@@ -118,4 +118,5 @@ export default {
     one: 'Er heeft tot nu toe {count} persoon gereageerd.',
     other: 'Er hebben tot nu toe {count} mensen gereageerd.',
   },
+  'guest.hintShift': "Shift-klik vult alles tussen de laatst gemarkeerde tijd en de tijd die je aanklikt.",
 };

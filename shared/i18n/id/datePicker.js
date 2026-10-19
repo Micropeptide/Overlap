@@ -21,4 +21,5 @@ export default {
   'datePicker.rangeCapped': {
     other: 'Polling bisa berisi maksimal {max} tanggal, jadi hanya {count} hari lagi yang ditambahkan.',
   },
+  'datePicker.keysTip': "Atau Shift-klik dua hari untuk memilih semua hari di antaranya. Dengan keyboard: panah untuk bergerak, Spasi atau Enter memilih hari, dan Shift dengan panah memilih sambil bergerak.",
 };

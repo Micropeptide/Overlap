@@ -125,4 +125,5 @@ export default {
     many: 'Finora hanno risposto {count} persone.',
     other: 'Finora hanno risposto {count} persone.',
   },
+  'guest.hintShift': "Maiusc-clic riempie tutto tra l’ultimo orario segnato e quello che clicchi.",
 };

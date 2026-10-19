@@ -125,4 +125,5 @@ export default {
     many: '{count} personnes ont répondu pour l’instant.',
     other: '{count} personnes ont répondu pour l’instant.',
   },
+  'guest.hintShift': "Maj-clic remplit tout ce qui se trouve entre le dernier horaire marqué et celui que vous cliquez.",
 };

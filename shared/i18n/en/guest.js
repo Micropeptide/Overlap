@@ -118,4 +118,5 @@ export default {
     one: '{count} person has responded so far.',
     other: '{count} people have responded so far.',
   },
+  'guest.hintShift': "Shift-click fills everything between the last time you marked and the one you click.",
 };

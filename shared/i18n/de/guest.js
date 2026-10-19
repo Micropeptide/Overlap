@@ -118,4 +118,5 @@ export default {
     one: 'Bisher hat {count} Person geantwortet.',
     other: 'Bisher haben {count} Personen geantwortet.',
   },
+  'guest.hintShift': "Shift-Klick füllt alles zwischen der zuletzt markierten Zeit und der angeklickten.",
 };

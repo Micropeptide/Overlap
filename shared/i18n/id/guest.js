@@ -111,4 +111,5 @@ export default {
   'guest.respondedSoFar': {
     other: 'Sejauh ini {count} orang sudah menanggapi.',
   },
+  'guest.hintShift': "Shift-klik mengisi semua di antara waktu terakhir yang kamu tandai dan waktu yang kamu klik.",
 };

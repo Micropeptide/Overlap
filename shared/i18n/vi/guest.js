@@ -111,4 +111,5 @@ export default {
   'guest.respondedSoFar': {
     other: 'Đến nay đã có {count} người phản hồi.',
   },
+  'guest.hintShift': "Shift-nhấp sẽ điền mọi thứ giữa thời gian bạn đánh dấu gần nhất và thời gian bạn nhấp.",
 };

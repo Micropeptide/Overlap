@@ -111,4 +111,5 @@ export default {
   'guest.respondedSoFar': {
     other: 'ตอนนี้มีคนตอบแล้ว {count} คน',
   },
+  'guest.hintShift': "Shift-คลิกจะเติมทุกช่วงระหว่างเวลาที่คุณทำเครื่องหมายล่าสุดกับเวลาที่คลิก",
 };

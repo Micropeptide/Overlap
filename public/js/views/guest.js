@@ -425,7 +425,7 @@ export async function renderGuest(main, pollId) {
       h('div', { class: 'field' },
         h('p', { class: 'field-label', id: 'when-label' }, open ? t('guest.whenFree') : t('guest.yourTimes')),
         open ? h('p', { class: 'field-hint', id: 'grid-help' },
-          h('span', { class: 'hint-pointer' }, t('guest.hintPointer'), ' '),
+          h('span', { class: 'hint-pointer' }, t('guest.hintPointer'), ' ', t('guest.hintShift'), ' '),
           h('span', { class: 'hint-touch' }, t('guest.hintTouch'), ' '),
           h('span', { class: 'hint-keys' }, t('guest.hintKeys'))) : null,
         poll.kind === 'weekly' ? h('p', { class: 'field-hint weekly-hint' }, t('guest.weeklyHint')) : null,

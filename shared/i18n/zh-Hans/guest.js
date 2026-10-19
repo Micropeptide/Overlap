@@ -111,4 +111,5 @@ export default {
   'guest.respondedSoFar': {
     other: '目前已有 {count} 人回复。',
   },
+  'guest.hintShift': "按住 Shift 点击，会填满你上次标记的时间到这次点击的时间之间的所有时间。",
 };

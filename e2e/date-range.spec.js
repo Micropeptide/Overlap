@@ -115,3 +115,19 @@ test('dragging over dates and back again un-picks the days you pulled back from'
   for (const d of ['02', '03', '04', '05', '20']) await expect(day(page, `${year}-03-${d}`)).toHaveClass(/\bon\b/);
   await expect(day(page, `${year}-03-06`)).not.toHaveClass(/\bon\b/);
 });
+
+test('the date picker explains its shortcuts, and Shift with an arrow picks as you go', async ({ page }, info) => {
+  test.skip(info.project.name !== 'desktop', 'Keyboard.');
+  const year = new Date().getFullYear() + 1;
+  await page.goto('/');
+  await expect(page.locator('.dp-keys-tip')).toContainText('Shift with an arrow picks as you go');
+  await showMonth(page, year, 3);
+  await day(page, `${year}-03-10`).click();
+  await expect(picked(page)).toContainText('1 date picked');
+  await page.keyboard.press('Tab');
+  await page.keyboard.press('Shift+Tab');
+  await day(page, `${year}-03-10`).focus();
+  for (let i = 0; i < 3; i++) await page.keyboard.press('Shift+ArrowRight');
+  await expect(picked(page)).toContainText('4 dates picked');
+  for (const d of ['10', '11', '12', '13']) await expect(day(page, `${year}-03-${d}`)).toHaveClass(/\bon\b/);
+});

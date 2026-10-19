@@ -118,4 +118,5 @@ export default {
     one: 'Şimdiye kadar {count} kişi yanıt verdi.',
     other: 'Şimdiye kadar {count} kişi yanıt verdi.',
   },
+  'guest.hintShift': "Shift ile tıklamak, en son işaretlediğiniz saatle tıkladığınız saat arasını doldurur.",
 };

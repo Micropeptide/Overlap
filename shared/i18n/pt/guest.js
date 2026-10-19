@@ -125,4 +125,5 @@ export default {
     many: '{count} pessoas responderam até agora.',
     other: '{count} pessoas responderam até agora.',
   },
+  'guest.hintShift': "Shift-clique preenche tudo entre o último horário marcado e o que você clicar.",
 };
