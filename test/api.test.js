@@ -624,3 +624,14 @@ test('shortening a day leaves answers outside it out of the results, and lengthe
   assert.equal(r.json.poll.slots.length, 12);
   assert.deepEqual(r.json.poll.responses[0].available, poll.slots); // her answers are still there
 });
+
+test('a guest can still save their answer after the organizer shortens a day', async () => {
+  const { poll, adminToken } = await newPoll();
+  const sent = await api('POST', `/api/polls/${poll.id}/responses`, { body: { name: 'Ana', available: poll.slots } });
+  const { response, editToken } = sent.json;
+  await patch(poll, adminToken, { dayHours: { '2027-10-07': [540, 600] } });
+  // Her browser still holds all 12 old times and sends them back with a note.
+  const r = await api('PUT', `/api/polls/${poll.id}/responses/${response.id}`, { token: editToken, body: { name: 'Ana', available: poll.slots, note: 'Mornings only' } });
+  assert.equal(r.status, 200, r.text);
+  assert.equal(r.json.response.available.length, 8);
+});

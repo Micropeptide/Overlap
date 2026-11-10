@@ -78,3 +78,19 @@ test('duplicating a poll keeps its day hours', async ({ page, request }) => {
   await expect(page.getByLabel('Different hours on some days')).toBeChecked();
   await expect(page.getByLabel('Earliest start on Thu, Mar 4')).toHaveValue('600');
 });
+
+test('a day’s end picked before its start moves the start, so the row stays valid', async ({ page, request }, info) => {
+  test.skip(isPhone(info), 'Same in every layout.');
+  const { poll, managePath } = await createPoll(request);
+  await page.goto(managePath);
+  await page.getByRole('button', { name: 'Edit poll' }).first().click();
+  await page.getByLabel('Different hours on some days').check();
+  const start = page.getByLabel('Earliest start on Thu, Mar 4');
+  const end = page.getByLabel('Latest end on Thu, Mar 4');
+  await expect(start).toHaveAttribute('aria-describedby', 'err-dayHours');
+  await end.selectOption({ label: '9:00 AM' }); // the row starts at 9:00 AM
+  await expect(start).toHaveValue('480');
+  await page.getByRole('button', { name: 'Save changes' }).click();
+  await expect(page.getByText('Saved your changes')).toBeVisible();
+  expect((await pollOf(request, poll.id)).dayHours).toEqual({ '2027-03-04': [480, 540] });
+});

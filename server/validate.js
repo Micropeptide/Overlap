@@ -209,7 +209,9 @@ export function validateResponse(body, poll) {
   const valid = new Set(poll.slots);
   const pick = (arr, field) => {
     if (arr == null) return [];
-    if (!Array.isArray(arr) || arr.length > poll.slots.length) throw bad(`${field} must be a list of times.`, field, 'not_time_list', { field });
+    // Up to the most times any poll can have: an answer saved before the organizer
+    // removed some times still holds them, and those are ignored below.
+    if (!Array.isArray(arr) || arr.length > LIMITS.slots) throw bad(`${field} must be a list of times.`, field, 'not_time_list', { field });
     const out = new Set();
     for (const v of arr) {
       if (!Number.isInteger(v)) throw bad(`${field} must be a list of times.`, field, 'not_time_list', { field });

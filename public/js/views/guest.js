@@ -91,10 +91,12 @@ export async function renderGuest(main, pollId) {
   let gridDay = null; // phone: the day being marked
   const resultsState = {}; // person filter, numbers toggle, phone day in the results
   function savedMarks() {
+    // Only times the poll still offers: the organizer may have removed some since.
+    const offered = new Set(poll.slots);
     const m = new Map();
-    for (const s of mine?.available || []) m.set(s, 'yes');
-    for (const s of mine?.preferred || []) m.set(s, 'pref');
-    for (const s of mine?.ifNeeded || []) m.set(s, 'maybe');
+    for (const s of mine?.available || []) if (offered.has(s)) m.set(s, 'yes');
+    for (const s of mine?.preferred || []) if (offered.has(s)) m.set(s, 'pref');
+    for (const s of mine?.ifNeeded || []) if (offered.has(s)) m.set(s, 'maybe');
     return m;
   }
   function loadDraftFromResponse() {

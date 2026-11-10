@@ -182,8 +182,8 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
   function dayRow(key, i) {
     const day = dayName(key);
     let [a, b] = v.dayHours[key] || [v.startMinute, v.endMinute];
-    const start = h('select', { id: `f-day-${i}-start`, class: 'input' });
-    const end = h('select', { id: `f-day-${i}-end`, class: 'input' });
+    const start = h('select', { id: `f-day-${i}-start`, class: 'input', 'aria-describedby': 'err-dayHours' });
+    const end = h('select', { id: `f-day-${i}-end`, class: 'input', 'aria-describedby': 'err-dayHours' });
     const fill = () => {
       start.replaceChildren(...timeOptions(0, 1440 - v.slotMinutes, a));
       end.replaceChildren(...timeOptions(v.slotMinutes, 1440, b));
@@ -193,7 +193,11 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
       if (b <= a) { b = Math.min(1440, a + 60); fill(); }
       setDayHours(key, a, b);
     });
-    end.addEventListener('change', () => { b = Number(end.value); setDayHours(key, a, b); });
+    end.addEventListener('change', () => {
+      b = Number(end.value);
+      if (b <= a) { a = Math.max(0, b - 60); fill(); } // an end before the start moves the start
+      setDayHours(key, a, b);
+    });
     fill();
     return h('div', { class: 'day-hours-row' },
       h('span', { class: 'day-hours-day', 'aria-hidden': 'true' }, day),
@@ -203,6 +207,10 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
           end: [h('label', { for: end.id, class: 'visually-hidden' }, t('pollForm.dayEnd', { day })), end],
         }).map((part) => (typeof part === 'string' ? (part.trim() ? h('span', { 'aria-hidden': 'true' }, part.trim()) : null) : part))));
   }
+  /** The first row whose end isn't after its start, to focus on an error. */
+  const badDayRow = () => [...dayRows.querySelectorAll('.day-hours-row')]
+    .map((row) => row.querySelectorAll('select'))
+    .find(([s, e]) => Number(e.value) <= Number(s.value))?.[0];
   function renderDayRows() {
     dayList.hidden = !dayToggle.checked;
     dayRows.replaceChildren(...(dayToggle.checked ? dayKeys().map(dayRow) : []));
@@ -362,7 +370,7 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
       target.textContent = message;
       target.hidden = false;
       if (field === 'password') more.open = true;
-      const control = { password: orgPw?.input, title, dates: picker.el.querySelector('.dp-day:not([disabled])'), weekdays: weekdayButtons[0], endMinute: endSel, startMinute: startSel, closesOn: closes, dayHours: dayRows.querySelector('select') || dayToggle }[field];
+      const control = { password: orgPw?.input, title, dates: picker.el.querySelector('.dp-day:not([disabled])'), weekdays: weekdayButtons[0], endMinute: endSel, startMinute: startSel, closesOn: closes, dayHours: badDayRow() || dayRows.querySelector('select') || dayToggle }[field];
       if (field === 'closesOn') more.open = true;
       control?.focus();
       if (field === 'title') title.setAttribute('aria-invalid', 'true');
