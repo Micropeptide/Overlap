@@ -98,3 +98,15 @@ test('both sides of the sample show an example email', async ({ page }, info) =>
   await page.locator('.email-control').getByRole('button', { name: 'See an example email' }).click();
   await expect(page.getByRole('dialog', { name: 'Example email' })).toBeVisible();
 });
+
+test('the sample’s organizer can give one day its own hours', async ({ page }, info) => {
+  test.skip(info.project.name !== 'desktop', 'Same in every layout.');
+  await page.goto('/m/example#k=sample');
+  await page.getByRole('button', { name: 'Edit poll' }).first().click();
+  await page.getByLabel('Different hours on some days').check();
+  await page.locator('.day-hours-row').first().locator('select').nth(1).selectOption({ label: '12:00 PM' });
+  await page.getByRole('button', { name: 'Save changes' }).click();
+  await expect(page.getByText(/Hours vary by day/).first()).toBeVisible();
+  await page.goto('/p/example');
+  await expect(page.locator('.cell.none').first()).toBeAttached();
+});

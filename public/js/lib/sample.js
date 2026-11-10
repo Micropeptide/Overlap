@@ -63,7 +63,7 @@ function poll(s = state(), { organizer = false } = {}) {
   const e = s.edits;
   const base = {
     dates: e.dates || s.teamDates, startMinute: e.startMinute ?? 9 * H, endMinute: e.endMinute ?? 17 * H,
-    slotMinutes: e.slotMinutes ?? 30, timezone: s.timezone,
+    slotMinutes: e.slotMinutes ?? 30, timezone: s.timezone, dayHours: e.dayHours || {},
   };
   const slots = pollSlots(base);
   const valid = new Set(slots);
@@ -158,6 +158,18 @@ function applyPatch(s, body = {}) {
   }
   for (const k of ['startMinute', 'endMinute', 'slotMinutes']) if (Number.isFinite(body[k])) e[k] = body[k];
   if ((e.endMinute ?? 17 * H) <= (e.startMinute ?? 9 * H)) throw new SampleError(400, t('errors.end_before_start'), 'endMinute');
+  if ('dayHours' in body) {
+    const v = body.dayHours ?? {};
+    const ok = typeof v === 'object' && !Array.isArray(v)
+      && Object.values(v).every((r) => Array.isArray(r) && r.length === 2 && r.every(Number.isInteger) && r[0] < r[1]);
+    if (!ok) throw new SampleError(400, t('errors.day_hours_invalid'), 'dayHours');
+    e.dayHours = v;
+  }
+  // Days no longer in the poll lose their own hours.
+  if (e.dayHours) {
+    const dates = new Set(e.dates || s.teamDates);
+    e.dayHours = Object.fromEntries(Object.entries(e.dayHours).filter(([d]) => dates.has(d)));
+  }
   if ('durationMinutes' in body) e.durationMinutes = Number.isFinite(body.durationMinutes) ? body.durationMinutes : null;
   if ('closesOn' in body) e.closesOn = body.closesOn || null;
   if (body.resultsVisibility === 'everyone' || body.resultsVisibility === 'organizer') e.resultsVisibility = body.resultsVisibility;
