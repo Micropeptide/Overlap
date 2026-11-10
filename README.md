@@ -28,6 +28,7 @@ plan, with a calendar invite.
 - One guest link to share, plus a private link or optional organizer password to manage the poll from any device. Replace issues a new private link if it leaks.
 - Share the guest link by copying it, from the phone's share sheet, as a ready-made invitation message, or as a QR code (made in the browser) for a screen, slide or paper.
 - Specific dates or days of the week, in each person's own time zone, with the organizer's zone shown alongside. Select a range picks a long stretch of dates in two clicks and can skip weekends.
+- Different hours on different days (say 9–5 on Monday but 1–3 on Friday), or the same hours every day.
 - Mark times by dragging, Shift-clicking a range, the keyboard (arrows, Space, Shift), or two taps on a phone. There's an eraser and undo, and you can show everyone else's times faintly behind yours.
 - Private edit links, copyable any time: nobody can overwrite your answer by typing your name.
   Guests can add an optional password to get back in from another device.
