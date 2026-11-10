@@ -33,6 +33,7 @@ export default {
   'errors.visibility_invalid': 'Choose who can see responses.',
   'errors.times_misaligned': { one: 'Start and end times must line up with {count}-minute steps.', other: 'Start and end times must line up with {count}-minute steps.' },
   'errors.range_too_short': 'The time range is shorter than one time step.',
+  'errors.day_hours_invalid': "Each day's hours need a start before the end, on the poll's time steps.",
   'errors.duration_too_long': 'The meeting is longer than the time range. Widen the times or shorten the meeting.',
   'errors.too_many_slots': 'That is too many times to choose from. Pick fewer dates or a shorter range.',
   'errors.no_slots': 'None of those times exist in that time zone.',

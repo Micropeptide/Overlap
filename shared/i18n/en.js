@@ -189,6 +189,7 @@ export default {
   "errors.dates_out_of_range": "Pick dates within the next three years.",
   "errors.dates_required": "Pick at least one date.",
   "errors.dates_sent_weekdays": "This poll uses specific dates. Send \"dates\" instead of \"weekdays\".",
+  "errors.day_hours_invalid": "Each day's hours need a start before the end, on the poll's time steps.",
   "errors.description_too_long": {
     "one": "Keep the description under {count} character.",
     "other": "Keep the description under {count} characters."
@@ -692,8 +693,12 @@ export default {
     "one": "{count} date picked: {list} and {more} more",
     "other": "{count} dates picked: {list} and {more} more"
   },
+  "pollForm.dayEnd": "Latest end on {day}",
+  "pollForm.dayHoursHint": "Days you don't change keep the hours above.",
+  "pollForm.dayHoursToggle": "Different hours on some days",
   "pollForm.days": "Possible days",
   "pollForm.daysOfWeek": "Days of the week",
+  "pollForm.dayStart": "Earliest start on {day}",
   "pollForm.earliestStart": "Earliest start",
   "pollForm.errorClosesMissing": "Pick the last day to take responses, or choose “Never”.",
   "pollForm.errorClosesPast": "Choose a closing date that hasn’t passed.",
@@ -911,6 +916,8 @@ export default {
   "shared.finalZoneOrganizer": "{zone}. That’s {time} for the organizer in {city}.",
   "shared.googleCalendar": "Google Calendar",
   "shared.hours": "{start} to {end} {zone} time",
+  "shared.hoursVary": "Hours vary by day, {zone} time",
+  "shared.hoursVaryWithLength": "Hours vary by day, {zone} time, for {length}",
   "shared.hoursWithLength": "{start} to {end} {zone} time, for {length}",
   "shared.inviteHasAll": "The calendar invite has all of these times.",
   "shared.noEditsGuest": "Answers can’t be changed after they’re sent",

@@ -21,7 +21,9 @@ export function pollFacts(poll, { audience }) {
   const fact = (name, text) => h('li', null, icon(name), h('span', null, text));
   return h('ul', { class: 'facts', role: 'list' },
     fact('calendar', dateText),
-    fact('clock', poll.durationMinutes
+    fact('clock', Object.keys(poll.dayHours || {}).length
+      ? (poll.durationMinutes ? t('shared.hoursVaryWithLength', { zone: hours.zone, length: f.duration(poll.durationMinutes) }) : t('shared.hoursVary', { zone: hours.zone }))
+      : poll.durationMinutes
       ? t('shared.hoursWithLength', { ...hours, length: f.duration(poll.durationMinutes) })
       : t('shared.hours', hours)),
     fact('people', poll.responseCount ? t('shared.responses', { count: poll.responseCount }) : t('shared.noResponses')),

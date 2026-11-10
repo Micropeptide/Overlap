@@ -7,6 +7,8 @@ export default {
   },
   'shared.hours': '{start} to {end} {zone} time',
   'shared.hoursWithLength': '{start} to {end} {zone} time, for {length}',
+  'shared.hoursVary': 'Hours vary by day, {zone} time',
+  'shared.hoursVaryWithLength': 'Hours vary by day, {zone} time, for {length}',
   'shared.responses': {
     one: '{count} response',
     other: '{count} responses',

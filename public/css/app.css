@@ -327,6 +327,11 @@ textarea.input { resize: vertical; min-height: 5rem; }
 .title-input { font-family: var(--font-display); font-size: var(--step-2); font-weight: 600; min-height: 3.6rem; }
 .time-range { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
 .time-range select { width: auto; min-width: 9.5rem; }
+.day-hours-toggle { margin-top: 0.75rem; }
+.day-hours { margin-top: 0.25rem; }
+.day-hours-rows { display: grid; gap: 0.5rem; margin-top: 0.5rem; }
+.day-hours-row { display: flex; align-items: center; gap: 0.4rem 1rem; flex-wrap: wrap; }
+.day-hours-day { min-width: 7.5rem; font-weight: 600; font-size: var(--step--1); }
 .zone-current { display: block; margin: 0.8rem 0 0; color: var(--ink-2); font-size: var(--step--1); }
 .zone-current strong { color: var(--ink); font-weight: 600; }
 .zone-current .icon { width: 1rem; height: 1rem; display: inline-block; vertical-align: -0.15em; margin-inline-end: 0.35rem; }

@@ -536,7 +536,7 @@ export async function renderManage(main, pollId) {
         h('button', {
           type: 'button', class: 'btn secondary',
           onclick: () => {
-            const keys = ['kind', 'weekdays', 'title', 'description', 'location', 'dates', 'startMinute', 'endMinute', 'slotMinutes', 'durationMinutes', 'timezone', 'resultsVisibility', 'allowEdits'];
+            const keys = ['kind', 'weekdays', 'title', 'description', 'location', 'dates', 'startMinute', 'endMinute', 'slotMinutes', 'dayHours', 'durationMinutes', 'timezone', 'resultsVisibility', 'allowEdits'];
             storage.setCopySource(Object.fromEntries(keys.map((k) => [k, poll[k]])));
             location.assign('/');
           },

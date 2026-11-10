@@ -33,6 +33,7 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
     timezone: tz0,
     resultsVisibility: initial.resultsVisibility || 'everyone',
     allowEdits: initial.allowEdits !== false,
+    dayHours: { ...(initial.dayHours || {}) }, // { day: [start, end] } for days with their own hours
   };
 
   const errors = {};
@@ -61,13 +62,13 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
     today: todayIn(tz0),
     allowPast: editing ? v.dates : [],
     labelledBy: 'dates-label',
-    onChange: (dates) => { v.dates = dates; updateDateCount(dates); clearError('dates'); },
+    onChange: (dates) => { v.dates = dates; updateDateCount(dates); clearError('dates'); renderDayRows(); },
   });
   updateDateCount(v.dates);
   const today = todayIn(tz0);
   const quickPick = (label, make) => h('button', {
     type: 'button', class: 'btn small ghost',
-    onclick: () => { const dates = make(); picker.set(dates); v.dates = dates; updateDateCount(dates); clearError('dates'); },
+    onclick: () => { const dates = make(); picker.set(dates); v.dates = dates; updateDateCount(dates); clearError('dates'); renderDayRows(); },
   }, label);
   const nextDays = (n, weekdaysOnly) => {
     const out = [];
@@ -100,6 +101,7 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
         btn.setAttribute('aria-pressed', String(v.weekdays.includes(d)));
         updateWeekCount();
         clearError('weekdays');
+        renderDayRows();
       },
     }, weekdayFmt.format(ms));
     return btn;
@@ -117,7 +119,7 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
   const kindRadio = (value, label) => h('label', { class: 'seg' },
     h('input', {
       type: 'radio', name: 'kind', value, checked: v.kind === value,
-      onchange: () => { v.kind = value; showKind(); clearError('dates'); clearError('weekdays'); },
+      onchange: () => { v.kind = value; showKind(); clearError('dates'); clearError('weekdays'); renderDayRows(); },
     }),
     h('span', null, label));
   const kindToggle = h('div', { class: 'segmented', role: 'radiogroup', 'aria-label': t('pollForm.kind') },
@@ -141,8 +143,9 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
     v.startMinute = Number(startSel.value);
     if (v.endMinute <= v.startMinute) { v.endMinute = Math.min(1440, v.startMinute + 60); fillTimes(); }
     clearError('endMinute');
+    renderDayRows();
   });
-  endSel.addEventListener('change', () => { v.endMinute = Number(endSel.value); clearError('endMinute'); });
+  endSel.addEventListener('change', () => { v.endMinute = Number(endSel.value); clearError('endMinute'); renderDayRows(); });
   fillTimes();
   const PRESETS = [[t('pollForm.presetMorning'), 9 * 60, 12 * 60], [t('pollForm.presetAfternoon'), 12 * 60, 17 * 60], [t('pollForm.presetEvening'), 17 * 60, 21 * 60], [t('pollForm.presetWorkDay'), 9 * 60, 17 * 60], [t('pollForm.presetAllDay'), 8 * 60, 22 * 60]];
   const presets = h('div', { class: 'quick-picks', role: 'group', 'aria-label': t('pollForm.presets') },
@@ -152,10 +155,58 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
         v.startMinute = snap(a);
         v.endMinute = Math.max(v.startMinute + v.slotMinutes, snap(b));
         fillTimes();
+        renderDayRows();
         clearError('endMinute');
         announce(t('pollForm.timesSet', { start: f.minuteOfDay(v.startMinute), end: f.minuteOfDay(v.endMinute) }));
       },
     }, label)));
+
+  // Different hours on some days: one row per picked day, showing that day's
+  // own hours or the usual ones. Only days whose hours differ are kept.
+  const dayKeys = () => (v.kind === 'weekly'
+    ? WEEK_ORDER.filter((d) => v.weekdays.includes(d)).map(String)
+    : [...v.dates].sort());
+  const dayName = (key) => (v.kind === 'weekly' ? weekdayLongFmt.format(Date.UTC(2024, 0, 7 + Number(key))) : f.dateMedium(key));
+  const setDayHours = (key, a, b) => {
+    if (a === v.startMinute && b === v.endMinute) delete v.dayHours[key];
+    else v.dayHours[key] = [a, b];
+    clearError('dayHours');
+  };
+  const dayToggle = h('input', {
+    type: 'checkbox', id: 'f-day-hours', checked: Object.keys(v.dayHours).length > 0, 'aria-controls': 'day-hours',
+    onchange: () => { if (!dayToggle.checked) v.dayHours = {}; renderDayRows(); },
+  });
+  const dayRows = h('div', { class: 'day-hours-rows' });
+  const dayList = h('div', { class: 'day-hours', id: 'day-hours' },
+    h('p', { class: 'field-hint' }, t('pollForm.dayHoursHint')), dayRows);
+  function dayRow(key, i) {
+    const day = dayName(key);
+    let [a, b] = v.dayHours[key] || [v.startMinute, v.endMinute];
+    const start = h('select', { id: `f-day-${i}-start`, class: 'input' });
+    const end = h('select', { id: `f-day-${i}-end`, class: 'input' });
+    const fill = () => {
+      start.replaceChildren(...timeOptions(0, 1440 - v.slotMinutes, a));
+      end.replaceChildren(...timeOptions(v.slotMinutes, 1440, b));
+    };
+    start.addEventListener('change', () => {
+      a = Number(start.value);
+      if (b <= a) { b = Math.min(1440, a + 60); fill(); }
+      setDayHours(key, a, b);
+    });
+    end.addEventListener('change', () => { b = Number(end.value); setDayHours(key, a, b); });
+    fill();
+    return h('div', { class: 'day-hours-row' },
+      h('span', { class: 'day-hours-day', 'aria-hidden': 'true' }, day),
+      h('div', { class: 'time-range' },
+        tx('pollForm.timeRange', {
+          start: [h('label', { for: start.id, class: 'visually-hidden' }, t('pollForm.dayStart', { day })), start],
+          end: [h('label', { for: end.id, class: 'visually-hidden' }, t('pollForm.dayEnd', { day })), end],
+        }).map((part) => (typeof part === 'string' ? (part.trim() ? h('span', { 'aria-hidden': 'true' }, part.trim()) : null) : part))));
+  }
+  function renderDayRows() {
+    dayList.hidden = !dayToggle.checked;
+    dayRows.replaceChildren(...(dayToggle.checked ? dayKeys().map(dayRow) : []));
+  }
 
   // Time zone
   const zoneSel = h('select', { id: 'f-zone', class: 'input' },
@@ -186,7 +237,12 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
     v.slotMinutes = Number(stepSel.value);
     v.startMinute = snap(v.startMinute);
     v.endMinute = Math.max(v.startMinute + v.slotMinutes, snap(v.endMinute));
+    for (const [key, [a, b]] of Object.entries(v.dayHours)) {
+      const s = snap(a);
+      v.dayHours[key] = [s, Math.max(s + v.slotMinutes, snap(b))];
+    }
     fillTimes();
+    renderDayRows();
   });
 
   const visRadio = (value, label, hint) => h('label', { class: 'radio' },
@@ -286,6 +342,9 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
         }).map((part) => (typeof part === 'string' ? (part.trim() ? h('span', { 'aria-hidden': 'true' }, part.trim()) : null) : part))),
       presets,
       errorEl('endMinute'), errorEl('startMinute'),
+      h('label', { class: 'check day-hours-toggle' }, dayToggle, h('span', null, t('pollForm.dayHoursToggle'))),
+      dayList,
+      errorEl('dayHours'),
       h('p', { class: 'zone-current form-zone' }, icon('globe'), h('span', null, ...tx('pollForm.zoneIn', { zone: zoneText })), zoneToggle),
       zoneWrap),
     more,
@@ -303,7 +362,7 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
       target.textContent = message;
       target.hidden = false;
       if (field === 'password') more.open = true;
-      const control = { password: orgPw?.input, title, dates: picker.el.querySelector('.dp-day:not([disabled])'), weekdays: weekdayButtons[0], endMinute: endSel, startMinute: startSel, closesOn: closes }[field];
+      const control = { password: orgPw?.input, title, dates: picker.el.querySelector('.dp-day:not([disabled])'), weekdays: weekdayButtons[0], endMinute: endSel, startMinute: startSel, closesOn: closes, dayHours: dayRows.querySelector('select') || dayToggle }[field];
       if (field === 'closesOn') more.open = true;
       control?.focus();
       if (field === 'title') title.setAttribute('aria-invalid', 'true');
@@ -329,6 +388,7 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
       startMinute: v.startMinute,
       endMinute: v.endMinute,
       slotMinutes: v.slotMinutes,
+      dayHours: dayToggle.checked ? Object.fromEntries(dayKeys().filter((k) => v.dayHours[k]).map((k) => [k, v.dayHours[k]])) : {},
       durationMinutes: v.durationMinutes || null,
       timezone: v.timezone,
       resultsVisibility: v.resultsVisibility,
@@ -365,5 +425,6 @@ export function createPollForm({ initial = {}, submitLabel, onSubmit, editing = 
     }
   });
 
+  renderDayRows();
   return { el: form, focus: () => title.focus() };
 }
