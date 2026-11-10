@@ -4,7 +4,7 @@
 
 **Try it without inviting anyone:** [the sample poll](https://overlap.runtianwu.com/p/example) has seven answers already and runs entirely in your browser. Open it [as a guest](https://overlap.runtianwu.com/p/example) or [as the organizer](https://overlap.runtianwu.com/m/example#k=sample).
 
-**Watch the demo:** [Overlap: Find a Time That Works for Everyone](https://youtu.be/JaGf1Ai5awg) (12 minutes, on YouTube), made for [Hyperbloom October 2026](https://hyperbloom-october.devpost.com/).
+**Watch the demo:** [Overlap: Find a Time That Works for Everyone](https://youtu.be/JaGf1Ai5awg) (12 minutes, on YouTube).
 
 [![Overlap: pick some dates, share one link, see where everyone overlaps](docs/screenshots/01-home.jpg)](https://youtu.be/JaGf1Ai5awg)
 
