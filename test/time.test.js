@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   zonedTimeToUtc, wallClock, pollSlots, layoutSlots, describeTimeZone,
-  isValidTimeZone, isValidDateKey, addDays, offsetMinutes, referenceMonday, weeklyDates, mondayOf,
+  isValidTimeZone, isValidDateKey, addDays, offsetMinutes, referenceMonday, weeklyDates, mondayOf, hoursFor,
 } from '../shared/time.js';
 
 const iso = (ms) => new Date(ms).toISOString();
@@ -130,4 +130,28 @@ test('fast slot generation matches the exact method in every zone around clock c
       assert.deepEqual(pollSlots(cfg), exact(cfg), timezone);
     }
   }
+});
+
+test('each day can have its own hours', () => {
+  const slots = pollSlots({
+    dates: ['2027-10-06', '2027-10-07'], startMinute: 540, endMinute: 720, slotMinutes: 30,
+    timezone: 'America/New_York', dayHours: { '2027-10-07': [840, 900] },
+  });
+  assert.equal(slots.length, 8); // 6 on the 6th, 2 on the 7th
+  assert.equal(slots[6], Date.parse('2027-10-07T18:00:00Z'));
+});
+
+test('weekly polls key day hours by weekday', () => {
+  const slots = pollSlots({
+    kind: 'weekly', dates: ['2027-10-04', '2027-10-06'], startMinute: 540, endMinute: 720, slotMinutes: 30,
+    timezone: 'America/New_York', dayHours: { 3: [600, 660] }, // Wednesday 10–11
+  });
+  assert.equal(slots.length, 8); // 6 on Monday, 2 on Wednesday
+  assert.equal(slots[6], Date.parse('2027-10-06T14:00:00Z'));
+});
+
+test('hoursFor falls back to the usual hours', () => {
+  assert.deepEqual(hoursFor({ startMinute: 540, endMinute: 1020, dayHours: {} }, '2027-10-06'), [540, 1020]);
+  assert.deepEqual(hoursFor({ startMinute: 540, endMinute: 1020 }, '2027-10-06'), [540, 1020]);
+  assert.deepEqual(hoursFor({ startMinute: 540, endMinute: 1020, dayHours: { '2027-10-06': [600, 660] } }, '2027-10-06'), [600, 660]);
 });

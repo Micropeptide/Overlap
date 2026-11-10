@@ -123,14 +123,26 @@ export function todayIn(timeZone) {
 }
 
 /**
+ * A day's hours as [startMinute, endMinute]: its own entry in `dayHours` if it
+ * has one (keyed by date, or by weekday number for weekly polls), otherwise
+ * the poll's usual hours.
+ */
+export function hoursFor({ kind, startMinute, endMinute, dayHours }, dateKey) {
+  const own = dayHours?.[kind === 'weekly' ? String(weekdayOf(dateKey)) : dateKey];
+  return own || [startMinute, endMinute];
+}
+
+/**
  * Every slot of a poll, as sorted UTC instants. Slots are laid out on the
  * organizer's wall clock: "9:00 to 17:00 in Europe/London" means 9:00 local on
  * every chosen date, even across a daylight saving change. Times skipped by a
  * spring-forward jump are left out; a repeated fall-back hour is offered once.
  */
-export function pollSlots({ dates, startMinute, endMinute, slotMinutes, timezone }) {
+export function pollSlots(config) {
+  const { dates, slotMinutes, timezone } = config;
   const seen = new Set();
   for (const dateKey of dates) {
+    const [startMinute, endMinute] = hoursFor(config, dateKey);
     const { year, month, day } = parseDateKey(dateKey);
     const first = Date.UTC(year, month - 1, day, 0, startMinute);
     const last = Date.UTC(year, month - 1, day, 0, endMinute);
