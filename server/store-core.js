@@ -60,7 +60,7 @@ export function nameKey(name) {
 // calls to build, so they are cached by those settings.
 const slotCache = new Map();
 export function slotsFor(config) {
-  const key = JSON.stringify([config.timezone, config.dates, config.startMinute, config.endMinute, config.slotMinutes]);
+  const key = JSON.stringify([config.timezone, config.dates, config.startMinute, config.endMinute, config.slotMinutes, config.kind, config.dayHours]);
   let slots = slotCache.get(key);
   if (!slots) {
     slots = pollSlots(config);
@@ -69,7 +69,14 @@ export function slotsFor(config) {
   }
   return slots;
 }
-const slotConfig = (p) => JSON.stringify({ timezone: p.timezone, dates: p.dates, startMinute: p.startMinute, endMinute: p.endMinute, slotMinutes: p.slotMinutes });
+// Different hours on some days are added only when a poll has them, so the
+// stored settings of every other poll stay as they were.
+const hasDayHours = (p) => !!p.dayHours && Object.keys(p.dayHours).length > 0;
+const slotConfig = (p) => JSON.stringify({
+  timezone: p.timezone, dates: p.dates, startMinute: p.startMinute, endMinute: p.endMinute, slotMinutes: p.slotMinutes,
+  ...(hasDayHours(p) ? { kind: p.kind, dayHours: p.dayHours } : {}),
+});
+const dayHoursColumn = (p) => (hasDayHours(p) ? JSON.stringify(p.dayHours) : null);
 
 export const SCHEMA = `
 CREATE TABLE IF NOT EXISTS polls (
@@ -83,6 +90,7 @@ CREATE TABLE IF NOT EXISTS polls (
   start_minute INTEGER NOT NULL,
   end_minute INTEGER NOT NULL,
   slot_minutes INTEGER NOT NULL,
+  day_hours TEXT,
   duration_minutes INTEGER,
   results_visibility TEXT NOT NULL DEFAULT 'everyone',
   location TEXT NOT NULL DEFAULT '',
@@ -160,6 +168,8 @@ export const MIGRATIONS = [
   ['responses', 'pw_hash', 'TEXT'],
   // Whether guests may change an answer after submitting it.
   ['polls', 'allow_edits', 'INTEGER NOT NULL DEFAULT 1'],
+  // Different hours on some days, as JSON { day: [startMinute, endMinute] }.
+  ['polls', 'day_hours', 'TEXT'],
   // The language emails are written in (null for older subscriptions: English).
   ['email_subs', 'lang', 'TEXT'],
   // A final time can be several sessions: the first is final_start/final_end,
@@ -208,6 +218,7 @@ export function createStore(driver, { retentionDays = 0 } = {}) {
       startMinute: row.start_minute,
       endMinute: row.end_minute,
       slotMinutes: row.slot_minutes,
+      dayHours: row.day_hours ? JSON.parse(row.day_hours) : {},
       durationMinutes: row.duration_minutes,
       resultsVisibility: row.results_visibility,
       allowEdits: row.allow_edits !== 0,
@@ -268,11 +279,11 @@ export function createStore(driver, { retentionDays = 0 } = {}) {
       const now = Date.now();
       await run(`INSERT INTO polls (id, admin_hash, kind, title, description, location, closes_on, timezone, dates, start_minute,
         end_minute, slot_minutes, duration_minutes, results_visibility, closed, final_start, final_end, created_at, updated_at, expires_at,
-        allow_edits) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, NULL, NULL, ?, ?, ?, ?)`, [
+        allow_edits, day_hours) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, NULL, NULL, ?, ?, ?, ?, ?)`, [
         id, await hashSecret(adminToken), input.kind || 'dates', input.title, input.description, input.location || '',
         input.closesOn || null, input.timezone, JSON.stringify(input.dates),
         input.startMinute, input.endMinute, input.slotMinutes, input.durationMinutes ?? null, input.resultsVisibility,
-        now, now, expiryFor(input), input.allowEdits === false ? 0 : 1]);
+        now, now, expiryFor(input), input.allowEdits === false ? 0 : 1, dayHoursColumn(input)]);
       return { poll: await this.getPoll(id), adminToken };
     },
 
@@ -286,12 +297,12 @@ export function createStore(driver, { retentionDays = 0 } = {}) {
       const next = { ...current, ...changes };
       await run(`UPDATE polls SET kind = ?, title = ?, description = ?, location = ?, closes_on = ?, timezone = ?, dates = ?, start_minute = ?,
         end_minute = ?, slot_minutes = ?, duration_minutes = ?, results_visibility = ?, closed = ?, final_start = ?, final_end = ?, final_more = ?,
-        updated_at = ?, expires_at = ?, allow_edits = ? WHERE id = ?`, [
+        updated_at = ?, expires_at = ?, allow_edits = ?, day_hours = ? WHERE id = ?`, [
         next.kind || 'dates', next.title, next.description, next.location || '', next.closesOn || null, next.timezone, JSON.stringify(next.dates),
         next.startMinute, next.endMinute, next.slotMinutes, next.durationMinutes ?? null, next.resultsVisibility, next.manualClosed ? 1 : 0,
         next.final ? next.final.start : null, next.final ? next.final.end : null,
         next.final?.sessions?.length > 1 ? JSON.stringify(next.final.sessions.slice(1)) : null,
-        Date.now(), expiryFor(next), next.allowEdits === false ? 0 : 1, id]);
+        Date.now(), expiryFor(next), next.allowEdits === false ? 0 : 1, dayHoursColumn(next), id]);
       return this.getPoll(id);
     },
 

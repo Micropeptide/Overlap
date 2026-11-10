@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
 import { openStore } from '../server/store.js';
 import { createApp } from '../server/app.js';
+import { tallySlots } from '../shared/overlap.js';
 
 let server;
 let base;
@@ -542,4 +543,84 @@ test('a final time can be several sessions, or run over several days', async () 
   const many = Array.from({ length: 11 }, () => ({ start: a, end: a + 300e3 }));
   assert.equal((await patch({ sessions: many })).json.code, 'final_too_many');
   assert.equal((await patch({ sessions: [] })).json.code, 'final_required');
+});
+
+// ------------------------------------------------------------ different hours on some days
+const patch = (poll, adminToken, body) => api('PATCH', `/api/polls/${poll.id}`, { token: adminToken, body });
+
+test('organizers can set different hours on some days', async () => {
+  const { poll } = await newPoll({ dayHours: { '2027-10-07': [840, 900] } });
+  assert.deepEqual(poll.dayHours, { '2027-10-07': [840, 900] });
+  assert.equal(poll.slots.length, 8); // 6 on the 6th, 2 on the 7th
+  const view = await api('GET', `/api/polls/${poll.id}`);
+  assert.deepEqual(view.json.poll.dayHours, { '2027-10-07': [840, 900] });
+  const { poll: plain } = await newPoll();
+  assert.deepEqual(plain.dayHours, {});
+});
+
+test('day hours are checked', async () => {
+  for (const dayHours of [{ '2027-10-07': [900, 840] }, { '2027-10-07': [850, 900] }, { '2027-10-07': [840] }, { monday: [540, 600] }]) {
+    const r = await api('POST', '/api/polls', { body: { ...POLL, dayHours } });
+    assert.equal(r.status, 400, JSON.stringify(dayHours));
+    assert.equal(r.json.code, 'day_hours_invalid');
+    assert.equal(r.json.field, 'dayHours');
+  }
+  const long = await api('POST', '/api/polls', { body: { ...POLL, durationMinutes: 120, dayHours: { '2027-10-07': [840, 900] } } });
+  assert.equal(long.status, 400);
+  assert.equal(long.json.code, 'duration_too_long');
+});
+
+test('day hours drop days the poll doesn\'t have and days equal to the usual hours', async () => {
+  const { poll } = await newPoll({ dayHours: { '2027-10-07': [540, 720], '2027-10-09': [600, 660] } });
+  assert.deepEqual(poll.dayHours, {});
+});
+
+test('editing dates keeps the hours of days that stay', async () => {
+  const { poll, adminToken } = await newPoll({ dayHours: { '2027-10-07': [840, 900] } });
+  let r = await patch(poll, adminToken, { dates: ['2027-10-07', '2027-10-08'] });
+  assert.equal(r.status, 200, r.text);
+  assert.deepEqual(r.json.poll.dayHours, { '2027-10-07': [840, 900] });
+  r = await patch(poll, adminToken, { dates: ['2027-10-08'] });
+  assert.deepEqual(r.json.poll.dayHours, {});
+  r = await patch(poll, adminToken, { dates: ['2027-10-07', '2027-10-08'], dayHours: { '2027-10-07': [840, 900] } });
+  assert.deepEqual(r.json.poll.dayHours, { '2027-10-07': [840, 900] });
+  r = await patch(poll, adminToken, { dayHours: {} });
+  assert.deepEqual(r.json.poll.dayHours, {});
+  r = await patch(poll, adminToken, { dayHours: { '2027-10-07': [840, 900] } });
+  r = await patch(poll, adminToken, { kind: 'weekly', weekdays: [1] });
+  assert.equal(r.status, 200, r.text);
+  assert.deepEqual(r.json.poll.dayHours, {});
+});
+
+test('misaligned day hours are rejected', async () => {
+  const { poll, adminToken } = await newPoll({ dayHours: { '2027-10-07': [870, 900] } });
+  const r = await patch(poll, adminToken, { slotMinutes: 60 });
+  assert.equal(r.status, 400);
+  assert.equal(r.json.code, 'day_hours_invalid');
+});
+
+test('weekly day hours survive a time zone change', async () => {
+  const created = await api('POST', '/api/polls', { body: { title: 'Standup', kind: 'weekly', weekdays: [1, 3], startMinute: 540, endMinute: 720, timezone: 'America/New_York', dayHours: { 3: [600, 660] } } });
+  assert.equal(created.status, 201, created.text);
+  const { poll, adminToken } = created.json;
+  assert.deepEqual(poll.dayHours, { 3: [600, 660] });
+  const r = await patch(poll, adminToken, { timezone: 'Asia/Tokyo' });
+  assert.equal(r.status, 200, r.text);
+  assert.deepEqual(r.json.poll.dayHours, { 3: [600, 660] });
+  assert.equal(r.json.poll.slots.length, 8);
+});
+
+test('shortening a day leaves answers outside it out of the results, and lengthening it brings them back', async () => {
+  const { poll, adminToken } = await newPoll();
+  const sent = await api('POST', `/api/polls/${poll.id}/responses`, { body: { name: 'Ana', available: poll.slots } });
+  assert.equal(sent.status, 201, sent.text);
+  let r = await patch(poll, adminToken, { dayHours: { '2027-10-07': [540, 600] } });
+  assert.equal(r.status, 200, r.text);
+  const short = r.json.poll;
+  assert.equal(short.slots.length, 8);
+  const counts = tallySlots(short.slots, short.responses);
+  assert.equal(counts.size, 8); // only the times still offered are counted
+  r = await patch(poll, adminToken, { dayHours: {} });
+  assert.equal(r.json.poll.slots.length, 12);
+  assert.deepEqual(r.json.poll.responses[0].available, poll.slots); // her answers are still there
 });

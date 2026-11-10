@@ -133,6 +133,7 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
       startMinute: poll.startMinute,
       endMinute: poll.endMinute,
       slotMinutes: poll.slotMinutes,
+      dayHours: poll.dayHours,
       durationMinutes: poll.durationMinutes,
       resultsVisibility: poll.resultsVisibility,
       allowEdits: poll.allowEdits,
@@ -236,7 +237,7 @@ export function createApi({ store, limiter, publicUrl = '', info = {}, mailer = 
       if (changes.final && JSON.stringify(changes.final.sessions) !== JSON.stringify(poll.final?.sessions)) await record(updated, 'final');
       else if (nextStatus === 'closed' && !poll.closed) await record(updated, 'closed');
       else if (nextStatus === 'open' && poll.closed) await record(updated, 'reopened');
-      const EDITS = ['kind', 'title', 'location', 'description', 'dates', 'startMinute', 'endMinute', 'slotMinutes', 'timezone', 'durationMinutes'];
+      const EDITS = ['kind', 'title', 'location', 'description', 'dates', 'startMinute', 'endMinute', 'slotMinutes', 'dayHours', 'timezone', 'durationMinutes'];
       if (EDITS.some((k) => k in changes && JSON.stringify(changes[k]) !== JSON.stringify(poll[k]))) await record(updated, 'edited');
       return { body: { poll: await serializePoll(updated, { admin: true }) } };
     }],

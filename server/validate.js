@@ -1,6 +1,6 @@
 // Input validation. Every error names the field and says how to fix it.
 
-import { isValidDateKey, canonicalTimeZone, pollSlots, referenceMonday, weeklyDates, mondayOf, todayIn, addDays } from '../shared/time.js';
+import { isValidDateKey, canonicalTimeZone, pollSlots, hoursFor, referenceMonday, weeklyDates, mondayOf, todayIn, addDays, weekdayOf } from '../shared/time.js';
 
 /**
  * An error the API reports to the caller. `message` is English (for API users
@@ -165,12 +165,39 @@ export function validatePollFields(body, current = null) {
   if (merged.endMinute - merged.startMinute < merged.slotMinutes) {
     throw bad('The time range is shorter than one time step.', 'endMinute', 'range_too_short');
   }
-  if (merged.durationMinutes && merged.durationMinutes > merged.endMinute - merged.startMinute) {
+  merged.kind = kind;
+  merged.dayHours = out.dayHours = dayHoursFor(has('dayHours') ? body.dayHours : switching ? {} : current?.dayHours, merged);
+  const ranges = merged.dates.map((d) => hoursFor(merged, d));
+  if (merged.durationMinutes && ranges.some(([a, b]) => merged.durationMinutes > b - a)) {
     throw bad('The meeting is longer than the time range. Widen the times or shorten the meeting.', 'durationMinutes', 'duration_too_long');
   }
-  const count = (merged.endMinute - merged.startMinute) / merged.slotMinutes * merged.dates.length;
+  const count = ranges.reduce((n, [a, b]) => n + (b - a) / merged.slotMinutes, 0);
   if (count > LIMITS.slots) throw bad('That is too many times to choose from. Pick fewer dates or a shorter range.', 'dates', 'too_many_slots');
   if (pollSlots(merged).length === 0) throw bad('None of those times exist in that time zone.', 'dates', 'no_slots');
+  return out;
+}
+
+/**
+ * Different hours on some days, as { day: [startMinute, endMinute] } keyed by
+ * date (or by weekday number for weekly polls). Each range must fit the poll's
+ * time steps. Days the poll doesn't have, and days with the usual hours, are
+ * left out, so editing the dates or the usual hours never leaves stale entries.
+ */
+function dayHoursFor(value, poll) {
+  const wrong = () => bad("Each day's hours need a start before the end, on the poll's time steps.", 'dayHours', 'day_hours_invalid');
+  if (value == null) return {};
+  if (typeof value !== 'object' || Array.isArray(value)) throw wrong();
+  const weekly = poll.kind === 'weekly';
+  const days = new Set(poll.dates.map((d) => (weekly ? String(weekdayOf(d)) : d)));
+  const step = poll.slotMinutes;
+  const out = {};
+  for (const [day, range] of Object.entries(value)) {
+    if (!(weekly ? /^[0-6]$/ : /^\d{4}-\d{2}-\d{2}$/).test(day)) throw wrong();
+    if (!Array.isArray(range) || range.length !== 2 || !range.every(Number.isInteger)) throw wrong();
+    const [a, b] = range;
+    if (a < 0 || b > 1440 || b - a < step || a % step || b % step) throw wrong();
+    if (days.has(day) && (a !== poll.startMinute || b !== poll.endMinute)) out[day] = [a, b];
+  }
   return out;
 }
 
