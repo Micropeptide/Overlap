@@ -9,6 +9,8 @@ export default {
   },
   'shared.hours': '{start}–{end} (czas: {zone})',
   'shared.hoursWithLength': '{start}–{end} (czas: {zone}), czas trwania: {length}',
+  'shared.hoursVary': "Godziny różnią się w zależności od dnia (czas: {zone})",
+  'shared.hoursVaryWithLength': "Godziny różnią się w zależności od dnia (czas: {zone}), czas trwania: {length}",
   'shared.responses': {
     one: '{count} odpowiedź',
     few: '{count} odpowiedzi',

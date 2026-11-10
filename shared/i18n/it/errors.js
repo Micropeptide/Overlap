@@ -57,6 +57,7 @@ export default {
     other: 'Gli orari di inizio e fine devono seguire intervalli di {count} minuti.',
   },
   'errors.range_too_short': 'La fascia oraria è più corta di un intervallo.',
+  'errors.day_hours_invalid': "Gli orari di ogni giorno devono iniziare prima della fine e seguire gli intervalli del sondaggio.",
   'errors.duration_too_long': 'L’incontro è più lungo della fascia oraria. Allarga gli orari o accorcia l’incontro.',
   'errors.too_many_slots': 'Ci sono troppi orari da scegliere. Scegli meno date o una fascia più breve.',
   'errors.no_slots': 'Nessuno di questi orari esiste in quel fuso orario.',

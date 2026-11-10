@@ -6,6 +6,8 @@ export default {
   },
   'shared.hours': '{zone} 기준 {start}~{end}',
   'shared.hoursWithLength': '{zone} 기준 {start}~{end}, 모임 길이 {length}',
+  'shared.hoursVary': "{zone} 기준, 날짜마다 시간이 달라요",
+  'shared.hoursVaryWithLength': "{zone} 기준, 날짜마다 시간이 달라요, 모임 길이 {length}",
   'shared.responses': {
     other: '응답 {count}개',
   },

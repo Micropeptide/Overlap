@@ -8,6 +8,8 @@ export default {
   },
   'shared.hours': 'De {start} a {end}, hora de {zone}',
   'shared.hoursWithLength': 'De {start} a {end}, hora de {zone}, durante {length}',
+  'shared.hoursVary': "El horario varía según el día, hora de {zone}",
+  'shared.hoursVaryWithLength': "El horario varía según el día, hora de {zone}, durante {length}",
   'shared.responses': {
     one: '{count} respuesta',
     many: '{count} respuestas',

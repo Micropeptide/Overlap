@@ -7,6 +7,8 @@ export default {
   },
   'shared.hours': '{start} tot {end} (tijd in {zone})',
   'shared.hoursWithLength': '{start} tot {end} (tijd in {zone}), {length} lang',
+  'shared.hoursVary': "Tijden verschillen per dag (tijd in {zone})",
+  'shared.hoursVaryWithLength': "Tijden verschillen per dag (tijd in {zone}), {length} lang",
   'shared.responses': {
     one: '{count} reactie',
     other: '{count} reacties',

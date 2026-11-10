@@ -30,6 +30,7 @@ export default {
   'errors.visibility_invalid': 'Kies wie de reacties kan zien.',
   'errors.times_misaligned': { one: 'Begin- en eindtijden moeten aansluiten op stappen van {count} minuut.', other: 'Begin- en eindtijden moeten aansluiten op stappen van {count} minuten.' },
   'errors.range_too_short': 'Het tijdvak is korter dan één tijdstap.',
+  'errors.day_hours_invalid': "De tijden van elke dag moeten beginnen vóór het einde en passen bij de tijdstappen van de poll.",
   'errors.duration_too_long': 'De afspraak duurt langer dan het tijdvak. Verruim de tijden of maak de afspraak korter.',
   'errors.too_many_slots': 'Dat zijn te veel tijden om uit te kiezen. Kies minder datums of een korter tijdvak.',
   'errors.no_slots': 'Geen van die tijden bestaat in die tijdzone.',

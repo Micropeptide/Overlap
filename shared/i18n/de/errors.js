@@ -29,6 +29,7 @@ export default {
   'errors.visibility_invalid': 'Wähl, wer die Antworten sehen kann.',
   'errors.times_misaligned': { one: 'Beginn und Ende müssen zum {count}-Minuten-Raster passen.', other: 'Beginn und Ende müssen zum {count}-Minuten-Raster passen.' },
   'errors.range_too_short': 'Die Zeitspanne ist kürzer als ein Rasterschritt.',
+  'errors.day_hours_invalid': "Die Zeiten jedes Tages brauchen einen Beginn vor dem Ende, passend zum Zeitraster der Umfrage.",
   'errors.duration_too_long': 'Das Treffen ist länger als die Zeitspanne. Erweitere die Zeiten oder verkürze das Treffen.',
   'errors.too_many_slots': 'Das sind zu viele Zeiten zur Auswahl. Wähl weniger Tage oder eine kürzere Zeitspanne.',
   'errors.no_slots': 'Keine dieser Zeiten existiert in dieser Zeitzone.',

@@ -176,6 +176,7 @@ export default {
   "errors.dates_out_of_range": "Hãy chọn các ngày trong vòng ba năm tới.",
   "errors.dates_required": "Hãy chọn ít nhất một ngày.",
   "errors.dates_sent_weekdays": "Cuộc thăm dò này dùng ngày cụ thể. Hãy gửi \"dates\" thay vì \"weekdays\".",
+  "errors.day_hours_invalid": "Giờ của mỗi ngày phải bắt đầu trước khi kết thúc và khớp với bước thời gian của cuộc thăm dò.",
   "errors.description_too_long": {
     "other": "Phần mô tả phải ngắn hơn {count} ký tự."
   },
@@ -646,8 +647,12 @@ export default {
   "pollForm.datesPickedMore": {
     "other": "Đã chọn {count} ngày: {list} và {more} ngày khác"
   },
+  "pollForm.dayEnd": "Kết thúc muộn nhất vào {day}",
+  "pollForm.dayHoursHint": "Những ngày bạn không đổi sẽ giữ giờ ở trên.",
+  "pollForm.dayHoursToggle": "Giờ khác nhau vào một số ngày",
   "pollForm.days": "Các ngày có thể",
   "pollForm.daysOfWeek": "Các thứ trong tuần",
+  "pollForm.dayStart": "Bắt đầu sớm nhất vào {day}",
   "pollForm.earliestStart": "Bắt đầu sớm nhất",
   "pollForm.errorClosesMissing": "Hãy chọn ngày cuối cùng nhận phản hồi, hoặc chọn “Không bao giờ”.",
   "pollForm.errorClosesPast": "Hãy chọn ngày đóng chưa qua.",
@@ -855,6 +860,8 @@ export default {
   "shared.finalZoneOrganizer": "{zone}. Với người tổ chức ở {city}, đó là {time}.",
   "shared.googleCalendar": "Google Calendar",
   "shared.hours": "{start} đến {end}, giờ {zone}",
+  "shared.hoursVary": "Giờ khác nhau theo ngày, giờ {zone}",
+  "shared.hoursVaryWithLength": "Giờ khác nhau theo ngày, giờ {zone}, trong {length}",
   "shared.hoursWithLength": "{start} đến {end}, giờ {zone}, trong {length}",
   "shared.inviteHasAll": "Lời mời lịch có tất cả các thời gian này.",
   "shared.noEditsGuest": "Không thể đổi câu trả lời sau khi đã gửi",

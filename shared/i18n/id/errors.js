@@ -32,6 +32,7 @@ export default {
   'errors.visibility_invalid': 'Pilih siapa yang bisa melihat tanggapan.',
   'errors.times_misaligned': { other: 'Waktu mulai dan selesai harus sesuai dengan interval {count} menit.' },
   'errors.range_too_short': 'Rentang waktu lebih pendek dari satu interval waktu.',
+  'errors.day_hours_invalid': "Jam setiap hari harus dimulai sebelum selesai dan mengikuti interval waktu polling.",
   'errors.duration_too_long': 'Rapat lebih panjang dari rentang waktu. Perlebar rentang waktunya atau persingkat rapatnya.',
   'errors.too_many_slots': 'Terlalu banyak waktu untuk dipilih. Pilih lebih sedikit tanggal atau rentang yang lebih pendek.',
   'errors.no_slots': 'Tidak ada satu pun dari waktu itu yang ada di zona waktu tersebut.',

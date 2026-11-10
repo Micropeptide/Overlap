@@ -7,6 +7,8 @@ export default {
   },
   'shared.hours': '{start} से {end} तक ({zone} समय)',
   'shared.hoursWithLength': '{start} से {end} तक ({zone} समय), {length} के लिए',
+  'shared.hoursVary': "समय दिन के हिसाब से अलग है ({zone} समय)",
+  'shared.hoursVaryWithLength': "समय दिन के हिसाब से अलग है ({zone} समय), {length} के लिए",
   'shared.responses': {
     one: '{count} जवाब',
     other: '{count} जवाब',

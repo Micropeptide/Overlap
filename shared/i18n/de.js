@@ -189,6 +189,7 @@ export default {
   "errors.dates_out_of_range": "Wähl Tage innerhalb der nächsten drei Jahre.",
   "errors.dates_required": "Wähl mindestens einen Tag.",
   "errors.dates_sent_weekdays": "Diese Umfrage nutzt bestimmte Tage. Sende „dates“ statt „weekdays“.",
+  "errors.day_hours_invalid": "Die Zeiten jedes Tages brauchen einen Beginn vor dem Ende, passend zum Zeitraster der Umfrage.",
   "errors.description_too_long": {
     "one": "Die Beschreibung muss kürzer als {count} Zeichen sein.",
     "other": "Die Beschreibung muss kürzer als {count} Zeichen sein."
@@ -692,8 +693,12 @@ export default {
     "one": "{count} Tag gewählt: {list} und {more} weitere",
     "other": "{count} Tage gewählt: {list} und {more} weitere"
   },
+  "pollForm.dayEnd": "Spätestes Ende am {day}",
+  "pollForm.dayHoursHint": "Tage, die du nicht änderst, behalten die Zeiten oben.",
+  "pollForm.dayHoursToggle": "Andere Zeiten an manchen Tagen",
   "pollForm.days": "Mögliche Tage",
   "pollForm.daysOfWeek": "Wochentage",
+  "pollForm.dayStart": "Frühester Beginn am {day}",
   "pollForm.earliestStart": "Frühester Beginn",
   "pollForm.errorClosesMissing": "Wähl den letzten Tag für Antworten oder „Nie“.",
   "pollForm.errorClosesPast": "Wähl ein Schlussdatum, das noch nicht vorbei ist.",
@@ -911,6 +916,8 @@ export default {
   "shared.finalZoneOrganizer": "{zone}. Für den Organisator in {city} ist das {time}.",
   "shared.googleCalendar": "Google Kalender",
   "shared.hours": "{start} bis {end} (Ortszeit {zone})",
+  "shared.hoursVary": "Zeiten je nach Tag verschieden (Ortszeit {zone})",
+  "shared.hoursVaryWithLength": "Zeiten je nach Tag verschieden (Ortszeit {zone}), Dauer: {length}",
   "shared.hoursWithLength": "{start} bis {end} (Ortszeit {zone}), Dauer: {length}",
   "shared.inviteHasAll": "Die Kalendereinladung enthält alle diese Termine.",
   "shared.noEditsGuest": "Antworten lassen sich nach dem Senden nicht mehr ändern",

@@ -7,6 +7,8 @@ export default {
   },
   'shared.hours': '{start} – {end}, {zone} saati',
   'shared.hoursWithLength': '{start} – {end}, {zone} saati, süre: {length}',
+  'shared.hoursVary': "Saatler güne göre değişir, {zone} saati",
+  'shared.hoursVaryWithLength': "Saatler güne göre değişir, {zone} saati, süre: {length}",
   'shared.responses': {
     one: '{count} yanıt',
     other: '{count} yanıt',

@@ -59,6 +59,7 @@ export default {
     other: 'Las horas de inicio y fin deben coincidir con bloques de {count} minutos.',
   },
   'errors.range_too_short': 'La franja horaria es más corta que un bloque de tiempo.',
+  'errors.day_hours_invalid': "El horario de cada día debe empezar antes de terminar y ajustarse a los bloques de tiempo de la encuesta.",
   'errors.duration_too_long': 'La reunión dura más que la franja horaria. Amplía los horarios o acorta la reunión.',
   'errors.too_many_slots': 'Son demasiados horarios para elegir. Elige menos fechas o una franja más corta.',
   'errors.no_slots': 'Ninguno de esos horarios existe en esa zona horaria.',

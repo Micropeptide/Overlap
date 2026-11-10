@@ -176,6 +176,7 @@ export default {
   "errors.dates_out_of_range": "請選擇未來三年內的日期。",
   "errors.dates_required": "請至少選擇一個日期。",
   "errors.dates_sent_weekdays": "這個投票使用特定日期。請傳送 \"dates\"，而不是 \"weekdays\"。",
+  "errors.day_hours_invalid": "每天的時間必須開始早於結束，並符合投票的時間間隔。",
   "errors.description_too_long": {
     "other": "說明請少於 {count} 個字元。"
   },
@@ -646,8 +647,12 @@ export default {
   "pollForm.datesPickedMore": {
     "other": "已選 {count} 個日期：{list}，還有另外 {more} 個"
   },
+  "pollForm.dayEnd": "{day}最晚結束",
+  "pollForm.dayHoursHint": "未修改的日子沿用上方的時間。",
+  "pollForm.dayHoursToggle": "某些日子使用不同時間",
   "pollForm.days": "可能的日期",
   "pollForm.daysOfWeek": "每週星期幾",
+  "pollForm.dayStart": "{day}最早開始",
   "pollForm.earliestStart": "最早開始",
   "pollForm.errorClosesMissing": "請選擇收集回覆的最後一天，或選擇「永不」。",
   "pollForm.errorClosesPast": "請選擇還沒過去的截止日期。",
@@ -855,6 +860,8 @@ export default {
   "shared.finalZoneOrganizer": "{zone}。對在{city}的發起人來說是{time}。",
   "shared.googleCalendar": "Google 日曆",
   "shared.hours": "{start}至{end}（{zone}時間）",
+  "shared.hoursVary": "每天的時間不同（{zone}時間）",
+  "shared.hoursVaryWithLength": "每天的時間不同（{zone}時間），時長{length}",
   "shared.hoursWithLength": "{start}至{end}（{zone}時間），時長{length}",
   "shared.inviteHasAll": "行事曆邀請包含所有這些時間。",
   "shared.noEditsGuest": "回覆送出後就無法修改",

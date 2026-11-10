@@ -6,6 +6,8 @@ export default {
   },
   'shared.hours': '{start} ถึง {end} ตามเวลา {zone}',
   'shared.hoursWithLength': '{start} ถึง {end} ตามเวลา {zone} นาน {length}',
+  'shared.hoursVary': "เวลาต่างกันในแต่ละวัน ตามเวลา {zone}",
+  'shared.hoursVaryWithLength': "เวลาต่างกันในแต่ละวัน ตามเวลา {zone} นาน {length}",
   'shared.responses': {
     other: '{count} คำตอบ',
   },

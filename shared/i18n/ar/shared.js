@@ -11,6 +11,8 @@ export default {
   },
   'shared.hours': 'من {start} إلى {end} بتوقيت {zone}',
   'shared.hoursWithLength': 'من {start} إلى {end} بتوقيت {zone}، لمدة {length}',
+  'shared.hoursVary': "تختلف الساعات حسب اليوم، بتوقيت {zone}",
+  'shared.hoursVaryWithLength': "تختلف الساعات حسب اليوم، بتوقيت {zone}، لمدة {length}",
   'shared.responses': {
     zero: '{count} ردّ',
     one: 'ردّ واحد',

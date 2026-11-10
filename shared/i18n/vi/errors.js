@@ -33,6 +33,7 @@ export default {
   'errors.visibility_invalid': 'Hãy chọn ai được xem các phản hồi.',
   'errors.times_misaligned': { other: 'Giờ bắt đầu và kết thúc phải khớp với bước {count} phút.' },
   'errors.range_too_short': 'Khoảng thời gian ngắn hơn một bước thời gian.',
+  'errors.day_hours_invalid': "Giờ của mỗi ngày phải bắt đầu trước khi kết thúc và khớp với bước thời gian của cuộc thăm dò.",
   'errors.duration_too_long': 'Cuộc họp dài hơn khoảng thời gian. Hãy nới rộng khoảng giờ hoặc rút ngắn cuộc họp.',
   'errors.too_many_slots': 'Có quá nhiều khung giờ để chọn. Hãy chọn ít ngày hơn hoặc khoảng giờ ngắn hơn.',
   'errors.no_slots': 'Không khung giờ nào trong số đó tồn tại ở múi giờ này.',

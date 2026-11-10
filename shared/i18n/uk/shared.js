@@ -9,6 +9,8 @@ export default {
   },
   'shared.hours': '{start} – {end}, час: {zone}',
   'shared.hoursWithLength': '{start} – {end}, час: {zone}, тривалість {length}',
+  'shared.hoursVary': "Час залежить від дня, час: {zone}",
+  'shared.hoursVaryWithLength': "Час залежить від дня, час: {zone}, тривалість {length}",
   'shared.responses': {
     one: '{count} відповідь',
     few: '{count} відповіді',

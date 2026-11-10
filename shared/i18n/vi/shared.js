@@ -6,6 +6,8 @@ export default {
   },
   'shared.hours': '{start} đến {end}, giờ {zone}',
   'shared.hoursWithLength': '{start} đến {end}, giờ {zone}, trong {length}',
+  'shared.hoursVary': "Giờ khác nhau theo ngày, giờ {zone}",
+  'shared.hoursVaryWithLength': "Giờ khác nhau theo ngày, giờ {zone}, trong {length}",
   'shared.responses': {
     other: '{count} phản hồi',
   },

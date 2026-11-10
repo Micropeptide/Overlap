@@ -176,6 +176,7 @@ export default {
   "errors.dates_out_of_range": "请选择未来三年内的日期。",
   "errors.dates_required": "请至少选择一个日期。",
   "errors.dates_sent_weekdays": "此投票使用具体日期。请发送“dates”，而不是“weekdays”。",
+  "errors.day_hours_invalid": "每天的时间需要开始早于结束，并符合投票的时间间隔。",
   "errors.description_too_long": {
     "other": "描述请少于 {count} 个字符。"
   },
@@ -646,8 +647,12 @@ export default {
   "pollForm.datesPickedMore": {
     "other": "已选 {count} 个日期：{list}，还有 {more} 个"
   },
+  "pollForm.dayEnd": "{day}最晚结束",
+  "pollForm.dayHoursHint": "未修改的日子沿用上面的时间。",
+  "pollForm.dayHoursToggle": "某些日子使用不同时间",
   "pollForm.days": "候选日期",
   "pollForm.daysOfWeek": "星期几",
+  "pollForm.dayStart": "{day}最早开始",
   "pollForm.earliestStart": "最早开始",
   "pollForm.errorClosesMissing": "请选择接受回复的最后一天，或选择“从不”。",
   "pollForm.errorClosesPast": "请选择一个还没过去的截止日期。",
@@ -855,6 +860,8 @@ export default {
   "shared.finalZoneOrganizer": "{zone}。对身在{city}的发起人来说是{time}。",
   "shared.googleCalendar": "Google 日历",
   "shared.hours": "{zone}时间{start}至{end}",
+  "shared.hoursVary": "{zone}时间，每天的时间不同",
+  "shared.hoursVaryWithLength": "{zone}时间，每天的时间不同，时长{length}",
   "shared.hoursWithLength": "{zone}时间{start}至{end}，时长{length}",
   "shared.inviteHasAll": "日历邀请包含所有这些时间。",
   "shared.noEditsGuest": "回复提交后无法修改",

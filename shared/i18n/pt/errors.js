@@ -31,6 +31,7 @@ export default {
   'errors.visibility_invalid': 'Escolha quem pode ver as respostas.',
   'errors.times_misaligned': { one: 'Os horários de início e término devem seguir intervalos de {count} minuto.', many: 'Os horários de início e término devem seguir intervalos de {count} minutos.', other: 'Os horários de início e término devem seguir intervalos de {count} minutos.' },
   'errors.range_too_short': 'A faixa de horário é menor que um intervalo.',
+  'errors.day_hours_invalid': "O horário de cada dia precisa começar antes de terminar e seguir os intervalos de horário da enquete.",
   'errors.duration_too_long': 'A reunião é mais longa que a faixa de horário. Amplie os horários ou encurte a reunião.',
   'errors.too_many_slots': 'São horários demais para escolher. Escolha menos datas ou uma faixa menor.',
   'errors.no_slots': 'Nenhum desses horários existe nesse fuso horário.',

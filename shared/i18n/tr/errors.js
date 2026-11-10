@@ -29,6 +29,7 @@ export default {
   'errors.visibility_invalid': 'Yanıtları kimlerin görebileceğini seçin.',
   'errors.times_misaligned': { one: 'Başlangıç ve bitiş saatleri {count} dakikalık adımlara denk gelmeli.', other: 'Başlangıç ve bitiş saatleri {count} dakikalık adımlara denk gelmeli.' },
   'errors.range_too_short': 'Saat aralığı bir zaman adımından kısa.',
+  'errors.day_hours_invalid': "Her günün saatleri bitişten önce başlamalı ve anketin zaman adımına uymalıdır.",
   'errors.duration_too_long': 'Toplantı, saat aralığından uzun. Saatleri genişletin ya da toplantıyı kısaltın.',
   'errors.too_many_slots': 'Seçilecek çok fazla saat var. Daha az tarih ya da daha kısa bir aralık seçin.',
   'errors.no_slots': 'Bu saatlerin hiçbiri o saat diliminde mevcut değil.',

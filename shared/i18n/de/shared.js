@@ -7,6 +7,8 @@ export default {
   },
   'shared.hours': '{start} bis {end} (Ortszeit {zone})',
   'shared.hoursWithLength': '{start} bis {end} (Ortszeit {zone}), Dauer: {length}',
+  'shared.hoursVary': "Zeiten je nach Tag verschieden (Ortszeit {zone})",
+  'shared.hoursVaryWithLength': "Zeiten je nach Tag verschieden (Ortszeit {zone}), Dauer: {length}",
   'shared.responses': {
     one: '{count} Antwort',
     other: '{count} Antworten',

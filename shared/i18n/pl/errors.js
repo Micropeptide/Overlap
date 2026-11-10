@@ -66,6 +66,7 @@ export default {
     other: 'Godziny początku i końca muszą pasować do kroku {count} min.',
   },
   'errors.range_too_short': 'Przedział godzin jest krótszy niż jeden krok.',
+  'errors.day_hours_invalid': "Godziny każdego dnia muszą zaczynać się przed końcem i pasować do dokładności godzin w ankiecie.",
   'errors.duration_too_long': 'Spotkanie jest dłuższe niż przedział godzin. Poszerz przedział albo skróć spotkanie.',
   'errors.too_many_slots': 'To za dużo terminów do wyboru. Wybierz mniej dat albo krótszy przedział.',
   'errors.no_slots': 'Żadna z tych godzin nie istnieje w tej strefie czasowej.',

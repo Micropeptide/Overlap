@@ -176,6 +176,7 @@ export default {
   "errors.dates_out_of_range": "Pilih tanggal dalam tiga tahun ke depan.",
   "errors.dates_required": "Pilih minimal satu tanggal.",
   "errors.dates_sent_weekdays": "Polling ini menggunakan tanggal tertentu. Kirim \"dates\", bukan \"weekdays\".",
+  "errors.day_hours_invalid": "Jam setiap hari harus dimulai sebelum selesai dan mengikuti interval waktu polling.",
   "errors.description_too_long": {
     "other": "Deskripsi harus kurang dari {count} karakter."
   },
@@ -646,8 +647,12 @@ export default {
   "pollForm.datesPickedMore": {
     "other": "{count} tanggal dipilih: {list}, dan {more} lainnya"
   },
+  "pollForm.dayEnd": "Selesai paling akhir pada {day}",
+  "pollForm.dayHoursHint": "Hari yang tidak Anda ubah tetap memakai jam di atas.",
+  "pollForm.dayHoursToggle": "Jam berbeda di beberapa hari",
   "pollForm.days": "Hari yang memungkinkan",
   "pollForm.daysOfWeek": "Hari dalam seminggu",
+  "pollForm.dayStart": "Mulai paling awal pada {day}",
   "pollForm.earliestStart": "Mulai paling awal",
   "pollForm.errorClosesMissing": "Pilih hari terakhir menerima tanggapan, atau pilih “Tidak pernah”.",
   "pollForm.errorClosesPast": "Pilih tanggal penutupan yang belum lewat.",
@@ -855,6 +860,8 @@ export default {
   "shared.finalZoneOrganizer": "{zone}. Itu pukul {time} bagi penyelenggara di {city}.",
   "shared.googleCalendar": "Google Kalender",
   "shared.hours": "{start} sampai {end} waktu {zone}",
+  "shared.hoursVary": "Jam berbeda tiap hari, waktu {zone}",
+  "shared.hoursVaryWithLength": "Jam berbeda tiap hari, waktu {zone}, selama {length}",
   "shared.hoursWithLength": "{start} sampai {end} waktu {zone}, selama {length}",
   "shared.inviteHasAll": "Undangan kalender berisi semua waktu ini.",
   "shared.noEditsGuest": "Jawaban tidak bisa diubah setelah dikirim",

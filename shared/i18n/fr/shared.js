@@ -8,6 +8,8 @@ export default {
   },
   'shared.hours': 'De {start} à {end} (fuseau horaire : {zone})',
   'shared.hoursWithLength': 'De {start} à {end} (fuseau horaire : {zone}), pour {length}',
+  'shared.hoursVary': "Horaires variables selon le jour (fuseau horaire : {zone})",
+  'shared.hoursVaryWithLength': "Horaires variables selon le jour (fuseau horaire : {zone}), pour {length}",
   'shared.responses': {
     one: '{count} réponse',
     many: '{count} réponses',

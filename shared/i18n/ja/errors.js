@@ -32,6 +32,7 @@ export default {
   'errors.visibility_invalid': '回答を見られる人を選んでください。',
   'errors.times_misaligned': { other: '開始時刻と終了時刻は{count}分刻みに合わせてください。' },
   'errors.range_too_short': '時間帯が時間の刻み1つ分より短くなっています。',
+  'errors.day_hours_invalid': "各日の時間は、開始が終了より前で、投票の時間の刻みに合っている必要があります。",
   'errors.duration_too_long': '所要時間が時間帯より長くなっています。時間帯を広げるか、所要時間を短くしてください。',
   'errors.too_many_slots': '選べる時間帯が多すぎます。日付を減らすか、時間帯を短くしてください。',
   'errors.no_slots': 'そのタイムゾーンには、指定した時間帯が1つも存在しません。',

@@ -189,6 +189,7 @@ export default {
   "errors.dates_out_of_range": "अगले तीन साल के अंदर की तारीखें चुनें।",
   "errors.dates_required": "कम से कम एक तारीख चुनें।",
   "errors.dates_sent_weekdays": "यह पोल खास तारीखों वाला है। \"weekdays\" की जगह \"dates\" भेजें।",
+  "errors.day_hours_invalid": "हर दिन का समय खत्म होने से पहले शुरू होना चाहिए और पोल के समय के अंतराल के हिसाब से होना चाहिए।",
   "errors.description_too_long": {
     "one": "विवरण {count} अक्षर से कम रखें।",
     "other": "विवरण {count} अक्षरों से कम रखें।"
@@ -692,8 +693,12 @@ export default {
     "one": "{count} तारीख चुनी: {list} और {more} अन्य",
     "other": "{count} तारीखें चुनीं: {list} और {more} अन्य"
   },
+  "pollForm.dayEnd": "{day} को सबसे देर तक",
+  "pollForm.dayHoursHint": "जिन दिनों को आप नहीं बदलते, उनमें ऊपर वाला समय रहेगा।",
+  "pollForm.dayHoursToggle": "कुछ दिनों के लिए अलग समय",
   "pollForm.days": "संभावित दिन",
   "pollForm.daysOfWeek": "हफ़्ते के दिन",
+  "pollForm.dayStart": "{day} को सबसे जल्दी शुरुआत",
   "pollForm.earliestStart": "सबसे जल्दी शुरुआत",
   "pollForm.errorClosesMissing": "जवाब लेने का आखिरी दिन चुनें, या “कभी नहीं” चुनें।",
   "pollForm.errorClosesPast": "बंद होने की ऐसी तारीख चुनें जो बीत न चुकी हो।",
@@ -911,6 +916,8 @@ export default {
   "shared.finalZoneOrganizer": "{zone}। {city} में आयोजक के लिए यह {time} है।",
   "shared.googleCalendar": "Google Calendar",
   "shared.hours": "{start} से {end} तक ({zone} समय)",
+  "shared.hoursVary": "समय दिन के हिसाब से अलग है ({zone} समय)",
+  "shared.hoursVaryWithLength": "समय दिन के हिसाब से अलग है ({zone} समय), {length} के लिए",
   "shared.hoursWithLength": "{start} से {end} तक ({zone} समय), {length} के लिए",
   "shared.inviteHasAll": "कैलेंडर आमंत्रण में ये सभी समय हैं।",
   "shared.noEditsGuest": "भेजने के बाद जवाब बदले नहीं जा सकते",

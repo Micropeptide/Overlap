@@ -30,6 +30,7 @@ export default {
   'errors.visibility_invalid': '응답을 볼 수 있는 사람을 골라 주세요.',
   'errors.times_misaligned': { other: '시작 시간과 종료 시간은 {count}분 단위에 맞아야 해요.' },
   'errors.range_too_short': '시간 범위가 시간 단위 하나보다 짧아요.',
+  'errors.day_hours_invalid': "각 날짜의 시간은 시작이 종료보다 빨라야 하고, 투표의 시간 단위에 맞아야 해요.",
   'errors.duration_too_long': '모임이 시간 범위보다 길어요. 시간 범위를 넓히거나 모임 길이를 줄여 주세요.',
   'errors.too_many_slots': '고를 수 있는 시간이 너무 많아요. 날짜를 줄이거나 시간 범위를 좁혀 주세요.',
   'errors.no_slots': '해당 시간대에는 이 시간들이 존재하지 않아요.',

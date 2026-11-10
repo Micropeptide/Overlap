@@ -6,6 +6,8 @@ export default {
   },
   'shared.hours': '{start}至{end}（{zone}時間）',
   'shared.hoursWithLength': '{start}至{end}（{zone}時間），時長{length}',
+  'shared.hoursVary': "每天的時間不同（{zone}時間）",
+  'shared.hoursVaryWithLength': "每天的時間不同（{zone}時間），時長{length}",
   'shared.responses': {
     other: '{count} 則回覆',
   },

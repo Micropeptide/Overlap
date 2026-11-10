@@ -176,6 +176,7 @@ export default {
   "errors.dates_out_of_range": "เลือกวันที่ภายในสามปีข้างหน้า",
   "errors.dates_required": "เลือกอย่างน้อยหนึ่งวัน",
   "errors.dates_sent_weekdays": "โพลนี้ใช้วันที่ที่ระบุ ให้ส่ง \"dates\" แทน \"weekdays\"",
+  "errors.day_hours_invalid": "เวลาของแต่ละวันต้องเริ่มก่อนสิ้นสุด และตรงกับช่วงห่างของเวลาในโพล",
   "errors.description_too_long": {
     "other": "คำอธิบายต้องยาวไม่เกิน {count} อักขระ"
   },
@@ -646,8 +647,12 @@ export default {
   "pollForm.datesPickedMore": {
     "other": "เลือกแล้ว {count} วัน: {list} และอีก {more} วัน"
   },
+  "pollForm.dayEnd": "จบช้าสุดของ {day}",
+  "pollForm.dayHoursHint": "วันที่คุณไม่ได้เปลี่ยนจะใช้เวลาด้านบน",
+  "pollForm.dayHoursToggle": "เวลาต่างกันในบางวัน",
   "pollForm.days": "วันที่เป็นไปได้",
   "pollForm.daysOfWeek": "วันในสัปดาห์",
+  "pollForm.dayStart": "เริ่มเร็วสุดของ {day}",
   "pollForm.earliestStart": "เริ่มเร็วสุด",
   "pollForm.errorClosesMissing": "เลือกวันสุดท้ายที่รับคำตอบ หรือเลือก “ไม่มีกำหนด”",
   "pollForm.errorClosesPast": "เลือกวันปิดรับที่ยังไม่ผ่านไป",
@@ -855,6 +860,8 @@ export default {
   "shared.finalZoneOrganizer": "{zone} ซึ่งตรงกับ {time} ของผู้จัดที่ {city}",
   "shared.googleCalendar": "Google Calendar",
   "shared.hours": "{start} ถึง {end} ตามเวลา {zone}",
+  "shared.hoursVary": "เวลาต่างกันในแต่ละวัน ตามเวลา {zone}",
+  "shared.hoursVaryWithLength": "เวลาต่างกันในแต่ละวัน ตามเวลา {zone} นาน {length}",
   "shared.hoursWithLength": "{start} ถึง {end} ตามเวลา {zone} นาน {length}",
   "shared.inviteHasAll": "คำเชิญในปฏิทินมีทุกช่วงเวลาเหล่านี้",
   "shared.noEditsGuest": "ส่งคำตอบแล้วจะแก้ไขไม่ได้",

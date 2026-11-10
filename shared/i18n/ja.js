@@ -176,6 +176,7 @@ export default {
   "errors.dates_out_of_range": "今後3年以内の日付を選んでください。",
   "errors.dates_required": "日付を1つ以上選んでください。",
   "errors.dates_sent_weekdays": "この日程調整は特定の日付を使います。\"weekdays\"ではなく\"dates\"を送信してください。",
+  "errors.day_hours_invalid": "各日の時間は、開始が終了より前で、投票の時間の刻みに合っている必要があります。",
   "errors.description_too_long": {
     "other": "説明は{count}文字以内にしてください。"
   },
@@ -646,8 +647,12 @@ export default {
   "pollForm.datesPickedMore": {
     "other": "{count}日を選択中：{list}、ほか{more}日"
   },
+  "pollForm.dayEnd": "{day}の終了（最も遅い時刻）",
+  "pollForm.dayHoursHint": "変更しない日は、上の時間のままです。",
+  "pollForm.dayHoursToggle": "日によって時間を変える",
   "pollForm.days": "候補日",
   "pollForm.daysOfWeek": "毎週の曜日",
+  "pollForm.dayStart": "{day}の開始（最も早い時刻）",
   "pollForm.earliestStart": "開始（最も早い時刻）",
   "pollForm.errorClosesMissing": "回答を受け付ける最終日を選ぶか、「なし」を選んでください。",
   "pollForm.errorClosesPast": "まだ過ぎていない締め切り日を選んでください。",
@@ -855,6 +860,8 @@ export default {
   "shared.finalZoneOrganizer": "{zone}。主催者のいる{city}では{time}です。",
   "shared.googleCalendar": "Googleカレンダー",
   "shared.hours": "{start}〜{end}（{zone}時間）",
+  "shared.hoursVary": "時間は日によって異なります（{zone}時間）",
+  "shared.hoursVaryWithLength": "時間は日によって異なります（{zone}時間）、所要時間{length}",
   "shared.hoursWithLength": "{start}〜{end}（{zone}時間）、所要時間{length}",
   "shared.inviteHasAll": "カレンダー招待にはこれらすべての時間が含まれます。",
   "shared.noEditsGuest": "送信後に回答は変更できません",

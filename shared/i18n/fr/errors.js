@@ -57,6 +57,7 @@ export default {
     other: 'Les heures de début et de fin doivent tomber sur des pas de {count} minutes.',
   },
   'errors.range_too_short': 'La plage horaire est plus courte qu’un créneau.',
+  'errors.day_hours_invalid': "Les horaires de chaque jour doivent commencer avant de finir et suivre la précision des créneaux du sondage.",
   'errors.duration_too_long': 'La réunion est plus longue que la plage horaire. Élargissez les horaires ou raccourcissez la réunion.',
   'errors.too_many_slots': 'Cela fait trop de créneaux. Choisissez moins de dates ou une plage plus courte.',
   'errors.no_slots': 'Aucun de ces horaires n’existe dans ce fuseau horaire.',

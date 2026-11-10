@@ -33,6 +33,7 @@ export default {
   'errors.visibility_invalid': '请选择谁能看到回复。',
   'errors.times_misaligned': { other: '开始和结束时间必须与 {count} 分钟的间隔对齐。' },
   'errors.range_too_short': '时间范围比一个时间间隔还短。',
+  'errors.day_hours_invalid': "每天的时间需要开始早于结束，并符合投票的时间间隔。",
   'errors.duration_too_long': '会议时长超过了时间范围。请扩大时间范围或缩短会议。',
   'errors.too_many_slots': '可选的时间太多了。请减少日期或缩小时间范围。',
   'errors.no_slots': '这些时间在该时区中都不存在。',

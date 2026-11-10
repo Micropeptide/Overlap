@@ -176,6 +176,7 @@ export default {
   "errors.dates_out_of_range": "앞으로 3년 이내의 날짜를 골라 주세요.",
   "errors.dates_required": "날짜를 하나 이상 골라 주세요.",
   "errors.dates_sent_weekdays": "특정 날짜를 쓰는 투표예요. \"weekdays\" 대신 \"dates\"를 보내 주세요.",
+  "errors.day_hours_invalid": "각 날짜의 시간은 시작이 종료보다 빨라야 하고, 투표의 시간 단위에 맞아야 해요.",
   "errors.description_too_long": {
     "other": "설명은 {count}자 이내로 입력해 주세요."
   },
@@ -646,8 +647,12 @@ export default {
   "pollForm.datesPickedMore": {
     "other": "날짜 {count}개 선택: {list} 외 {more}개"
   },
+  "pollForm.dayEnd": "{day} 가장 늦은 종료",
+  "pollForm.dayHoursHint": "바꾸지 않은 날은 위의 시간을 그대로 사용해요.",
+  "pollForm.dayHoursToggle": "날짜마다 다른 시간",
   "pollForm.days": "가능한 날",
   "pollForm.daysOfWeek": "요일",
+  "pollForm.dayStart": "{day} 가장 이른 시작",
   "pollForm.earliestStart": "가장 이른 시작",
   "pollForm.errorClosesMissing": "응답 받는 마지막 날을 고르거나 “마감일 없음”을 선택해 주세요.",
   "pollForm.errorClosesPast": "아직 지나지 않은 마감 날짜를 골라 주세요.",
@@ -855,6 +860,8 @@ export default {
   "shared.finalZoneOrganizer": "{zone} 기준이에요. 주최자가 있는 {city} 시간: {time}",
   "shared.googleCalendar": "Google 캘린더",
   "shared.hours": "{zone} 기준 {start}~{end}",
+  "shared.hoursVary": "{zone} 기준, 날짜마다 시간이 달라요",
+  "shared.hoursVaryWithLength": "{zone} 기준, 날짜마다 시간이 달라요, 모임 길이 {length}",
   "shared.hoursWithLength": "{zone} 기준 {start}~{end}, 모임 길이 {length}",
   "shared.inviteHasAll": "캘린더 초대에 이 시간이 모두 들어 있어요.",
   "shared.noEditsGuest": "보낸 뒤에는 응답을 수정할 수 없어요",

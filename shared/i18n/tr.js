@@ -189,6 +189,7 @@ export default {
   "errors.dates_out_of_range": "Önümüzdeki üç yıl içindeki tarihleri seçin.",
   "errors.dates_required": "En az bir tarih seçin.",
   "errors.dates_sent_weekdays": "Bu anket belirli tarihler kullanıyor. \"weekdays\" yerine \"dates\" gönderin.",
+  "errors.day_hours_invalid": "Her günün saatleri bitişten önce başlamalı ve anketin zaman adımına uymalıdır.",
   "errors.description_too_long": {
     "one": "Açıklama {count} karakterden kısa olmalı.",
     "other": "Açıklama {count} karakterden kısa olmalı."
@@ -692,8 +693,12 @@ export default {
     "one": "{count} tarih seçildi: {list} ve {more} tane daha",
     "other": "{count} tarih seçildi: {list} ve {more} tane daha"
   },
+  "pollForm.dayEnd": "{day} için en geç bitiş",
+  "pollForm.dayHoursHint": "Değiştirmediğiniz günler yukarıdaki saatleri korur.",
+  "pollForm.dayHoursToggle": "Bazı günlerde farklı saatler",
   "pollForm.days": "Olası günler",
   "pollForm.daysOfWeek": "Haftanın günleri",
+  "pollForm.dayStart": "{day} için en erken başlangıç",
   "pollForm.earliestStart": "En erken başlangıç",
   "pollForm.errorClosesMissing": "Yanıt kabul edilecek son günü seçin ya da “Hiçbir zaman” seçeneğini işaretleyin.",
   "pollForm.errorClosesPast": "Henüz geçmemiş bir kapanış tarihi seçin.",
@@ -911,6 +916,8 @@ export default {
   "shared.finalZoneOrganizer": "{zone}. Organizatörün bulunduğu {city} için bu, {time} demek.",
   "shared.googleCalendar": "Google Takvim",
   "shared.hours": "{start} – {end}, {zone} saati",
+  "shared.hoursVary": "Saatler güne göre değişir, {zone} saati",
+  "shared.hoursVaryWithLength": "Saatler güne göre değişir, {zone} saati, süre: {length}",
   "shared.hoursWithLength": "{start} – {end}, {zone} saati, süre: {length}",
   "shared.inviteHasAll": "Takvim daveti bu zamanların hepsini içerir.",
   "shared.noEditsGuest": "Yanıtlar gönderildikten sonra değiştirilemez",

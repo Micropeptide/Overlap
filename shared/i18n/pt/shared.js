@@ -8,6 +8,8 @@ export default {
   },
   'shared.hours': 'Das {start} às {end}, horário de {zone}',
   'shared.hoursWithLength': 'Das {start} às {end}, horário de {zone}, com duração de {length}',
+  'shared.hoursVary': "O horário varia conforme o dia, horário de {zone}",
+  'shared.hoursVaryWithLength': "O horário varia conforme o dia, horário de {zone}, com duração de {length}",
   'shared.responses': {
     one: '{count} resposta',
     many: '{count} respostas',

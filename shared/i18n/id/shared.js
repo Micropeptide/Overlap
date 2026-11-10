@@ -6,6 +6,8 @@ export default {
   },
   'shared.hours': '{start} sampai {end} waktu {zone}',
   'shared.hoursWithLength': '{start} sampai {end} waktu {zone}, selama {length}',
+  'shared.hoursVary': "Jam berbeda tiap hari, waktu {zone}",
+  'shared.hoursVaryWithLength': "Jam berbeda tiap hari, waktu {zone}, selama {length}",
   'shared.responses': {
     other: '{count} tanggapan',
   },

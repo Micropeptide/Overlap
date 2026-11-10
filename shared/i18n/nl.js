@@ -189,6 +189,7 @@ export default {
   "errors.dates_out_of_range": "Kies datums binnen de komende drie jaar.",
   "errors.dates_required": "Kies minstens één datum.",
   "errors.dates_sent_weekdays": "Deze peiling gebruikt specifieke datums. Stuur \"dates\" in plaats van \"weekdays\".",
+  "errors.day_hours_invalid": "De tijden van elke dag moeten beginnen vóór het einde en passen bij de tijdstappen van de poll.",
   "errors.description_too_long": {
     "one": "Houd de beschrijving korter dan {count} teken.",
     "other": "Houd de beschrijving korter dan {count} tekens."
@@ -692,8 +693,12 @@ export default {
     "one": "{count} datum gekozen: {list} en nog {more}",
     "other": "{count} datums gekozen: {list} en nog {more}"
   },
+  "pollForm.dayEnd": "Laatste einde op {day}",
+  "pollForm.dayHoursHint": "Dagen die je niet wijzigt, houden de tijden hierboven.",
+  "pollForm.dayHoursToggle": "Andere tijden op sommige dagen",
   "pollForm.days": "Mogelijke dagen",
   "pollForm.daysOfWeek": "Dagen van de week",
+  "pollForm.dayStart": "Vroegste begin op {day}",
   "pollForm.earliestStart": "Vroegste begin",
   "pollForm.errorClosesMissing": "Kies de laatste dag om te reageren, of kies “Nooit”.",
   "pollForm.errorClosesPast": "Kies een sluitingsdatum die nog niet voorbij is.",
@@ -911,6 +916,8 @@ export default {
   "shared.finalZoneOrganizer": "{zone}. Voor de organisator in {city} is dat {time}.",
   "shared.googleCalendar": "Google Agenda",
   "shared.hours": "{start} tot {end} (tijd in {zone})",
+  "shared.hoursVary": "Tijden verschillen per dag (tijd in {zone})",
+  "shared.hoursVaryWithLength": "Tijden verschillen per dag (tijd in {zone}), {length} lang",
   "shared.hoursWithLength": "{start} tot {end} (tijd in {zone}), {length} lang",
   "shared.inviteHasAll": "De agenda-uitnodiging bevat al deze tijden.",
   "shared.noEditsGuest": "Antwoorden kunnen na het versturen niet meer worden gewijzigd",
